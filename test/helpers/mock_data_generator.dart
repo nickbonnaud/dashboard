@@ -1,8 +1,10 @@
 import 'package:dashboard/models/business/address.dart' as BusinessAddress;
 import 'package:dashboard/models/business/employee.dart';
+import 'package:dashboard/models/business/employee_tip.dart';
 import 'package:dashboard/models/business/hours.dart';
 import 'package:dashboard/models/business/owner_account.dart';
 import 'package:dashboard/models/business/photos.dart';
+import 'package:dashboard/models/business/pos_account.dart';
 import 'package:dashboard/models/business/profile.dart';
 import 'package:dashboard/models/customer/customer.dart';
 import 'package:dashboard/models/customer/customer_resource.dart';
@@ -263,6 +265,24 @@ class MockDataGenerator {
       description: faker.lorem.sentences(5).join(),
       phone: "9362963431",
       hours: createHours()
+    );
+  }
+
+  EmployeeTip createEmployeeTip() {
+    return EmployeeTip(
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      total: faker.randomGenerator.integer(1000, min: 100)
+    );
+  }
+
+  PosAccount createPosAccount() {
+    return PosAccount(
+      identifier: faker.guid.guid(), 
+      type: PosType.clover, 
+      takesTips: true,
+      allowsOpenTickets: true, 
+      connectionStatus: Status(name: "connected", code: 200)
     );
   }
 }

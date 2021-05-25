@@ -6,7 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import '../../helpers/screen_builder.dart';
 
 void main() {
-  group("Account Screen Tests", () {
+  group("Account Menu Screen Tests", () {
     late ScreenBuilder screenBuilder;
     late NavigatorObserver observer;
 
@@ -16,15 +16,15 @@ void main() {
       registerFallbackValue<Route>(MockRoute());
     });
     
-    testWidgets("Test menu list shows up", (tester) async {
+    testWidgets("menu list shows up", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       expect(find.byType(Column), findsOneWidget);
     });
 
-    testWidgets("Test Menu displays all menu items", (tester) async {
-      final List<String> routTitles = AccountMenuScreen().routeTitles;
+    testWidgets("Menu displays all menu items", (tester) async {
+      final List<String> routeTitles = AccountMenuScreen().routeTitles;
       await screenBuilder.createScreen(tester: tester);
-      routTitles.forEach((title) => expect(find.text(title), findsOneWidget));
+      routeTitles.forEach((title) => expect(find.text(title), findsOneWidget));
     });
 
     testWidgets("Tapping menu buttton navigates to corresponding screen", (tester) async {

@@ -4,6 +4,7 @@ import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/tips_screen/widgets/widgets/employee_tip_finder/bloc/employee_tip_finder_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dashboard/theme/global_colors.dart';
 
 import '../../tip_card.dart';
 
@@ -40,16 +41,16 @@ class TipFinderList extends StatelessWidget {
   }
 
   Widget _emptyList({required BuildContext context, required EmployeeTipFinderState state}) {
-    if (state.loading) return _loading();
+    if (state.loading) return _loading(context: context);
 
     return state.currentFirstName.isNotEmpty || state.currentLastName.isNotEmpty
       ? _noTipsFound(context: context)
-      : Container();
+      : Container(key: Key("emptyTipFinderListKey"));
   }
 
-  Widget _loading() {
+  Widget _loading({required BuildContext context}) {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction),
     );
   }
 
@@ -61,6 +62,7 @@ class TipFinderList extends StatelessWidget {
 
   Widget _tipsList({required EmployeeTipFinderState state}) {
     return ListView.builder(
+      key: Key("employeeTipsListKey"),
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => TipCard(employeeTip: state.tips[index]),

@@ -1,11 +1,13 @@
-import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/providers/customer_provider.dart';
-import 'package:dashboard/providers/refund_provider.dart';
-import 'package:dashboard/providers/transaction_provider.dart';
+import 'package:dashboard/models/business/pos_account.dart';
 import 'package:dashboard/repositories/customer_repository.dart';
 import 'package:dashboard/repositories/refund_repository.dart';
+import 'package:dashboard/repositories/tips_repository.dart';
 import 'package:dashboard/repositories/transaction_repository.dart';
+import 'package:dashboard/repositories/unassigned_transaction_repository.dart';
+import 'package:dashboard/resources/helpers/font_size_adapter.dart';
+import 'package:dashboard/resources/helpers/size_config.dart';
+import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/account_menu_screen/account_menu_screen.dart';
 import 'package:dashboard/screens/customers_screen/customers_screen.dart';
 import 'package:dashboard/screens/historic_refunds_screen/historic_refunds_screen.dart';
@@ -14,16 +16,37 @@ import 'package:dashboard/screens/quick_dashboard_screen/quick_dashboard_screen.
 import 'package:dashboard/screens/sales_screen/sales_screen.dart';
 import 'package:dashboard/screens/tips_screen/tips_screen.dart';
 import 'package:dashboard/screens/unassigned_transactions_screen/unassigned_transactions_screen.dart';
+import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:dashboard/theme/global_colors.dart';
 
-import 'models/app_tab.dart';
 import '../cubit/home_screen_cubit.dart';
+import 'models/app_tab.dart';
 
 class HomeScreenBody extends StatefulWidget {
-  
+  final TransactionRepository _transactionRepository;
+  final RefundRepository _refundRepository;
+  final TipsRepository _tipsRepository;
+  final UnassignedTransactionRepository _unassignedTransactionRepository;
+  final CustomerRepository _customerRepository;
+  final PosAccount _posAccount;
+
+  const HomeScreenBody({
+    required TransactionRepository transactionRepository,
+    required RefundRepository refundRepository,
+    required TipsRepository tipsRepository,
+    required UnassignedTransactionRepository unassignedTransactionRepository,
+    required CustomerRepository customerRepository,
+    required PosAccount posAccount
+  })
+    : _transactionRepository = transactionRepository,
+      _refundRepository = refundRepository,
+      _tipsRepository = tipsRepository,
+      _unassignedTransactionRepository = unassignedTransactionRepository,
+      _customerRepository = customerRepository,
+      _posAccount = posAccount;
+
   @override
   State<StatefulWidget> createState() => _HomeScreenBodyState();
 }
@@ -39,45 +62,53 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
     _tabs = [
       AppTab(
         child: QuickDashboardScreen(
-          transactionRepository: TransactionRepository(transactionProvider: TransactionProvider()),
-          refundRepository: RefundRepository(refundProvider: RefundProvider()),
-          takesTips: BlocProvider.of<BusinessBloc>(context).business.posAccount.takesTips,
+          transactionRepository: widget._transactionRepository,
+          refundRepository: widget._refundRepository,
+          takesTips: widget._posAccount.takesTips,
         ), 
         title: "Home", 
         icon: Icons.home
       ),
       AppTab(
         child: HistoricTransactionsScreen(
-          transactionRepository: TransactionRepository(transactionProvider: TransactionProvider())
+          transactionRepository: widget._transactionRepository
         ),
         title: "Transactions", 
         icon: Icons.receipt
       ),
       AppTab(
         child: HistoricRefundsScreen(
-          refundRepository: RefundRepository(refundProvider: RefundProvider())
+          refundRepository: widget._refundRepository
         ),
         title: "Refunds",
         icon: Icons.receipt_long
       ),
       AppTab(
-        child: TipsScreen(), 
+        child: TipsScreen(
+          tipsRepository: widget._tipsRepository,
+          transactionRepository: widget._transactionRepository,
+        ), 
         title: "Tips Center",
         icon: Icons.volunteer_activism
       ),
       AppTab(
-        child: SalesScreen(), 
+        child: SalesScreen(
+          transactionRepository: widget._transactionRepository,
+        ), 
         title: "Sales Center",
         icon: Icons.payments
       ),
       AppTab(
-        child: UnassignedTransactionsScreen(),
-        title: "Unassigned Transactions",
+        child: UnassignedTransactionsScreen(
+          unassignedTransactionRepository: widget._unassignedTransactionRepository,
+          posAccount: widget._posAccount,
+        ),
+        title: "Unmatched Bills",
         icon: Icons.person_search
       ),
       AppTab(
         child: CustomersScreen(
-          customerRepository: CustomerRepository(customerProvider: CustomerProvider())
+          customerRepository: widget._customerRepository
         ),
         title: "Customers",
         icon: Icons.person_pin
@@ -102,12 +133,15 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
           _body()
         ],
       ),
-      drawer: Padding(
-        padding: EdgeInsets.only(top: 56),
-        child: Drawer(
-          child: _drawerItems(drawerOpen: true),
-        ),
-      ),
+      drawer: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
+        ? Padding(
+            padding: EdgeInsets.only(top: 56),
+            child: Drawer(
+              key: Key("menuDrawerKey"),
+              child: _drawerItems(drawerOpen: true),
+            ),
+          )
+        : null
     );
   }
 
@@ -178,18 +212,19 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              padding: EdgeInsets.all(22),
+              padding: EdgeInsets.all(15),
               child: Row(
                 children: [
-                  Icon(tab.icon, color: Theme.of(context).colorScheme.callToAction),
-                  SizedBox(width: 8),
-                  Text(
-                    tab.title,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Theme.of(context).colorScheme.callToAction
-                    ),
-                    
+                  Icon(
+                    tab.icon,
+                    color: Theme.of(context).colorScheme.callToAction,
+                    size: FontSizeAdapter.setSize(size: 3, context: context),
+                  ),
+                  SizedBox(width: SizeConfig.getWidth(1)),
+                  Text5(
+                    text: tab.title,
+                    color: Theme.of(context).colorScheme.callToAction,
+                    context: context,
                   )
                 ],
               ),

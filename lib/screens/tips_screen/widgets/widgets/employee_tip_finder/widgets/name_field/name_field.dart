@@ -83,6 +83,7 @@ class _NameFieldState extends State<NameField> {
     return BlocBuilder<NameFieldBloc, NameFieldState>(
       builder: (context, state) {
         return CupertinoTextField(
+          key: Key("firstNameTextFieldKey"),
           decoration: CupertinoBoxDecoration.validator(isValid: (state.isFirstNameValid || _firstNameController.text.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,
@@ -106,6 +107,7 @@ class _NameFieldState extends State<NameField> {
     return BlocBuilder<NameFieldBloc, NameFieldState>(
       builder: (context, state) {
         return CupertinoTextField(
+          key: Key("lastNameTextFieldKey"),
           decoration: CupertinoBoxDecoration.validator(isValid: (state.isLastNameValid || _lastNameController.text.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,

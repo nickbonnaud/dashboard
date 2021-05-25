@@ -52,7 +52,7 @@ void main() {
       expect(find.byType(RegisterForm), findsOneWidget);
     });
 
-    testWidgets("Register Form creates Email TexField", (tester) async {
+    testWidgets("Register Form creates Email TextField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       expect(find.byKey(Key("emailTextFieldKey")), findsOneWidget);
     });
@@ -66,7 +66,7 @@ void main() {
       expect(find.text(email), findsOneWidget);
     });
 
-    testWidgets("Email TextField shows error on invalid error", (tester) async {
+    testWidgets("Email TextField shows error on invalid input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       String email = "not_an_!mail.com";
       expect(find.text("Invalid email"), findsNothing);
@@ -75,7 +75,7 @@ void main() {
       expect(find.text("Invalid email"), findsOneWidget);
     });
 
-    testWidgets("Register Form creates Password TexField", (tester) async {
+    testWidgets("Register Form creates Password TextField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       expect(find.byKey(Key("passwordTextFieldKey")), findsOneWidget);
     });
@@ -98,7 +98,7 @@ void main() {
       expect(find.text('min: 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character'), findsOneWidget);
     });
 
-    testWidgets("Register Form creates PasswordConfirmation TexField", (tester) async {
+    testWidgets("Register Form creates PasswordConfirmation TextField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       expect(find.byKey(Key("passwordConfirmationTextFieldKey")), findsOneWidget);
     });

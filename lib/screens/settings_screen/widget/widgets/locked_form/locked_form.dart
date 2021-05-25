@@ -29,17 +29,19 @@ class _LockedFormState extends State<LockedForm> {
   
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        BoldText3(text: 'Account Settings', context: context),
-        Text5(text: "Current password required to update email or password", context: context),
-        SizedBox(height: SizeConfig.getHeight(5)),
-        _unlockPasswordField(),
-        SizedBox(height: SizeConfig.getHeight(4)),
-        _errorMessage(),
-        _submitButton()
-      ],
+    return Card(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          BoldText4(text: 'Account Settings', context: context),
+          Text5(text: "Current password required to update email or password", context: context),
+          SizedBox(height: SizeConfig.getHeight(5)),
+          _unlockPasswordField(),
+          SizedBox(height: SizeConfig.getHeight(4)),
+          _errorMessage(),
+          _unlockButton()
+        ],
+      ),
     );
   }
 
@@ -50,38 +52,42 @@ class _LockedFormState extends State<LockedForm> {
   }
 
   Widget _unlockPasswordField() {
-    return BlocBuilder<LockedFormBloc, LockedFormState>(
-      builder: (context, state) {
-        return TextFormField(
-          textCapitalization: TextCapitalization.none,
-          decoration: InputDecoration(
-            labelText: "Current Password",
-            labelStyle: TextStyle(
-              fontWeight: FontWeight.w400,
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(10)),
+      child: BlocBuilder<LockedFormBloc, LockedFormState>(
+        builder: (context, state) {
+          return TextFormField(
+            key: Key("unlockPasswordTextFieldKey"),
+            textCapitalization: TextCapitalization.none,
+            decoration: InputDecoration(
+              labelText: "Current Password",
+              labelStyle: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: FontSizeAdapter.setSize(size: 3, context: context)
+              ),
+            ),
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
               fontSize: FontSizeAdapter.setSize(size: 3, context: context)
             ),
-          ),
-          style: TextStyle(
-            fontWeight: FontWeight.w700,
-            fontSize: FontSizeAdapter.setSize(size: 3, context: context)
-          ),
-          controller: _controller,
-          focusNode: _focusNode,
-          keyboardType: TextInputType.visiblePassword,
-          textInputAction: TextInputAction.done,
-          autocorrect: false,
-          onFieldSubmitted: (_) {
-            _focusNode.unfocus();
-            _submitPassword(state: state);
-          },
-          validator: (_) => !state.isPasswordValid && _controller.text.isNotEmpty
-            ? "Invalid Password"
-            : null,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          obscureText: true,
-          enableSuggestions: false,
-        );
-      }
+            controller: _controller,
+            focusNode: _focusNode,
+            keyboardType: TextInputType.visiblePassword,
+            textInputAction: TextInputAction.done,
+            autocorrect: false,
+            onFieldSubmitted: (_) {
+              _focusNode.unfocus();
+              _submitPassword(state: state);
+            },
+            validator: (_) => !state.isPasswordValid && _controller.text.isNotEmpty
+              ? "Invalid Password"
+              : null,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            obscureText: true,
+            enableSuggestions: false,
+          );
+        }
+      ),
     );
   }
 
@@ -101,17 +107,18 @@ class _LockedFormState extends State<LockedForm> {
     );
   }
 
-  Widget _submitButton() {
+  Widget _unlockButton() {
     return Row(
       children: [
-        SizedBox(width: SizeConfig.getWidth(10)),
+        SizedBox(width: SizeConfig.getWidth(15)),
         Expanded(
           child: BlocBuilder<LockedFormBloc, LockedFormState>(
             builder: (context, state) {
               return Shaker(
                 control: state.errorButtonControl,
-                onAnimationComplete: _resetForm,
+                onAnimationComplete: () => _resetForm(),
                 child: ElevatedButton(
+                  key: Key("unlockButtonKey"),
                   onPressed: _passwordValid(state: state)
                     ? () => _submitPassword(state: state)
                     : null,
@@ -121,7 +128,7 @@ class _LockedFormState extends State<LockedForm> {
             },
           )
         ),
-        SizedBox(width: SizeConfig.getWidth(10)),
+        SizedBox(width: SizeConfig.getWidth(15)),
       ],
     );
   }

@@ -1,4 +1,7 @@
 import 'package:dashboard/global_widgets/shaker.dart';
+import 'package:dashboard/providers/authentication_provider.dart';
+import 'package:dashboard/repositories/authentication_repository.dart';
+import 'package:dashboard/repositories/token_repository.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
@@ -245,7 +248,9 @@ class _LoginFormState extends State<LoginForm> {
   void _goToResetScreen() {
     Navigator.of(context).push(MaterialPageRoute<RequestResetPasswordScreen>(
       fullscreenDialog: true,
-      builder: (_) => RequestResetPasswordScreen()
+      builder: (_) => RequestResetPasswordScreen(
+        authenticationRepository: AuthenticationRepository(authenticationProvider: AuthenticationProvider(), tokenRepository: TokenRepository()),
+      )
     ));
   }
 

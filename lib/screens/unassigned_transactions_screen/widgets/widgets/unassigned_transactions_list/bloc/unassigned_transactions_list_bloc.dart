@@ -65,7 +65,8 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
   }
 
   Stream<UnassignedTransactionsListState> _mapFetchMoreToState() async* {
-    if (!state.loading && !state.hasReachedEnd) {
+    if (!state.loading && !state.paginating && !state.hasReachedEnd) {
+      yield state.update(paginating: true);
       try {
         final PaginateDataHolder paginateData = await _unassignedTransactionRepository.paginate(url: state.nextUrl!);
         yield* _handleSuccess(paginateData: paginateData);
@@ -86,6 +87,7 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
   Stream<UnassignedTransactionsListState> _handleSuccess({required PaginateDataHolder paginateData}) async* {
     yield state.update(
       loading: false,
+      paginating: false,
       transactions: state.transactions + (paginateData.data as List<UnassignedTransaction>),
       nextUrl: paginateData.next,
       hasReachedEnd: paginateData.next == null
@@ -103,7 +105,7 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
   }
 
   Stream<UnassignedTransactionsListState> _handleError({required String error}) async* {
-    yield state.update(loading: false, errorMessage: error); 
+    yield state.update(loading: false, paginating: false, errorMessage: error); 
   }
 
   void _onDateRangeChanged(DateTimeRange? dateRange) {

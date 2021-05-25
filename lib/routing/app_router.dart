@@ -4,6 +4,7 @@ import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/providers/authentication_provider.dart';
 import 'package:dashboard/providers/bank_provider.dart';
 import 'package:dashboard/providers/business_account_provider.dart';
+import 'package:dashboard/providers/business_provider.dart';
 import 'package:dashboard/providers/geo_account_provider.dart';
 import 'package:dashboard/providers/hours_provider.dart';
 import 'package:dashboard/providers/message_provider.dart';
@@ -13,6 +14,7 @@ import 'package:dashboard/providers/profile_provider.dart';
 import 'package:dashboard/repositories/authentication_repository.dart';
 import 'package:dashboard/repositories/bank_repository.dart';
 import 'package:dashboard/repositories/business_account_repository.dart';
+import 'package:dashboard/repositories/business_repository.dart';
 import 'package:dashboard/repositories/geo_account_repository.dart';
 import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:dashboard/repositories/message_repository.dart';
@@ -155,13 +157,22 @@ class AppRouter {
         name: _routeData.route);
         break;
       case Routes.settings:
-        route = _createRoute(screen: SettingsScreen(), name: _routeData.route);
+        route = _createRoute(screen: SettingsScreen(
+          authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
+          businessBloc: BlocProvider.of<BusinessBloc>(context),
+          businessRepository: BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository()),
+        ),
+        name: _routeData.route);
         break;
       case Routes.messages:
         route = _createRoute(screen: MessageListScreen(messageRepository: MessageRepository(messageProvider: MessageProvider()),), name: _routeData.route);
         break;
       case Routes.resetPassword:
-        route = _createRoute(screen: ResetPasswordScreen(token: _routeData['token']), name: _routeData.route);
+        route = _createRoute(screen: ResetPasswordScreen(
+          authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
+          token: _routeData['token']
+        ), 
+        name: _routeData.route);
         break;
       default:
         route = _createRoute(screen: App(), name: '/');

@@ -1,4 +1,14 @@
 import 'package:dashboard/providers/authentication_provider.dart';
+import 'package:dashboard/providers/customer_provider.dart';
+import 'package:dashboard/providers/refund_provider.dart';
+import 'package:dashboard/providers/tips_provider.dart';
+import 'package:dashboard/providers/transaction_provider.dart';
+import 'package:dashboard/providers/unassigned_transaction_provider.dart';
+import 'package:dashboard/repositories/customer_repository.dart';
+import 'package:dashboard/repositories/refund_repository.dart';
+import 'package:dashboard/repositories/tips_repository.dart';
+import 'package:dashboard/repositories/transaction_repository.dart';
+import 'package:dashboard/repositories/unassigned_transaction_repository.dart';
 import 'package:dashboard/routing/routes.dart';
 import 'package:dashboard/screens/home_screen/home_screen.dart';
 import 'package:dashboard/screens/login_screen/login_screen.dart';
@@ -53,7 +63,14 @@ class App extends StatelessWidget {
         if (state is BusinessLoaded) {
           return state.business.accounts.accountStatus.code < 120
             ? OnboardScreen(accountStatus: state.business.accounts.accountStatus)
-            : HomeScreen();
+            : HomeScreen(
+              transactionRepository: TransactionRepository(transactionProvider: TransactionProvider()),
+              refundRepository: RefundRepository(refundProvider: RefundProvider()),
+              tipsRepository: TipsRepository(tipsProvider: TipsProvider()),
+              unassignedTransactionRepository: UnassignedTransactionRepository(unassignedTransactionProvider: UnassignedTransactionProvider()),
+              customerRepository: CustomerRepository(customerProvider: CustomerProvider()),
+              posAccount: state.business.posAccount
+            );
         }
         return Container();
       }

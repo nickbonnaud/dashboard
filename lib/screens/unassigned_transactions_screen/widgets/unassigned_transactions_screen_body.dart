@@ -1,10 +1,10 @@
-import 'package:dashboard/providers/unassigned_transaction_provider.dart';
+import 'package:dashboard/models/business/pos_account.dart';
 import 'package:dashboard/repositories/unassigned_transaction_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
+import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
-import 'package:dashboard/theme/global_colors.dart';
 
 import '../cubit/date_range_cubit.dart';
 import 'widgets/unassigned_transactions_header.dart';
@@ -12,7 +12,15 @@ import 'widgets/unassigned_transactions_list/bloc/unassigned_transactions_list_b
 import 'widgets/unassigned_transactions_list/unassigned_transactions_list.dart';
 
 class UnassignedTransactionsScreenBody extends StatelessWidget {
-  final UnassignedTransactionRepository _unassignedTransactionRepository = UnassignedTransactionRepository(unassignedTransactionProvider: UnassignedTransactionProvider());
+  final UnassignedTransactionRepository _unassignedTransactionRepository;
+  final PosAccount _posAccount;
+
+  const UnassignedTransactionsScreenBody({
+    required UnassignedTransactionRepository unassignedTransactionRepository,
+    required PosAccount posAccount
+  })
+    : _unassignedTransactionRepository = unassignedTransactionRepository,
+      _posAccount = posAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +45,7 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: SizeConfig.getHeight(5)),
-          UnassignedTransactionsHeader(),
+          UnassignedTransactionsHeader(posAccount: _posAccount),
           SizedBox(height: SizeConfig.getHeight(2)),
           Expanded(
             child: BlocProvider<UnassignedTransactionsListBloc>(
@@ -58,6 +66,7 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
+        key: Key("dateRangePickerButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
         child: Icon(Icons.date_range),
         onPressed: () => _showDateRangePicker(context: context),
@@ -83,6 +92,7 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
+        key: Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

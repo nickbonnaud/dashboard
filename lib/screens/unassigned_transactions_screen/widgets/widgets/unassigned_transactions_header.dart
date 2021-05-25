@@ -1,7 +1,6 @@
-import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/pos_account.dart';
 import 'package:dashboard/resources/helpers/date_formatter.dart';
-import 'package:dashboard/resources/helpers/font_size_adapter.dart';
+import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/date_range_cubit.dart';
 
 class UnassignedTransactionsHeader extends StatelessWidget {
+  final PosAccount _posAccount;
+
+  const UnassignedTransactionsHeader({required PosAccount posAccount})
+    : _posAccount = posAccount;
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +29,9 @@ class UnassignedTransactionsHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text3(text: "Unassigned Transactions", context: context),
+        Text3(text: "Unmatched Bills", context: context),
         IconButton(
+          key: Key("showInfoButtonKey"),
           icon: Icon(Icons.info),
           onPressed: () => _showInfoDialog(context: context),
           color: Theme.of(context).colorScheme.info,
@@ -38,17 +42,19 @@ class UnassignedTransactionsHeader extends StatelessWidget {
 
   Widget _dateRangeHeader({required BuildContext context, required DateTimeRange dateRange}) {
     return Row(
+      key: Key("dateRangeHeader"),
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text4(
+        Text5(
           text: "${DateFormatter.toStringDate(date: dateRange.start)} - ${DateFormatter.toStringDate(date: dateRange.end)}",
           context: context
         ),
         IconButton(
+          key: Key("clearDatesButtonKey"),
           icon: Icon(
             Icons.clear, 
             color: Theme.of(context).colorScheme.danger,
-            size: FontSizeAdapter.setSize(size: 3, context: context),
+            size: SizeConfig.getWidth(3),
           ),
           onPressed: () => context.read<DateRangeCubit>().dateRangeChanged(dateRange: null)
         )
@@ -57,24 +63,25 @@ class UnassignedTransactionsHeader extends StatelessWidget {
   }
 
   void _showInfoDialog({required BuildContext context}) {
-    final PosAccount posAccount = BlocProvider.of<BusinessBloc>(context).business.posAccount;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("What are Unassigned Transactions?"),
+        key: Key("infoDialogKey"),
+        title: Text("What are Unmatched Bills?"),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
               Text("These are open or unpaid transactions not currently assigned to a Nova customer."),
               Text("The Nova Smart Pay Algorithm may still assign it to a Nova customer."),
-              Text("Or as a business, you can manually assign the transaction to the customer in ${posAccount.typeToString}."),
-              Text("Conversely, a Nova customer can also claim an Open transaction."),
+              Text("Or, as a business you can manually assign the bill to a customer in ${_posAccount.typeToString}."),
+              Text("Conversely, a Nova customer can also claim an unpaid bill."),
             ]
           ),
         ),
         actions: [
           Center(
             child: ElevatedButton(
+              key: Key("dismissInfoDialogKey"),
               child: Text(
                 "Close",
                 style: TextStyle(

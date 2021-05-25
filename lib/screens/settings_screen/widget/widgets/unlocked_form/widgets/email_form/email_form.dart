@@ -12,9 +12,11 @@ import 'bloc/email_form_bloc.dart';
 
 class EmailForm extends StatefulWidget {
   final String _email;
+  final BusinessBloc _businessBloc;
 
-  const EmailForm({required String email})
-    : _email = email;
+  const EmailForm({required String email, required BusinessBloc businessBloc})
+    : _email = email,
+      _businessBloc = businessBloc;
   
   @override
   State<StatefulWidget> createState() => _EmailFormState();
@@ -45,7 +47,7 @@ class _EmailFormState extends State<EmailForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BoldText3(text: "Change Email", context: context),
+          BoldText4(text: "Change Email", context: context),
           SizedBox(height: SizeConfig.getHeight(5)),
           _emailField(),
           SizedBox(height: SizeConfig.getHeight(4)),
@@ -66,6 +68,7 @@ class _EmailFormState extends State<EmailForm> {
     return BlocBuilder<EmailFormBloc, EmailFormState>(
       builder: (context, state) {
         return TextFormField(
+          key: Key("emailTextFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: "New Email",
@@ -122,8 +125,9 @@ class _EmailFormState extends State<EmailForm> {
             builder: (context, state) {
               return Shaker(
                 control: state.errorButtonControl,
-                onAnimationComplete: _resetForm,
+                onAnimationComplete: () => _resetForm(),
                 child: ElevatedButton(
+                  key: Key("emailSubmitButtonKey"),
                   onPressed: _emailValid(state: state)
                     ? () => _submitEmail(state: state)
                     : null,
@@ -159,7 +163,7 @@ class _EmailFormState extends State<EmailForm> {
     if (_emailValid(state: state)) {
       _emailFormBloc.add(Submitted(
         email: _controller.text,
-        identifier: BlocProvider.of<BusinessBloc>(context).business.identifier
+        identifier: widget._businessBloc.business.identifier
       ));
     }
   }

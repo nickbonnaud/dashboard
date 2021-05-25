@@ -5,6 +5,7 @@ class UnassignedTransactionsListState extends Equatable {
   final String? nextUrl;
   final bool hasReachedEnd;
   final bool loading;
+  final bool paginating;
   final String errorMessage;
   final DateTimeRange? currentDateRange;
 
@@ -13,6 +14,7 @@ class UnassignedTransactionsListState extends Equatable {
     this.nextUrl,
     required this.hasReachedEnd,
     required this.loading,
+    required this.paginating,
     required this.errorMessage,
     this.currentDateRange
   });
@@ -23,6 +25,7 @@ class UnassignedTransactionsListState extends Equatable {
       nextUrl: null,
       hasReachedEnd: false,
       loading: false,
+      paginating: false,
       errorMessage: '',
       currentDateRange: currentDateRange,
     );
@@ -33,6 +36,7 @@ class UnassignedTransactionsListState extends Equatable {
     String? nextUrl,
     bool? hasReachedEnd,
     bool? loading,
+    bool? paginating,
     String? errorMessage,
     DateTimeRange? currentDateRange,
     bool isDateReset = false
@@ -42,6 +46,7 @@ class UnassignedTransactionsListState extends Equatable {
       nextUrl: nextUrl,
       hasReachedEnd: hasReachedEnd,
       loading: loading,
+      paginating: paginating,
       errorMessage: errorMessage,
       currentDateRange: currentDateRange,
       isDateReset: isDateReset
@@ -53,6 +58,7 @@ class UnassignedTransactionsListState extends Equatable {
     String? nextUrl,
     bool? hasReachedEnd,
     bool? loading,
+    bool? paginating,
     String? errorMessage,
     DateTimeRange? currentDateRange,
     required bool isDateReset
@@ -62,6 +68,7 @@ class UnassignedTransactionsListState extends Equatable {
       nextUrl: hasReachedEnd != null && hasReachedEnd ? null :  nextUrl ?? this.nextUrl,
       hasReachedEnd: hasReachedEnd ?? this.hasReachedEnd,
       loading: loading ?? this.loading,
+      paginating: paginating ?? this.paginating,
       errorMessage: errorMessage ?? this.errorMessage,
       currentDateRange: isDateReset ? null : currentDateRange ?? this.currentDateRange,
     );
@@ -73,6 +80,7 @@ class UnassignedTransactionsListState extends Equatable {
     nextUrl,
     hasReachedEnd,
     loading,
+    paginating,
     errorMessage,
     currentDateRange,
   ];
@@ -83,6 +91,7 @@ class UnassignedTransactionsListState extends Equatable {
     nextUrl: $nextUrl,
     hasReachedEnd: $hasReachedEnd,
     loading: $loading,
+    paginating: $paginating
     errorMessage: $errorMessage,
     currentDateRange: $currentDateRange,
   }''';

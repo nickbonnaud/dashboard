@@ -1,15 +1,13 @@
-import 'package:dashboard/providers/tips_provider.dart';
-import 'package:dashboard/providers/transaction_provider.dart';
 import 'package:dashboard/repositories/tips_repository.dart';
 import 'package:dashboard/repositories/transaction_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/tips_screen/cubits/date_range_cubit.dart';
 import 'package:dashboard/screens/tips_screen/cubits/tips_screen_cubit.dart';
+import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:dashboard/theme/global_colors.dart';
 
 import 'widgets/employee_tip_finder/bloc/employee_tip_finder_bloc.dart';
 import 'widgets/employee_tip_finder/employee_tip_finder.dart';
@@ -20,8 +18,12 @@ import 'widgets/total_tips/bloc/total_tips_bloc.dart';
 import 'widgets/total_tips/total_tips.dart';
 
 class TipsScreenBody extends StatelessWidget {
-  final TipsRepository _tipsRepository = TipsRepository(tipsProvider: TipsProvider());
-  final TransactionRepository _transactionRepository = TransactionRepository(transactionProvider: TransactionProvider());
+  final TipsRepository _tipsRepository;
+  final TransactionRepository _transactionRepository;
+
+  const TipsScreenBody({required TipsRepository tipsRepository, required TransactionRepository transactionRepository})
+    : _tipsRepository = tipsRepository,
+      _transactionRepository = transactionRepository;
   
   @override
   Widget build(BuildContext context) {
@@ -74,18 +76,20 @@ class TipsScreenBody extends StatelessWidget {
                     rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(TABLET),
                     rowCrossAxisAlignment: CrossAxisAlignment.start,
                     columnCrossAxisAlignment: CrossAxisAlignment.center,
-                    columnMainAxisSize: MainAxisSize.min,
+                    columnMainAxisSize: MainAxisSize.max,
                     columnSpacing: SizeConfig.getHeight(1),
                     rowSpacing: SizeConfig.getWidth(1),
                     children: [
                       ResponsiveRowColumnItem(
                         rowFlex: 1,
                         rowFit: FlexFit.loose,
-                        child: Column(
-                          children: [
-                            TotalTips(),
-                            _employeeTipFinder(context: context, isListVisible: isListVisible)
-                          ],
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              TotalTips(),
+                              _employeeTipFinder(context: context, isListVisible: isListVisible)
+                            ],
+                          ),
                         )
                       ),
                       _tipsListItem(context: context, isListVisible: isListVisible)
@@ -138,6 +142,7 @@ class TipsScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
+        key: Key("changeDateButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
         child: Icon(Icons.date_range),
         onPressed: () => _showDateRangePicker(context: context),
@@ -152,6 +157,7 @@ class TipsScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       left: SizeConfig.getHeight(4),
       child: FloatingActionButton(
+        key: Key("toggleSearchButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
         child: BlocBuilder<TipsScreenCubit, bool>(
           builder: (context, isListVisible) => isListVisible
@@ -181,6 +187,7 @@ class TipsScreenBody extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
+        key: Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

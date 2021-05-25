@@ -1,3 +1,5 @@
+import 'package:dashboard/repositories/tips_repository.dart';
+import 'package:dashboard/repositories/transaction_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +9,13 @@ import 'cubits/tips_screen_cubit.dart';
 import 'widgets/tips_screen_body.dart';
 
 class TipsScreen extends StatefulWidget {
-
+  final TipsRepository _tipsRepository;
+  final TransactionRepository _transactionRepository;
+  
+  const TipsScreen({required TipsRepository tipsRepository, required TransactionRepository transactionRepository})
+    : _tipsRepository = tipsRepository,
+      _transactionRepository = transactionRepository;
+  
   @override
   State<TipsScreen> createState() => _TipsScreenState();
 }
@@ -31,7 +39,7 @@ class _TipsScreenState extends State<TipsScreen> with AutomaticKeepAliveClientMi
             create: (_) => TipsScreenCubit(),
           ),
         ], 
-        child: TipsScreenBody()
+        child: TipsScreenBody(tipsRepository: widget._tipsRepository, transactionRepository: widget._transactionRepository)
       )
     );
   }

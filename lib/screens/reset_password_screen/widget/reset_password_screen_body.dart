@@ -63,7 +63,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
   Widget _noTokenPresent() {
     return Center(
       child: Text4(
-        text: "Reset Password Token is Invalid",
+        text: "Reset Password Token is Invalid.",
         context: context,
         color: Theme.of(context).colorScheme.danger,
       ),
@@ -72,6 +72,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
 
   Widget _passwordResetForm() {
     return Form(
+      key: Key("passwordResetFormKey"),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -102,6 +103,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
     return BlocBuilder<ResetPasswordScreenBloc, ResetPasswordScreenState>(
       builder: (context, state) {
         return TextFormField(
+          key: Key("passwordTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Password',
             labelStyle: TextStyle(
@@ -136,6 +138,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
     return BlocBuilder<ResetPasswordScreenBloc, ResetPasswordScreenState>(
       builder: (context, state) {
         return TextFormField(
+          key: Key("passwordConfirmationTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Confirm Password',
             labelStyle: TextStyle(
@@ -187,8 +190,9 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
       builder: (context, state) {
         return Shaker(
           control: state.errorButtonControl,
-          onAnimationComplete: _resetForm,
+          onAnimationComplete: () =>  _resetForm(),
           child: ElevatedButton(
+            key: Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
             child: _buttonChild(state: state),
           )

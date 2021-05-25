@@ -45,11 +45,12 @@ class _UnassignedTransactionsListState extends State<UnassignedTransactionsList>
 
   Widget _transactions({required UnassignedTransactionsListState state}) {
     return ListView.builder(
+      key: Key("unassignedTransactionsListKey"),
       shrinkWrap: true,
       controller: _scrollController,
       itemBuilder: (context, index) => index >= state.transactions.length
         ? BottomLoader()
-        : UnassignedTransactionWidget(unassignedTransaction: state.transactions[index]),
+        : UnassignedTransactionWidget(unassignedTransaction: state.transactions[index], index: index),
       itemCount: state.hasReachedEnd
         ? state.transactions.length
         : state.transactions.length + 1,
@@ -83,7 +84,7 @@ class _UnassignedTransactionsListState extends State<UnassignedTransactionsList>
     final double maxScroll = _scrollController.position.maxScrollExtent;
     final double currentScroll = _scrollController.position.pixels;
 
-    if (maxScroll - currentScroll <= _scrollThreshold) {
+    if (!_listBloc.state.paginating && maxScroll - currentScroll <= _scrollThreshold) {
       _listBloc.add(FetchMore());
     }
   }

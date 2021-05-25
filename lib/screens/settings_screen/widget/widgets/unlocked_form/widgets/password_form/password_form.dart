@@ -11,6 +11,10 @@ import 'package:dashboard/theme/global_colors.dart';
 import 'bloc/password_form_bloc.dart';
 
 class PasswordForm extends StatefulWidget {
+  final BusinessBloc _businessBloc;
+
+  const PasswordForm({required BusinessBloc businessBloc})
+    : _businessBloc = businessBloc;
 
   @override
   State<PasswordForm> createState() => _PasswordFormState();
@@ -44,7 +48,7 @@ class _PasswordFormState extends State<PasswordForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BoldText3(text: "Change Password", context: context),
+          BoldText4(text: "Change Password", context: context),
           SizedBox(height: SizeConfig.getHeight(5)),
           _passwordField(),
           SizedBox(height: SizeConfig.getHeight(2)),
@@ -68,6 +72,7 @@ class _PasswordFormState extends State<PasswordForm> {
     return BlocBuilder<PasswordFormBloc, PasswordFormState>(
       builder: (context, state) {
         return TextFormField(
+          key: Key("passwordTextFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: "New Password",
@@ -104,6 +109,7 @@ class _PasswordFormState extends State<PasswordForm> {
     return BlocBuilder<PasswordFormBloc, PasswordFormState>(
       builder: (context, state) {
         return TextFormField(
+          key: Key("passwordConfirmationTextFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: "Confirm Password",
@@ -161,8 +167,9 @@ class _PasswordFormState extends State<PasswordForm> {
             builder: (context, state) {
               return Shaker(
                 control: state.errorButtonControl,
-                onAnimationComplete: _resetForm,
+                onAnimationComplete: () => _resetForm(),
                 child: ElevatedButton(
+                  key: Key("submitPasswordButtonKey"),
                   onPressed: _formValid(state: state)
                     ? () => _submitPassword(state: state)
                     : null,
@@ -208,7 +215,7 @@ class _PasswordFormState extends State<PasswordForm> {
       _passwordFormBloc.add(Submitted(
         password: _passwordController.text,
         passwordConfirmation: _passwordConfirmationController.text,
-        identifier: BlocProvider.of<BusinessBloc>(context).business.identifier
+        identifier: widget._businessBloc.business.identifier
       ));
     }
   }

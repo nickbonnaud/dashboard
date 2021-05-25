@@ -1,4 +1,5 @@
 import 'package:dashboard/resources/helpers/currency.dart';
+import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,6 +11,7 @@ class TotalTips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      key: Key("totalTipsCardKey"),
       elevation: 2,
       child: Container(
         padding: EdgeInsets.all(22),
@@ -22,28 +24,18 @@ class TotalTips extends StatelessWidget {
               children: [
                 Icon(
                   Icons.volunteer_activism,
-                  size: 36,
+                  size: FontSizeAdapter.setSize(size: 4, context: context),
                   color: Colors.white,
                 ),
-                Text(
-                  'Total Tips',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white
-                  ),
-                )
+                Text5(text: 'Total Tips', context: context, color: Colors.white)
               ],
             ),
             BlocBuilder<TotalTipsBloc, TotalTipsState>(
               builder: (context, state) {
                 if (state is Loading || state is TotalTipsInitial) return CircularProgressIndicator();
-                if (state is FetchTotalTipsFailed) return _error(state: state);
+                if (state is FetchTotalTipsFailed) return _error();
                 
-                return Text4(
-                  text: Currency.create(cents: (state as TotalTipsLoaded).totalTips), 
-                  context: context,
-                  color: Colors.white,
-                );
+                return _amount(total: (state as TotalTipsLoaded).totalTips);
               }
             )
           ],
@@ -52,14 +44,31 @@ class TotalTips extends StatelessWidget {
     );
   }
 
-  Widget _error({required FetchTotalTipsFailed state}) {
-    return Text(
-      state.error,
-      style: TextStyle(
-        fontSize: 34,
-        color: Colors.white,
-        fontWeight: FontWeight.bold
-      ),
+  Widget _error() {
+    return Flexible(
+      child: FittedBox(
+        child: Text(
+          "Error Loading!",
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.white,
+          ),
+        ),
+      )
+    );
+  }
+
+  Widget _amount({required int total}) {
+    return Flexible(
+      child: FittedBox(
+        child: Text(
+          Currency.create(cents: total),
+          style: TextStyle(
+            fontSize: 25,
+            color: Colors.white
+          ),
+        ),
+      )
     );
   }
 }

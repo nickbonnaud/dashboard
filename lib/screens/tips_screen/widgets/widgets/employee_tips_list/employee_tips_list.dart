@@ -3,6 +3,7 @@ import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:dashboard/theme/global_colors.dart';
 
 import '../tip_card.dart';
 import 'bloc/employee_tips_list_bloc.dart';
@@ -59,7 +60,7 @@ class _EmployeeTipsListState extends State<EmployeeTipsList> {
 
   Widget _loading() {
     return Center(
-      child: CircularProgressIndicator(),
+      child: CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction),
     );
   }
 
@@ -71,6 +72,7 @@ class _EmployeeTipsListState extends State<EmployeeTipsList> {
 
   Widget _tipsList({required EmployeeTipsListState state}) {
     return ListView.builder(
+      key: Key("tipsListKey"),
       shrinkWrap: true,
       controller: _scrollController,
       itemBuilder: (context, index) => index >= state.tips.length

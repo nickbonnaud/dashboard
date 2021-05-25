@@ -1,11 +1,10 @@
-import 'package:dashboard/providers/transaction_provider.dart';
 import 'package:dashboard/repositories/transaction_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/screens/sales_screen/cubit/date_range_cubit.dart';
+import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
-import 'package:dashboard/theme/global_colors.dart';
 
 import 'widgets/net_sales/bloc/net_sales_bloc.dart';
 import 'widgets/net_sales/net_sales.dart';
@@ -18,7 +17,10 @@ import 'widgets/total_tips/bloc/total_tips_bloc.dart';
 import 'widgets/total_tips/total_tips.dart';
 
 class SalesScreenBody extends StatelessWidget {
-  final TransactionRepository _transactionRepository = TransactionRepository(transactionProvider: TransactionProvider());
+  final TransactionRepository _transactionRepository;
+
+  const SalesScreenBody({required TransactionRepository transactionRepository})
+    : _transactionRepository = transactionRepository;
   
   @override
   Widget build(BuildContext context) {
@@ -133,6 +135,7 @@ class SalesScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
+        key: Key("dateRangePickerButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
         child: Icon(Icons.date_range),
         onPressed: () => _showDateRangePicker(context: context),
@@ -158,6 +161,7 @@ class SalesScreenBody extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
+        key: Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

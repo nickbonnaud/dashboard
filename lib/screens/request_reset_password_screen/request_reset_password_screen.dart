@@ -1,6 +1,4 @@
-import 'package:dashboard/providers/authentication_provider.dart';
 import 'package:dashboard/repositories/authentication_repository.dart';
-import 'package:dashboard/repositories/token_repository.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +9,10 @@ import 'bloc/request_reset_password_screen_bloc.dart';
 import 'widgets/request_reset_password_screen_body.dart';
 
 class RequestResetPasswordScreen extends StatelessWidget {
-  final AuthenticationRepository _authenticationRepository = AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider());
+  final AuthenticationRepository _authenticationRepository;
+
+  const RequestResetPasswordScreen({required AuthenticationRepository authenticationRepository})
+    : _authenticationRepository = authenticationRepository;
   
   @override
   Widget build(BuildContext context) {

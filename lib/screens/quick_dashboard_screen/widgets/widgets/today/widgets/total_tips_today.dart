@@ -1,6 +1,5 @@
 import 'package:dashboard/resources/helpers/currency.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
-import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/quick_dashboard_screen/blocs/today/total_tips_today_bloc/total_tips_today_bloc.dart';
 import 'package:flutter/material.dart';

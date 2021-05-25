@@ -74,6 +74,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
     return BlocBuilder<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(
       builder: (context, state) {
         return TextFormField(
+          key: Key("emailTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Email',
             labelStyle: TextStyle(
@@ -123,8 +124,9 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
       builder: (context, state) {
         return Shaker(
           control: state.errorButtonControl,
-          onAnimationComplete: _resetForm,
+          onAnimationComplete: () => _resetForm(),
           child: ElevatedButton(
+            key: Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state)
               ? () => _submitButtonPressed(state: state)
               : null,
@@ -148,6 +150,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
     return BlocBuilder<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(
       builder: (context, state) {
         return TextButton(
+          key: Key("goToLoginButtonKey"),
           child: Text(
             "Go to Login",
             style: TextStyle(
@@ -181,7 +184,9 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _resetPasswordScreenBloc.add(Reset()));
+    Future.delayed(Duration(seconds: 1), () {
+      _resetPasswordScreenBloc.add(Reset());
+    });
   }
 
   void _showSuccess() {

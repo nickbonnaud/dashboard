@@ -118,14 +118,19 @@ void main() {
       build: () => unassignedTransactionsListBloc,
       seed: () {
         _transactions = List.generate(4, (index) => MockUnassignedTransaction());
-        return _baseState.update(transactions: _transactions, nextUrl: "next-url", hasReachedEnd: false);
+        _baseState = _baseState.update(transactions: _transactions, nextUrl: "next-url", hasReachedEnd: false);
+        return _baseState;
       },
       act: (bloc) {
         _paginateTransactions = List.generate(10, (index) => MockUnassignedTransaction());
         when(() => unassignedTransactionRepository.paginate(url: any(named: "url"))).thenAnswer((_) async => PaginateDataHolder(data: _paginateTransactions, next: null));
         bloc.add(FetchMore());
       },
-      expect: () => [_baseState.update(loading: false, transactions: _transactions + _paginateTransactions, nextUrl: null, hasReachedEnd: true)]
+      expect: () {
+        var firstState = _baseState.update(paginating: true);
+        var secondState = firstState.update(loading: false, transactions: _transactions + _paginateTransactions, nextUrl: null, hasReachedEnd: true, paginating: false);
+        return [firstState, secondState];
+      }
     );
 
     blocTest<UnassignedTransactionsListBloc, UnassignedTransactionsListState>(
@@ -158,7 +163,11 @@ void main() {
         when(() => unassignedTransactionRepository.paginate(url: any(named: "url"))).thenThrow(ApiException(error: "error"));
         bloc.add(FetchMore());
       },
-      expect: () => [_baseState.update(loading: false, errorMessage: "error")]
+      expect: () {
+        var firstState = _baseState.update(paginating: true);
+        var secondState = firstState.update(loading: false, errorMessage: "error", paginating: false);
+        return [firstState, secondState];
+      } 
     );
 
     blocTest<UnassignedTransactionsListBloc, UnassignedTransactionsListState>(

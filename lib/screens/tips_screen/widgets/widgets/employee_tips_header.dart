@@ -25,17 +25,19 @@ class EmployeeTipsHeader extends StatelessWidget {
 
   Widget _dateRangeHeader({required BuildContext context, required DateTimeRange dateRange}) {
     return Row(
+      key: Key("dateRangeHeaderKey"),
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text4(
-          text: "Tips from: ${DateFormatter.toStringDate(date: dateRange.start)} - ${DateFormatter.toStringDate(date: dateRange.end)}",
+        Text5(
+          text: "${DateFormatter.toStringDate(date: dateRange.start)} - ${DateFormatter.toStringDate(date: dateRange.end)}",
           context: context
         ),
         IconButton(
+          key: Key("clearDatesButtonKey"),
           icon: Icon(
             Icons.clear, 
             color: Theme.of(context).colorScheme.danger,
-            size: SizeConfig.getWidth(2),
+            size: SizeConfig.getWidth(3),
           ),
           onPressed: () => context.read<DateRangeCubit>().dateRangeChanged(dateRange: null)
         )

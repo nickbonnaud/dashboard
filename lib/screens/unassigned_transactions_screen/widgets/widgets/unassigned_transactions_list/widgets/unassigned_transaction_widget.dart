@@ -8,13 +8,16 @@ import 'package:dashboard/theme/global_colors.dart';
 
 class UnassignedTransactionWidget extends StatelessWidget {
   final UnassignedTransaction _unassignedTransaction;
+  final int _index;
 
-  const UnassignedTransactionWidget({required UnassignedTransaction unassignedTransaction})
-    : _unassignedTransaction = unassignedTransaction;
+  const UnassignedTransactionWidget({required UnassignedTransaction unassignedTransaction, required int index})
+    : _unassignedTransaction = unassignedTransaction,
+      _index = index;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      key: Key("unassignedTransactionsCard-$_index"),
       child: ListTile(
         leading: CircleAvatar(
           child: Icon(

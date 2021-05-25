@@ -1,4 +1,3 @@
-import 'package:dashboard/models/business/profile.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/menu_button.dart';
