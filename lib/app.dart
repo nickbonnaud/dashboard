@@ -27,7 +27,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
       listenWhen: (previousState, currentState) {
-        return previousState == Authenticated() && currentState == Unauthenticated();
+        return previousState is Authenticated && currentState is Unauthenticated;
       },
       listener: (context, state) {
         Navigator.pushNamedAndRemoveUntil(context, Routes.login, (route) => false);

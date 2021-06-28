@@ -49,7 +49,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
   Stream<AuthenticationState> _mapLoggedOutToState() async* {
     try {
-
       final bool loggedOut = await _authenticationRepository.logout();
       if (loggedOut) {
         _businessBloc.add(BusinessLoggedOut());

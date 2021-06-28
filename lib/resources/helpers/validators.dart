@@ -33,48 +33,48 @@ class Validators {
   static isValidPassword({required String password}) {
     if (password.isEmpty) return false;
 
-    bool hasUpperCase = password.contains(RegExp(r'[A-Z]'));
-    bool hasLowerCase = password.contains(RegExp(r'[a-z]'));
-    bool hasDigits = password.contains(RegExp(r'[0-9]'));
-    bool hasSpecialCharacters = password.contains(RegExp(r'[-!@#$%^&*_+=(),.?":{}|<>]'));
-    bool hasMinLength = password.length >= 8;
+    final bool hasUpperCase = password.contains(RegExp(r'[A-Z]'));
+    final bool hasLowerCase = password.contains(RegExp(r'[a-z]'));
+    final bool hasDigits = password.contains(RegExp(r'[0-9]'));
+    final bool hasSpecialCharacters = password.contains(RegExp(r'[-!@#$%^&*_+=(),.?":{}|<>]'));
+    final bool hasMinLength = password.length >= 8;
 
     return hasUpperCase && hasLowerCase && hasDigits && hasSpecialCharacters && hasMinLength;
   }
 
-  static isPasswordConfirmationValid({required String password, required String passwordConfirmation}) => password == passwordConfirmation;
+  static bool isPasswordConfirmationValid({required String password, required String passwordConfirmation}) => password == passwordConfirmation;
 
-  static isValidBusinessName({required String name}) => name.length >= 2;
+  static bool isValidBusinessName({required String name}) => name.length >= 2;
 
-  static isValidFirstName({required String name}) => name.length >= 2;
+  static bool isValidFirstName({required String name}) => name.length >= 2;
 
-  static isValidLastName({required String name}) => name.length >= 2;
+  static bool isValidLastName({required String name}) => name.length >= 2;
 
-  static isValidPhone({required String phone}) => phone.length == 10 && _phoneRegExp.hasMatch(phone);
+  static bool isValidPhone({required String phone}) => phone.length == 10 && _phoneRegExp.hasMatch(phone);
 
-  static isValidBusinessDescription({required String description}) => description.length >= 50;
+  static bool isValidBusinessDescription({required String description}) => description.length >= 50;
 
-  static isValidAddress({required String address}) => address.length > 3;
+  static bool isValidAddress({required String address}) => address.length > 3;
 
-  static isValidAddressSecondary({required String address}) => address.isEmpty || address.length > 1;
+  static bool isValidAddressSecondary({required String address}) => address.isEmpty || address.length > 1;
 
-  static isValidCity({required String city}) => city.length >= 3 && _alphaSpaceDot.hasMatch(city);
+  static bool isValidCity({required String city}) => city.length >= 3 && _alphaSpaceDot.hasMatch(city);
 
-  static isValidZip({required String zip}) => zip.length == 5 && _numeric.hasMatch(zip);
+  static bool isValidZip({required String zip}) => zip.length == 5 && _numeric.hasMatch(zip);
 
-  static isValidEin({required String ein}) => ein.length == 10 && _einRegExp.hasMatch(ein);
+  static bool isValidEin({required String ein}) => ein.length == 10 && _einRegExp.hasMatch(ein);
 
-  static isValidSsn({required String ssn}) => _numeric.hasMatch(ssn) && ssn.length == 9;
+  static bool isValidSsn({required String ssn}) => _numeric.hasMatch(ssn) && ssn.length == 9;
 
-  static isValidPercentOwnership({required int percent}) => _numeric.hasMatch(percent.toString()) && percent > 0 && percent <= 100;
+  static bool isValidPercentOwnership({required int percent}) => _numeric.hasMatch(percent.toString()) && percent > 0 && percent <= 100;
 
-  static isValidRoutingNumber({required String routingNumber}) => _numeric.hasMatch(routingNumber) && routingNumber.length == 9;
+  static bool isValidRoutingNumber({required String routingNumber}) => _numeric.hasMatch(routingNumber) && routingNumber.length == 9;
 
-  static isValidAccountNumber({required String accountNumber}) => _numeric.hasMatch(accountNumber) && (6 <= accountNumber.length && accountNumber.length <= 17);
+  static bool isValidAccountNumber({required String accountNumber}) => _numeric.hasMatch(accountNumber) && (6 <= accountNumber.length && accountNumber.length <= 17);
 
-  static isValidUUID({required String uuid}) => _uuid.hasMatch(uuid);
+  static bool isValidUUID({required String uuid}) => _uuid.hasMatch(uuid);
 
-  static isValidUrl({required String url}) {
+  static bool isValidUrl({required String url}) {
     if (url.isEmpty ||
       url.length > 2083 ||
       url.indexOf('mailto:') == 0) {
