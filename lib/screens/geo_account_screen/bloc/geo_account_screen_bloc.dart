@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/location.dart';
@@ -20,33 +18,26 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
   GeoAccountScreenBloc({required GeoAccountRepository accountRepository, required BusinessBloc businessBloc, required Location location}) 
     : _accountRepository = accountRepository,
       _businessBloc = businessBloc,
-      super(GeoAccountScreenState.initial(location: location));
+      super(GeoAccountScreenState.initial(location: location)) { _eventHandler(); }
 
-  @override
-  Stream<GeoAccountScreenState> mapEventToState(GeoAccountScreenEvent event) async* {
-    if (event is LocationChanged) {
-      yield* _mapLocationChangedToState(event: event);
-    } else if (event is RadiusChanged) {
-      yield* _mapRadiusChangedToState(event: event);
-    } else if (event is Submitted) {
-      yield* _mapSubmittedToState();
-    } else if (event is Updated) {
-      yield* _mapUpdatedToState(event: event);
-    } else if (event is Reset) {
-      yield* _mapResetToState();
-    }
+  void _eventHandler() {
+    on<LocationChanged>((event, emit) => _mapLocationChangedToState(event: event, emit: emit));
+    on<RadiusChanged>((event, emit) => _mapRadiusChangedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) => _mapSubmittedToState(emit: emit));
+    on<Updated>((event, emit) => _mapUpdatedToState(event: event, emit: emit));
+    on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  Stream<GeoAccountScreenState> _mapLocationChangedToState({required LocationChanged event}) async* {
-    yield state.update(currentLocation: event.location);
+  void _mapLocationChangedToState({required LocationChanged event, required Emitter<GeoAccountScreenState> emit}) async {
+    emit(state.update(currentLocation: event.location));
   }
 
-  Stream<GeoAccountScreenState> _mapRadiusChangedToState({required RadiusChanged event}) async* {
-    yield state.update(radius: event.radius);
+  void _mapRadiusChangedToState({required RadiusChanged event, required Emitter<GeoAccountScreenState> emit}) async {
+    emit(state.update(radius: event.radius));
   }
 
-  Stream<GeoAccountScreenState> _mapSubmittedToState() async* {
-    yield state.update(isSubmitting: true);
+  void _mapSubmittedToState({required Emitter<GeoAccountScreenState> emit}) async {
+    emit(state.update(isSubmitting: true));
 
     try {
       Location location = await _accountRepository.store(
@@ -55,14 +46,14 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
         radius: _roundRadius(originalRadius: state.radius)
       );
       _updateBusinessBloc(location: location);
-      yield state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP);
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
     } on ApiException catch (exception) {
-      yield state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START);
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
     }
   }
 
-  Stream<GeoAccountScreenState> _mapUpdatedToState({required Updated event}) async* {
-    yield state.update(isSubmitting: true);
+  void _mapUpdatedToState({required Updated event, required Emitter<GeoAccountScreenState> emit}) async {
+    emit(state.update(isSubmitting: true));
 
     try {
       Location location = await _accountRepository.update(
@@ -72,14 +63,14 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
         radius: _roundRadius(originalRadius: state.radius)
       );
       _updateBusinessBloc(location: location);
-      yield state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP);
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
     } on ApiException catch (exception) {
-      yield state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START);
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
     }
   }
 
-  Stream<GeoAccountScreenState> _mapResetToState() async* {
-    yield state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP);
+  void _mapResetToState({required Emitter<GeoAccountScreenState> emit}) async {
+    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 
   int _roundRadius({required double originalRadius}) {

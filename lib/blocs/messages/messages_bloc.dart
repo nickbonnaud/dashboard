@@ -19,6 +19,8 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
     : _messageRepository = messageRepository,
       super(MessagesState.initial()) {
         
+        _eventHandler();
+        
         if (authenticationBloc.isAuthenticated) {
           add(Init());
         } else {
@@ -30,27 +32,24 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
         }
       }
 
-  @override
-  Stream<MessagesState> mapEventToState(MessagesEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState(event: event);
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(event: event, emit: emit));
   }
-
-   @override
+  
+  @override
   Future<void> close() {
     _authStreamBlocSubscription.cancel();
     return super.close();
   }
 
-  Stream<MessagesState> _mapInitToState({required Init event}) async* {
-    yield state.update(loading: true);
+  void _mapInitToState({required Init event, required Emitter<MessagesState> emit}) async {
+    emit(state.update(loading: true));
 
     try {
       final bool hasUnread = await _messageRepository.checkUnreadMessages();
-      yield state.update(loading: false, hasUnreadMessages: hasUnread);
+      emit(state.update(loading: false, hasUnreadMessages: hasUnread));
     } on ApiException catch (exception) {
-      yield state.update(loading: false, errorMessage: exception.error);
+      emit(state.update(loading: false, errorMessage: exception.error));
     }
   }
 }

@@ -1,13 +1,12 @@
-import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/transaction_filter.dart';
+import 'package:dashboard/resources/helpers/debouncer.dart';
 import 'package:dashboard/resources/helpers/validators.dart';
 import 'package:dashboard/screens/historic_refunds_screen/cubits/filter_button_cubit.dart';
 import 'package:dashboard/screens/historic_refunds_screen/widgets/bloc/refunds_list_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'id_search_field_event.dart';
 part 'id_search_field_state.dart';
@@ -19,25 +18,17 @@ class IdSearchFieldBloc extends Bloc<IdSearchFieldEvent, IdSearchFieldState> {
   IdSearchFieldBloc({required RefundsListBloc refundsListBloc, required FilterButtonCubit filterButtonCubit})
     : _refundsListBloc = refundsListBloc,
       _filterButtonCubit = filterButtonCubit,
-      super(IdSearchFieldState.initial());
+      super(IdSearchFieldState.initial()) { _eventHelper(); }
 
-  @override
-  Stream<Transition<IdSearchFieldEvent, IdSearchFieldState>> transformEvents(Stream<IdSearchFieldEvent> events, transitionFn) {
-    return super.transformEvents(events.debounceTime(Duration(seconds: 1)), transitionFn);
-  }
-  
-  @override
-  Stream<IdSearchFieldState> mapEventToState(IdSearchFieldEvent event) async* {
-    if (event is FieldChanged) {
-      yield* _mapFieldChangedToState(event: event);
-    }
+  void _eventHelper() {
+    on<FieldChanged>((event, emit) => _mapFieldChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
   }
 
-  Stream<IdSearchFieldState> _mapFieldChangedToState({required FieldChanged event}) async* {
+  void _mapFieldChangedToState({required FieldChanged event, required Emitter<IdSearchFieldState> emit}) async {
     final bool isValidId = Validators.isValidUUID(uuid: event.id);
     final String previousId = state.currentId;
 
-    yield state.update(isFieldValid: isValidId, currentId: event.id);
+    emit(state.update(isFieldValid: isValidId, currentId: event.id));
     if (isValidId && previousId != event.id) {
       _refundsListBloc.add(
         _filterButtonCubit.state == FilterType.refundId

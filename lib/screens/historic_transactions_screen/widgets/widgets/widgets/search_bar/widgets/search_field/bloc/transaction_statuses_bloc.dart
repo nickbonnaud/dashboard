@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/status.dart';
 import 'package:dashboard/repositories/status_repository.dart';
@@ -15,22 +13,19 @@ class TransactionStatusesBloc extends Bloc<TransactionStatusesEvent, Transaction
   
   TransactionStatusesBloc({required StatusRepository statusRepository})
     : _statusRepository = statusRepository,
-      super(TransactionStatusesState.initial());
+      super(TransactionStatusesState.initial()) { _eventHandler(); }
 
-  @override
-  Stream<TransactionStatusesState> mapEventToState(TransactionStatusesEvent event) async* {
-    if (event is InitStatuses) {
-      yield* _mapInitToState();
-    }
+  void _eventHandler() {
+    on<InitStatuses>((event, emit) => _mapInitToState(emit: emit));
   }
 
-  Stream<TransactionStatusesState> _mapInitToState() async* {
-    yield state.update(loading: true);
+  void _mapInitToState({required Emitter<TransactionStatusesState> emit}) async {
+    emit(state.update(loading: true));
     try {
       final List<Status> statuses = await _statusRepository.fetchTransactionStatuses();
-      yield state.update(statuses: statuses, loading: false, fetchFailed: false);
+      emit(state.update(statuses: statuses, loading: false, fetchFailed: false));
     } catch (error) {
-      yield state.update(loading: false, fetchFailed: true);
+      emit(state.update(loading: false, fetchFailed: true));
     }
   }
 }

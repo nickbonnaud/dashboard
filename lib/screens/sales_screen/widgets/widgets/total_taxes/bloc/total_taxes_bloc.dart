@@ -19,16 +19,13 @@ class TotalTaxesBloc extends Bloc<TotalTaxesEvent, TotalTaxesState> {
   TotalTaxesBloc({required DateRangeCubit dateRangeCubit, required TransactionRepository transactionRepository})
     : _transactionRepository = transactionRepository,
       super(TotalTaxesInitial()) {
+        _eventHandler();
         _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
       }
 
-  @override
-  Stream<TotalTaxesState> mapEventToState(TotalTaxesEvent event) async* {
-    if (event is InitTotalTaxes) {
-      yield* _mapInitTotalTaxesToState();
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    }
+  void _eventHandler() {
+    on<InitTotalTaxes>((event, emit) => _mapInitTotalTaxesToState(emit: emit));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
   @override
@@ -37,25 +34,25 @@ class TotalTaxesBloc extends Bloc<TotalTaxesEvent, TotalTaxesState> {
     return super.close();
   }
 
-  Stream<TotalTaxesState> _mapInitTotalTaxesToState() async* {
-    yield Loading();
+  void _mapInitTotalTaxesToState({required Emitter<TotalTaxesState> emit}) async {
+    emit(Loading());
 
     try {
       final int total = await _transactionRepository.fetchTotalTaxesToday();
-      yield TotalTaxesLoaded(totalTaxes: total);
+      emit(TotalTaxesLoaded(totalTaxes: total));
     } on ApiException catch (exception) {
-      yield FetchFailed(error: exception.error);
+      emit(FetchFailed(error: exception.error));
     }
   }
 
-  Stream<TotalTaxesState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
-    yield Loading();
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TotalTaxesState> emit}) async {
+    emit(Loading());
 
     try {
       final int total = await _transactionRepository.fetchTotalTaxesDateRange(dateRange: event.dateRange);
-      yield TotalTaxesLoaded(totalTaxes: total);
+      emit(TotalTaxesLoaded(totalTaxes: total));
     } on ApiException catch (exception) {
-      yield FetchFailed(error: exception.error);
+      emit(FetchFailed(error: exception.error));
     }
   }
 

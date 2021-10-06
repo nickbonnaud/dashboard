@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/hours.dart';
@@ -21,51 +19,46 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
   EditHoursScreenBloc({required HoursRepository hoursRepository, required BusinessBloc businessBloc, required Hours hours}) 
     : _hoursRepository = hoursRepository,
       _businessBloc = businessBloc,
-      super(EditHoursScreenState.initial(hours: hours));
-
-  @override
-  Stream<EditHoursScreenState> mapEventToState(EditHoursScreenEvent event) async* {
-    if (event is HoursChanged) {
-      yield* _mapHoursChangedToState(event: event);
-    } else if (event is Updated) {
-      yield* _mapUpdatedToState(event: event);
-    } else if (event is HourAdded) {
-      yield* _mapHourAddedToState(event: event);
-    } else if (event is HourRemoved) {
-      yield* _mapHourRemovedToState(event: event);
-    } else if (event is Reset) {
-      yield* _mapResetToState();
-    }
+      super(EditHoursScreenState.initial(hours: hours)) {
+        _eventHandler();
   }
 
-  Stream<EditHoursScreenState> _mapHoursChangedToState({required HoursChanged event}) async* {
+  void _eventHandler() {
+    on<HoursChanged>((event, emit) => _mapHoursChangedToState(event: event, emit: emit));
+    on<Updated>((event, emit) => _mapUpdatedToState(event: event, emit: emit));
+    on<HourAdded>((event, emit) => _mapHourAddedToState(event: event, emit: emit));
+    on<HourRemoved>((event, emit) => _mapHourRemovedToState(event: event, emit: emit));
+    on<Reset>((event, emit) => _mapResetToState(emit: emit));
+  }
+  
+  void _mapHoursChangedToState({required HoursChanged event, required Emitter<EditHoursScreenState> emit}) async {
     switch (event.day) {
       case 0:
-        yield state.update(sunday: event.hours);
+        emit(state.update(sunday: event.hours));
         break;
       case 1:
-        yield state.update(monday: event.hours);
+        emit(state.update(monday: event.hours));
         break;
       case 2:
-        yield state.update(tuesday: event.hours);
+        emit(state.update(tuesday: event.hours));
         break;
       case 3:
-        yield state.update(wednesday: event.hours);
+        emit(state.update(wednesday: event.hours));
         break;
       case 4:
-        yield state.update(thursday: event.hours);
+        emit(state.update(thursday: event.hours));
         break;
       case 5:
-        yield state.update(friday: event.hours);
+        emit(state.update(friday: event.hours));
         break;
       case 6:
-        yield state.update(saturday: event.hours);
+        emit(state.update(saturday: event.hours));
         break;
     }
   }
 
-  Stream<EditHoursScreenState> _mapUpdatedToState({required Updated event}) async* {
-    yield state.update(isSubmitting: true);
+  void _mapUpdatedToState({required Updated event, required Emitter<EditHoursScreenState> emit}) async {
+    emit(state.update(isSubmitting: true));
 
     try {
       Hours hours = await _hoursRepository.update(
@@ -79,66 +72,66 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
         saturday: event.saturday
       );
       _updateBusinessBloc(hours: hours);
-      yield state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP);
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
     } on ApiException catch (exception) {
-      yield state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START);
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
     }
   }
 
-  Stream<EditHoursScreenState> _mapHourAddedToState({required HourAdded event}) async* {
+  void _mapHourAddedToState({required HourAdded event, required Emitter<EditHoursScreenState> emit}) async {
     switch (event.day) {
       case 0:
-        yield state.update(sunday: state.sunday..add(event.hour));
+        emit(state.update(sunday: state.sunday..add(event.hour)));
         break;
       case 1:
-        yield state.update(monday: state.monday..add(event.hour));
+        emit(state.update(monday: state.monday..add(event.hour)));
         break;
       case 2:
-        yield state.update(tuesday: state.tuesday..add(event.hour));
+        emit(state.update(tuesday: state.tuesday..add(event.hour)));
         break;
       case 3:
-        yield state.update(wednesday: state.wednesday..add(event.hour));
+        emit(state.update(wednesday: state.wednesday..add(event.hour)));
         break;
       case 4:
-        yield state.update(thursday: state.thursday..add(event.hour));
+        emit(state.update(thursday: state.thursday..add(event.hour)));
         break;
       case 5:
-        yield state.update(friday: state.friday..add(event.hour));
+        emit(state.update(friday: state.friday..add(event.hour)));
         break;
       case 6:
-        yield state.update(saturday: state.saturday..add(event.hour));
+        emit(state.update(saturday: state.saturday..add(event.hour)));
         break;
     }
   }
 
-  Stream<EditHoursScreenState> _mapHourRemovedToState({required HourRemoved event}) async* {
+  void _mapHourRemovedToState({required HourRemoved event, required Emitter<EditHoursScreenState> emit}) async {
     switch (event.day) {
       case 0:
-        yield state.update(sunday: state.sunday..removeLast());
+        emit(state.update(sunday: state.sunday..removeLast()));
         break;
       case 1:
-        yield state.update(monday: state.monday..removeLast());
+        emit(state.update(monday: state.monday..removeLast()));
         break;
       case 2:
-        yield state.update(tuesday: state.tuesday..removeLast());
+        emit(state.update(tuesday: state.tuesday..removeLast()));
         break;
       case 3:
-        yield state.update(wednesday: state.wednesday..removeLast());
+        emit(state.update(wednesday: state.wednesday..removeLast()));
         break;
       case 4:
-        yield state.update(thursday: state.thursday..removeLast());
+        emit(state.update(thursday: state.thursday..removeLast()));
         break;
       case 5:
-        yield state.update(friday: state.friday..removeLast());
+        emit(state.update(friday: state.friday..removeLast()));
         break;
       case 6:
-        yield state.update(saturday: state.saturday..removeLast());
+        emit(state.update(saturday: state.saturday..removeLast()));
         break;
     }
   }
 
-  Stream<EditHoursScreenState> _mapResetToState() async* {
-    yield state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP);
+  void _mapResetToState({required Emitter<EditHoursScreenState> emit}) async {
+    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 
   void _updateBusinessBloc({required Hours hours}) {

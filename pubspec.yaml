@@ -26,8 +26,8 @@ dependencies:
   cached_network_image: ^3.0.0-nullsafety
   cupertino_icons: ^1.0.2
   dio: ^4.0.0-prev3
-  equatable: ^2.0.0
-  flutter_bloc: ^7.0.0
+  equatable: ^2.0.3
+  flutter_bloc: ^7.3.0
   fluttertoast: ^8.0.3
   google_fonts: ^2.0.0
   google_maps_flutter: ^2.0.1
@@ -47,7 +47,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  bloc_test: ^8.0.0
+  bloc_test: ^8.2.0
   faker: ^2.0.0-rc.2
   http_mock_adapter: ^0.2.1
   mocktail: ^0.1.1

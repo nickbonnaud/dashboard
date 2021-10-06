@@ -1,5 +1,4 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
-import 'package:dashboard/providers/hours_provider.dart';
 import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:dashboard/screens/hours_screen/bloc/hours_screen_bloc.dart';
 import 'package:dashboard/screens/hours_screen/widgets/hours_selection_form/bloc/hours_selection_form_bloc.dart';

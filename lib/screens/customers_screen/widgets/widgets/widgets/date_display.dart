@@ -1,6 +1,5 @@
 import 'package:dashboard/resources/helpers/date_formatter.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
-import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/customers_screen/cubit/date_range_cubit.dart';
 import 'package:flutter/material.dart';

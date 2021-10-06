@@ -54,7 +54,7 @@ class MainTheme {
         color: Color(0xFF016fb9)
       ),
       appBarTheme: AppBarTheme(
-        textTheme: _getTextTheme(context: context)
+        toolbarTextStyle: getDefaultFont()
       ),
       sliderTheme: SliderThemeData(
         activeTrackColor: Theme.of(context).colorScheme.callToAction,
@@ -80,7 +80,6 @@ class MainTheme {
         brightness: Brightness.light,
       ),
       textTheme: _getTextTheme(context: context),
-      buttonColor: Color(0xFF016fb9),
       disabledColor: Color(0xFFcce2f1),
     );
   }

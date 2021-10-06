@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/owner_account.dart';
@@ -20,44 +18,36 @@ class OwnersScreenBloc extends Bloc<OwnersScreenEvent, OwnersScreenState> {
   OwnersScreenBloc({required BusinessBloc businessBloc, required OwnerRepository ownerRepository, required List<OwnerAccount> ownerAccounts}) 
     : _businessBloc = businessBloc,
       _ownerRepository = ownerRepository,
-      super(OwnersScreenState.initial(owners: ownerAccounts));
+      super(OwnersScreenState.initial(owners: ownerAccounts)) { _eventHandler(); }
 
-  @override
-  Stream<OwnersScreenState> mapEventToState(OwnersScreenEvent event) async* {
-    if (event is OwnerAdded) {
-      yield* _mapOwnerAddedToState(event: event);
-    } else if (event is OwnerRemoved) {
-      yield* _mapOwnerRemovedToState(event: event);
-    } else if (event is PrimaryRemoved) {
-      yield* _mapPrimaryRemovedToState(event: event);
-    } else if (event is ShowForm) {
-      yield* _mapShowFormToState(event: event);
-    } else if (event is HideForm) {
-      yield* _mapHideFormToState();
-    } else if (event is OwnerUpdated) {
-      yield* _mapOwnerUpdatedToState(event: event);
-    }
+  void _eventHandler() {
+    on<OwnerAdded>((event, emit) => _mapOwnerAddedToState(event: event, emit: emit));
+    on<OwnerRemoved>((event, emit) => _mapOwnerRemovedToState(event: event, emit: emit));
+    on<PrimaryRemoved>((event, emit) => _mapPrimaryRemovedToState(event: event, emit: emit));
+    on<ShowForm>((event, emit) => _mapShowFormToState(event: event, emit: emit));
+    on<HideForm>((event, emit) => _mapHideFormToState(emit: emit));
+    on<OwnerUpdated>((event, emit) => _mapOwnerUpdatedToState(event: event, emit: emit));
   }
 
-  Stream<OwnersScreenState> _mapOwnerAddedToState({required OwnerAdded event}) async* {
+  void _mapOwnerAddedToState({required OwnerAdded event, required Emitter<OwnersScreenState> emit}) async {
     List<OwnerAccount> updatedOwners = state.owners.where((owner) => owner.identifier != event.owner.identifier).toList()..add(event.owner);
     _updateBusinessBloc(updatedOwners: updatedOwners);
-    yield state.update(owners: updatedOwners);
+    emit(state.update(owners: updatedOwners));
   }
 
-  Stream<OwnersScreenState> _mapOwnerRemovedToState({required OwnerRemoved event}) async* {
-    yield state.update(isSubmitting:  true);
+  void _mapOwnerRemovedToState({required OwnerRemoved event, required Emitter<OwnersScreenState> emit}) async {
+    emit(state.update(isSubmitting:  true));
     try {
       await _ownerRepository.remove(identifier: event.owner.identifier);
       List<OwnerAccount> updatedOwners = state.owners.where((owner) => owner.identifier != event.owner.identifier).toList();
       _updateBusinessBloc(updatedOwners: updatedOwners);
-      yield state.update(owners: updatedOwners, isSubmitting: false, isSuccess:  true);
+      emit(state.update(owners: updatedOwners, isSubmitting: false, isSuccess:  true));
     } on ApiException catch (exception) {
-      yield state.update(isSubmitting: false, errorMessage: exception.error);
+      emit(state.update(isSubmitting: false, errorMessage: exception.error));
     }
   }
 
-  Stream<OwnersScreenState> _mapPrimaryRemovedToState({required PrimaryRemoved event}) async* {
+  void _mapPrimaryRemovedToState({required PrimaryRemoved event, required Emitter<OwnersScreenState> emit}) async {
     try {
       OwnerAccount updatedOwner = await _ownerRepository.update(
         identifier: event.account.identifier, 
@@ -82,29 +72,29 @@ class OwnersScreenBloc extends Bloc<OwnersScreenEvent, OwnersScreenState> {
           .toList()..add(updatedOwner);
       
       _updateBusinessBloc(updatedOwners: updatedOwners);
-      yield state.update(owners: updatedOwners);
+      emit(state.update(owners: updatedOwners));
     } on ApiException catch (exception) {
-      yield state.update(errorMessage: exception.error);
+      emit(state.update(errorMessage: exception.error));
     }
   }
 
-  Stream<OwnersScreenState> _mapShowFormToState({required ShowForm event}) async* {
-    yield state.update(formVisible: true, editingAccount: event.account);
+  void _mapShowFormToState({required ShowForm event, required Emitter<OwnersScreenState> emit}) async {
+    emit(state.update(formVisible: true, editingAccount: event.account));
   }
 
-  Stream<OwnersScreenState> _mapHideFormToState() async* {
-    yield state.update(
+  void _mapHideFormToState({required Emitter<OwnersScreenState> emit}) async {
+    emit(state.update(
       formVisible: false,
       resetEditingAccount: true
-    );
+    ));
   }
 
-  Stream<OwnersScreenState> _mapOwnerUpdatedToState({required OwnerUpdated event}) async* {
+  void _mapOwnerUpdatedToState({required OwnerUpdated event, required Emitter<OwnersScreenState> emit}) async {
     List<OwnerAccount> updatedOwners = state.owners.where(
       (owner) => owner.identifier != event.owner.identifier)
         .toList()..add(event.owner);
     _updateBusinessBloc(updatedOwners: updatedOwners);
-    yield state.update(owners: updatedOwners);
+    emit(state.update(owners: updatedOwners));
   }
 
   void _updateBusinessBloc({required List<OwnerAccount> updatedOwners}) {

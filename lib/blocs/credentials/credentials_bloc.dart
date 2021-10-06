@@ -21,6 +21,8 @@ class CredentialsBloc extends Bloc<CredentialsEvent, CredentialsState> {
     : _credentialsRepository = credentialsRepository,
       super(CredentialsInitial()) {
 
+        _eventHandler();
+        
         if (authenticationBloc.isAuthenticated) {
           add(Init());
         } else {
@@ -32,11 +34,8 @@ class CredentialsBloc extends Bloc<CredentialsEvent, CredentialsState> {
         }
       }
 
-  @override
-  Stream<CredentialsState> mapEventToState(CredentialsEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
   }
 
   @override
@@ -45,13 +44,13 @@ class CredentialsBloc extends Bloc<CredentialsEvent, CredentialsState> {
     return super.close();
   }
 
-  Stream<CredentialsState> _mapInitToState() async* {
-    yield CredentialsLoading();
+  void _mapInitToState({required Emitter<CredentialsState> emit}) async {
+    emit(CredentialsLoading());
     try {
       Credentials credentials = await _credentialsRepository.fetch();
-      yield CredentialsLoaded(credentials: credentials);
+      emit(CredentialsLoaded(credentials: credentials));
     } on ApiException catch (exception) {
-      yield FailedToFetchCredentials(error: exception.error);
+      emit(FailedToFetchCredentials(error: exception.error));
     }
   }
 }

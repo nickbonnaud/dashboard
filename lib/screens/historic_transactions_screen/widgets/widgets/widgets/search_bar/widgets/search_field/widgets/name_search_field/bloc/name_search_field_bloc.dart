@@ -1,13 +1,11 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/transaction_filter.dart';
+import 'package:dashboard/resources/helpers/debouncer.dart';
 import 'package:dashboard/resources/helpers/validators.dart';
 import 'package:dashboard/screens/historic_transactions_screen/cubits/filter_button_cubit.dart';
 import 'package:dashboard/screens/historic_transactions_screen/widgets/bloc/transactions_list_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'name_search_field_event.dart';
 part 'name_search_field_state.dart';
@@ -19,25 +17,14 @@ class NameSearchFieldBloc extends Bloc<NameSearchFieldEvent, NameSearchFieldStat
   NameSearchFieldBloc({required TransactionsListBloc transactionsListBloc, required FilterButtonCubit filterButtonCubit})
     : _transactionsListBloc = transactionsListBloc,
       _filterButtonCubit = filterButtonCubit,
-      super(NameSearchFieldState.initial());
+      super(NameSearchFieldState.initial()) { _eventHandler(); }
   
-  @override
-  Stream<Transition<NameSearchFieldEvent, NameSearchFieldState>> transformEvents(Stream<NameSearchFieldEvent> events, transitionFn) {
-    final nonDebounceStream = events.where((event) => event is Reset);
-    final debounceStream = events.where((event) => event is !Reset).debounceTime(Duration(seconds: 1));
-    return super.transformEvents(nonDebounceStream.mergeWith([debounceStream]), transitionFn);
-  }
-  
-  @override
-  Stream<NameSearchFieldState> mapEventToState(NameSearchFieldEvent event) async* {
-    if (event is NameChanged) {
-      yield* _mapNameChangedToState(event: event);
-    } else if (event is Reset) {
-      yield* _mapResetToState();
-    }
+  void _eventHandler() {
+    on<NameChanged>((event, emit) => _mapNameChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
+    on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  Stream<NameSearchFieldState> _mapNameChangedToState({required NameChanged event}) async* {
+  void _mapNameChangedToState({required NameChanged event, required Emitter<NameSearchFieldState> emit}) async {
     final String previousFirstName = state.firstName;
     final String previousLastName = state.lastName;
     final bool isValidFirstName = Validators.isValidFirstName(name: event.firstName);
@@ -45,7 +32,7 @@ class NameSearchFieldBloc extends Bloc<NameSearchFieldEvent, NameSearchFieldStat
     final bool firstNameChanged = previousFirstName != event.firstName;
     final bool lastNameChanged = previousLastName != event.lastName;
 
-    yield state.update(firstName: event.firstName, isFirstNameValid: isValidFirstName, lastName: event.lastName, isLastNameValid: isValidLastName);
+    emit(state.update(firstName: event.firstName, isFirstNameValid: isValidFirstName, lastName: event.lastName, isLastNameValid: isValidLastName));
     
     if (firstNameChanged && (isValidFirstName || event.firstName.length == 0)) {
       final String? lastName = isValidLastName ? event.lastName : null;
@@ -62,8 +49,8 @@ class NameSearchFieldBloc extends Bloc<NameSearchFieldEvent, NameSearchFieldStat
     }
   }
 
-  Stream<NameSearchFieldState> _mapResetToState() async* {
-    yield NameSearchFieldState.initial();
+  void _mapResetToState({required Emitter<NameSearchFieldState> emit}) async {
+    emit(NameSearchFieldState.initial());
   }
 
   void _updateQuery({@required String? firstName, @required String? lastName}) {

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -10,24 +8,24 @@ part 'hours_screen_state.dart';
 
 class HoursScreenBloc extends Bloc<HoursScreenEvent, HoursScreenState> {
 
-  HoursScreenBloc() : super(HoursScreenState.initial());
+  HoursScreenBloc()
+    : super(HoursScreenState.initial()) { _eventHandler(); }
 
-  @override
-  Stream<HoursScreenState> mapEventToState(HoursScreenEvent event) async* {
-    if (event is EarliestOpeningChanged) {
-      yield* _mapEarliestOpeningChangedToState(event: event);
-    } else if (event is LatestClosingChanged) {
-      yield* _mapLatestClosingChangedToState(event: event);
-    } else if (event is Reset) {
-      yield HoursScreenState.initial();
-    }
+  void _eventHandler() {
+    on<EarliestOpeningChanged>((event, emit) => _mapEarliestOpeningChangedToState(event: event, emit: emit));
+    on<LatestClosingChanged>((event, emit) => _mapLatestClosingChangedToState(event: event, emit: emit));
+    on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  Stream<HoursScreenState> _mapEarliestOpeningChangedToState({required EarliestOpeningChanged event}) async* {
-    yield state.update(earliestStart: event.time);
+  void _mapEarliestOpeningChangedToState({required EarliestOpeningChanged event, required Emitter<HoursScreenState> emit}) async {
+    emit(state.update(earliestStart: event.time));
   }
 
-  Stream<HoursScreenState> _mapLatestClosingChangedToState({required LatestClosingChanged event}) async* {
-    yield state.update(latestEnd: event.time);
+  void _mapLatestClosingChangedToState({required LatestClosingChanged event, required Emitter<HoursScreenState> emit}) async {
+    emit(state.update(latestEnd: event.time));
+  }
+
+  void _mapResetToState({required Emitter<HoursScreenState> emit}) async {
+    emit(HoursScreenState.initial());
   }
 }

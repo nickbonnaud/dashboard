@@ -1,4 +1,3 @@
-import 'package:dashboard/providers/message_provider.dart';
 import 'package:dashboard/repositories/message_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/screens/message_screen/bloc/message_history_bloc.dart';

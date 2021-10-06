@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/photo.dart';
 import 'package:equatable/equatable.dart';
@@ -10,18 +8,16 @@ part 'logo_form_event.dart';
 part 'logo_form_state.dart';
 
 class LogoFormBloc extends Bloc<LogoFormEvent, LogoFormState> {
-  LogoFormBloc({required Photo logo}) : super(LogoFormState.initial(logo: logo));
+  LogoFormBloc({required Photo logo})
+    : super(LogoFormState.initial(logo: logo)) { _eventHandler(); }
 
   PickedFile? get logoFile => state.logoFile;
   
-  @override
-  Stream<LogoFormState> mapEventToState(LogoFormEvent event) async* {
-    if (event is LogoPicked) {
-      yield* _mapLogoPickedToState(event: event);
-    }
+  void _eventHandler() {
+    on<LogoPicked>((event, emit) => _mapLogoPickedToState(event: event, emit: emit));
   }
-
-  Stream<LogoFormState> _mapLogoPickedToState({required LogoPicked event}) async* {
-    yield state.update(logoFile: event.logoFile);
+  
+  void _mapLogoPickedToState({required LogoPicked event, required Emitter<LogoFormState> emit}) async {
+    emit(state.update(logoFile: event.logoFile));
   }
 }

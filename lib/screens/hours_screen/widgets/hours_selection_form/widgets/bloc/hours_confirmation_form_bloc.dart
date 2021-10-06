@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/hours.dart';
 import 'package:dashboard/models/hour.dart';
 import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
-import 'package:dashboard/screens/hours_screen/widgets/hours_selection_form/bloc/hours_selection_form_bloc.dart';
 import 'package:dashboard/screens/hours_screen/widgets/hours_selection_form/model/hours_grid.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -30,47 +27,42 @@ class HoursConfirmationFormBloc extends Bloc<HoursConfirmationFormEvent, HoursCo
       super(HoursConfirmationFormState.initial(
         hoursGrid: hoursGrid,
         hoursList: hoursList
-      ));
+      )) { _eventHandler(); }
 
-  @override
-  Stream<HoursConfirmationFormState> mapEventToState(HoursConfirmationFormEvent event) async* {
-    if (event is HoursChanged) {
-      yield* _mapHoursChangedToState(event: event);
-    } else if (event is Submitted) {
-      yield* _mapSubmittedToState(event: event);
-    } else if (event is Reset) {
-      yield* _mapResetToState();
-    }
+  void _eventHandler() {
+    on<HoursChanged>((event, emit) => _mapHoursChangedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  Stream<HoursConfirmationFormState> _mapHoursChangedToState({required HoursChanged event}) async* {
+  void _mapHoursChangedToState({required HoursChanged event, required Emitter<HoursConfirmationFormState> emit}) async {
     switch (event.day) {
       case 0:
-        yield state.update(sunday: event.hours);
+        emit(state.update(sunday: event.hours));
         break;
       case 1:
-        yield state.update(monday: event.hours);
+        emit(state.update(monday: event.hours));
         break;
       case 2:
-        yield state.update(tuesday: event.hours);
+        emit(state.update(tuesday: event.hours));
         break;
       case 3:
-        yield state.update(wednesday: event.hours);
+        emit(state.update(wednesday: event.hours));
         break;
       case 4:
-        yield state.update(thursday: event.hours);
+        emit(state.update(thursday: event.hours));
         break;
       case 5:
-        yield state.update(friday: event.hours);
+        emit(state.update(friday: event.hours));
         break;
       case 6:
-        yield state.update(saturday: event.hours);
+        emit(state.update(saturday: event.hours));
         break;
     }
   }
 
-  Stream<HoursConfirmationFormState> _mapSubmittedToState({required Submitted event}) async* {
-    yield state.update(isSubmitting: true);
+  void _mapSubmittedToState({required Submitted event, required Emitter<HoursConfirmationFormState> emit}) async {
+    emit(state.update(isSubmitting: true));
 
     try {
       Hours hours = await _hoursRepository.store(
@@ -83,14 +75,14 @@ class HoursConfirmationFormBloc extends Bloc<HoursConfirmationFormEvent, HoursCo
         saturday: event.saturday
       );
       _updateBusinessBloc(hours: hours);
-      yield state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP);
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
     } on ApiException catch (exception) {
-      yield state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START);
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
     }
   }
 
-  Stream<HoursConfirmationFormState> _mapResetToState() async* {
-    yield state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP);
+  void _mapResetToState({required Emitter<HoursConfirmationFormState> emit}) async {
+    emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 
   void _updateBusinessBloc({required Hours hours}) {

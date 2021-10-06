@@ -20,20 +20,15 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
   UnassignedTransactionsListBloc({required DateRangeCubit dateRangeCubit, required UnassignedTransactionRepository unassignedTransactionRepository})
     : _unassignedTransactionRepository = unassignedTransactionRepository,
       super(UnassignedTransactionsListState.initial(currentDateRange: dateRangeCubit.state)) {
+        _eventHandler();
         _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
       }
 
-  @override
-  Stream<UnassignedTransactionsListState> mapEventToState(UnassignedTransactionsListEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    } else if (event is FetchAll) {
-      yield* _mapFetchAllToState();
-    } else if (event is FetchMore) {
-      yield* _mapFetchMoreToState();
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) => _mapFetchAllToState(emit: emit));
+    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
   @override
@@ -42,70 +37,70 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
     return super.close();
   }
 
-  Stream<UnassignedTransactionsListState> _mapInitToState() async* {
-    yield state.update(loading: true);
+  void _mapInitToState({required Emitter<UnassignedTransactionsListState> emit}) async {
+    emit(state.update(loading: true));
 
     try {
       final PaginateDataHolder paginateData = await _unassignedTransactionRepository.fetchAll();
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<UnassignedTransactionsListState> _mapFetchAllToState() async* {
-    yield* _startFetch();
+  void _mapFetchAllToState({required Emitter<UnassignedTransactionsListState> emit}) async {
+    _startFetch(emit: emit);
 
     try {
       final PaginateDataHolder paginateData = await _unassignedTransactionRepository.fetchAll(dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<UnassignedTransactionsListState> _mapFetchMoreToState() async* {
+  void _mapFetchMoreToState({required Emitter<UnassignedTransactionsListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
-      yield state.update(paginating: true);
+      emit(state.update(paginating: true));
       try {
         final PaginateDataHolder paginateData = await _unassignedTransactionRepository.paginate(url: state.nextUrl!);
-        yield* _handleSuccess(paginateData: paginateData);
+        _handleSuccess(paginateData: paginateData, emit: emit);
       } on ApiException catch (exception) {
-        yield* _handleError(error: exception.error);
+        _handleError(error: exception.error, emit: emit);
       }
     }
   }
 
-  Stream<UnassignedTransactionsListState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<UnassignedTransactionsListState> emit}) async {
     final DateTimeRange? previousDateRange = state.currentDateRange;
     if (previousDateRange != event.dateRange) {
-      yield state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null);
-      yield* _mapFetchAllToState();
+      emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
+      _mapFetchAllToState(emit: emit);
     }
   }
 
-  Stream<UnassignedTransactionsListState> _handleSuccess({required PaginateDataHolder paginateData}) async* {
-    yield state.update(
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<UnassignedTransactionsListState> emit}) async {
+    emit(state.update(
       loading: false,
       paginating: false,
       transactions: state.transactions + (paginateData.data as List<UnassignedTransaction>),
       nextUrl: paginateData.next,
       hasReachedEnd: paginateData.next == null
-    );
+    ));
   }
 
-  Stream<UnassignedTransactionsListState> _startFetch() async* {
-    yield state.update(
+  void _startFetch({required Emitter<UnassignedTransactionsListState> emit}) async {
+    emit(state.update(
       loading: true,
       transactions: [],
       nextUrl: null,
       hasReachedEnd: true,
       errorMessage: "",
-    );
+    ));
   }
 
-  Stream<UnassignedTransactionsListState> _handleError({required String error}) async* {
-    yield state.update(loading: false, paginating: false, errorMessage: error); 
+  void _handleError({required String error, required Emitter<UnassignedTransactionsListState> emit}) async {
+    emit(state.update(loading: false, paginating: false, errorMessage: error)); 
   }
 
   void _onDateRangeChanged(DateTimeRange? dateRange) {

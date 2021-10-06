@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/message/message.dart';
 import 'package:dashboard/models/paginate_data_holder.dart';
@@ -16,67 +14,62 @@ class MessageListScreenBloc extends Bloc<MessageListScreenEvent, MessageListScre
   
   MessageListScreenBloc({required MessageRepository messageRepository}) 
     : _messageRepository = messageRepository,
-      super(MessageListScreenState.initial());
+      super(MessageListScreenState.initial()) { _eventHandler(); }
 
-  @override
-  Stream<MessageListScreenState> mapEventToState(MessageListScreenEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    } else if (event is FetchMore) {
-      yield* _mapFetchMoreToState();
-    } else if (event is MessageUpdated) {
-      yield* _mapMessageUpdatedToState(event: event);
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
+    on<MessageUpdated>((event, emit) => _mapMessageUpdatedToState(event: event, emit: emit));
   }
 
-  Stream<MessageListScreenState> _mapInitToState() async* {
-    yield state.update(loading: true, errorMessage: "");
+  void _mapInitToState({required Emitter<MessageListScreenState> emit}) async {
+    emit(state.update(loading: true, errorMessage: ""));
 
     try {
       final PaginateDataHolder paginateData = await _messageRepository.fetchAll();
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<MessageListScreenState> _mapFetchMoreToState() async* {
+  void _mapFetchMoreToState({required Emitter<MessageListScreenState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
-      yield state.update(paginating: true);
+      emit(state.update(paginating: true));
       try {
         final PaginateDataHolder paginateData = await _messageRepository.paginate(url: state.nextUrl!);
-        yield* _handleSuccess(paginateData: paginateData);
+        _handleSuccess(paginateData: paginateData, emit: emit);
       } on ApiException catch (exception) {
-        yield* _handleError(error: exception.error);
+        _handleError(error: exception.error, emit: emit);
       }
     }
   }
 
-  Stream<MessageListScreenState> _mapMessageUpdatedToState({required MessageUpdated event}) async* {
+  void _mapMessageUpdatedToState({required MessageUpdated event, required Emitter<MessageListScreenState> emit}) async {
     final List<Message> updatedMessages = state.messages
       .where((message) => message.identifier != event.message.identifier).toList()
       ..add(event.message)..sort((previousMessage, currentMessage) {
         return currentMessage.latestReply.compareTo(previousMessage.latestReply);
       });
-    yield state.update(messages: _sortMessages(messages: updatedMessages));
+    emit(state.update(messages: _sortMessages(messages: updatedMessages)));
 
     if (event.messageHistoryRead) {
       _messageRepository.updateMessage(messageIdentifier: event.message.identifier);
     }
   }
 
-  Stream<MessageListScreenState> _handleSuccess({required PaginateDataHolder paginateData}) async* {
-    yield state.update(
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<MessageListScreenState> emit}) async {
+    emit(state.update(
       loading: false,
       paginating: false,
       messages: _sortMessages(messages: (state.messages + (paginateData.data as List<Message>))),
       nextUrl: paginateData.next,
       hasReachedEnd: paginateData.next == null
-    );
+    ));
   }
 
-  Stream<MessageListScreenState> _handleError({required String error}) async* {
-    yield state.update(loading: false, paginating: false, errorMessage: error); 
+  void _handleError({required String error, required Emitter<MessageListScreenState> emit}) async {
+    emit(state.update(loading: false, paginating: false, errorMessage: error)); 
   }
 
   List<Message> _sortMessages({required List<Message> messages}) {

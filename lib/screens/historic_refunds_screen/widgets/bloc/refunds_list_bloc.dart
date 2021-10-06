@@ -32,31 +32,21 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
         currentDateRange: dateRangeCubit.state
       )
     ) {
+      _eventHandler();
       _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
       _filterButtonStream = filterButtonCubit.stream.listen(_onFilterChanged);
     }
 
-  @override
-  Stream<RefundsListState> mapEventToState(RefundsListEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    } else if (event is FetchAll) {
-      yield* _mapFetchAllToState();
-    } else if (event is FetchMore) {
-      yield* _mapFetchMoreToState();
-    } else if (event is FetchByRefundId) {
-      yield* _mapFetchByRefundIdToState(refundId: event.refundId);
-    } else if (event is FetchByTransactionId) {
-      yield* _mapFetchByTransactionIdToState(transactionId: event.transactionId);
-    } else if (event is FetchByCustomerId) {
-      yield* _mapFetchByCustomerIdToState(customerId: event.customerId);
-    } else if (event is FetchByCustomerName) {
-      yield* _mapFetchByCustomerNameToState(customerName: FullName(first: event.firstName, last: event.lastName));
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    } else if (event is FilterChanged) {
-      yield* _mapFilterChangedToState(event: event);
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) => _mapFetchAllToState(emit: emit));
+    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
+    on<FetchByRefundId>((event, emit) => _mapFetchByRefundIdToState(refundId: event.refundId, emit: emit));
+    on<FetchByTransactionId>((event, emit) => _mapFetchByTransactionIdToState(transactionId: event.transactionId, emit: emit));
+    on<FetchByCustomerId>((event, emit) => _mapFetchByCustomerIdToState(customerId: event.customerId, emit: emit));
+    on<FetchByCustomerName>((event, emit) => _mapFetchByCustomerNameToState(fullName: FullName(first: event.firstName, last: event.lastName), emit: emit));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
+    on<FilterChanged>((event, emit) => _mapFilterChangedToState(event: event, emit: emit));
   }
 
   @override
@@ -66,133 +56,133 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     return super.close();
   }
 
-  Stream<RefundsListState> _mapInitToState() async* {
-    yield state.update(loading: true);
+  void _mapInitToState({required Emitter<RefundsListState> emit}) async {
+    emit(state.update(loading: true));
 
     try {
       final PaginateDataHolder paginateData = await _refundRepository.fetchAll();
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<RefundsListState> _mapFetchAllToState() async* {
-    yield* _startFetch();
+  void _mapFetchAllToState({required Emitter<RefundsListState> emit}) async {
+    _startFetch(emit: emit);
 
     try {
       final PaginateDataHolder paginateData = await _refundRepository.fetchAll(dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+       _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<RefundsListState> _mapFetchMoreToState() async* {
+  void _mapFetchMoreToState({required Emitter<RefundsListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
-      yield state.update(paginating: true);
+      emit(state.update(paginating: true));
       try {
         final PaginateDataHolder paginateData = await _refundRepository.paginate(url: state.nextUrl!);
-        yield* _handleSuccess(paginateData: paginateData);
+        _handleSuccess(emit: emit, paginateData: paginateData);
       } on ApiException catch (exception) {
-        yield* _handleError(error: exception.error);
+        _handleError(emit: emit, error: exception.error);
       }
     }
   }
 
-  Stream<RefundsListState> _mapFetchByRefundIdToState({required String refundId}) async* {
-    yield* _startFetch(currentIdQuery: refundId);
+  void _mapFetchByRefundIdToState({required String refundId, required Emitter<RefundsListState> emit}) async {
+    _startFetch(emit: emit, currentIdQuery: refundId);
 
     try {
       final PaginateDataHolder paginateData = await _refundRepository.fetchByRefundId(refundId: refundId);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<RefundsListState> _mapFetchByTransactionIdToState({required String transactionId}) async* {
-    yield* _startFetch(currentIdQuery: transactionId);
+  void _mapFetchByTransactionIdToState({required String transactionId, required Emitter<RefundsListState> emit}) async {
+    _startFetch(emit: emit, currentIdQuery: transactionId);
 
     try {
       final PaginateDataHolder paginateData = await _refundRepository.fetchByTransactionId(transactionId: transactionId);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<RefundsListState> _mapFetchByCustomerIdToState({required String customerId}) async* {
-    yield* _startFetch(currentIdQuery: customerId);
+  void _mapFetchByCustomerIdToState({required String customerId, required Emitter<RefundsListState> emit}) async {
+    _startFetch(emit: emit, currentIdQuery: customerId);
 
     try {
       final PaginateDataHolder paginateData = await _refundRepository.fetchByCustomerId(customerId: customerId, dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<RefundsListState> _mapFetchByCustomerNameToState({required FullName customerName}) async* {
-    yield* _startFetch(currentNameQuery: customerName);
+  void _mapFetchByCustomerNameToState({required FullName fullName, required Emitter<RefundsListState> emit}) async {
+    _startFetch(emit: emit, currentNameQuery: fullName);
 
     try {
-      final PaginateDataHolder paginateData = await _refundRepository.fetchByCustomerName(firstName: customerName.first, lastName: customerName.last, dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      final PaginateDataHolder paginateData = await _refundRepository.fetchByCustomerName(firstName: fullName.first, lastName: fullName.last, dateRange: state.currentDateRange);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<RefundsListState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<RefundsListState> emit}) async {
     final DateTimeRange? previousDateRange = state.currentDateRange;
 
     if (previousDateRange != event.dateRange) {
-      yield state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null);
+      emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
       switch (state.currentFilter) {
         case FilterType.refundId:
-          yield* _mapFetchByRefundIdToState(refundId: state.currentIdQuery!);
+          _mapFetchByRefundIdToState(refundId: state.currentIdQuery!, emit: emit);
           break;
         case FilterType.transactionId:
-          yield* _mapFetchByTransactionIdToState(transactionId: state.currentIdQuery!);
+          _mapFetchByTransactionIdToState(transactionId: state.currentIdQuery!, emit: emit);
           break;
         case FilterType.customerId:
-          yield* _mapFetchByCustomerIdToState(customerId: state.currentIdQuery!);
+          _mapFetchByCustomerIdToState(customerId: state.currentIdQuery!, emit: emit);
           break;
         case FilterType.customerName:
-          yield* _mapFetchByCustomerNameToState(customerName: state.currentNameQuery!);
+          _mapFetchByCustomerNameToState(fullName: state.currentNameQuery!, emit: emit);
           break;
         default:
-          yield* _mapFetchAllToState();
+          _mapFetchAllToState(emit: emit);
       }
     }
   }
 
-  Stream<RefundsListState> _mapFilterChangedToState({required FilterChanged event}) async* {
+  void _mapFilterChangedToState({required FilterChanged event, required Emitter<RefundsListState> emit}) async {
     if (event.filter == FilterType.all) {
-      yield state.update(currentFilter: event.filter, isDateReset: true);
-      yield* _mapFetchAllToState();
+      emit(state.update(currentFilter: event.filter, isDateReset: true));
+      _mapFetchAllToState(emit: emit);
     } else {
-      yield state.update(currentFilter: event.filter);
+      emit(state.update(currentFilter: event.filter));
     }
   }
 
-  Stream<RefundsListState> _startFetch({String? currentIdQuery, FullName? currentNameQuery}) async* {
-    yield state.reset(currentIdQuery: currentIdQuery, currentNameQuery: currentNameQuery);
+  void _startFetch({required Emitter<RefundsListState> emit, String? currentIdQuery, FullName? currentNameQuery}) async {
+    emit(state.reset(currentIdQuery: currentIdQuery, currentNameQuery: currentNameQuery));
   }
   
-  Stream<RefundsListState> _handleSuccess({required PaginateDataHolder paginateData}) async* {
-    yield state.update(
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<RefundsListState> emit}) async {
+    emit(state.update(
       loading: false,
       paginating: false,
       refunds: state.refunds + (paginateData.data as List<RefundResource>),
       nextUrl: paginateData.next,
       hasReachedEnd: paginateData.next == null
-    );
+    ));
   }
 
-  Stream<RefundsListState> _handleError({required String error}) async* {
-    yield state.update(loading: false, paginating: false, errorMessage: error); 
+  void _handleError({required String error, required Emitter<RefundsListState> emit}) async {
+    emit(state.update(loading: false, paginating: false, errorMessage: error)); 
   }
   
   void _onDateRangeChanged(DateTimeRange? dateRange) {

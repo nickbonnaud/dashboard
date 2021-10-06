@@ -30,23 +30,18 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     : _customerRepository = customerRepository,
       _filterButtonBloc = filterButtonBloc,
       super(CustomersListState.initial(currentDateRange: dateRangeCubit.state)) {
+        _eventHandler();
+        
         _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
         _filterButtonStream = filterButtonBloc.stream.listen(_onFilterChanged);
-      }
+  }
 
-  @override
-  Stream<CustomersListState> mapEventToState(CustomersListEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    } else if (event is FetchAll) {
-      yield* _mapFetchToState();
-    } else if (event is FetchMore) {
-      yield* _mapFetchMoreToState();
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    } else if (event is FilterButtonChanged) {
-      yield* _mapFilterButtonChangedToState();
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) => _mapFetchToState(emit: emit));
+    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
+    on<FilterButtonChanged>((event, emit) => _mapFilterButtonChangedToState(emit: emit));
   }
 
   @override
@@ -56,22 +51,22 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     return super.close();
   }
 
-  Stream<CustomersListState> _mapInitToState() async* {
-    yield state.update(loading: true);
+  void _mapInitToState({required Emitter<CustomersListState> emit}) async {
+    emit(state.update(loading: true));
 
     try {
       final PaginateDataHolder paginateData = await _customerRepository.fetchAll(
         searchHistoric: _filterButtonBloc.state.searchHistoric,
         withTransactions: _filterButtonBloc.state.withTransactions
       );
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<CustomersListState> _mapFetchToState() async* {
-    yield* _startFetch();
+  void _mapFetchToState({required Emitter<CustomersListState> emit}) async {
+    _startFetch(emit: emit);
 
     try {
       final PaginateDataHolder paginateData = await _customerRepository.fetchAll(
@@ -79,52 +74,52 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
         withTransactions: _filterButtonBloc.state.withTransactions,
         dateRange: state.currentDateRange
       );
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<CustomersListState> _mapFetchMoreToState() async* {
+  void _mapFetchMoreToState({required Emitter<CustomersListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
-      yield state.update(paginating: true);
+      emit(state.update(paginating: true));
       try {
         final PaginateDataHolder paginateData = await _customerRepository.paginate(url: state.nextUrl!);
-        yield* _handleSuccess(paginateData: paginateData);
+        _handleSuccess(paginateData: paginateData, emit: emit);
       } on ApiException catch (exception) {
-        yield* _handleError(error: exception.error);
+        _handleError(error: exception.error, emit: emit);
       }
     }
   }
 
-  Stream<CustomersListState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<CustomersListState> emit}) async {
     final DateTimeRange? previousDateRange = state.currentDateRange;
     if (previousDateRange != event.dateRange) {
-      yield state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null);
-      yield* _mapFetchToState();
+      emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
+      _mapFetchToState(emit: emit);
     }
   }
 
-  Stream<CustomersListState> _mapFilterButtonChangedToState() async* {
-    yield* _mapFetchToState();
+  void _mapFilterButtonChangedToState({required Emitter<CustomersListState> emit}) async {
+    _mapFetchToState(emit: emit);
   }
 
-  Stream<CustomersListState> _startFetch() async* {
-    yield state.reset();
+  void _startFetch({required Emitter<CustomersListState> emit}) async {
+    emit(state.reset());
   }
   
-  Stream<CustomersListState> _handleSuccess({required PaginateDataHolder paginateData}) async* {
-    yield state.update(
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<CustomersListState> emit}) async {
+    emit(state.update(
       loading: false,
       paginating: false,
       customers: state.customers + (paginateData.data as List<CustomerResource>),
       nextUrl: paginateData.next,
       hasReachedEnd: paginateData.next == null
-    );
+    ));
   }
 
-  Stream<CustomersListState> _handleError({required String error}) async* {
-    yield state.update(loading: false, paginating: false, errorMessage: error);
+  void _handleError({required String error, required Emitter<CustomersListState> emit}) async {
+    emit(state.update(loading: false, paginating: false, errorMessage: error));
   }
   
   void _onDateRangeChanged(DateTimeRange? dateRange) {

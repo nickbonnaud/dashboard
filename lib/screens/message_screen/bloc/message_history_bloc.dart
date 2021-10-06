@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/message/message.dart';
 import 'package:dashboard/models/message/reply.dart';
@@ -15,18 +13,14 @@ class MessageHistoryBloc extends Bloc<MessageHistoryEvent, MessageHistoryState> 
   
   MessageHistoryBloc({required MessageListScreenBloc messageListScreenBloc, required Message message}) 
     : _messageListScreenBloc = messageListScreenBloc,
-      super(MessageHistoryState.initial(message: message));
+      super(MessageHistoryState.initial(message: message)) { _eventHandler(); }
 
-  @override
-  Stream<MessageHistoryState> mapEventToState(MessageHistoryEvent event) async* {
-    if (event is MarkAsRead) {
-      yield* _mapMarkAsReadState();
-    } else if (event is ReplyAdded) {
-      yield* _mapReplyAddedToState(event: event);
-    }
+  void _eventHandler() {
+    on<MarkAsRead>((event, emit) => _mapMarkAsReadState(emit: emit));
+    on<ReplyAdded>((event, emit) => _mapReplyAddedToState(event: event, emit: emit));
   }
 
-  Stream<MessageHistoryState> _mapMarkAsReadState() async* {
+  void _mapMarkAsReadState({required Emitter<MessageHistoryState> emit}) async {
     final bool messageHistoryRead = state.message.hasUnread;
     
     List<Reply> replies = state.message.replies.map((reply) {
@@ -40,17 +34,17 @@ class MessageHistoryBloc extends Bloc<MessageHistoryEvent, MessageHistoryState> 
       replies: replies, 
       read: state.message.fromBusiness ? state.message.read : true
     );
-    yield* _updateBlocs(message: message, messageHistoryRead: messageHistoryRead);
+    _updateBlocs(message: message, emit: emit, messageHistoryRead: messageHistoryRead);
     
   }
   
-  Stream<MessageHistoryState> _mapReplyAddedToState({required ReplyAdded event}) async* {
+  void _mapReplyAddedToState({required ReplyAdded event, required Emitter<MessageHistoryState> emit}) async {
     final Message message = state.message.update(replies: state.message.replies..insert(0, event.reply), latestReply: DateTime.now());
-    yield* _updateBlocs(message: message);
+    _updateBlocs(message: message, emit: emit);
   }
 
-  Stream<MessageHistoryState> _updateBlocs({required Message message, bool messageHistoryRead = false}) async* {
+  void _updateBlocs({required Message message, required Emitter<MessageHistoryState> emit, bool messageHistoryRead = false}) async {
     _messageListScreenBloc.add(MessageUpdated(message: message, messageHistoryRead: messageHistoryRead));
-    yield MessageHistoryState(message: message);
+    emit(MessageHistoryState(message: message));
   }
 }

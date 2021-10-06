@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/paginate_data_holder.dart';
 import 'package:dashboard/models/transaction/transaction_resource.dart';
@@ -16,24 +14,21 @@ class RecentTransactionsBloc extends Bloc<RecentTransactionsEvent, RecentTransac
   
   RecentTransactionsBloc({required TransactionRepository transactionRepository})
     : _transactionRepository = transactionRepository,
-      super(RecentTransactionsState.initial());
+      super(RecentTransactionsState.initial()) { _eventHandler(); }
 
-  @override
-  Stream<RecentTransactionsState> mapEventToState(RecentTransactionsEvent event) async* {
-    if (event is InitRecentTransactions) {
-      yield* _mapInitRecentTransactionsToState();
-    }
+  void _eventHandler() {
+    on<InitRecentTransactions>((event, emit) => _mapInitRecentTransactionsToState(emit: emit));
   }
 
-  Stream<RecentTransactionsState> _mapInitRecentTransactionsToState() async* {
-    yield state.update(loading: true);
+  void _mapInitRecentTransactionsToState({required Emitter<RecentTransactionsState> emit}) async {
+    emit(state.update(loading: true));
 
     try {
       final PaginateDataHolder paginateData =  await _transactionRepository.fetchAll();
       final List<TransactionResource> transactions = (paginateData.data as List<TransactionResource>).take(5).toList();
-      yield state.update(loading: false, transactions: transactions);
+      emit(state.update(loading: false, transactions: transactions));
     } on ApiException catch (exception) {
-      yield state.update(loading: false, errorMessage: exception.error);
+      emit(state.update(loading: false, errorMessage: exception.error));
     }
   }
 }

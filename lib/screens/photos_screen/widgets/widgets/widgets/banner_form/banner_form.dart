@@ -1,5 +1,4 @@
 import 'package:dashboard/global_widgets/cached_image.dart';
-import 'package:dashboard/global_widgets/image_fade.dart';
 import 'package:dashboard/models/photo.dart';
 import 'package:dashboard/repositories/photo_picker_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/repositories/geo_repository.dart';
 import 'package:equatable/equatable.dart';
@@ -14,22 +12,19 @@ class PermissionsBloc extends Bloc<PermissionsEvent, PermissionsState> {
 
   PermissionsBloc({required GeoRepository geoRepository}) 
     : _geoRepository = geoRepository,
-      super(PermissionsState.initial());
+      super(PermissionsState.initial()) { _eventHandler(); }
 
-  @override
-  Stream<PermissionsState> mapEventToState(PermissionsEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
   }
 
-  Stream<PermissionsState> _mapInitToState() async* {
-    yield state.update(loading: true);
+  void _mapInitToState({required Emitter<PermissionsState> emit}) async {
+    emit(state.update(loading: true));
     List responses = await Future.wait([_geoRepository.isEnabled(), _geoRepository.getPermissionStatus()]);
-    yield state.update(
+    emit(state.update(
       loading: false,
       isGeoEnabled: responses.first,
       hasGeoPermission: responses.last == PermissionStatus.granted
-    );
+    ));
   }
 }

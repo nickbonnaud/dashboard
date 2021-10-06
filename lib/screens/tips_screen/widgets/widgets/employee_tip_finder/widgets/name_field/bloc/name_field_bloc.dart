@@ -1,11 +1,9 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
+import 'package:dashboard/resources/helpers/debouncer.dart';
 import 'package:dashboard/resources/helpers/validators.dart';
 import 'package:dashboard/screens/tips_screen/widgets/widgets/employee_tip_finder/bloc/employee_tip_finder_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'name_field_event.dart';
 part 'name_field_state.dart';
@@ -18,21 +16,13 @@ class NameFieldBloc extends Bloc<NameFieldEvent, NameFieldState> {
       super(NameFieldState.initial(
         firstName: employeeTipFinderBloc.employeeFirstName,
         lastName: employeeTipFinderBloc.employeeLastName
-      ));
+      )) { _eventHandler(); }
 
-  @override
-  Stream<Transition<NameFieldEvent, NameFieldState>> transformEvents(Stream<NameFieldEvent> events, transitionFn) {
-    return super.transformEvents(events.debounceTime(Duration(seconds: 1)), transitionFn);
+  void _eventHandler() {
+    on<NameChanged>((event, emit) => _mapNameChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
   }
   
-  @override
-  Stream<NameFieldState> mapEventToState(NameFieldEvent event) async* {
-    if (event is NameChanged) {
-      yield* _mapNameChangedToState(event: event);
-    }
-  }
-
-  Stream<NameFieldState> _mapNameChangedToState({required NameChanged event}) async* {
+  void _mapNameChangedToState({required NameChanged event, required Emitter<NameFieldState> emit}) async {
     final String previousFirstName = state.firstName;
     final String previousLastName = state.lastName;
     final bool isValidFirstName = Validators.isValidFirstName(name: event.firstName);
@@ -40,7 +30,7 @@ class NameFieldBloc extends Bloc<NameFieldEvent, NameFieldState> {
     final bool firstNameChanged = previousFirstName != event.firstName;
     final bool lastNameChanged = previousLastName != event.lastName;
 
-    yield state.update(firstName: event.firstName, isFirstNameValid: isValidFirstName, lastName: event.lastName, isLastNameValid: isValidLastName);
+    emit(state.update(firstName: event.firstName, isFirstNameValid: isValidFirstName, lastName: event.lastName, isLastNameValid: isValidLastName));
     
     if (firstNameChanged && (isValidFirstName || event.firstName.length == 0)) {
       final String? lastName = isValidLastName ? event.lastName : null;

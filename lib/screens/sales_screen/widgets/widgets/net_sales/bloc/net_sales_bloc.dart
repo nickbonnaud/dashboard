@@ -19,16 +19,13 @@ class NetSalesBloc extends Bloc<NetSalesEvent, NetSalesState> {
   NetSalesBloc({required DateRangeCubit dateRangeCubit, required TransactionRepository transactionRepository})
     : _transactionRepository = transactionRepository,
       super(NetSalesInitial()) {
+        _eventHandler();
         _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
       }
 
-  @override
-  Stream<NetSalesState> mapEventToState(NetSalesEvent event) async* {
-    if (event is InitNetSales) {
-      yield* _mapInitNetSalesToSales();
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    }
+  void _eventHandler() {
+    on<InitNetSales>((event, emit) => _mapInitNetSalesToSales(emit: emit));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
   @override
@@ -37,25 +34,25 @@ class NetSalesBloc extends Bloc<NetSalesEvent, NetSalesState> {
     return super.close();
   }
 
-  Stream<NetSalesState> _mapInitNetSalesToSales() async* {
-    yield Loading();
+  void _mapInitNetSalesToSales({required Emitter<NetSalesState> emit}) async {
+    emit(Loading());
 
     try {
       final int total = await _transactionRepository.fetchNetSalesToday();
-      yield NetSalesLoaded(netSales: total);
+      emit(NetSalesLoaded(netSales: total));
     } on ApiException catch (exception) {
-      yield FetchFailed(error: exception.error);
+      emit(FetchFailed(error: exception.error));
     }
   }
 
-  Stream<NetSalesState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
-    yield Loading();
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<NetSalesState> emit}) async {
+    emit(Loading());
 
     try {
       final int total = await _transactionRepository.fetchNetSalesDateRange(dateRange: event.dateRange);
-      yield NetSalesLoaded(netSales: total);
+      emit(NetSalesLoaded(netSales: total));
     } on ApiException catch (exception) {
-      yield FetchFailed(error: exception.error);
+      emit(FetchFailed(error: exception.error));
     }
   }
 

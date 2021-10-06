@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
@@ -7,22 +5,19 @@ part 'filter_button_event.dart';
 part 'filter_button_state.dart';
 
 class FilterButtonBloc extends Bloc<FilterButtonEvent, FilterButtonState> {
-  FilterButtonBloc() : super(FilterButtonState.initial());
+  FilterButtonBloc()
+    : super(FilterButtonState.initial()) { _eventHandler(); }
 
-  @override
-  Stream<FilterButtonState> mapEventToState(FilterButtonEvent event) async* {
-    if (event is SearchHistoricChanged) {
-      yield* _mapSearchHistoricChangedToState();
-    } else if (event is WithTransactionsChanged) {
-      yield* _mapWithTransactionsChangedToState();
-    }
+  void _eventHandler() {
+    on<SearchHistoricChanged>((event, emit) => _mapSearchHistoricChangedToState(emit: emit));
+    on<WithTransactionsChanged>((event, emit) => _mapWithTransactionsChangedToState(emit: emit));
   }
 
-  Stream<FilterButtonState> _mapSearchHistoricChangedToState() async* {
-    yield state.update(searchHistoric: !state.searchHistoric);
+  void _mapSearchHistoricChangedToState({required Emitter<FilterButtonState> emit}) async {
+    emit(state.update(searchHistoric: !state.searchHistoric));
   }
 
-  Stream<FilterButtonState> _mapWithTransactionsChangedToState() async* {
-    yield state.update(withTransactions: !state.withTransactions);
+  void _mapWithTransactionsChangedToState({required Emitter<FilterButtonState> emit}) async {
+    emit(state.update(withTransactions: !state.withTransactions));
   }
 }

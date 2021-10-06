@@ -35,21 +35,16 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
       _bannerFormBloc = bannerFormBloc,
       _businessBloc = businessBloc,
       super(PhotosFormState.intial()) {
+        _eventHandler();
         _logoStream = _logoFormBloc.stream.listen(_onLogoChanged);
         _bannerStream = _bannerFormBloc.stream.listen(_onBannerChanged);
       }
 
-  @override
-  Stream<PhotosFormState> mapEventToState(PhotosFormEvent event) async* {
-    if (event is LogoFilePicked) {
-      yield* _mapLogoFilePickedToState(event: event);
-    } else if (event is BannerFilePicked) {
-      yield* _mapBannerFilePickedToState(event: event);
-    } else if (event is Submitted) {
-      yield* _mapSubmittedToState(event: event);
-    } else if (event is Reset) {
-      yield* _mapResetToState();
-    }
+  void _eventHandler() {
+    on<LogoFilePicked>((event, emit) => _mapLogoFilePickedToState(event: event, emit: emit));
+    on<BannerFilePicked>((event, emit) => _mapBannerFilePickedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
   @override
@@ -59,16 +54,16 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
     return super.close();
   }
 
-  Stream<PhotosFormState> _mapLogoFilePickedToState({required LogoFilePicked event}) async* {
-    yield state.update(logoFile: event.logo);
+  void _mapLogoFilePickedToState({required LogoFilePicked event, required Emitter<PhotosFormState> emit}) async {
+    emit(state.update(logoFile: event.logo));
   }
 
-  Stream<PhotosFormState> _mapBannerFilePickedToState({required BannerFilePicked event}) async* {
-    yield state.update(bannerFile: event.banner);
+  void _mapBannerFilePickedToState({required BannerFilePicked event, required Emitter<PhotosFormState> emit}) async {
+    emit(state.update(bannerFile: event.banner));
   }
 
-  Stream<PhotosFormState> _mapSubmittedToState({required Submitted event}) async* {
-    yield state.update(isSubmitting: true);
+  void _mapSubmittedToState({required Submitted event, required Emitter<PhotosFormState> emit}) async {
+    emit(state.update(isSubmitting: true));
 
     try {
       Photos photos;
@@ -80,14 +75,14 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
         photos = await _storeBanner(identifier: event.identifier);
       }
       _updateBusinessBloc(photos: photos);
-      yield state.update(isSubmitting: false, isSuccess: true);
+      emit(state.update(isSubmitting: false, isSuccess: true));
     } on ApiException catch (exception) {
-      yield state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START);
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
     }
   }
 
-  Stream<PhotosFormState> _mapResetToState() async* {
-    yield state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP);
+  void _mapResetToState({required Emitter<PhotosFormState> emit}) async {
+    emit(state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 
   void _updateBusinessBloc({required Photos photos}) {

@@ -32,33 +32,22 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
         currentDateRange: dateRangeCubit.state
       )
     ) {
+      _eventHandler();
       _filterButtonStream = filterButtonCubit.stream.listen(_onFilterChanged);
       _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
     }
 
-  @override
-  Stream<TransactionsListState> mapEventToState(TransactionsListEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    } else if (event is FetchAll) {
-      yield* _mapFetchAllToState();
-    } else if (event is FetchMoreTransactions) {
-      yield* _mapFetchMoreTransactionsToState();
-    } else if (event is FetchByStatus) {
-      yield* _mapFetchByStatusToState(code: event.code);
-    } else if (event is FetchByCustomerId) {
-      yield* _mapFetchByCustomerIdToState(customerId: event.customerId);
-    } else if (event is FetchByTransactionId) {
-      yield* _mapFetchByTransactionIdToState(transactionId: event.transactionId);
-    } else if (event is FetchByCustomerName) {
-      yield* _mapFetchByCustomerNameToState(customerName: FullName(first: event.firstName, last: event.lastName));
-    } else if (event is FetchByEmployeeName) {
-      yield* _mapFetchByEmployeeNameToState(employeeName: FullName(first: event.firstName, last: event.lastName));
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    } else if (event is FilterChanged) {
-      yield* _mapFilterChangedToState(event: event);
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) => _mapFetchAllToState(emit: emit));
+    on<FetchMoreTransactions>((event, emit) => _mapFetchMoreTransactionsToState(emit: emit));
+    on<FetchByStatus>((event, emit) => _mapFetchByStatusToState(code: event.code, emit: emit));
+    on<FetchByCustomerId>((event, emit) => _mapFetchByCustomerIdToState(customerId: event.customerId, emit: emit));
+    on<FetchByTransactionId>((event, emit) => _mapFetchByTransactionIdToState(transactionId: event.transactionId, emit: emit));
+    on<FetchByCustomerName>((event, emit) => _mapFetchByCustomerNameToState(customerName: FullName(first: event.firstName, last: event.lastName), emit: emit));
+    on<FetchByEmployeeName>((event, emit) => _mapFetchByEmployeeNameToState(employeeName: FullName(first: event.firstName, last: event.lastName), emit: emit));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
+    on<FilterChanged>((event, emit) => _mapFilterChangedToState(event: event, emit: emit));
   }
 
   @override
@@ -68,147 +57,147 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     return super.close();
   }
 
-  Stream<TransactionsListState> _mapInitToState() async* {
-    yield state.update(loading: true);
+  void _mapInitToState({required Emitter<TransactionsListState> emit}) async {
+    emit(state.update(loading: true));
     
     try {
       final PaginateDataHolder paginateData = await _transactionRepository.fetchAll();
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<TransactionsListState> _mapFetchAllToState() async* {
-    yield* _startFetch();
+  void _mapFetchAllToState({required Emitter<TransactionsListState> emit}) async {
+    _startFetch(emit: emit);
 
     try {
       final PaginateDataHolder paginateData = await _transactionRepository.fetchAll(dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<TransactionsListState> _mapFetchMoreTransactionsToState() async* {
+  void _mapFetchMoreTransactionsToState({required Emitter<TransactionsListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
-      yield state.update(paginating: true);
+      emit(state.update(paginating: true));
       try {
         final PaginateDataHolder paginateData = await _transactionRepository.paginate(url: state.nextUrl!);
-        yield* _handleSuccess(paginateData: paginateData);
+        _handleSuccess(paginateData: paginateData, emit: emit);
       } on ApiException catch (exception) {
-        yield* _handleError(error: exception.error);
+        _handleError(error: exception.error, emit: emit);
       }
     }
   }
 
-  Stream<TransactionsListState> _mapFetchByStatusToState({required int code}) async* {
-    yield* _startFetch(currentIdQuery: code.toString());
+  void _mapFetchByStatusToState({required int code, required Emitter<TransactionsListState> emit}) async {
+    _startFetch(emit: emit, currentIdQuery: code.toString());
 
     try {
       final PaginateDataHolder paginateData = await _transactionRepository.fetchByCode(code: code, dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<TransactionsListState> _mapFetchByCustomerIdToState({required String customerId}) async* {
-    yield* _startFetch(currentIdQuery: customerId);
+  void _mapFetchByCustomerIdToState({required String customerId, required Emitter<TransactionsListState> emit}) async {
+    _startFetch(emit: emit, currentIdQuery: customerId);
 
     try {
       final PaginateDataHolder paginateData = await _transactionRepository.fetchByCustomerId(customerId: customerId, dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<TransactionsListState> _mapFetchByTransactionIdToState({required String transactionId}) async* {
-    yield* _startFetch(currentIdQuery: transactionId);
+  void _mapFetchByTransactionIdToState({required String transactionId, required Emitter<TransactionsListState> emit}) async {
+    _startFetch(emit: emit, currentIdQuery: transactionId);
 
     try {
       final PaginateDataHolder paginateData = await _transactionRepository.fetchByTransactionId(transactionId: transactionId);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<TransactionsListState> _mapFetchByCustomerNameToState({required FullName customerName}) async* {
-    yield* _startFetch(currentNameQuery: customerName);
+  void _mapFetchByCustomerNameToState({required FullName customerName, required Emitter<TransactionsListState> emit}) async {
+    _startFetch(emit: emit, currentNameQuery: customerName);
 
     try {
       final PaginateDataHolder paginateData = await _transactionRepository.fetchByCustomerName(firstName: customerName.first, lastName: customerName.last, dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<TransactionsListState> _mapFetchByEmployeeNameToState({required FullName employeeName}) async* {
-    yield* _startFetch(currentNameQuery: employeeName);
+  void _mapFetchByEmployeeNameToState({required FullName employeeName, required Emitter<TransactionsListState> emit}) async {
+    _startFetch(emit: emit, currentNameQuery: employeeName);
 
     try {
       final PaginateDataHolder paginateData = await _transactionRepository.fetchByEmployeeName(firstName: employeeName.first, lastName: employeeName.last, dateRange: state.currentDateRange);
-      yield* _handleSuccess(paginateData: paginateData);
+      _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<TransactionsListState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TransactionsListState> emit}) async {
     final DateTimeRange? previousDateRange = state.currentDateRange;
 
     if (previousDateRange != event.dateRange) {
-      yield state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null);
+      emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
       switch (state.currentFilter) {
         case FilterType.transactionId:
-          yield* _mapFetchByTransactionIdToState(transactionId: state.currentIdQuery!);
+          _mapFetchByTransactionIdToState(transactionId: state.currentIdQuery!, emit: emit);
           break;
         case FilterType.customerId:
-          yield* _mapFetchByCustomerIdToState(customerId: state.currentIdQuery!);
+          _mapFetchByCustomerIdToState(customerId: state.currentIdQuery!, emit: emit);
           break;
         case FilterType.status:
-          yield* _mapFetchByStatusToState(code: int.parse(state.currentIdQuery!));
+          _mapFetchByStatusToState(code: int.parse(state.currentIdQuery!), emit: emit);
           break;
         case FilterType.customerName:
-          yield* _mapFetchByCustomerNameToState(customerName: state.currentNameQuery!);
+          _mapFetchByCustomerNameToState(customerName: state.currentNameQuery!, emit: emit);
           break;
         case FilterType.employeeName:
-          yield* _mapFetchByEmployeeNameToState(employeeName: state.currentNameQuery!);
+          _mapFetchByEmployeeNameToState(employeeName: state.currentNameQuery!, emit: emit);
           break;
         default:
-          yield* _mapFetchAllToState();
+          _mapFetchAllToState(emit: emit);
       }
     }
   }
 
-  Stream<TransactionsListState> _mapFilterChangedToState({required FilterChanged event}) async* {
+  void _mapFilterChangedToState({required FilterChanged event, required Emitter<TransactionsListState> emit}) async {
     if (event.filter == FilterType.all) {
-      yield state.update(currentFilter: event.filter, isDateReset: true);
-      yield* _mapFetchAllToState();
+      emit(state.update(currentFilter: event.filter, isDateReset: true));
+      _mapFetchAllToState(emit: emit);
     } else {
-      yield state.update(currentFilter: event.filter);
+      emit(state.update(currentFilter: event.filter));
     }
   }
   
-  Stream<TransactionsListState> _startFetch({String? currentIdQuery, FullName? currentNameQuery}) async* {
-    yield state.reset(currentIdQuery: currentIdQuery, currentNameQuery: currentNameQuery);
+  void _startFetch({required Emitter<TransactionsListState> emit, String? currentIdQuery, FullName? currentNameQuery}) async {
+    emit(state.reset(currentIdQuery: currentIdQuery, currentNameQuery: currentNameQuery));
   }
   
-  Stream<TransactionsListState> _handleSuccess({required PaginateDataHolder paginateData}) async* {
-    yield state.update(
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<TransactionsListState> emit}) async {
+    emit(state.update(
       loading: false,
       paginating: false,
       transactions: state.transactions + (paginateData.data as List<TransactionResource>),
       nextUrl: paginateData.next,
       hasReachedEnd: paginateData.next == null
-    );
+    ));
   }
 
-  Stream<TransactionsListState> _handleError({required String error}) async* {
-    yield state.update(loading: false, paginating: false, errorMessage: error); 
+  void _handleError({required String error, required Emitter<TransactionsListState> emit}) async {
+    emit(state.update(loading: false, paginating: false, errorMessage: error)); 
   }
 
   void _onDateRangeChanged(DateTimeRange? dateRange) {

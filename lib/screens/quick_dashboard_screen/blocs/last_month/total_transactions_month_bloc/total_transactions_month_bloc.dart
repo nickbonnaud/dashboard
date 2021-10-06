@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/repositories/transaction_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
@@ -13,22 +11,19 @@ class TotalTransactionsMonthBloc extends Bloc<TotalTransactionsMonthEvent, Total
   
   TotalTransactionsMonthBloc({required TransactionRepository transactionRepository})
     : _transactionRepository = transactionRepository,
-      super(TotalTransactionsInitial());
+      super(TotalTransactionsInitial()) { _eventHandler(); }
 
-  @override
-  Stream<TotalTransactionsMonthState> mapEventToState(TotalTransactionsMonthEvent event) async* {
-    if (event is FetchTotalTransactionsMonth) {
-      yield* _mapFetchTotalTransactionsToState();
-    }
+  void _eventHandler() {
+    on<FetchTotalTransactionsMonth>((event, emit) => _mapFetchTotalTransactionsToState(emit: emit));
   }
 
-  Stream<TotalTransactionsMonthState> _mapFetchTotalTransactionsToState() async* {
-    yield Loading();
+  void _mapFetchTotalTransactionsToState({required Emitter<TotalTransactionsMonthState> emit}) async {
+    emit(Loading());
     try {
       final int totalTransactions = await _transactionRepository.fetchTotalTransactionsMonth();
-      yield TotalTransactionsLoaded(totalTransactions: totalTransactions);
+      emit(TotalTransactionsLoaded(totalTransactions: totalTransactions));
     } on ApiException catch (exception) {
-      yield FetchTotalTransactionsFailed(error: exception.error);
+      emit(FetchTotalTransactionsFailed(error: exception.error));
     }
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/business/accounts.dart';
 import 'package:dashboard/models/business/bank_account.dart';
@@ -24,117 +22,111 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
   
   BusinessBloc({required BusinessRepository businessRepository})
     : _businessRepository = businessRepository,
-      super(BusinessInitial());
+      super(BusinessInitial()) { _eventHandler(); }
 
-  @override
-  Stream<BusinessState> mapEventToState(BusinessEvent event) async* {
-    if (event is BusinessAuthenticated) {
-      yield* _mapBusinessAuthenticatedToState();
-    } else if (event is BusinessLoggedIn) {
-      yield BusinessLoaded(business: event.business);
-    } else if (event is BusinessLoggedOut) {
-      yield BusinessInitial();
-    } else if (event is BankAccountUpdated) {
-      yield* _mapBankAccountUpdatedToState(event: event);
-    } else if (event is PhotosUpdated) {
-      yield* _mapPhotosUpdatedToState(event: event);
-    } else if (event is BusinessAccountUpdated) {
-      yield* _mapBusinessAccountUpdatedToState(event: event);
-    } else if (event is HoursUpdated) {
-      yield* _mapHoursUpdatedToState(event: event);
-    } else if (event is LocationUpdated) {
-      yield* _mapLocationUpdatedToState(event: event);
-    } else if (event is OwnerAccountsUpdated) {
-      yield* _mapOwnerAccountsUpdatedToState(event: event);
-    } else if (event is ProfileUpdated) {
-      yield* _mapProfileUpdatedToState(event: event);
-    } else if (event is EmailUpdated) {
-      yield* _mapEmailUpdatedToState(event: event);
-    } else if (event is BusinessUpdated) {
-      yield* _mapBusinessUpdatedToState(event: event);
-    }
+  void _eventHandler() {
+    on<BusinessAuthenticated>((event, emit) => _mapBusinessAuthenticatedToState(emit: emit));
+    on<BusinessLoggedIn>((event, emit) => _mapBusinessLoggedInToState(event: event, emit: emit));
+    on<BusinessLoggedOut>((event, emit) => _mapBusinessLoggedOutToState(emit: emit));
+    on<BankAccountUpdated>((event, emit) => _mapBankAccountUpdatedToState(event: event, emit: emit));
+    on<PhotosUpdated>((event, emit) => _mapPhotosUpdatedToState(event: event, emit: emit));
+    on<BusinessAccountUpdated>((event, emit) => _mapBusinessAccountUpdatedToState(event: event, emit: emit));
+    on<HoursUpdated>((event, emit) => _mapHoursUpdatedToState(event: event, emit: emit));
+    on<LocationUpdated>((event, emit) => _mapLocationUpdatedToState(event: event, emit: emit));
+    on<OwnerAccountsUpdated>((event, emit) => _mapOwnerAccountsUpdatedToState(event: event, emit: emit));
+    on<ProfileUpdated>((event, emit) => _mapProfileUpdatedToState(event: event, emit: emit));
+    on<EmailUpdated>((event, emit) => _mapEmailUpdatedToState(event: event, emit: emit));
+    on<BusinessUpdated>((event, emit) => _mapBusinessUpdatedToState(event: event, emit: emit));
   }
-
-  Stream<BusinessState> _mapBusinessAuthenticatedToState() async* {
-    yield BusinessLoading();
+  
+  void _mapBusinessAuthenticatedToState({required Emitter<BusinessState> emit}) async {
+    emit(BusinessLoading());
     try {
       Business business = await _businessRepository.fetch();
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     } on ApiException catch(exception) {
-      yield BusinessFailedToLoad(error: exception.error);
+      emit(BusinessFailedToLoad(error: exception.error));
     }
   }
 
-  Stream<BusinessState> _mapBusinessUpdatedToState({required BusinessUpdated event}) async* {
-    yield BusinessLoaded(business: event.business);
+  void _mapBusinessLoggedInToState({required BusinessLoggedIn event, required Emitter<BusinessState> emit}) async {
+    emit(BusinessLoaded(business: event.business));
   }
 
-  Stream<BusinessState> _mapBankAccountUpdatedToState({required BankAccountUpdated event}) async* {
+  void _mapBusinessLoggedOutToState({required Emitter<BusinessState> emit}) async {
+    emit(BusinessInitial());
+  }
+
+  void _mapBusinessUpdatedToState({required BusinessUpdated event, required Emitter<BusinessState> emit}) async {
+    emit(BusinessLoaded(business: event.business));
+  }
+
+  void _mapBankAccountUpdatedToState({required BankAccountUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       
       Accounts accounts = business.accounts.update(bankAccount: event.bankAccount);
       business = business.update(accounts: accounts);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 
-  Stream<BusinessState> _mapBusinessAccountUpdatedToState({required BusinessAccountUpdated event}) async* {
+  void _mapBusinessAccountUpdatedToState({required BusinessAccountUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       Accounts accounts = business.accounts.update(businessAccount: event.businessAccount);
       business = business.update(accounts: accounts);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 
-  Stream<BusinessState> _mapPhotosUpdatedToState({required PhotosUpdated event}) async* {
+  void _mapPhotosUpdatedToState({required PhotosUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(photos: event.photos);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 
-  Stream<BusinessState> _mapHoursUpdatedToState({required HoursUpdated event}) async* {
+  void _mapHoursUpdatedToState({required HoursUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       Profile profile = business.profile.update(hours: event.hours);
       business = business.update(profile: profile);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 
-  Stream<BusinessState> _mapLocationUpdatedToState({required LocationUpdated event}) async* {
+  void _mapLocationUpdatedToState({required LocationUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(location: event.location);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 
-  Stream<BusinessState> _mapOwnerAccountsUpdatedToState({required OwnerAccountsUpdated event}) async* {
+  void _mapOwnerAccountsUpdatedToState({required OwnerAccountsUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       Accounts accounts = business.accounts.update(ownerAccounts: event.ownerAccounts);
       business = business.update(accounts: accounts);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 
-  Stream<BusinessState> _mapProfileUpdatedToState({required ProfileUpdated event}) async* {
+  void _mapProfileUpdatedToState({required ProfileUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(profile: event.profile);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 
-  Stream<BusinessState> _mapEmailUpdatedToState({required EmailUpdated event}) async* {
+  void _mapEmailUpdatedToState({required EmailUpdated event, required Emitter<BusinessState> emit}) async {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(email: event.email);
-      yield BusinessLoaded(business: business);
+      emit(BusinessLoaded(business: business));
     }
   }
 }

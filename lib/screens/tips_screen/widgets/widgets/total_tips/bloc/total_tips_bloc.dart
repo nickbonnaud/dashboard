@@ -19,43 +19,40 @@ class TotalTipsBloc extends Bloc<TotalTipsEvent, TotalTipsState> {
   TotalTipsBloc({required DateRangeCubit dateRangeCubit, required TransactionRepository transactionRepository})
     : _transactionRepository = transactionRepository,
       super(TotalTipsInitial()) {
+        _eventHandler();
         _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
       }
 
-  @override
-  Stream<TotalTipsState> mapEventToState(TotalTipsEvent event) async* {
-    if (event is InitTotal) {
-      yield* _mapInitTotalToState();
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    }
+  void _eventHandler() {
+    on<InitTotal>((event, emit) => _mapInitTotalToState(emit: emit));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
   }
-
+  
   @override
   Future<void> close() {
     _dateRangeStream.cancel();
     return super.close();
   }
 
-  Stream<TotalTipsState> _mapInitTotalToState() async* {
-    yield Loading();
+  void _mapInitTotalToState({required Emitter<TotalTipsState> emit}) async {
+    emit(Loading());
 
     try {
       final int total = await _transactionRepository.fetchTotalTipsToday();
-      yield TotalTipsLoaded(totalTips: total);
+      emit(TotalTipsLoaded(totalTips: total));
     } on ApiException catch (exception) {
-      yield FetchTotalTipsFailed(error: exception.error);
+      emit(FetchTotalTipsFailed(error: exception.error));
     }
   }
 
-  Stream<TotalTipsState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
-    yield Loading();
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TotalTipsState> emit}) async {
+    emit(Loading());
 
     try {
       final int total = await _transactionRepository.fetchTotalTipsDateRange(dateRange: event.dateRange);
-      yield TotalTipsLoaded(totalTips: total);
+      emit(TotalTipsLoaded(totalTips: total));
     } on ApiException catch (exception) {
-      yield FetchTotalTipsFailed(error: exception.error);
+      emit(FetchTotalTipsFailed(error: exception.error));
     }
   }
 

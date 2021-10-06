@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/repositories/transaction_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
@@ -13,22 +11,19 @@ class NetSalesMonthBloc extends Bloc<NetSalesMonthEvent, NetSalesMonthState> {
  
   NetSalesMonthBloc({required TransactionRepository transactionRepository})
     : _transactionRepository = transactionRepository,
-      super(NetSalesInitial());
+      super(NetSalesInitial()) { _eventHandler(); }
 
-  @override
-  Stream<NetSalesMonthState> mapEventToState(NetSalesMonthEvent event) async* {
-    if (event is FetchNetSalesMonth) {
-      yield* _mapFetchNetSalesToState();
-    }
+  void _eventHandler() {
+    on<FetchNetSalesMonth>((event, emit) => _mapFetchNetSalesToState(emit: emit));
   }
 
-  Stream<NetSalesMonthState> _mapFetchNetSalesToState() async* {
-    yield Loading();
+  void _mapFetchNetSalesToState({required Emitter<NetSalesMonthState> emit}) async {
+    emit(Loading());
     try {
       final int netSales = await _transactionRepository.fetchNetSalesMonth();
-      yield NetSalesLoaded(netSales: netSales);
+      emit(NetSalesLoaded(netSales: netSales));
     } on ApiException catch (exception) {
-      yield FetchNetSalesFailed(error: exception.error);
+      emit(FetchNetSalesFailed(error: exception.error));
     }
   }
 }

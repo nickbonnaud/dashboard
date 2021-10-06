@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/business.dart';
@@ -16,46 +14,41 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   AuthenticationBloc({required AuthenticationRepository authenticationRepository, required BusinessBloc businessBloc})
     : _authenticationRepository = authenticationRepository,
       _businessBloc = businessBloc,
-      super(Unknown()); 
+      super(Unknown()) { _eventHandler(); }
 
   bool get isAuthenticated => state is Authenticated;
 
-  @override
-  Stream<AuthenticationState> mapEventToState(AuthenticationEvent event) async* {
-    if (event is Init) {
-      yield* _mapInitToState();
-    } else if (event is LoggedIn) {
-      yield* _mapLoggedInToState(event: event);
-    } else if (event is LoggedOut) {
-      yield* _mapLoggedOutToState();
-    }
+  void _eventHandler() {
+    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<LoggedIn>((event, emit) => _mapLoggedInToState(event: event, emit: emit));
+    on<LoggedOut>((event, emit) => _mapLoggedOutToState(emit: emit));
   }
 
-  Stream<AuthenticationState> _mapInitToState() async* {
+  void _mapInitToState({required Emitter<AuthenticationState> emit}) async {
     final bool isSignedIn = _authenticationRepository.isSignedIn();
     // final bool isSignedIn = true;
     if (isSignedIn) {
       _businessBloc.add(BusinessAuthenticated());
-      yield Authenticated();
+      emit(Authenticated());
     } else {
-      yield Unauthenticated();
+      emit(Unauthenticated());
     }
   }
 
-  Stream<AuthenticationState> _mapLoggedInToState({required LoggedIn event}) async* {
+  void _mapLoggedInToState({required LoggedIn event, required Emitter<AuthenticationState> emit}) async {
     _businessBloc.add(BusinessLoggedIn(business: event.business));
-    yield Authenticated();
+    emit(Authenticated());
   }
 
-  Stream<AuthenticationState> _mapLoggedOutToState() async* {
+  void _mapLoggedOutToState({required Emitter<AuthenticationState> emit}) async {
     try {
       final bool loggedOut = await _authenticationRepository.logout();
       if (loggedOut) {
         _businessBloc.add(BusinessLoggedOut());
-        yield Unauthenticated();
+        emit(Unauthenticated());
       }
     } catch (error) {
-      yield state;
+      emit(state);
     }
   }
 }

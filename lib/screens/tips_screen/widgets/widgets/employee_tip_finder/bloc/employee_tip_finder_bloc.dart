@@ -20,16 +20,13 @@ class EmployeeTipFinderBloc extends Bloc<EmployeeTipFinderEvent, EmployeeTipFind
   EmployeeTipFinderBloc({required DateRangeCubit dateRangeCubit, required TipsRepository tipsRepository})
     : _tipsRepository = tipsRepository,
       super(EmployeeTipFinderState.initial(currentDateRange: dateRangeCubit.state)) {
+        _eventHandler();
         _dateRangeStream = dateRangeCubit.stream.listen(_onDateRangeChanged);
       }
   
-  @override
-  Stream<EmployeeTipFinderState> mapEventToState(EmployeeTipFinderEvent event) async* {
-    if (event is Fetch) {
-      yield* _mapFetchToState(firstName: event.firstName, lastName: event.lastName);
-    } else if (event is DateRangeChanged) {
-      yield* _mapDateRangeChangedToState(event: event);
-    }
+  void _eventHandler() {
+    on<Fetch>((event, emit) => _mapFetchToState(emit: emit, firstName: event.firstName, lastName: event.lastName));
+    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
   String get employeeFirstName => state.currentFirstName;
@@ -41,46 +38,46 @@ class EmployeeTipFinderBloc extends Bloc<EmployeeTipFinderEvent, EmployeeTipFind
     return super.close();
   }
 
-  Stream<EmployeeTipFinderState> _mapFetchToState({@required String? firstName, @required String? lastName}) async* {
-    yield* _startFetch(firstName: firstName, lastName: lastName);
+  void _mapFetchToState({required Emitter<EmployeeTipFinderState> emit, @required String? firstName, @required String? lastName}) async {
+    _startFetch(emit: emit, firstName: firstName, lastName: lastName);
 
     try {
       final List<EmployeeTip> employeeTips = await _tipsRepository.fetchByCustomerName(firstName: firstName, lastName: lastName, dateRange: state.currentDateRange);
-      yield* _handleSuccess(employeeTips: employeeTips);
+      _handleSuccess(employeeTips: employeeTips, emit: emit);
     } on ApiException catch (exception) {
-      yield* _handleError(error: exception.error);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  Stream<EmployeeTipFinderState> _mapDateRangeChangedToState({required DateRangeChanged event}) async* {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<EmployeeTipFinderState> emit}) async {
     final DateTimeRange? previousDateRange = state.currentDateRange;
     
     if (previousDateRange != event.dateRange && (state.currentFirstName.isNotEmpty || state.currentLastName.isNotEmpty)) {
-      yield state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null);
+      emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
 
-      yield* _mapFetchToState(firstName: state.currentFirstName, lastName: state.currentLastName);
+      _mapFetchToState(emit: emit, firstName: state.currentFirstName, lastName: state.currentLastName);
     }
   }
   
-  Stream<EmployeeTipFinderState> _startFetch({@required String? firstName, @required String? lastName}) async* {
-    yield state.update(
+  void _startFetch({required Emitter<EmployeeTipFinderState> emit, @required String? firstName, @required String? lastName}) async {
+    emit(state.update(
       loading: true,
       tips: [],
       errorMessage: "",
       currentFirstName: firstName,
       currentLastName: lastName
-    );
+    ));
   }
 
-  Stream<EmployeeTipFinderState> _handleSuccess({required List<EmployeeTip> employeeTips}) async* {
-    yield state.update(
+  void _handleSuccess({required List<EmployeeTip> employeeTips, required Emitter<EmployeeTipFinderState> emit}) async {
+    emit(state.update(
       loading: false,
       tips: employeeTips,
-    );
+    ));
   }
 
-  Stream<EmployeeTipFinderState> _handleError({required String error}) async* {
-    yield state.update(loading: false, errorMessage: error);
+  void _handleError({required String error, required Emitter<EmployeeTipFinderState> emit}) async {
+    emit(state.update(loading: false, errorMessage: error));
   }
   
   void _onDateRangeChanged(DateTimeRange? dateRange) {

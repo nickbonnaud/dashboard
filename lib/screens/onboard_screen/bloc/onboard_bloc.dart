@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/status.dart';
 
@@ -9,14 +7,17 @@ enum OnboardEvent {next, prev}
 class OnboardBloc extends Bloc<OnboardEvent, int> {
   
   OnboardBloc({required Status accountStatus}) 
-    : super(_setInitialStep(accountStatus: accountStatus));
+    : super(_setInitialStep(accountStatus: accountStatus)) { _eventHandler(); }
 
-  @override
-  Stream<int> mapEventToState(OnboardEvent event) async* {
+  void _eventHandler() {
+    on<OnboardEvent>((event, emit) => _mapOnboardEventToState(event: event, emit: emit));
+  }
+
+  void _mapOnboardEventToState({required OnboardEvent event, required Emitter<int> emit}) async {
     if (event == OnboardEvent.next) {
-      yield state + 1;
+      emit(state + 1);
     } else if (event == OnboardEvent.prev) {
-      yield state - 1;
+      emit(state - 1);
     }
   }
 
