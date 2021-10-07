@@ -14,10 +14,10 @@ class NetSalesMonthBloc extends Bloc<NetSalesMonthEvent, NetSalesMonthState> {
       super(NetSalesInitial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<FetchNetSalesMonth>((event, emit) => _mapFetchNetSalesToState(emit: emit));
+    on<FetchNetSalesMonth>((event, emit) async => await _mapFetchNetSalesToState(emit: emit));
   }
 
-  void _mapFetchNetSalesToState({required Emitter<NetSalesMonthState> emit}) async {
+  Future<void> _mapFetchNetSalesToState({required Emitter<NetSalesMonthState> emit}) async {
     emit(Loading());
     try {
       final int netSales = await _transactionRepository.fetchNetSalesMonth();

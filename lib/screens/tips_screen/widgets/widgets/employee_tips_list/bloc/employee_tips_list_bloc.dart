@@ -26,9 +26,9 @@ class EmployeeTipsListBloc extends Bloc<EmployeeTipsListEvent, EmployeeTipsListS
       }
 
   void _eventHandler() {
-    on<InitTipList>((event, emit) => _mapInitTipListToState(emit: emit));
-    on<FetchAll>((event, emit) => _mapFetchAllToState(emit: emit));
-    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
+    on<InitTipList>((event, emit) async => await _mapInitTipListToState(emit: emit));
+    on<FetchAll>((event, emit) async => await _mapFetchAllToState(emit: emit));
+    on<FetchMore>((event, emit) async => await _mapFetchMoreToState(emit: emit));
     on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
@@ -38,7 +38,7 @@ class EmployeeTipsListBloc extends Bloc<EmployeeTipsListEvent, EmployeeTipsListS
     return super.close();
   }
   
-  void _mapInitTipListToState({required Emitter<EmployeeTipsListState> emit}) async {
+  Future<void> _mapInitTipListToState({required Emitter<EmployeeTipsListState> emit}) async {
     emit(state.update(loading: true));
 
     try {
@@ -49,7 +49,7 @@ class EmployeeTipsListBloc extends Bloc<EmployeeTipsListEvent, EmployeeTipsListS
     }
   }
 
-  void _mapFetchAllToState({required Emitter<EmployeeTipsListState> emit}) async {
+  Future<void> _mapFetchAllToState({required Emitter<EmployeeTipsListState> emit}) async {
     _startFetch(emit: emit);
 
     try {
@@ -60,7 +60,7 @@ class EmployeeTipsListBloc extends Bloc<EmployeeTipsListEvent, EmployeeTipsListS
     }
   }
 
-  void _mapFetchMoreToState({required Emitter<EmployeeTipsListState> emit}) async {
+  Future<void> _mapFetchMoreToState({required Emitter<EmployeeTipsListState> emit}) async {
     if (!state.loading && !state.hasReachedEnd) {
       try {
         final PaginateDataHolder paginateData = await _tipsRepository.paginate(url: state.nextUrl!);
@@ -71,16 +71,16 @@ class EmployeeTipsListBloc extends Bloc<EmployeeTipsListEvent, EmployeeTipsListS
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<EmployeeTipsListState> emit}) async {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<EmployeeTipsListState> emit}) {
     final DateTimeRange? previousDateRange = state.currentDateRange;
 
     if (previousDateRange != event.dateRange) {
       emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
-      _mapFetchAllToState(emit: emit);
+      add(FetchAll());
     }
   }
 
-  void _startFetch({required Emitter<EmployeeTipsListState> emit}) async {
+  void _startFetch({required Emitter<EmployeeTipsListState> emit}) {
     emit(state.update(
       loading: true,
       tips: [],
@@ -90,7 +90,7 @@ class EmployeeTipsListBloc extends Bloc<EmployeeTipsListEvent, EmployeeTipsListS
     ));
   }
 
-  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<EmployeeTipsListState> emit}) async {
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<EmployeeTipsListState> emit}) {
     emit(state.update(
       loading: false,
       tips: state.tips + (paginateData.data as List<EmployeeTip>),
@@ -99,7 +99,7 @@ class EmployeeTipsListBloc extends Bloc<EmployeeTipsListEvent, EmployeeTipsListS
     ));
   }
 
-  void _handleError({required String error, required Emitter<EmployeeTipsListState> emit}) async {
+  void _handleError({required String error, required Emitter<EmployeeTipsListState> emit}) {
     emit(state.update(loading: false, errorMessage: error)); 
   }
   

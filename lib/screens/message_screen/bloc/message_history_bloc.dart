@@ -20,7 +20,7 @@ class MessageHistoryBloc extends Bloc<MessageHistoryEvent, MessageHistoryState> 
     on<ReplyAdded>((event, emit) => _mapReplyAddedToState(event: event, emit: emit));
   }
 
-  void _mapMarkAsReadState({required Emitter<MessageHistoryState> emit}) async {
+  void _mapMarkAsReadState({required Emitter<MessageHistoryState> emit}) {
     final bool messageHistoryRead = state.message.hasUnread;
     
     List<Reply> replies = state.message.replies.map((reply) {
@@ -38,12 +38,12 @@ class MessageHistoryBloc extends Bloc<MessageHistoryEvent, MessageHistoryState> 
     
   }
   
-  void _mapReplyAddedToState({required ReplyAdded event, required Emitter<MessageHistoryState> emit}) async {
+  void _mapReplyAddedToState({required ReplyAdded event, required Emitter<MessageHistoryState> emit}) {
     final Message message = state.message.update(replies: state.message.replies..insert(0, event.reply), latestReply: DateTime.now());
     _updateBlocs(message: message, emit: emit);
   }
 
-  void _updateBlocs({required Message message, required Emitter<MessageHistoryState> emit, bool messageHistoryRead = false}) async {
+  void _updateBlocs({required Message message, required Emitter<MessageHistoryState> emit, bool messageHistoryRead = false}) {
     _messageListScreenBloc.add(MessageUpdated(message: message, messageHistoryRead: messageHistoryRead));
     emit(MessageHistoryState(message: message));
   }

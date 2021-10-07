@@ -31,11 +31,11 @@ class HoursConfirmationFormBloc extends Bloc<HoursConfirmationFormEvent, HoursCo
 
   void _eventHandler() {
     on<HoursChanged>((event, emit) => _mapHoursChangedToState(event: event, emit: emit));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapHoursChangedToState({required HoursChanged event, required Emitter<HoursConfirmationFormState> emit}) async {
+  void _mapHoursChangedToState({required HoursChanged event, required Emitter<HoursConfirmationFormState> emit}) {
     switch (event.day) {
       case 0:
         emit(state.update(sunday: event.hours));
@@ -61,7 +61,7 @@ class HoursConfirmationFormBloc extends Bloc<HoursConfirmationFormEvent, HoursCo
     }
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<HoursConfirmationFormState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<HoursConfirmationFormState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -81,7 +81,7 @@ class HoursConfirmationFormBloc extends Bloc<HoursConfirmationFormEvent, HoursCo
     }
   }
 
-  void _mapResetToState({required Emitter<HoursConfirmationFormState> emit}) async {
+  void _mapResetToState({required Emitter<HoursConfirmationFormState> emit}) {
     emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 

@@ -2,12 +2,13 @@ import 'dart:convert';
 
 import 'package:dashboard/models/api_response.dart';
 import 'package:dashboard/models/paginated_api_response.dart';
+import 'package:dashboard/resources/http/api_endpoints.dart';
 import 'package:dashboard/resources/http/test_api_interceptors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
 class BaseProvider {
-  final String _baseUrl = 'http://novapay.ai/api/business';
+  final String _baseUrl = ApiEndpoints.base;
   final Dio _dio;
 
   BaseProvider({Dio? dio})
@@ -90,7 +91,7 @@ class BaseProvider {
 }
 
 _parseAndDecode(String response) {
-    return jsonDecode(response);
+  return jsonDecode(response);
 }
 
 parseJson(String text) {

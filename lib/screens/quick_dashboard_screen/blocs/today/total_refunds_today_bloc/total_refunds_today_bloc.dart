@@ -14,10 +14,10 @@ class TotalRefundsTodayBloc extends Bloc<TotalRefundsTodayEvent, TotalRefundsTod
       super(TotalRefundsInitial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<FetchTotalRefundsToday>((event, emit) => _mapFetchTotalRefundsToState(emit: emit));
+    on<FetchTotalRefundsToday>((event, emit) async => await _mapFetchTotalRefundsToState(emit: emit));
   }
 
-  void _mapFetchTotalRefundsToState({required Emitter<TotalRefundsTodayState> emit}) async {
+  Future<void> _mapFetchTotalRefundsToState({required Emitter<TotalRefundsTodayState> emit}) async {
     emit(Loading());
 
     try {

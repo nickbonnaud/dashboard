@@ -38,13 +38,13 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     }
 
   void _eventHandler() {
-    on<Init>((event, emit) => _mapInitToState(emit: emit));
-    on<FetchAll>((event, emit) => _mapFetchAllToState(emit: emit));
-    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
-    on<FetchByRefundId>((event, emit) => _mapFetchByRefundIdToState(refundId: event.refundId, emit: emit));
-    on<FetchByTransactionId>((event, emit) => _mapFetchByTransactionIdToState(transactionId: event.transactionId, emit: emit));
-    on<FetchByCustomerId>((event, emit) => _mapFetchByCustomerIdToState(customerId: event.customerId, emit: emit));
-    on<FetchByCustomerName>((event, emit) => _mapFetchByCustomerNameToState(fullName: FullName(first: event.firstName, last: event.lastName), emit: emit));
+    on<Init>((event, emit) async => await _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) async => await _mapFetchAllToState(emit: emit));
+    on<FetchMore>((event, emit) async => await _mapFetchMoreToState(emit: emit));
+    on<FetchByRefundId>((event, emit) async => await _mapFetchByRefundIdToState(refundId: event.refundId, emit: emit));
+    on<FetchByTransactionId>((event, emit) async => await _mapFetchByTransactionIdToState(transactionId: event.transactionId, emit: emit));
+    on<FetchByCustomerId>((event, emit) async => await _mapFetchByCustomerIdToState(customerId: event.customerId, emit: emit));
+    on<FetchByCustomerName>((event, emit) async => await _mapFetchByCustomerNameToState(fullName: FullName(first: event.firstName, last: event.lastName), emit: emit));
     on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
     on<FilterChanged>((event, emit) => _mapFilterChangedToState(event: event, emit: emit));
   }
@@ -56,7 +56,7 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     return super.close();
   }
 
-  void _mapInitToState({required Emitter<RefundsListState> emit}) async {
+  Future<void> _mapInitToState({required Emitter<RefundsListState> emit}) async {
     emit(state.update(loading: true));
 
     try {
@@ -67,18 +67,18 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     }
   }
 
-  void _mapFetchAllToState({required Emitter<RefundsListState> emit}) async {
+  Future<void> _mapFetchAllToState({required Emitter<RefundsListState> emit}) async {
     _startFetch(emit: emit);
 
     try {
       final PaginateDataHolder paginateData = await _refundRepository.fetchAll(dateRange: state.currentDateRange);
       _handleSuccess(paginateData: paginateData, emit: emit);
     } on ApiException catch (exception) {
-       _handleError(error: exception.error, emit: emit);
+      _handleError(error: exception.error, emit: emit);
     }
   }
 
-  void _mapFetchMoreToState({required Emitter<RefundsListState> emit}) async {
+  Future<void> _mapFetchMoreToState({required Emitter<RefundsListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
       emit(state.update(paginating: true));
       try {
@@ -90,7 +90,7 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     }
   }
 
-  void _mapFetchByRefundIdToState({required String refundId, required Emitter<RefundsListState> emit}) async {
+  Future<void> _mapFetchByRefundIdToState({required String refundId, required Emitter<RefundsListState> emit}) async {
     _startFetch(emit: emit, currentIdQuery: refundId);
 
     try {
@@ -101,7 +101,7 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     }
   }
 
-  void _mapFetchByTransactionIdToState({required String transactionId, required Emitter<RefundsListState> emit}) async {
+  Future<void> _mapFetchByTransactionIdToState({required String transactionId, required Emitter<RefundsListState> emit}) async {
     _startFetch(emit: emit, currentIdQuery: transactionId);
 
     try {
@@ -112,7 +112,7 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     }
   }
 
-  void _mapFetchByCustomerIdToState({required String customerId, required Emitter<RefundsListState> emit}) async {
+  Future<void> _mapFetchByCustomerIdToState({required String customerId, required Emitter<RefundsListState> emit}) async {
     _startFetch(emit: emit, currentIdQuery: customerId);
 
     try {
@@ -123,7 +123,7 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     }
   }
 
-  void _mapFetchByCustomerNameToState({required FullName fullName, required Emitter<RefundsListState> emit}) async {
+  Future<void> _mapFetchByCustomerNameToState({required FullName fullName, required Emitter<RefundsListState> emit}) async {
     _startFetch(emit: emit, currentNameQuery: fullName);
 
     try {
@@ -134,44 +134,44 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<RefundsListState> emit}) async {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<RefundsListState> emit}) {
     final DateTimeRange? previousDateRange = state.currentDateRange;
 
     if (previousDateRange != event.dateRange) {
       emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
       switch (state.currentFilter) {
         case FilterType.refundId:
-          _mapFetchByRefundIdToState(refundId: state.currentIdQuery!, emit: emit);
+          add(FetchByRefundId(refundId: state.currentIdQuery!));
           break;
         case FilterType.transactionId:
-          _mapFetchByTransactionIdToState(transactionId: state.currentIdQuery!, emit: emit);
+          add(FetchByTransactionId(transactionId: state.currentIdQuery!));
           break;
         case FilterType.customerId:
-          _mapFetchByCustomerIdToState(customerId: state.currentIdQuery!, emit: emit);
+          add(FetchByCustomerId(customerId: state.currentIdQuery!));
           break;
         case FilterType.customerName:
-          _mapFetchByCustomerNameToState(fullName: state.currentNameQuery!, emit: emit);
+          add(FetchByCustomerName(firstName: state.currentNameQuery!.first, lastName: state.currentNameQuery!.last));
           break;
         default:
-          _mapFetchAllToState(emit: emit);
+          add(FetchAll());
       }
     }
   }
 
-  void _mapFilterChangedToState({required FilterChanged event, required Emitter<RefundsListState> emit}) async {
+  void _mapFilterChangedToState({required FilterChanged event, required Emitter<RefundsListState> emit}) {
     if (event.filter == FilterType.all) {
       emit(state.update(currentFilter: event.filter, isDateReset: true));
-      _mapFetchAllToState(emit: emit);
+      add(FetchAll());
     } else {
       emit(state.update(currentFilter: event.filter));
     }
   }
 
-  void _startFetch({required Emitter<RefundsListState> emit, String? currentIdQuery, FullName? currentNameQuery}) async {
+  void _startFetch({required Emitter<RefundsListState> emit, String? currentIdQuery, FullName? currentNameQuery}) {
     emit(state.reset(currentIdQuery: currentIdQuery, currentNameQuery: currentNameQuery));
   }
   
-  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<RefundsListState> emit}) async {
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<RefundsListState> emit}) {
     emit(state.update(
       loading: false,
       paginating: false,
@@ -181,7 +181,7 @@ class RefundsListBloc extends Bloc<RefundsListEvent, RefundsListState> {
     ));
   }
 
-  void _handleError({required String error, required Emitter<RefundsListState> emit}) async {
+  void _handleError({required String error, required Emitter<RefundsListState> emit}) {
     emit(state.update(loading: false, paginating: false, errorMessage: error)); 
   }
   

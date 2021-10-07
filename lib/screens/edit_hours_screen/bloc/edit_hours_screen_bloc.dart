@@ -25,13 +25,13 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
 
   void _eventHandler() {
     on<HoursChanged>((event, emit) => _mapHoursChangedToState(event: event, emit: emit));
-    on<Updated>((event, emit) => _mapUpdatedToState(event: event, emit: emit));
+    on<Updated>((event, emit) async => await _mapUpdatedToState(event: event, emit: emit));
     on<HourAdded>((event, emit) => _mapHourAddedToState(event: event, emit: emit));
     on<HourRemoved>((event, emit) => _mapHourRemovedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
   
-  void _mapHoursChangedToState({required HoursChanged event, required Emitter<EditHoursScreenState> emit}) async {
+  void _mapHoursChangedToState({required HoursChanged event, required Emitter<EditHoursScreenState> emit}) {
     switch (event.day) {
       case 0:
         emit(state.update(sunday: event.hours));
@@ -57,7 +57,7 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
     }
   }
 
-  void _mapUpdatedToState({required Updated event, required Emitter<EditHoursScreenState> emit}) async {
+  Future<void> _mapUpdatedToState({required Updated event, required Emitter<EditHoursScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -78,7 +78,7 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
     }
   }
 
-  void _mapHourAddedToState({required HourAdded event, required Emitter<EditHoursScreenState> emit}) async {
+  void _mapHourAddedToState({required HourAdded event, required Emitter<EditHoursScreenState> emit}) {
     switch (event.day) {
       case 0:
         emit(state.update(sunday: state.sunday..add(event.hour)));
@@ -104,7 +104,7 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
     }
   }
 
-  void _mapHourRemovedToState({required HourRemoved event, required Emitter<EditHoursScreenState> emit}) async {
+  void _mapHourRemovedToState({required HourRemoved event, required Emitter<EditHoursScreenState> emit}) {
     switch (event.day) {
       case 0:
         emit(state.update(sunday: state.sunday..removeLast()));
@@ -130,7 +130,7 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
     }
   }
 
-  void _mapResetToState({required Emitter<EditHoursScreenState> emit}) async {
+  void _mapResetToState({required Emitter<EditHoursScreenState> emit}) {
     emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 

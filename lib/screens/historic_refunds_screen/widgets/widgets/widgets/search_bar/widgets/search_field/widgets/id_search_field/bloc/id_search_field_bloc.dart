@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:dashboard/models/transaction_filter.dart';
 import 'package:dashboard/resources/helpers/debouncer.dart';
@@ -24,7 +23,7 @@ class IdSearchFieldBloc extends Bloc<IdSearchFieldEvent, IdSearchFieldState> {
     on<FieldChanged>((event, emit) => _mapFieldChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
   }
 
-  void _mapFieldChangedToState({required FieldChanged event, required Emitter<IdSearchFieldState> emit}) async {
+  void _mapFieldChangedToState({required FieldChanged event, required Emitter<IdSearchFieldState> emit}) {
     final bool isValidId = Validators.isValidUUID(uuid: event.id);
     final String previousId = state.currentId;
 

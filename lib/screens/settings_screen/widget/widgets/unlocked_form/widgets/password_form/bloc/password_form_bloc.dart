@@ -22,22 +22,22 @@ class PasswordFormBloc extends Bloc<PasswordFormEvent, PasswordFormState> {
   void _eventHandler() {
     on<PasswordChanged>((event, emit) => _mapPasswordChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<PasswordConfirmationChanged>((event, emit) => _mapPasswordConfirmationChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
   
-  void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<PasswordFormState> emit}) async {
+  void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<PasswordFormState> emit}) {
     final bool isPasswordConfirmationValid = event.passwordConfirmation.isNotEmpty
       ? Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)
       : true;
     emit(state.update(isPasswordValid: Validators.isValidPassword(password: event.password), isPasswordConfirmationValid: isPasswordConfirmationValid));
   }
 
-  void _mapPasswordConfirmationChangedToState({required PasswordConfirmationChanged event, required Emitter<PasswordFormState> emit}) async {
+  void _mapPasswordConfirmationChangedToState({required PasswordConfirmationChanged event, required Emitter<PasswordFormState> emit}) {
     emit(state.update(isPasswordConfirmationValid: Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<PasswordFormState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<PasswordFormState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -52,7 +52,7 @@ class PasswordFormBloc extends Bloc<PasswordFormEvent, PasswordFormState> {
     }
   }
 
-  void _mapResetToState({required Emitter<PasswordFormState> emit}) async {
+  void _mapResetToState({required Emitter<PasswordFormState> emit}) {
     emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 }

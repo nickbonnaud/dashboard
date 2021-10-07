@@ -15,10 +15,10 @@ class PermissionsBloc extends Bloc<PermissionsEvent, PermissionsState> {
       super(PermissionsState.initial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<Init>((event, emit) async => await _mapInitToState(emit: emit));
   }
 
-  void _mapInitToState({required Emitter<PermissionsState> emit}) async {
+  Future<void> _mapInitToState({required Emitter<PermissionsState> emit}) async {
     emit(state.update(loading: true));
     List responses = await Future.wait([_geoRepository.isEnabled(), _geoRepository.getPermissionStatus()]);
     emit(state.update(

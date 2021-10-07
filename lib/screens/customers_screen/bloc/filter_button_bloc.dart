@@ -13,11 +13,11 @@ class FilterButtonBloc extends Bloc<FilterButtonEvent, FilterButtonState> {
     on<WithTransactionsChanged>((event, emit) => _mapWithTransactionsChangedToState(emit: emit));
   }
 
-  void _mapSearchHistoricChangedToState({required Emitter<FilterButtonState> emit}) async {
+  void _mapSearchHistoricChangedToState({required Emitter<FilterButtonState> emit}) {
     emit(state.update(searchHistoric: !state.searchHistoric));
   }
 
-  void _mapWithTransactionsChangedToState({required Emitter<FilterButtonState> emit}) async {
+  void _mapWithTransactionsChangedToState({required Emitter<FilterButtonState> emit}) {
     emit(state.update(withTransactions: !state.withTransactions));
   }
 }

@@ -17,10 +17,10 @@ class RecentTransactionsBloc extends Bloc<RecentTransactionsEvent, RecentTransac
       super(RecentTransactionsState.initial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<InitRecentTransactions>((event, emit) => _mapInitRecentTransactionsToState(emit: emit));
+    on<InitRecentTransactions>((event, emit) async => await _mapInitRecentTransactionsToState(emit: emit));
   }
 
-  void _mapInitRecentTransactionsToState({required Emitter<RecentTransactionsState> emit}) async {
+  Future<void> _mapInitRecentTransactionsToState({required Emitter<RecentTransactionsState> emit}) async {
     emit(state.update(loading: true));
 
     try {

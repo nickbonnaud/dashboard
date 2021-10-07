@@ -25,7 +25,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
       super(BusinessInitial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<BusinessAuthenticated>((event, emit) => _mapBusinessAuthenticatedToState(emit: emit));
+    on<BusinessAuthenticated>((event, emit) async => await _mapBusinessAuthenticatedToState(emit: emit));
     on<BusinessLoggedIn>((event, emit) => _mapBusinessLoggedInToState(event: event, emit: emit));
     on<BusinessLoggedOut>((event, emit) => _mapBusinessLoggedOutToState(emit: emit));
     on<BankAccountUpdated>((event, emit) => _mapBankAccountUpdatedToState(event: event, emit: emit));
@@ -39,7 +39,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     on<BusinessUpdated>((event, emit) => _mapBusinessUpdatedToState(event: event, emit: emit));
   }
   
-  void _mapBusinessAuthenticatedToState({required Emitter<BusinessState> emit}) async {
+  Future<void> _mapBusinessAuthenticatedToState({required Emitter<BusinessState> emit}) async {
     emit(BusinessLoading());
     try {
       Business business = await _businessRepository.fetch();
@@ -49,19 +49,19 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapBusinessLoggedInToState({required BusinessLoggedIn event, required Emitter<BusinessState> emit}) async {
+  void _mapBusinessLoggedInToState({required BusinessLoggedIn event, required Emitter<BusinessState> emit}) {
     emit(BusinessLoaded(business: event.business));
   }
 
-  void _mapBusinessLoggedOutToState({required Emitter<BusinessState> emit}) async {
+  void _mapBusinessLoggedOutToState({required Emitter<BusinessState> emit}) {
     emit(BusinessInitial());
   }
 
-  void _mapBusinessUpdatedToState({required BusinessUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapBusinessUpdatedToState({required BusinessUpdated event, required Emitter<BusinessState> emit}) {
     emit(BusinessLoaded(business: event.business));
   }
 
-  void _mapBankAccountUpdatedToState({required BankAccountUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapBankAccountUpdatedToState({required BankAccountUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       
@@ -71,7 +71,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapBusinessAccountUpdatedToState({required BusinessAccountUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapBusinessAccountUpdatedToState({required BusinessAccountUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       Accounts accounts = business.accounts.update(businessAccount: event.businessAccount);
@@ -80,7 +80,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapPhotosUpdatedToState({required PhotosUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapPhotosUpdatedToState({required PhotosUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(photos: event.photos);
@@ -88,7 +88,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapHoursUpdatedToState({required HoursUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapHoursUpdatedToState({required HoursUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       Profile profile = business.profile.update(hours: event.hours);
@@ -97,7 +97,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapLocationUpdatedToState({required LocationUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapLocationUpdatedToState({required LocationUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(location: event.location);
@@ -105,7 +105,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapOwnerAccountsUpdatedToState({required OwnerAccountsUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapOwnerAccountsUpdatedToState({required OwnerAccountsUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       Accounts accounts = business.accounts.update(ownerAccounts: event.ownerAccounts);
@@ -114,7 +114,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapProfileUpdatedToState({required ProfileUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapProfileUpdatedToState({required ProfileUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(profile: event.profile);
@@ -122,7 +122,7 @@ class BusinessBloc extends Bloc<BusinessEvent, BusinessState> {
     }
   }
 
-  void _mapEmailUpdatedToState({required EmailUpdated event, required Emitter<BusinessState> emit}) async {
+  void _mapEmailUpdatedToState({required EmailUpdated event, required Emitter<BusinessState> emit}) {
     if (state is BusinessLoaded) {
       Business business = (state as BusinessLoaded).business;
       business = business.update(email: event.email);

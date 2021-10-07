@@ -17,7 +17,7 @@ class BannerFormBloc extends Bloc<BannerFormEvent, BannerFormState> {
     on<BannerPicked>((event, emit) => _mapBannerPickedToState(event: event, emit: emit));
   }
 
-  void _mapBannerPickedToState({required BannerPicked event, required Emitter<BannerFormState> emit}) async {
+  void _mapBannerPickedToState({required BannerPicked event, required Emitter<BannerFormState> emit}) {
     emit(state.update(bannerFile: event.bannerFile));
   }
 }

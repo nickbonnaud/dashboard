@@ -22,7 +22,7 @@ class NameFieldBloc extends Bloc<NameFieldEvent, NameFieldState> {
     on<NameChanged>((event, emit) => _mapNameChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
   }
   
-  void _mapNameChangedToState({required NameChanged event, required Emitter<NameFieldState> emit}) async {
+  void _mapNameChangedToState({required NameChanged event, required Emitter<NameFieldState> emit}) {
     final String previousFirstName = state.firstName;
     final String previousLastName = state.lastName;
     final bool isValidFirstName = Validators.isValidFirstName(name: event.firstName);

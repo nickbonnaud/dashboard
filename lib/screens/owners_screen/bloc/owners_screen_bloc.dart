@@ -22,20 +22,20 @@ class OwnersScreenBloc extends Bloc<OwnersScreenEvent, OwnersScreenState> {
 
   void _eventHandler() {
     on<OwnerAdded>((event, emit) => _mapOwnerAddedToState(event: event, emit: emit));
-    on<OwnerRemoved>((event, emit) => _mapOwnerRemovedToState(event: event, emit: emit));
-    on<PrimaryRemoved>((event, emit) => _mapPrimaryRemovedToState(event: event, emit: emit));
+    on<OwnerRemoved>((event, emit) async => await _mapOwnerRemovedToState(event: event, emit: emit));
+    on<PrimaryRemoved>((event, emit) async => await _mapPrimaryRemovedToState(event: event, emit: emit));
     on<ShowForm>((event, emit) => _mapShowFormToState(event: event, emit: emit));
     on<HideForm>((event, emit) => _mapHideFormToState(emit: emit));
     on<OwnerUpdated>((event, emit) => _mapOwnerUpdatedToState(event: event, emit: emit));
   }
 
-  void _mapOwnerAddedToState({required OwnerAdded event, required Emitter<OwnersScreenState> emit}) async {
+  void _mapOwnerAddedToState({required OwnerAdded event, required Emitter<OwnersScreenState> emit}) {
     List<OwnerAccount> updatedOwners = state.owners.where((owner) => owner.identifier != event.owner.identifier).toList()..add(event.owner);
     _updateBusinessBloc(updatedOwners: updatedOwners);
     emit(state.update(owners: updatedOwners));
   }
 
-  void _mapOwnerRemovedToState({required OwnerRemoved event, required Emitter<OwnersScreenState> emit}) async {
+  Future<void> _mapOwnerRemovedToState({required OwnerRemoved event, required Emitter<OwnersScreenState> emit}) async {
     emit(state.update(isSubmitting:  true));
     try {
       await _ownerRepository.remove(identifier: event.owner.identifier);
@@ -47,7 +47,7 @@ class OwnersScreenBloc extends Bloc<OwnersScreenEvent, OwnersScreenState> {
     }
   }
 
-  void _mapPrimaryRemovedToState({required PrimaryRemoved event, required Emitter<OwnersScreenState> emit}) async {
+  Future<void> _mapPrimaryRemovedToState({required PrimaryRemoved event, required Emitter<OwnersScreenState> emit}) async {
     try {
       OwnerAccount updatedOwner = await _ownerRepository.update(
         identifier: event.account.identifier, 
@@ -78,18 +78,18 @@ class OwnersScreenBloc extends Bloc<OwnersScreenEvent, OwnersScreenState> {
     }
   }
 
-  void _mapShowFormToState({required ShowForm event, required Emitter<OwnersScreenState> emit}) async {
+  void _mapShowFormToState({required ShowForm event, required Emitter<OwnersScreenState> emit}) {
     emit(state.update(formVisible: true, editingAccount: event.account));
   }
 
-  void _mapHideFormToState({required Emitter<OwnersScreenState> emit}) async {
+  void _mapHideFormToState({required Emitter<OwnersScreenState> emit}) {
     emit(state.update(
       formVisible: false,
       resetEditingAccount: true
     ));
   }
 
-  void _mapOwnerUpdatedToState({required OwnerUpdated event, required Emitter<OwnersScreenState> emit}) async {
+  void _mapOwnerUpdatedToState({required OwnerUpdated event, required Emitter<OwnersScreenState> emit}) {
     List<OwnerAccount> updatedOwners = state.owners.where(
       (owner) => owner.identifier != event.owner.identifier)
         .toList()..add(event.owner);

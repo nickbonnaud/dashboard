@@ -24,7 +24,7 @@ class NameSearchFieldBloc extends Bloc<NameSearchFieldEvent, NameSearchFieldStat
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapNameChangedToState({required NameChanged event, required Emitter<NameSearchFieldState> emit}) async {
+  void _mapNameChangedToState({required NameChanged event, required Emitter<NameSearchFieldState> emit}) {
     final String previousFirstName = state.firstName;
     final String previousLastName = state.lastName;
     final bool isValidFirstName = Validators.isValidFirstName(name: event.firstName);
@@ -49,7 +49,7 @@ class NameSearchFieldBloc extends Bloc<NameSearchFieldEvent, NameSearchFieldStat
     }
   }
 
-  void _mapResetToState({required Emitter<NameSearchFieldState> emit}) async {
+  void _mapResetToState({required Emitter<NameSearchFieldState> emit}) {
     emit(NameSearchFieldState.initial());
   }
 

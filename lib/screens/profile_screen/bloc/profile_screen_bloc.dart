@@ -34,18 +34,18 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
       super(ProfileScreenState.empty()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<PlaceQueryChanged>((event, emit) => _mapPlaceQueryChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
+    on<PlaceQueryChanged>((event, emit) async => await _mapPlaceQueryChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
+    on<PredictionSelected>((event, emit) async => await _mapPredictionSelectedToState(event: event, emit: emit));
     on<NameChanged>((event, emit) => _mapNameChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<WebsiteChanged>((event, emit) => _mapWebsiteChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<PhoneChanged>((event, emit) => _mapPhoneChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<DescriptionChanged>((event, emit) => _mapDescriptionChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
-    on<PredictionSelected>((event, emit) => _mapPredictionSelectedToState(event: event, emit: emit));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
-    on<Updated>((event, emit) => _mapUpdatedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
+    on<Updated>((event, emit) async => await _mapUpdatedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapPlaceQueryChangedToState({required PlaceQueryChanged event, required Emitter<ProfileScreenState> emit}) async {
+  Future<void> _mapPlaceQueryChangedToState({required PlaceQueryChanged event, required Emitter<ProfileScreenState> emit}) async {
     if (event.query.length >= 3) {
       emit(state.update(isSubmitting: true, errorMessage: ""));
       
@@ -62,7 +62,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     }
   }
 
-  void _mapPredictionSelectedToState({required PredictionSelected event, required Emitter<ProfileScreenState> emit}) async {
+  Future<void> _mapPredictionSelectedToState({required PredictionSelected event, required Emitter<ProfileScreenState> emit}) async {
     if (event.prediction.placeId != null) {
       emit(state.update(isSubmitting: true, predictions: []));
       final PlacesDetailsResponse response = await _places.getDetailsByPlaceId(event.prediction.placeId!);
@@ -70,23 +70,23 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     }
   }
   
-  void _mapNameChangedToState({required NameChanged event, required Emitter<ProfileScreenState> emit}) async {
+  void _mapNameChangedToState({required NameChanged event, required Emitter<ProfileScreenState> emit}) {
     emit(state.update(isNameValid: Validators.isValidBusinessName(name: event.name)));
   }
 
-  void _mapWebsiteChangedToState({required WebsiteChanged event, required Emitter<ProfileScreenState> emit}) async {
+  void _mapWebsiteChangedToState({required WebsiteChanged event, required Emitter<ProfileScreenState> emit}) {
     emit(state.update(isWebsiteValid: Validators.isValidUrl(url: _setWebsite(originalWebsite: event.website))));
   }
 
-  void _mapPhoneChangedToState({required PhoneChanged event, required Emitter<ProfileScreenState> emit}) async {
+  void _mapPhoneChangedToState({required PhoneChanged event, required Emitter<ProfileScreenState> emit}) {
     emit(state.update(isPhoneValid: Validators.isValidPhone(phone: event.phone)));
   }
 
-  void _mapDescriptionChangedToState({required DescriptionChanged event, required Emitter<ProfileScreenState> emit}) async {
+  void _mapDescriptionChangedToState({required DescriptionChanged event, required Emitter<ProfileScreenState> emit}) {
     emit(state.update(isDescriptionValid: Validators.isValidBusinessDescription(description: event.description)));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<ProfileScreenState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<ProfileScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -103,7 +103,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     }
   }
 
-  void _mapUpdatedToState({required Updated event, required Emitter<ProfileScreenState> emit}) async {
+  Future<void> _mapUpdatedToState({required Updated event, required Emitter<ProfileScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -121,7 +121,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     }
   }
 
-  void _mapResetToState({required Emitter<ProfileScreenState> emit}) async {
+  void _mapResetToState({required Emitter<ProfileScreenState> emit}) {
     emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 

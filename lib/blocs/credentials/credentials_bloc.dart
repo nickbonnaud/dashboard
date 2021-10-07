@@ -35,7 +35,7 @@ class CredentialsBloc extends Bloc<CredentialsEvent, CredentialsState> {
       }
 
   void _eventHandler() {
-    on<Init>((event, emit) => _mapInitToState(emit: emit));
+    on<Init>((event, emit) async => await _mapInitToState(emit: emit));
   }
 
   @override
@@ -44,7 +44,7 @@ class CredentialsBloc extends Bloc<CredentialsEvent, CredentialsState> {
     return super.close();
   }
 
-  void _mapInitToState({required Emitter<CredentialsState> emit}) async {
+  Future<void> _mapInitToState({required Emitter<CredentialsState> emit}) async {
     emit(CredentialsLoading());
     try {
       Credentials credentials = await _credentialsRepository.fetch();

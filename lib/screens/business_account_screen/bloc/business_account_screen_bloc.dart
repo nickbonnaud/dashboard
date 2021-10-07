@@ -36,45 +36,45 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
     on<ZipChanged>((event, emit) => _mapZipChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<EinChanged>((event, emit) => _mapEinChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<EntityTypeSelected>((event, emit) => _mapEntityTypeSelectedToState(event: event, emit: emit));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
-    on<Updated>((event, emit) => _mapUpdatedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
+    on<Updated>((event, emit) async => await _mapUpdatedToState(event: event, emit: emit));
     on<ChangeEntityTypeSelected>((event, emit) => _mapChangeEntityTypeSelectedToState(emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapEntityTypeSelectedToState({required EntityTypeSelected event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapEntityTypeSelectedToState({required EntityTypeSelected event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(entityType: event.entityType));
   }
   
-  void _mapNameChangedToState({required NameChanged event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapNameChangedToState({required NameChanged event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isNameValid: Validators.isValidBusinessName(name: event.name)));
   }
 
-  void _mapAddressChangedToState({required AddressChanged event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapAddressChangedToState({required AddressChanged event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isAddressValid: Validators.isValidAddress(address: event.address)));
   }
 
-  void _mapAddressSecondaryChangedToState({required AddressSecondaryChanged event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapAddressSecondaryChangedToState({required AddressSecondaryChanged event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isAddressSecondaryValid: Validators.isValidAddressSecondary(address: event.addressSecondary)));
   }
 
-  void _mapCityChangedToState({required CityChanged event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapCityChangedToState({required CityChanged event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isCityValid: Validators.isValidCity(city: event.city)));
   }
 
-  void _mapStateChangedToState({required StateChanged event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapStateChangedToState({required StateChanged event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isStateValid: Constants.states.contains(event.state.toUpperCase())));
   }
 
-  void _mapZipChangedToState({required ZipChanged event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapZipChangedToState({required ZipChanged event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isZipValid: Validators.isValidZip(zip: event.zip)));
   }
 
-  void _mapEinChangedToState({required EinChanged event, required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapEinChangedToState({required EinChanged event, required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isEinValid: Validators.isValidEin(ein: event.ein)));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<BusinessAccountScreenState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<BusinessAccountScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
     
     try {
@@ -95,7 +95,7 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
     }
   }
 
-  void _mapUpdatedToState({required Updated event, required Emitter<BusinessAccountScreenState> emit}) async {
+  Future<void> _mapUpdatedToState({required Updated event, required Emitter<BusinessAccountScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -117,11 +117,11 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
     }
   }
 
-  void _mapChangeEntityTypeSelectedToState({required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapChangeEntityTypeSelectedToState({required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(entityType: EntityType.unknown));
   }
   
-  void _mapResetToState({required Emitter<BusinessAccountScreenState> emit}) async {
+  void _mapResetToState({required Emitter<BusinessAccountScreenState> emit}) {
     emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 

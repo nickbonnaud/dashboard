@@ -3,7 +3,6 @@ import 'package:dashboard/models/status.dart';
 
 enum OnboardEvent {next, prev}
 
-
 class OnboardBloc extends Bloc<OnboardEvent, int> {
   
   OnboardBloc({required Status accountStatus}) 
@@ -13,7 +12,7 @@ class OnboardBloc extends Bloc<OnboardEvent, int> {
     on<OnboardEvent>((event, emit) => _mapOnboardEventToState(event: event, emit: emit));
   }
 
-  void _mapOnboardEventToState({required OnboardEvent event, required Emitter<int> emit}) async {
+  void _mapOnboardEventToState({required OnboardEvent event, required Emitter<int> emit}) {
     if (event == OnboardEvent.next) {
       emit(state + 1);
     } else if (event == OnboardEvent.prev) {

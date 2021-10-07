@@ -16,10 +16,10 @@ class TransactionStatusesBloc extends Bloc<TransactionStatusesEvent, Transaction
       super(TransactionStatusesState.initial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<InitStatuses>((event, emit) => _mapInitToState(emit: emit));
+    on<InitStatuses>((event, emit) async => await _mapInitToState(emit: emit));
   }
 
-  void _mapInitToState({required Emitter<TransactionStatusesState> emit}) async {
+  Future<void> _mapInitToState({required Emitter<TransactionStatusesState> emit}) async {
     emit(state.update(loading: true));
     try {
       final List<Status> statuses = await _statusRepository.fetchTransactionStatuses();

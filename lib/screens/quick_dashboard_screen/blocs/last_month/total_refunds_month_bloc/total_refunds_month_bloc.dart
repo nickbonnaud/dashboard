@@ -14,10 +14,10 @@ class TotalRefundsMonthBloc extends Bloc<TotalRefundsMonthEvent, TotalRefundsMon
       super(TotalRefundsInitial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<FetchTotalRefundsMonth>((event, emit) => _mapFetchTotalRefundsToState(emit: emit));
+    on<FetchTotalRefundsMonth>((event, emit) async => await _mapFetchTotalRefundsToState(emit: emit));
   }
 
-  void _mapFetchTotalRefundsToState({required Emitter<TotalRefundsMonthState> emit}) async {
+  Future<void> _mapFetchTotalRefundsToState({required Emitter<TotalRefundsMonthState> emit}) async {
     emit(Loading());
     try {
       final int totalRefunds = await _refundRepository.fetchTotalRefundsMonth();

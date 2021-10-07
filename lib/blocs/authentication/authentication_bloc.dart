@@ -21,10 +21,10 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   void _eventHandler() {
     on<Init>((event, emit) => _mapInitToState(emit: emit));
     on<LoggedIn>((event, emit) => _mapLoggedInToState(event: event, emit: emit));
-    on<LoggedOut>((event, emit) => _mapLoggedOutToState(emit: emit));
+    on<LoggedOut>((event, emit) async => await _mapLoggedOutToState(emit: emit));
   }
 
-  void _mapInitToState({required Emitter<AuthenticationState> emit}) async {
+  void _mapInitToState({required Emitter<AuthenticationState> emit}) {
     final bool isSignedIn = _authenticationRepository.isSignedIn();
     // final bool isSignedIn = true;
     if (isSignedIn) {
@@ -35,12 +35,12 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
     }
   }
 
-  void _mapLoggedInToState({required LoggedIn event, required Emitter<AuthenticationState> emit}) async {
+  void _mapLoggedInToState({required LoggedIn event, required Emitter<AuthenticationState> emit}) {
     _businessBloc.add(BusinessLoggedIn(business: event.business));
     emit(Authenticated());
   }
 
-  void _mapLoggedOutToState({required Emitter<AuthenticationState> emit}) async {
+  Future<void> _mapLoggedOutToState({required Emitter<AuthenticationState> emit}) async {
     try {
       final bool loggedOut = await _authenticationRepository.logout();
       if (loggedOut) {

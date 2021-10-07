@@ -24,8 +24,8 @@ class TotalTaxesBloc extends Bloc<TotalTaxesEvent, TotalTaxesState> {
       }
 
   void _eventHandler() {
-    on<InitTotalTaxes>((event, emit) => _mapInitTotalTaxesToState(emit: emit));
-    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
+    on<InitTotalTaxes>((event, emit) async => await _mapInitTotalTaxesToState(emit: emit));
+    on<DateRangeChanged>((event, emit) async => await _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
   @override
@@ -34,7 +34,7 @@ class TotalTaxesBloc extends Bloc<TotalTaxesEvent, TotalTaxesState> {
     return super.close();
   }
 
-  void _mapInitTotalTaxesToState({required Emitter<TotalTaxesState> emit}) async {
+  Future<void> _mapInitTotalTaxesToState({required Emitter<TotalTaxesState> emit}) async {
     emit(Loading());
 
     try {
@@ -45,7 +45,7 @@ class TotalTaxesBloc extends Bloc<TotalTaxesEvent, TotalTaxesState> {
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TotalTaxesState> emit}) async {
+  Future<void> _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TotalTaxesState> emit}) async {
     emit(Loading());
 
     try {

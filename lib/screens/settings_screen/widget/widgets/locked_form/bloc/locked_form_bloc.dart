@@ -22,15 +22,15 @@ class LockedFormBloc extends Bloc<LockedFormEvent, LockedFormState> {
 
   void _eventHandler() {
     on<PasswordChanged>((event, emit) => _mapPasswordChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(milliseconds: 300)));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<LockedFormState> emit}) async {
+  void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<LockedFormState> emit}) {
     emit(state.update(isPasswordValid: Validators.isValidPassword(password: event.password)));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<LockedFormState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<LockedFormState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -42,7 +42,7 @@ class LockedFormBloc extends Bloc<LockedFormEvent, LockedFormState> {
     }
   }
   
-  void _mapResetToState({required Emitter<LockedFormState> emit}) async {
+  void _mapResetToState({required Emitter<LockedFormState> emit}) {
     emit(state.update(errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 }

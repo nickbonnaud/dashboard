@@ -24,8 +24,8 @@ class NetSalesBloc extends Bloc<NetSalesEvent, NetSalesState> {
       }
 
   void _eventHandler() {
-    on<InitNetSales>((event, emit) => _mapInitNetSalesToSales(emit: emit));
-    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
+    on<InitNetSales>((event, emit) async => await _mapInitNetSalesToSales(emit: emit));
+    on<DateRangeChanged>((event, emit) async => await _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
   @override
@@ -34,7 +34,7 @@ class NetSalesBloc extends Bloc<NetSalesEvent, NetSalesState> {
     return super.close();
   }
 
-  void _mapInitNetSalesToSales({required Emitter<NetSalesState> emit}) async {
+  Future<void> _mapInitNetSalesToSales({required Emitter<NetSalesState> emit}) async {
     emit(Loading());
 
     try {
@@ -45,7 +45,7 @@ class NetSalesBloc extends Bloc<NetSalesEvent, NetSalesState> {
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<NetSalesState> emit}) async {
+  Future<void> _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<NetSalesState> emit}) async {
     emit(Loading());
 
     try {

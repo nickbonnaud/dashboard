@@ -25,9 +25,9 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
       }
 
   void _eventHandler() {
-    on<Init>((event, emit) => _mapInitToState(emit: emit));
-    on<FetchAll>((event, emit) => _mapFetchAllToState(emit: emit));
-    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
+    on<Init>((event, emit) async => await _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) async => await _mapFetchAllToState(emit: emit));
+    on<FetchMore>((event, emit) async => await _mapFetchMoreToState(emit: emit));
     on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
   }
 
@@ -37,7 +37,7 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
     return super.close();
   }
 
-  void _mapInitToState({required Emitter<UnassignedTransactionsListState> emit}) async {
+  Future<void> _mapInitToState({required Emitter<UnassignedTransactionsListState> emit}) async {
     emit(state.update(loading: true));
 
     try {
@@ -48,7 +48,7 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
     }
   }
 
-  void _mapFetchAllToState({required Emitter<UnassignedTransactionsListState> emit}) async {
+  Future<void> _mapFetchAllToState({required Emitter<UnassignedTransactionsListState> emit}) async {
     _startFetch(emit: emit);
 
     try {
@@ -59,7 +59,7 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
     }
   }
 
-  void _mapFetchMoreToState({required Emitter<UnassignedTransactionsListState> emit}) async {
+  Future<void> _mapFetchMoreToState({required Emitter<UnassignedTransactionsListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
       emit(state.update(paginating: true));
       try {
@@ -71,15 +71,15 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<UnassignedTransactionsListState> emit}) async {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<UnassignedTransactionsListState> emit}) {
     final DateTimeRange? previousDateRange = state.currentDateRange;
     if (previousDateRange != event.dateRange) {
       emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
-      _mapFetchAllToState(emit: emit);
+      add(FetchAll());
     }
   }
 
-  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<UnassignedTransactionsListState> emit}) async {
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<UnassignedTransactionsListState> emit}) {
     emit(state.update(
       loading: false,
       paginating: false,
@@ -89,7 +89,7 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
     ));
   }
 
-  void _startFetch({required Emitter<UnassignedTransactionsListState> emit}) async {
+  void _startFetch({required Emitter<UnassignedTransactionsListState> emit}) {
     emit(state.update(
       loading: true,
       transactions: [],
@@ -99,7 +99,7 @@ class UnassignedTransactionsListBloc extends Bloc<UnassignedTransactionsListEven
     ));
   }
 
-  void _handleError({required String error, required Emitter<UnassignedTransactionsListState> emit}) async {
+  void _handleError({required String error, required Emitter<UnassignedTransactionsListState> emit}) {
     emit(state.update(loading: false, paginating: false, errorMessage: error)); 
   }
 

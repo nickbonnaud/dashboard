@@ -14,10 +14,10 @@ class TotalUniqueCustomersMonthBloc extends Bloc<TotalUniqueCustomersMonthEvent,
       super(TotalUniqueCustomersInitial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<FetchTotalUniqueCustomersMonth>((event, emit) => _mapFetchTotalUniqueCustomersToState(emit: emit));
+    on<FetchTotalUniqueCustomersMonth>((event, emit) async => await _mapFetchTotalUniqueCustomersToState(emit: emit));
   }
 
-  void _mapFetchTotalUniqueCustomersToState({required Emitter<TotalUniqueCustomersMonthState> emit}) async {
+  Future<void> _mapFetchTotalUniqueCustomersToState({required Emitter<TotalUniqueCustomersMonthState> emit}) async {
     emit(Loading());
     try {
       final int totalUniqueCustomers = await _transactionRepository.fetchTotalUniqueCustomersMonth();

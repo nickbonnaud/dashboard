@@ -17,7 +17,7 @@ class LogoFormBloc extends Bloc<LogoFormEvent, LogoFormState> {
     on<LogoPicked>((event, emit) => _mapLogoPickedToState(event: event, emit: emit));
   }
   
-  void _mapLogoPickedToState({required LogoPicked event, required Emitter<LogoFormState> emit}) async {
+  void _mapLogoPickedToState({required LogoPicked event, required Emitter<LogoFormState> emit}) {
     emit(state.update(logoFile: event.logoFile));
   }
 }

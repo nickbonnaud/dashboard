@@ -43,40 +43,40 @@ class OwnerFormBloc extends Bloc<OwnerFormEvent, OwnerFormState> {
     on<StateChanged>((event, emit) => _mapStateChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<ZipChanged>((event, emit) => _mapZipChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<PrimaryChanged>((event, emit) => _mapPrimaryChangedToState(event: event, emit: emit));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
-    on<Updated>((event, emit) => _mapUpdatedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
+    on<Updated>((event, emit) async => await _mapUpdatedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
   
-  void _mapFirstNameChangedToState({required FirstNameChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapFirstNameChangedToState({required FirstNameChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isFirstNameValid: Validators.isValidFirstName(name: event.firstName)));
   }
 
-  void _mapLastNameChangedToState({required LastNameChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapLastNameChangedToState({required LastNameChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isLastNameValid: Validators.isValidLastName(name: event.lastName)));
   }
 
-  void _mapTitleChangedToState({required TitleChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapTitleChangedToState({required TitleChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isTitleValid: event.title.length >= 2));
   }
 
-  void _mapPhoneChangedToState({required PhoneChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapPhoneChangedToState({required PhoneChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isPhoneValid: Validators.isValidPhone(phone: event.phone)));
   }
 
-  void _mapEmailChangedToState({required EmailChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapEmailChangedToState({required EmailChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isEmailValid: Validators.isValidEmail(email: event.email)));
   }
 
-  void _mapPrimaryChangedToState({required PrimaryChanged event, required Emitter<OwnerFormState> emit}) async {    
+  void _mapPrimaryChangedToState({required PrimaryChanged event, required Emitter<OwnerFormState> emit}) {    
     emit(state.update(isPrimary: event.isPrimary));
   }
   
-  void _mapPercentOwnershipChanged({required PercentOwnershipChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapPercentOwnershipChanged({required PercentOwnershipChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isPercentOwnershipValid: Validators.isValidPercentOwnership(percent: event.percentOwnership) && _totalAssignedOwnership() + event.percentOwnership <= 100));
   }
 
-  void _mapDobChangedToState({required DobChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapDobChangedToState({required DobChanged event, required Emitter<OwnerFormState> emit}) {
     try {
       DateFormat.yMd().parse(event.dob);
       emit(state.update(isDobValid: true));
@@ -85,31 +85,31 @@ class OwnerFormBloc extends Bloc<OwnerFormEvent, OwnerFormState> {
     }
   }
 
-  void _mapSsnChangedToState({required SsnChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapSsnChangedToState({required SsnChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isSsnValid: Validators.isValidSsn(ssn: event.ssn)));
   }
 
-  void _mapAddressChangedToState({required AddressChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapAddressChangedToState({required AddressChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isAddressValid: Validators.isValidAddress(address: event.address)));
   }
 
-  void _mapAddressSecondaryChangedToState({required AddressSecondaryChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapAddressSecondaryChangedToState({required AddressSecondaryChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isAddressSecondaryValid: Validators.isValidAddressSecondary(address: event.addressSecondary)));
   }
 
-  void _mapCityChangedToState({required CityChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapCityChangedToState({required CityChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isCityValid: Validators.isValidCity(city: event.city)));
   }
 
-  void _mapStateChangedToState({required StateChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapStateChangedToState({required StateChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isStateValid: Constants.states.contains(event.state.toUpperCase())));
   }
 
-  void _mapZipChangedToState({required ZipChanged event, required Emitter<OwnerFormState> emit}) async {
+  void _mapZipChangedToState({required ZipChanged event, required Emitter<OwnerFormState> emit}) {
     emit(state.update(isZipValid: Validators.isValidZip(zip: event.zip)));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<OwnerFormState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<OwnerFormState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -136,7 +136,7 @@ class OwnerFormBloc extends Bloc<OwnerFormEvent, OwnerFormState> {
     }
   }
 
-  void _mapUpdatedToState({required Updated event, required Emitter<OwnerFormState> emit}) async {
+  Future<void> _mapUpdatedToState({required Updated event, required Emitter<OwnerFormState> emit}) async {
     emit(state.update(isSubmitting: true));
 
      try {
@@ -164,7 +164,7 @@ class OwnerFormBloc extends Bloc<OwnerFormEvent, OwnerFormState> {
     }
   }
 
-  void _mapResetToState({required Emitter<OwnerFormState> emit}) async {
+  void _mapResetToState({required Emitter<OwnerFormState> emit}) {
     emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 

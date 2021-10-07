@@ -14,10 +14,10 @@ class NetSalesTodayBloc extends Bloc<NetSalesTodayEvent, NetSalesTodayState> {
       super(NetSalesInitial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<FetchNetSalesToday>((event, emit) => _mapFetchNetSalesToState(emit: emit));
+    on<FetchNetSalesToday>((event, emit) async => await _mapFetchNetSalesToState(emit: emit));
   }
 
-  void _mapFetchNetSalesToState({required Emitter<NetSalesTodayState> emit}) async {
+  Future<void> _mapFetchNetSalesToState({required Emitter<NetSalesTodayState> emit}) async {
     emit(Loading());
     try {
       final int netSales = await _transactionRepository.fetchNetSalesToday();

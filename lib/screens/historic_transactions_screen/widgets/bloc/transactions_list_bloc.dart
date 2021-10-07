@@ -38,14 +38,14 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
 
   void _eventHandler() {
-    on<Init>((event, emit) => _mapInitToState(emit: emit));
-    on<FetchAll>((event, emit) => _mapFetchAllToState(emit: emit));
-    on<FetchMoreTransactions>((event, emit) => _mapFetchMoreTransactionsToState(emit: emit));
-    on<FetchByStatus>((event, emit) => _mapFetchByStatusToState(code: event.code, emit: emit));
-    on<FetchByCustomerId>((event, emit) => _mapFetchByCustomerIdToState(customerId: event.customerId, emit: emit));
-    on<FetchByTransactionId>((event, emit) => _mapFetchByTransactionIdToState(transactionId: event.transactionId, emit: emit));
-    on<FetchByCustomerName>((event, emit) => _mapFetchByCustomerNameToState(customerName: FullName(first: event.firstName, last: event.lastName), emit: emit));
-    on<FetchByEmployeeName>((event, emit) => _mapFetchByEmployeeNameToState(employeeName: FullName(first: event.firstName, last: event.lastName), emit: emit));
+    on<Init>((event, emit) async => await _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) async => await _mapFetchAllToState(emit: emit));
+    on<FetchMoreTransactions>((event, emit) async => await _mapFetchMoreTransactionsToState(emit: emit));
+    on<FetchByStatus>((event, emit) async => await _mapFetchByStatusToState(code: event.code, emit: emit));
+    on<FetchByCustomerId>((event, emit) async => await _mapFetchByCustomerIdToState(customerId: event.customerId, emit: emit));
+    on<FetchByTransactionId>((event, emit) async => await _mapFetchByTransactionIdToState(transactionId: event.transactionId, emit: emit));
+    on<FetchByCustomerName>((event, emit) async => await _mapFetchByCustomerNameToState(customerName: FullName(first: event.firstName, last: event.lastName), emit: emit));
+    on<FetchByEmployeeName>((event, emit) async => await _mapFetchByEmployeeNameToState(employeeName: FullName(first: event.firstName, last: event.lastName), emit: emit));
     on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
     on<FilterChanged>((event, emit) => _mapFilterChangedToState(event: event, emit: emit));
   }
@@ -57,7 +57,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     return super.close();
   }
 
-  void _mapInitToState({required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapInitToState({required Emitter<TransactionsListState> emit}) async {
     emit(state.update(loading: true));
     
     try {
@@ -68,7 +68,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapFetchAllToState({required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapFetchAllToState({required Emitter<TransactionsListState> emit}) async {
     _startFetch(emit: emit);
 
     try {
@@ -79,7 +79,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapFetchMoreTransactionsToState({required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapFetchMoreTransactionsToState({required Emitter<TransactionsListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
       emit(state.update(paginating: true));
       try {
@@ -91,7 +91,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapFetchByStatusToState({required int code, required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapFetchByStatusToState({required int code, required Emitter<TransactionsListState> emit}) async {
     _startFetch(emit: emit, currentIdQuery: code.toString());
 
     try {
@@ -102,7 +102,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapFetchByCustomerIdToState({required String customerId, required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapFetchByCustomerIdToState({required String customerId, required Emitter<TransactionsListState> emit}) async {
     _startFetch(emit: emit, currentIdQuery: customerId);
 
     try {
@@ -113,7 +113,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapFetchByTransactionIdToState({required String transactionId, required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapFetchByTransactionIdToState({required String transactionId, required Emitter<TransactionsListState> emit}) async {
     _startFetch(emit: emit, currentIdQuery: transactionId);
 
     try {
@@ -124,7 +124,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapFetchByCustomerNameToState({required FullName customerName, required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapFetchByCustomerNameToState({required FullName customerName, required Emitter<TransactionsListState> emit}) async {
     _startFetch(emit: emit, currentNameQuery: customerName);
 
     try {
@@ -135,7 +135,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapFetchByEmployeeNameToState({required FullName employeeName, required Emitter<TransactionsListState> emit}) async {
+  Future<void> _mapFetchByEmployeeNameToState({required FullName employeeName, required Emitter<TransactionsListState> emit}) async {
     _startFetch(emit: emit, currentNameQuery: employeeName);
 
     try {
@@ -146,47 +146,47 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TransactionsListState> emit}) async {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TransactionsListState> emit}) {
     final DateTimeRange? previousDateRange = state.currentDateRange;
 
     if (previousDateRange != event.dateRange) {
       emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
       switch (state.currentFilter) {
         case FilterType.transactionId:
-          _mapFetchByTransactionIdToState(transactionId: state.currentIdQuery!, emit: emit);
+          add(FetchByTransactionId(transactionId: state.currentIdQuery!));
           break;
         case FilterType.customerId:
-          _mapFetchByCustomerIdToState(customerId: state.currentIdQuery!, emit: emit);
+          add(FetchByCustomerId(customerId: state.currentIdQuery!));
           break;
         case FilterType.status:
-          _mapFetchByStatusToState(code: int.parse(state.currentIdQuery!), emit: emit);
+          add(FetchByStatus(code: int.parse(state.currentIdQuery!)));
           break;
         case FilterType.customerName:
-          _mapFetchByCustomerNameToState(customerName: state.currentNameQuery!, emit: emit);
+          add(FetchByCustomerName(firstName: state.currentNameQuery!.first, lastName: state.currentNameQuery!.last));
           break;
         case FilterType.employeeName:
-          _mapFetchByEmployeeNameToState(employeeName: state.currentNameQuery!, emit: emit);
+          add(FetchByEmployeeName(firstName: state.currentNameQuery!.first, lastName: state.currentNameQuery!.last));
           break;
         default:
-          _mapFetchAllToState(emit: emit);
+          add(FetchAll());
       }
     }
   }
 
-  void _mapFilterChangedToState({required FilterChanged event, required Emitter<TransactionsListState> emit}) async {
+  void _mapFilterChangedToState({required FilterChanged event, required Emitter<TransactionsListState> emit}) {
     if (event.filter == FilterType.all) {
       emit(state.update(currentFilter: event.filter, isDateReset: true));
-      _mapFetchAllToState(emit: emit);
+      add(FetchAll());
     } else {
       emit(state.update(currentFilter: event.filter));
     }
   }
   
-  void _startFetch({required Emitter<TransactionsListState> emit, String? currentIdQuery, FullName? currentNameQuery}) async {
+  void _startFetch({required Emitter<TransactionsListState> emit, String? currentIdQuery, FullName? currentNameQuery}) {
     emit(state.reset(currentIdQuery: currentIdQuery, currentNameQuery: currentNameQuery));
   }
   
-  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<TransactionsListState> emit}) async {
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<TransactionsListState> emit}) {
     emit(state.update(
       loading: false,
       paginating: false,
@@ -196,7 +196,7 @@ class TransactionsListBloc extends Bloc<TransactionsListEvent, TransactionsListS
     ));
   }
 
-  void _handleError({required String error, required Emitter<TransactionsListState> emit}) async {
+  void _handleError({required String error, required Emitter<TransactionsListState> emit}) {
     emit(state.update(loading: false, paginating: false, errorMessage: error)); 
   }
 

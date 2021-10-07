@@ -19,7 +19,7 @@ class HoursSelectionFormBloc extends Bloc<HoursSelectionFormEvent, HoursSelectio
     on<Finished>((event, emit) => _mapFinishedToState(event: event, emit: emit));
   }
 
-  void _mapGridSelectionChangedToState({required GridSelectionChanged event, required Emitter<HoursSelectionFormState> emit}) async {
+  void _mapGridSelectionChangedToState({required GridSelectionChanged event, required Emitter<HoursSelectionFormState> emit}) {
     if (event.isDrag) {
       emit(state.update(operatingHoursGrid: state.operatingHoursGrid.update(x: event.indexX, y: event.indexY, selected: true)));
     } else {
@@ -31,11 +31,11 @@ class HoursSelectionFormBloc extends Bloc<HoursSelectionFormEvent, HoursSelectio
     }
   }
 
-  void _mapToggleAllHoursToState({required Emitter<HoursSelectionFormState> emit}) async {
+  void _mapToggleAllHoursToState({required Emitter<HoursSelectionFormState> emit}) {
     emit(state.update(operatingHoursGrid: state.operatingHoursGrid.toggle()));
   }
 
-  void _mapFinishedToState({required Finished event, required Emitter<HoursSelectionFormState> emit}) async {
+  void _mapFinishedToState({required Finished event, required Emitter<HoursSelectionFormState> emit}) {
     emit(state.update(isFinished: event.isFinished));
   }
 }

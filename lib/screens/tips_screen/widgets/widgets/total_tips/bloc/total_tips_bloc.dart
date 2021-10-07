@@ -24,8 +24,8 @@ class TotalTipsBloc extends Bloc<TotalTipsEvent, TotalTipsState> {
       }
 
   void _eventHandler() {
-    on<InitTotal>((event, emit) => _mapInitTotalToState(emit: emit));
-    on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
+    on<InitTotal>((event, emit) async => await _mapInitTotalToState(emit: emit));
+    on<DateRangeChanged>((event, emit) async => await _mapDateRangeChangedToState(event: event, emit: emit));
   }
   
   @override
@@ -34,7 +34,7 @@ class TotalTipsBloc extends Bloc<TotalTipsEvent, TotalTipsState> {
     return super.close();
   }
 
-  void _mapInitTotalToState({required Emitter<TotalTipsState> emit}) async {
+  Future<void> _mapInitTotalToState({required Emitter<TotalTipsState> emit}) async {
     emit(Loading());
 
     try {
@@ -45,7 +45,7 @@ class TotalTipsBloc extends Bloc<TotalTipsEvent, TotalTipsState> {
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TotalTipsState> emit}) async {
+  Future<void> _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<TotalTipsState> emit}) async {
     emit(Loading());
 
     try {

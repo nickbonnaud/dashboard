@@ -14,10 +14,10 @@ class TotalTipsTodayBloc extends Bloc<TotalTipsTodayEvent, TotalTipsTodayState> 
       super(TotalTipsInitial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<FetchTotalTipsToday>((event, emit) => _mapFetchTotalTipsToState(emit: emit));
+    on<FetchTotalTipsToday>((event, emit) async => await _mapFetchTotalTipsToState(emit: emit));
   }
 
-  void _mapFetchTotalTipsToState({required Emitter<TotalTipsTodayState> emit}) async {
+  Future<void> _mapFetchTotalTipsToState({required Emitter<TotalTipsTodayState> emit}) async {
     emit(Loading());
     try {
       final int totalTips = await _transactionRepository.fetchTotalTipsToday();

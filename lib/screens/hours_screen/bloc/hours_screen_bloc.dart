@@ -17,15 +17,15 @@ class HoursScreenBloc extends Bloc<HoursScreenEvent, HoursScreenState> {
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapEarliestOpeningChangedToState({required EarliestOpeningChanged event, required Emitter<HoursScreenState> emit}) async {
+  void _mapEarliestOpeningChangedToState({required EarliestOpeningChanged event, required Emitter<HoursScreenState> emit}) {
     emit(state.update(earliestStart: event.time));
   }
 
-  void _mapLatestClosingChangedToState({required LatestClosingChanged event, required Emitter<HoursScreenState> emit}) async {
+  void _mapLatestClosingChangedToState({required LatestClosingChanged event, required Emitter<HoursScreenState> emit}) {
     emit(state.update(latestEnd: event.time));
   }
 
-  void _mapResetToState({required Emitter<HoursScreenState> emit}) async {
+  void _mapResetToState({required Emitter<HoursScreenState> emit}) {
     emit(HoursScreenState.initial());
   }
 }

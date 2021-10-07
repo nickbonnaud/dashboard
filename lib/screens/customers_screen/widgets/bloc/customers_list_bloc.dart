@@ -37,9 +37,9 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
   }
 
   void _eventHandler() {
-    on<Init>((event, emit) => _mapInitToState(emit: emit));
-    on<FetchAll>((event, emit) => _mapFetchToState(emit: emit));
-    on<FetchMore>((event, emit) => _mapFetchMoreToState(emit: emit));
+    on<Init>((event, emit) async => await _mapInitToState(emit: emit));
+    on<FetchAll>((event, emit) async => await _mapFetchToState(emit: emit));
+    on<FetchMore>((event, emit) async => await _mapFetchMoreToState(emit: emit));
     on<DateRangeChanged>((event, emit) => _mapDateRangeChangedToState(event: event, emit: emit));
     on<FilterButtonChanged>((event, emit) => _mapFilterButtonChangedToState(emit: emit));
   }
@@ -51,7 +51,7 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     return super.close();
   }
 
-  void _mapInitToState({required Emitter<CustomersListState> emit}) async {
+  Future<void> _mapInitToState({required Emitter<CustomersListState> emit}) async {
     emit(state.update(loading: true));
 
     try {
@@ -65,7 +65,7 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     }
   }
 
-  void _mapFetchToState({required Emitter<CustomersListState> emit}) async {
+  Future<void> _mapFetchToState({required Emitter<CustomersListState> emit}) async {
     _startFetch(emit: emit);
 
     try {
@@ -80,7 +80,7 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     }
   }
 
-  void _mapFetchMoreToState({required Emitter<CustomersListState> emit}) async {
+  Future<void> _mapFetchMoreToState({required Emitter<CustomersListState> emit}) async {
     if (!state.loading && !state.paginating && !state.hasReachedEnd) {
       emit(state.update(paginating: true));
       try {
@@ -92,23 +92,23 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     }
   }
 
-  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<CustomersListState> emit}) async {
+  void _mapDateRangeChangedToState({required DateRangeChanged event, required Emitter<CustomersListState> emit}) {
     final DateTimeRange? previousDateRange = state.currentDateRange;
     if (previousDateRange != event.dateRange) {
       emit(state.update(currentDateRange: event.dateRange, isDateReset: event.dateRange == null));
-      _mapFetchToState(emit: emit);
+      add(FetchAll());
     }
   }
 
-  void _mapFilterButtonChangedToState({required Emitter<CustomersListState> emit}) async {
-    _mapFetchToState(emit: emit);
+  void _mapFilterButtonChangedToState({required Emitter<CustomersListState> emit}) {
+    add(FetchAll());
   }
 
-  void _startFetch({required Emitter<CustomersListState> emit}) async {
+  void _startFetch({required Emitter<CustomersListState> emit}) {
     emit(state.reset());
   }
   
-  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<CustomersListState> emit}) async {
+  void _handleSuccess({required PaginateDataHolder paginateData, required Emitter<CustomersListState> emit}) {
     emit(state.update(
       loading: false,
       paginating: false,
@@ -118,7 +118,7 @@ class CustomersListBloc extends Bloc<CustomersListEvent, CustomersListState> {
     ));
   }
 
-  void _handleError({required String error, required Emitter<CustomersListState> emit}) async {
+  void _handleError({required String error, required Emitter<CustomersListState> emit}) {
     emit(state.update(loading: false, paginating: false, errorMessage: error));
   }
   

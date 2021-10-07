@@ -33,7 +33,7 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
       }
 
   void _eventHandler() {
-    on<Init>((event, emit) => _mapInitToState(event: event, emit: emit));
+    on<Init>((event, emit) async => await _mapInitToState(event: event, emit: emit));
   }
   
   @override
@@ -42,7 +42,7 @@ class MessagesBloc extends Bloc<MessagesEvent, MessagesState> {
     return super.close();
   }
 
-  void _mapInitToState({required Init event, required Emitter<MessagesState> emit}) async {
+  Future<void> _mapInitToState({required Init event, required Emitter<MessagesState> emit}) async {
     emit(state.update(loading: true));
 
     try {

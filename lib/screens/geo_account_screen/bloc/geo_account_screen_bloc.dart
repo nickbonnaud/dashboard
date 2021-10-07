@@ -23,20 +23,20 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
   void _eventHandler() {
     on<LocationChanged>((event, emit) => _mapLocationChangedToState(event: event, emit: emit));
     on<RadiusChanged>((event, emit) => _mapRadiusChangedToState(event: event, emit: emit));
-    on<Submitted>((event, emit) => _mapSubmittedToState(emit: emit));
-    on<Updated>((event, emit) => _mapUpdatedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(emit: emit));
+    on<Updated>((event, emit) async => await _mapUpdatedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapLocationChangedToState({required LocationChanged event, required Emitter<GeoAccountScreenState> emit}) async {
+  void _mapLocationChangedToState({required LocationChanged event, required Emitter<GeoAccountScreenState> emit}) {
     emit(state.update(currentLocation: event.location));
   }
 
-  void _mapRadiusChangedToState({required RadiusChanged event, required Emitter<GeoAccountScreenState> emit}) async {
+  void _mapRadiusChangedToState({required RadiusChanged event, required Emitter<GeoAccountScreenState> emit}) {
     emit(state.update(radius: event.radius));
   }
 
-  void _mapSubmittedToState({required Emitter<GeoAccountScreenState> emit}) async {
+  Future<void> _mapSubmittedToState({required Emitter<GeoAccountScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -52,7 +52,7 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
     }
   }
 
-  void _mapUpdatedToState({required Updated event, required Emitter<GeoAccountScreenState> emit}) async {
+  Future<void> _mapUpdatedToState({required Updated event, required Emitter<GeoAccountScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -69,7 +69,7 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
     }
   }
 
-  void _mapResetToState({required Emitter<GeoAccountScreenState> emit}) async {
+  void _mapResetToState({required Emitter<GeoAccountScreenState> emit}) {
     emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 

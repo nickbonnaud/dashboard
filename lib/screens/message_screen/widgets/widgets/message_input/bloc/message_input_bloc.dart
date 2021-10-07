@@ -21,14 +21,14 @@ class MessageInputBloc extends Bloc<MessageInputEvent, MessageInputState> {
 
   void _eventHandler() {
     on<MessageChanged>((event, emit) => _mapMessageChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(milliseconds: 300)));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
   }
 
-  void _mapMessageChangedToState({required MessageChanged event, required Emitter<MessageInputState> emit}) async {
+  void _mapMessageChangedToState({required MessageChanged event, required Emitter<MessageInputState> emit}) {
     emit(state.update(isInputValid: event.message.trim().isNotEmpty));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<MessageInputState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<MessageInputState> emit}) async {
     emit(state.update(isSubmitting: true, errorMessage: ""));
     try {
       Reply reply = await _messageRepository.addReply(messageIdentifier: event.messageIdentifier, replyBody: event.message);

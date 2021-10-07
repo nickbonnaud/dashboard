@@ -43,7 +43,7 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
   void _eventHandler() {
     on<LogoFilePicked>((event, emit) => _mapLogoFilePickedToState(event: event, emit: emit));
     on<BannerFilePicked>((event, emit) => _mapBannerFilePickedToState(event: event, emit: emit));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
@@ -54,15 +54,15 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
     return super.close();
   }
 
-  void _mapLogoFilePickedToState({required LogoFilePicked event, required Emitter<PhotosFormState> emit}) async {
+  void _mapLogoFilePickedToState({required LogoFilePicked event, required Emitter<PhotosFormState> emit}) {
     emit(state.update(logoFile: event.logo));
   }
 
-  void _mapBannerFilePickedToState({required BannerFilePicked event, required Emitter<PhotosFormState> emit}) async {
+  void _mapBannerFilePickedToState({required BannerFilePicked event, required Emitter<PhotosFormState> emit}) {
     emit(state.update(bannerFile: event.banner));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<PhotosFormState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<PhotosFormState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
@@ -81,7 +81,7 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
     }
   }
 
-  void _mapResetToState({required Emitter<PhotosFormState> emit}) async {
+  void _mapResetToState({required Emitter<PhotosFormState> emit}) {
     emit(state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 
@@ -113,10 +113,10 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
   }
 
   Future<Photos> _storeLogo({required String identifier}) async {
-    return _photosRepository.storeLogo(file: state.logoFile!, profileIdentifier: identifier);
+    return await _photosRepository.storeLogo(file: state.logoFile!, profileIdentifier: identifier);
   }
 
   Future<Photos> _storeBanner({required String identifier}) async {
-    return _photosRepository.storeBanner(file: state.logoFile!, profileIdentifier: identifier);
+    return await _photosRepository.storeBanner(file: state.logoFile!, profileIdentifier: identifier);
   }
 }

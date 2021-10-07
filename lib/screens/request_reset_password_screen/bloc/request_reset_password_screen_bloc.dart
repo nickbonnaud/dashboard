@@ -18,15 +18,15 @@ class RequestResetPasswordScreenBloc extends Bloc<RequestResetPasswordScreenEven
 
   void _eventHandler() {
     on<EmailChanged>((event, emit) => _mapEmailChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(milliseconds: 300)));
-    on<Submitted>((event, emit) => _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
-  void _mapEmailChangedToState({required EmailChanged event, required Emitter<RequestResetPasswordScreenState> emit}) async {
+  void _mapEmailChangedToState({required EmailChanged event, required Emitter<RequestResetPasswordScreenState> emit}) {
     emit(state.update(isEmailValid: Validators.isValidEmail(email: event.email)));
   }
 
-  void _mapSubmittedToState({required Submitted event, required Emitter<RequestResetPasswordScreenState> emit}) async {
+  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<RequestResetPasswordScreenState> emit}) async {
     emit(state.update(isSubmitting: true, errorMessage: ""));
 
     try {
@@ -47,7 +47,7 @@ class RequestResetPasswordScreenBloc extends Bloc<RequestResetPasswordScreenEven
     }
   }
 
-  void _mapResetToState({required Emitter<RequestResetPasswordScreenState> emit}) async {
+  void _mapResetToState({required Emitter<RequestResetPasswordScreenState> emit}) {
     emit(state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
   }
 }
