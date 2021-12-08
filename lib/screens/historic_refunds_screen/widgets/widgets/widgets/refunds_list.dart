@@ -39,6 +39,12 @@ class _RefundsListState extends State<RefundsList> {
     );
   }
 
+  @override
+  void dispose() {
+    _refundsListBloc.close();
+    super.dispose();
+  }
+
   Widget _error({required String error}) {
     return SliverFillRemaining(
       child: Center(

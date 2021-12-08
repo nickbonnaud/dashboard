@@ -33,7 +33,7 @@ void main() {
       when(() => authenticationRepository.resetPassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), token: any(named: "token")))
         .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => true));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Reset Password Screen creates ResetPasswordScreenBody", (tester) async {

@@ -56,7 +56,13 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
   @override
   void dispose() {
     _passwordController.dispose();
+    _passwordFocus.dispose();
+
     _passwordConfirmationController.dispose();
+    _passwordConfirmationFocus.dispose();
+
+    _resetPasswordScreenBloc.close();
+
     super.dispose();
   }
 

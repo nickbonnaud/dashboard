@@ -59,6 +59,6 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
   }
 
   void _mapResetToState({required Emitter<RegisterFormState> emit}) {
-    emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 }

@@ -19,7 +19,7 @@ void main() {
       _geoAccountRepository = GeoAccountRepository(geoAccountProvider: GeoAccountProvider());
       _mockGeoAccountProvider = MockGeoAccountProvider();
       _geoAccountRepositoryWithMock = GeoAccountRepository(geoAccountProvider: _mockGeoAccountProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
     
     test("Geo Account Repository can Store a geo account", () async {

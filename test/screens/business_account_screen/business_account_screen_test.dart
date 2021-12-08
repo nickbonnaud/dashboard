@@ -97,8 +97,8 @@ void main() {
         ein: any(named: "ein")
       )).thenThrow(ApiException(error: "An error occurred!"));
 
-      registerFallbackValue<BusinessEvent>(BusinessAccountUpdated(businessAccount: MockBusinessAccount()));
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(BusinessAccountUpdated(businessAccount: MockBusinessAccount()));
+      registerFallbackValue(MockRoute());
 
       when(() => businessBloc.add(any(that: isA<BusinessEvent>())))
         .thenReturn(null);

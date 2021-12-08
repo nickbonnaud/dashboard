@@ -123,7 +123,7 @@ void main() {
       
       String firstName = faker.person.firstName();
       await tester.enterText(find.byKey(Key("firstNameTextFieldKey")), firstName);
-      await tester.pump();
+      await tester.pump(Duration(milliseconds: 1500));
 
       expect(find.text(firstName), findsOneWidget);
     });
@@ -153,7 +153,7 @@ void main() {
       
       String lastName = faker.person.lastName();
       await tester.enterText(find.byKey(Key("lastNameTextFieldKey")), lastName);
-      await tester.pump();
+      await tester.pump(Duration(milliseconds: 1500));
 
       expect(find.text(lastName), findsOneWidget);
     });

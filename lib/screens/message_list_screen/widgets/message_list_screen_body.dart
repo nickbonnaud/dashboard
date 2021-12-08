@@ -47,6 +47,7 @@ class _MessageListScreenBodyState extends State<MessageListScreenBody> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _messageScreenBloc.close();
     super.dispose();
   }
 

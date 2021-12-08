@@ -77,12 +77,12 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
       _updateBusinessBloc(photos: photos);
       emit(state.update(isSubmitting: false, isSuccess: true));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
   void _mapResetToState({required Emitter<PhotosFormState> emit}) {
-    emit(state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 
   void _updateBusinessBloc({required Photos photos}) {

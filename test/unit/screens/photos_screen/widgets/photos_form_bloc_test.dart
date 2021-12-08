@@ -15,7 +15,7 @@ import 'package:simple_animations/simple_animations.dart';
 class MockPhotosRepository extends Mock implements PhotosRepository {}
 class MockBusinessBloc extends Mock implements BusinessBloc {}
 class MockPhoto extends Mock implements Photo {}
-class MockPickedFile extends Mock implements PickedFile {}
+class MockXFile extends Mock implements XFile {}
 
 void main() {
   group("Photos Form Bloc Tests", () {
@@ -26,8 +26,8 @@ void main() {
     late PhotosFormBloc photosFormBloc;
 
     late PhotosFormState baseState;
-    late PickedFile logoFile;
-    late PickedFile bannerFile;
+    late XFile logoFile;
+    late XFile bannerFile;
 
     setUp(() {
       photosRepository = MockPhotosRepository();
@@ -43,8 +43,8 @@ void main() {
       );
 
       baseState = PhotosFormState.intial();
-      registerFallbackValue<BusinessEvent>(PhotosUpdated(photos: Photos(logo: MockPhoto(), banner: MockPhoto())));
-      registerFallbackValue<PickedFile>(MockPickedFile());
+      registerFallbackValue(PhotosUpdated(photos: Photos(logo: MockPhoto(), banner: MockPhoto())));
+      registerFallbackValue(MockXFile());
 
       when(() => photosRepository.storeLogo(file: any(named: "file"), profileIdentifier: any(named: "profileIdentifier")))
         .thenAnswer((_) async => Photos(logo: MockPhoto(), banner: MockPhoto()));
@@ -69,7 +69,7 @@ void main() {
       "LogoFilePicked event changes state: [logoFile: logo]",
       build: () => photosFormBloc,
       act: (bloc) {
-        logoFile = MockPickedFile();
+        logoFile = MockXFile();
         bloc.add(LogoFilePicked(logo: logoFile));
       },
       expect: () => [baseState.update(logoFile: logoFile)]
@@ -79,7 +79,7 @@ void main() {
       "BannerFilePicked event changes state: [bannerFile: banner]",
       build: () => photosFormBloc,
       act: (bloc) {
-        bannerFile = MockPickedFile();
+        bannerFile = MockXFile();
         bloc.add(BannerFilePicked(banner: bannerFile));
       },
       expect: () => [baseState.update(bannerFile: bannerFile)]
@@ -89,8 +89,8 @@ void main() {
       "bannerFile and logoFile != null sets PhotosValid = true",
       build: () => photosFormBloc,
       act: (bloc) {
-        logoFile = MockPickedFile();
-        bannerFile = MockPickedFile();
+        logoFile = MockXFile();
+        bannerFile = MockXFile();
         bloc.add(BannerFilePicked(banner: bannerFile));
         bloc.add(LogoFilePicked(logo: logoFile));
       },
@@ -103,7 +103,7 @@ void main() {
       "Submitted event changes state: [isSubmitting: true], [isSubmitting: false, isSuccess: true]",
       build: () => photosFormBloc,
       seed: () {
-        baseState = baseState.update(logoFile: MockPickedFile(), bannerFile: MockPickedFile());
+        baseState = baseState.update(logoFile: MockXFile(), bannerFile: MockXFile());
         return baseState;
       },
       act: (bloc) {
@@ -116,7 +116,7 @@ void main() {
       "Submitted event calls photosRepository.storeLogo && photosRepository.storeBanner",
       build: () => photosFormBloc,
       seed: () {
-        baseState = baseState.update(logoFile: MockPickedFile(), bannerFile: MockPickedFile());
+        baseState = baseState.update(logoFile: MockXFile(), bannerFile: MockXFile());
         return baseState;
       },
       act: (bloc) {
@@ -132,7 +132,7 @@ void main() {
       "Submitted event calls businessBloc.add",
       build: () => photosFormBloc,
       seed: () {
-        baseState = baseState.update(logoFile: MockPickedFile(), bannerFile: MockPickedFile());
+        baseState = baseState.update(logoFile: MockXFile(), bannerFile: MockXFile());
         return baseState;
       },
       act: (bloc) {
@@ -147,7 +147,7 @@ void main() {
       "Submitted event on storeLogo error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]",
       build: () => photosFormBloc,
       seed: () {
-        baseState = baseState.update(logoFile: MockPickedFile(), bannerFile: MockPickedFile());
+        baseState = baseState.update(logoFile: MockXFile(), bannerFile: MockXFile());
         return baseState;
       },
       act: (bloc) {
@@ -155,14 +155,14 @@ void main() {
           .thenThrow(ApiException(error: "error"));
         bloc.add(Submitted(identifier: "identifier"));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<PhotosFormBloc, PhotosFormState>(
       "Submitted event on storeBanner error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]",
       build: () => photosFormBloc,
       seed: () {
-        baseState = baseState.update(logoFile: MockPickedFile(), bannerFile: MockPickedFile());
+        baseState = baseState.update(logoFile: MockXFile(), bannerFile: MockXFile());
         return baseState;
       },
       act: (bloc) {
@@ -170,7 +170,7 @@ void main() {
           .thenThrow(ApiException(error: "error"));
         bloc.add(Submitted(identifier: "identifier"));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<PhotosFormBloc, PhotosFormState>(
@@ -178,17 +178,17 @@ void main() {
       build: () => photosFormBloc,
       seed: () {
         baseState = baseState.update(
-          logoFile: MockPickedFile(),
-          bannerFile: MockPickedFile(),
+          logoFile: MockXFile(),
+          bannerFile: MockXFile(),
           isSuccess: true,
           isSubmitting: true,
           errorMessage: "error",
-          errorButtonControl: CustomAnimationControl.PLAY_FROM_START
+          errorButtonControl: CustomAnimationControl.playFromStart
         );
         return baseState;
       },
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [baseState.update(isSuccess: false, isSubmitting: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [baseState.update(isSuccess: false, isSubmitting: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

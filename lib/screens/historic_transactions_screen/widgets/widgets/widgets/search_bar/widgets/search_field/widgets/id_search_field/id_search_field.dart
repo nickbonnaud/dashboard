@@ -28,8 +28,8 @@ class _IdSearchFieldState extends State<IdSearchField> {
   
   @override
   void initState() {
-    _controller.addListener(_onInputChanged);
     super.initState();
+    _controller.addListener(_onInputChanged);
   }
   
   @override
@@ -66,7 +66,8 @@ class _IdSearchFieldState extends State<IdSearchField> {
 
   @override
   void dispose() {
-    _controller.dispose();  
+    _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 

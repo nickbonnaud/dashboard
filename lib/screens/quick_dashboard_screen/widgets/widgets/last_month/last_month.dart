@@ -28,7 +28,7 @@ class LastMonth extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 10, right: 10),
+            padding: EdgeInsets.all(10),
             child: BoldText5(text: 'Last 30 Days', context: context),
           ),
           SizedBox(height: SizeConfig.getHeight(2)),

@@ -67,6 +67,8 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
   @override
   void dispose() {
     _emailController.dispose();
+    _emailFocus.dispose();
+    _resetPasswordScreenBloc.close();
     super.dispose();
   }
 

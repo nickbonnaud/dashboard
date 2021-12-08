@@ -24,6 +24,7 @@ class Boot extends StatelessWidget {
 
   MaterialApp _app({required BuildContext context}) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       initialRoute: Routes.app,
       theme: MainTheme.themeData(context: context),
       title: '${Constants.appName} Dashboard',

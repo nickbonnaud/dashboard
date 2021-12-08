@@ -3,7 +3,7 @@ part of 'logo_form_bloc.dart';
 @immutable
 class LogoFormState extends Equatable {
   final Photo initialLogo;
-  final PickedFile? logoFile;
+  final XFile? logoFile;
 
   const LogoFormState({required this.initialLogo, @required this.logoFile});
 
@@ -11,7 +11,7 @@ class LogoFormState extends Equatable {
     return LogoFormState(initialLogo: logo, logoFile: null);
   }
 
-  LogoFormState update({required PickedFile logoFile}) {
+  LogoFormState update({required XFile logoFile}) {
     return LogoFormState(initialLogo: this.initialLogo, logoFile: logoFile);
   }
   

@@ -39,6 +39,12 @@ class _TransactionsListState extends State<TransactionsList> {
     );
   }
 
+  @override
+  void dispose() {
+    _transactionsListBloc.close();
+    super.dispose();
+  }
+
   Widget _transactions({required TransactionsListState state}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(

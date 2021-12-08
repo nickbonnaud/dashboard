@@ -20,11 +20,11 @@ void main() {
       _photosRepository = PhotosRepository(photosProvider: PhotosProvider());
       _mockPhotosProvider = MockPhotosProvider();
       _photosRepositoryWithMock = PhotosRepository(photosProvider: _mockPhotosProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
     
     test("Photos Repository can Store logo", () async {
-      final PickedFile file = PickedFile("fake_path");
+      final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
       var photos = await _photosRepository.storeLogo(file: file, profileIdentifier: identifier);
       expect(photos is Photos, true);
@@ -32,7 +32,7 @@ void main() {
     });
 
     test("Photos Repository throws error on Store logo fail", () async {
-      final PickedFile file = PickedFile("fake_path");
+      final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
       when(() => _mockPhotosProvider.storeLogo(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
 
@@ -43,7 +43,7 @@ void main() {
     });
 
     test("Photos Repository can Store a Banner", () async {
-      final PickedFile file = PickedFile("fake_path");
+      final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
       var photos = await _photosRepository.storeBanner(file: file, profileIdentifier: identifier);
       expect(photos is Photos, true);
@@ -51,7 +51,7 @@ void main() {
     });
 
     test("Photos Repository throws error on Store banner fail", () async {
-      final PickedFile file = PickedFile("fake_path");
+      final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
       when(() => _mockPhotosProvider.storeBanner(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
 

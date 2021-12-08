@@ -46,7 +46,7 @@ void main() {
         .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createHours()));
 
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Edit Hours Screen creates DefaultAppBar", (tester) async {

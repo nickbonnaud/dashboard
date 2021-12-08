@@ -19,7 +19,7 @@ void main() {
       _ownerRepository = OwnerRepository(ownerProvider: OwnerProvider());
       _mockOwnerProvider = MockOwnerProvider();
       _ownerRepositoryWithMock = OwnerRepository(ownerProvider: _mockOwnerProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
     
     test("Owner Repository can Store owner account", () async {

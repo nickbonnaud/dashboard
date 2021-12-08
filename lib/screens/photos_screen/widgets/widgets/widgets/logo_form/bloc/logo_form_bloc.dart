@@ -11,7 +11,7 @@ class LogoFormBloc extends Bloc<LogoFormEvent, LogoFormState> {
   LogoFormBloc({required Photo logo})
     : super(LogoFormState.initial(logo: logo)) { _eventHandler(); }
 
-  PickedFile? get logoFile => state.logoFile;
+  XFile? get logoFile => state.logoFile;
   
   void _eventHandler() {
     on<LogoPicked>((event, emit) => _mapLogoPickedToState(event: event, emit: emit));

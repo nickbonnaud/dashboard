@@ -130,9 +130,9 @@ class OwnerFormBloc extends Bloc<OwnerFormEvent, OwnerFormState> {
         zip: event.zip
       );
       _ownersScreenBloc.add(OwnerAdded(owner: account));
-      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
@@ -158,14 +158,14 @@ class OwnerFormBloc extends Bloc<OwnerFormEvent, OwnerFormState> {
         zip: event.zip
       );
       _ownersScreenBloc.add(OwnerUpdated(owner: account));
-      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
   void _mapResetToState({required Emitter<OwnerFormState> emit}) {
-    emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 
   int _totalAssignedOwnership() {

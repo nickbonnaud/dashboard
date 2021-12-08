@@ -2,6 +2,7 @@ import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/models/business/bank_account.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/input_formatters.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/resources/helpers/toast_message.dart';
@@ -32,6 +33,8 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   final FocusNode _cityFocus = FocusNode();
   final FocusNode _stateFocus = FocusNode();
   final FocusNode _zipFocus = FocusNode();
+
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
 
   late MaskTextInputFormatter _routingNumberFormatter;
   late MaskTextInputFormatter _accountNumberFormatter;
@@ -127,13 +130,34 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   @override
   void dispose() {
     _firstNameController.dispose();
+    _firstNameFocus.dispose();
+
     _lastNameController.dispose();
+    _lastNameFocus.dispose();
+
     _routingNumberController.dispose();
+    _routingNumberFocus.dispose();
+
     _accountNumberController.dispose();
+    _accountNumberFocus.dispose();
+
     _addressController.dispose();
+    _addressFocus.dispose();
+
     _addressSecondaryController.dispose();
+    _addressSecondaryFocus.dispose();
+
     _cityController.dispose();
+    _cityFocus.dispose();
+
+    _stateController.dispose();
+    _stateFocus.dispose();
+
     _zipController.dispose();
+    _zipFocus.dispose();
+
+    _bankScreenBloc.close();
+
     super.dispose();
   }
 
@@ -193,7 +217,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
       key: Key("AccountDataKey"),
       children: [
         ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,
@@ -213,7 +237,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
           ],
         ),
         ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,
@@ -233,7 +257,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
           ],
         ),
         ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,
@@ -253,7 +277,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
           ],
         ),
         ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,

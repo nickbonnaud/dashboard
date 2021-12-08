@@ -3,7 +3,7 @@ part of 'banner_form_bloc.dart';
 @immutable
 class BannerFormState extends Equatable {
   final Photo initialBanner;
-  final PickedFile? bannerFile;
+  final XFile? bannerFile;
 
   const BannerFormState({required this.initialBanner, required this.bannerFile});
 
@@ -11,7 +11,7 @@ class BannerFormState extends Equatable {
     return BannerFormState(initialBanner: banner, bannerFile: null);
   }
 
-  BannerFormState update({required PickedFile bannerFile}) {
+  BannerFormState update({required XFile bannerFile}) {
     return BannerFormState(initialBanner: this.initialBanner, bannerFile: bannerFile);
   }
   

@@ -43,7 +43,7 @@ void main() {
           next: "next_url"
         )));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Customers Screen creates changeDateButton", (tester) async {

@@ -8,7 +8,7 @@ abstract class PhotosFormEvent extends Equatable {
 }
 
 class LogoFilePicked extends PhotosFormEvent {
-  final PickedFile logo;
+  final XFile logo;
 
   const LogoFilePicked({required this.logo});
 
@@ -20,7 +20,7 @@ class LogoFilePicked extends PhotosFormEvent {
 }
 
 class BannerFilePicked extends PhotosFormEvent {
-  final PickedFile banner;
+  final XFile banner;
 
   const BannerFilePicked({required this.banner});
 

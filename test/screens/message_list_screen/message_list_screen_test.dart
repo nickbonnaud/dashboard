@@ -45,7 +45,7 @@ void main() {
       when(() => messageRepository.updateMessage(messageIdentifier: any(named: "messageIdentifier")))
         .thenAnswer((_) async => true);
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("MessageListScreen creates DefaultAppBar", (tester) async {

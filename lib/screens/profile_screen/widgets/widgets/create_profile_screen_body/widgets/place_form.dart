@@ -8,6 +8,10 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:dashboard/theme/global_colors.dart';
 
 class PlaceForm extends StatefulWidget {
+  final ProfileScreenBloc _profileFormBloc;
+
+  const PlaceForm({required ProfileScreenBloc profileScreenBloc})
+    : _profileFormBloc = profileScreenBloc;
 
   @override
   State<StatefulWidget> createState() => _PlaceFormState();
@@ -17,12 +21,9 @@ class _PlaceFormState extends State<PlaceForm> {
   final TextEditingController _placeQueryController = TextEditingController();
   final FocusNode _placeQueryFocus = FocusNode();
 
-  late ProfileScreenBloc _profileFormBloc;
-
   @override
   void initState() {
     super.initState();
-    _profileFormBloc = BlocProvider.of<ProfileScreenBloc>(context);
     _placeQueryController.addListener(_onPlaceQueryChanged);
   }
 
@@ -67,6 +68,7 @@ class _PlaceFormState extends State<PlaceForm> {
   @override
   void dispose() {
     _placeQueryController.dispose();
+    _placeQueryFocus.dispose();
     super.dispose();
   }
 
@@ -106,10 +108,10 @@ class _PlaceFormState extends State<PlaceForm> {
   }
 
   void _onPredictionSelected({required Prediction prediction}) {
-    _profileFormBloc.add(PredictionSelected(prediction: prediction));
+    widget._profileFormBloc.add(PredictionSelected(prediction: prediction));
   }
 
   void _onPlaceQueryChanged() {
-    _profileFormBloc.add(PlaceQueryChanged(query: _placeQueryController.text));
+    widget._profileFormBloc.add(PlaceQueryChanged(query: _placeQueryController.text));
   }
 }

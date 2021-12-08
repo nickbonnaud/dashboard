@@ -49,7 +49,7 @@ void main() {
         return lockedFormBloc;
       },
       act: (bloc) => bloc.add(Submitted(password: "password")),
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<LockedFormBloc, LockedFormState>(
@@ -86,15 +86,15 @@ void main() {
         return lockedFormBloc;
       },
       act: (bloc) => bloc.add(Submitted(password: "password")),
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<LockedFormBloc, LockedFormState>(
       "Reset event changes state: [isPasswordValid: false]",
       build: () => lockedFormBloc,
-      seed: () => _baseState.update(errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START),
+      seed: () => _baseState.update(errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart),
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [_baseState.update(errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

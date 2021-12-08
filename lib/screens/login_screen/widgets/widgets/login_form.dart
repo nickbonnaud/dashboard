@@ -82,7 +82,12 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void dispose() {
     _emailController.dispose();
+    _emailFocus.dispose();
+
     _passwordController.dispose();
+    _passwordFocus.dispose();
+
+    _loginFormBloc.close();
     super.dispose();
   }
 

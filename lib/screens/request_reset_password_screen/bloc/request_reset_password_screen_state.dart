@@ -21,7 +21,7 @@ class RequestResetPasswordScreenState extends Equatable {
       isSubmitting: false,
       isSuccess: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 

@@ -67,7 +67,7 @@ void main() {
           next: "next_url"
         )));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Historic refunds Screen creates SearchDisplay", (tester) async {

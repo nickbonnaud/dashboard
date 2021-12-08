@@ -2,6 +2,7 @@ import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/models/business/business_account.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/input_formatters.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/resources/helpers/toast_message.dart';
@@ -30,6 +31,8 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   final FocusNode _stateFocus = FocusNode();
   final FocusNode _zipFocus = FocusNode();
   final FocusNode _einFocus = FocusNode();
+
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
 
   late MaskTextInputFormatter _zipFormatter;
   late MaskTextInputFormatter _einFormatter;
@@ -109,11 +112,28 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   @override
   void dispose() {
     _nameController.dispose();
+    _nameFocus.dispose();
+
     _addressController.dispose();
+    _addressFocus.dispose();
+
     _addressSecondaryController.dispose();
+    _addressSecondaryFocus.dispose();
+
     _cityController.dispose();
+    _cityFocus.dispose();
+    
+    _stateController.dispose();
+    _stateFocus.dispose();
+
     _zipController.dispose();
+    _zipFocus.dispose();
+
     _einController.dispose();
+    _einFocus.dispose();
+
+    _accountFormBloc.close();
+
     super.dispose();
   }
 
@@ -144,7 +164,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         _nameTextField(state: state),
         SizedBox(height: SizeConfig.getHeight(3)),
         ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,
@@ -165,7 +185,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         ),
         SizedBox(height: SizeConfig.getHeight(3)),
         ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,

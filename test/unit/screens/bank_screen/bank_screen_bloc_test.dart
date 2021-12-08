@@ -47,7 +47,7 @@ void main() {
         businessBloc: _businessBloc
       );
       _baseState = BankScreenState.empty(accountType: AccountType.checking);
-      registerFallbackValue<BusinessEvent>(BankAccountUpdated(bankAccount: _bankAccount));
+      registerFallbackValue(BankAccountUpdated(bankAccount: _bankAccount));
     });
 
     tearDown(() {
@@ -167,7 +167,7 @@ void main() {
           zip: "zip"
         ));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -279,7 +279,7 @@ void main() {
           zip: "zip"
         ));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -313,7 +313,7 @@ void main() {
           zip: "zip"
         ));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -432,14 +432,14 @@ void main() {
           zip: "zip"
         ));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
     
     blocTest<BankScreenBloc, BankScreenState>(
       "Reset event changes state: isSuccess:false, isFailure:false, errorMessage:"", errorButtonControl:CustomAnimationControl.STOP", 
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [_baseState.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
     
     blocTest<BankScreenBloc, BankScreenState>(

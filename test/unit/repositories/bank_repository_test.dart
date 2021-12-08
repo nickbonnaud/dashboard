@@ -19,7 +19,7 @@ void main() {
       _bankRepository = BankRepository(bankProvider: BankProvider());
       _mockBankProvider = MockBankProvider();
       _bankRepositoryWithMock = BankRepository(bankProvider: _mockBankProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
 
     test("The Bank Repository can store a BankAccount", () async {

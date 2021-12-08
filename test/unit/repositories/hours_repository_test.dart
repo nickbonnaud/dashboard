@@ -19,7 +19,7 @@ void main() {
       _hoursRepository = HoursRepository(hoursProvider: HoursProvider());
       _mockHoursProvider = MockHoursProvider();
       _hoursRepositoryWithMock = HoursRepository(hoursProvider: _mockHoursProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
     
     test("Hours Repository can Store businesses hours", () async {

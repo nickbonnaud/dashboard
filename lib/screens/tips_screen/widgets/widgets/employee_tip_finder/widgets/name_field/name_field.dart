@@ -1,5 +1,6 @@
 import 'package:dashboard/resources/helpers/cupertino_box_decoration.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/screens/tips_screen/widgets/widgets/employee_tip_finder/bloc/employee_tip_finder_bloc.dart';
 import 'package:dashboard/theme/main_theme.dart';
@@ -19,6 +20,8 @@ class NameField extends StatefulWidget {
 class _NameFieldState extends State<NameField> {
   final FocusNode _firstNameFocus = FocusNode();
   final FocusNode _lastNameFocus = FocusNode();
+
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
 
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -50,7 +53,7 @@ class _NameFieldState extends State<NameField> {
       child: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
         ? _lastNameTextField()
         : ResponsiveRowColumn(
-            rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(MOBILE),
+            layout: _layoutHelper.setLayout(context: context, deviceSize: MOBILE),
             rowCrossAxisAlignment: CrossAxisAlignment.start,
             columnCrossAxisAlignment: CrossAxisAlignment.center,
             columnMainAxisSize: MainAxisSize.min,
@@ -74,8 +77,13 @@ class _NameFieldState extends State<NameField> {
 
   @override
   void dispose() {
+    _firstNameFocus.dispose();
     _firstNameController.dispose();
+
     _lastNameController.dispose();
+    _lastNameFocus.dispose();
+    
+    _nameFieldBloc.close();
     super.dispose();
   }
 

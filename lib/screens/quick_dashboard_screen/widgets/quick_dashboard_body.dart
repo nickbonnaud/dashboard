@@ -1,3 +1,4 @@
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
@@ -7,9 +8,10 @@ import 'widgets/recent_transactions/recent_transactions.dart';
 import 'widgets/today/today.dart';
 
 class QuickDashboardBody extends StatelessWidget {
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
   final bool _takesTips;
 
-  const QuickDashboardBody({required bool takesTips})
+  QuickDashboardBody({required bool takesTips})
     : _takesTips = takesTips;
 
   @override
@@ -19,7 +21,7 @@ class QuickDashboardBody extends StatelessWidget {
         children: [
           SizedBox(height: SizeConfig.getHeight(3)),
           ResponsiveRowColumn(
-            rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(TABLET),
+            layout: _layoutHelper.setLayout(context: context, deviceSize: TABLET),
             rowCrossAxisAlignment: CrossAxisAlignment.start,
             columnCrossAxisAlignment: CrossAxisAlignment.center,
             columnSpacing: SizeConfig.getHeight(3),

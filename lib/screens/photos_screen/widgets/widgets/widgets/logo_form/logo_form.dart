@@ -50,7 +50,7 @@ class LogoForm extends StatelessWidget {
     );
   }
 
-  Widget _fileDisplay({required PickedFile logoFile}) {
+  Widget _fileDisplay({required XFile logoFile}) {
     if (logoFile.path.isEmpty) return Container();
     
     return Material(
@@ -103,7 +103,7 @@ class LogoForm extends StatelessWidget {
   }
 
   void _buttonPressed({required BuildContext context}) async {
-    final PickedFile? logoFile = await _photoPickerRepository.choosePhoto();
+    final XFile? logoFile = await _photoPickerRepository.choosePhoto();
     if (logoFile != null) {
       BlocProvider.of<LogoFormBloc>(context).add(LogoPicked(logoFile: logoFile));
     }

@@ -4,10 +4,10 @@ import 'package:dashboard/models/business/profile.dart';
 import 'package:dashboard/repositories/profile_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/profile_screen/profile_screen.dart';
-import 'package:dashboard/screens/profile_screen/widgets/create_profile_screen_body/create_profile_screen_body.dart';
-import 'package:dashboard/screens/profile_screen/widgets/create_profile_screen_body/widgets/body_form.dart';
-import 'package:dashboard/screens/profile_screen/widgets/edit_profile_screen_body/edit_profile_screen_body.dart';
-import 'package:dashboard/screens/profile_screen/widgets/place_form.dart';
+import 'package:dashboard/screens/profile_screen/widgets/widgets/body_form.dart';
+import 'package:dashboard/screens/profile_screen/widgets/widgets/create_profile_screen_body/create_profile_screen_body.dart';
+import 'package:dashboard/screens/profile_screen/widgets/widgets/edit_profile_screen_body.dart';
+import 'package:dashboard/screens/profile_screen/widgets/widgets/create_profile_screen_body/widgets/place_form.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -80,8 +80,8 @@ void main() {
       when(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
         .thenAnswer((_) => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createProfile()));
 
-      registerFallbackValue<BusinessEvent>(ProfileUpdated(profile: mockDataGenerator.createProfile()));
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(ProfileUpdated(profile: mockDataGenerator.createProfile()));
+      registerFallbackValue(MockRoute());
 
       when(() => businessBloc.add(any(that: isA<ProfileUpdated>()))).thenReturn(null);
     });
@@ -357,12 +357,13 @@ void main() {
       await tester.tap(find.byType(ListTile).first);
       await tester.pump(Duration(milliseconds: 500));
 
-      String description = faker.lorem.sentences(4).join();
       await tester.enterText(find.byKey(Key("descriptionTextKey")), "");
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.pump(Duration(milliseconds: 500));
+      
+      String description = faker.lorem.sentences(4).join();
 
       await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.pump(Duration(milliseconds: 500));
 
       await tester.tap(find.byKey(Key("submitButtonKey")));
       await tester.pump(Duration(seconds: 5));

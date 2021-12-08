@@ -19,7 +19,7 @@ void main() {
       _accountRepository = BusinessAccountRepository(accountProvider: BusinessAccountProvider());
       _mockAccountProvider = MockBankAccountProvider();
       _accountRepositoryWithMock = BusinessAccountRepository(accountProvider: _mockAccountProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
 
     test("The Business Account Repository can store a Business Account", () async {

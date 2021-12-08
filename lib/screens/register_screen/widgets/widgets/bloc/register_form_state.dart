@@ -30,7 +30,7 @@ class RegisterFormState extends Equatable {
       isSubmitting: false,
       isSuccess: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 
@@ -42,7 +42,7 @@ class RegisterFormState extends Equatable {
       isSubmitting: true,
       isSuccess: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 
@@ -54,7 +54,7 @@ class RegisterFormState extends Equatable {
       isSubmitting: false,
       isSuccess: false,
       errorMessage: errorMessage,
-      errorButtonControl: CustomAnimationControl.PLAY_FROM_START
+      errorButtonControl: CustomAnimationControl.playFromStart
     );
   }
 
@@ -66,7 +66,7 @@ class RegisterFormState extends Equatable {
       isSubmitting: false,
       isSuccess: true,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 

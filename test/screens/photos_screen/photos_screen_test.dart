@@ -24,7 +24,7 @@ import '../../helpers/screen_builder.dart';
 class MockPhotoPickerRepository extends Mock implements PhotoPickerRepository {}
 class MockPhotosRepository extends Mock implements PhotosRepository {}
 class MockBusinessBloc extends Mock implements BusinessBloc {}
-class MockPickedFile extends Mock implements PickedFile {}
+class MockXFile extends Mock implements XFile {}
 
 void main() {
   group("Photos Screen Tests", () {
@@ -73,8 +73,8 @@ void main() {
         observer: observer
       );
 
-      registerFallbackValue<BusinessEvent>(PhotosUpdated(photos: mockDataGenerator.createBusinessPhotos()));
-      registerFallbackValue<PickedFile>(MockPickedFile());
+      registerFallbackValue(PhotosUpdated(photos: mockDataGenerator.createBusinessPhotos()));
+      registerFallbackValue(MockXFile());
       
       when(() => photoPickerRepository.choosePhoto())
         .thenAnswer((_) async => null);
@@ -241,7 +241,7 @@ void main() {
     });
 
     testWidgets("SubmitButton is enabled if filePicked", (tester) async {
-      final PickedFile pickedFile = MockPickedFile();
+      final XFile pickedFile = MockXFile();
       when(() => pickedFile.path).thenReturn("");
       
       when(() => photoPickerRepository.choosePhoto())
@@ -257,7 +257,7 @@ void main() {
     });
 
     testWidgets("Tapping Submit button displays CircularProgressIndicator", (tester) async {
-      final PickedFile pickedFile = MockPickedFile();
+      final XFile pickedFile = MockXFile();
       when(() => pickedFile.path).thenReturn("");
       
       when(() => photoPickerRepository.choosePhoto())
@@ -277,7 +277,7 @@ void main() {
     });
 
     testWidgets("Tapping Submit displays toast on success", (tester) async {
-      final PickedFile pickedFile = MockPickedFile();
+      final XFile pickedFile = MockXFile();
       when(() => pickedFile.path).thenReturn("");
       
       when(() => photoPickerRepository.choosePhoto())
@@ -297,7 +297,7 @@ void main() {
     });
 
     testWidgets("Tapping Submit displays error on fail", (tester) async {
-      final PickedFile pickedFile = MockPickedFile();
+      final XFile pickedFile = MockXFile();
       when(() => pickedFile.path).thenReturn("");
       
       when(() => photoPickerRepository.choosePhoto())

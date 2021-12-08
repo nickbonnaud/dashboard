@@ -19,7 +19,7 @@ class LockedFormState extends Equatable {
       isPasswordValid: true,
       isSubmitting: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP,
+      errorButtonControl: CustomAnimationControl.stop,
     );
   }
 

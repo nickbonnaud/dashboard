@@ -85,10 +85,10 @@ class MainTheme {
   }
 
   static TextTheme _getTextTheme({required BuildContext context}) {
-    return GoogleFonts.racingSansOneTextTheme(Theme.of(context).textTheme);
+    return GoogleFonts.robotoCondensedTextTheme(Theme.of(context).textTheme);
   }
 
   static TextStyle getDefaultFont() {
-    return GoogleFonts.racingSansOne();
+    return GoogleFonts.robotoCondensed();
   }
 }

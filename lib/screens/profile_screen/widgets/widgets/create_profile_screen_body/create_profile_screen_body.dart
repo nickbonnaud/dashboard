@@ -9,10 +9,14 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dashboard/theme/global_colors.dart';
 
-import '../place_form.dart';
-import 'widgets/body_form.dart';
+import 'widgets/place_form.dart';
+import '../body_form.dart';
 
-class CreateProfileScreenBody extends StatelessWidget { 
+class CreateProfileScreenBody extends StatelessWidget {
+  final ProfileScreenBloc _profileScreenBloc;
+
+  const CreateProfileScreenBody({required ProfileScreenBloc profileScreenBloc})
+    : _profileScreenBloc = profileScreenBloc;
   
   @override
   Widget build(BuildContext context) {
@@ -60,7 +64,7 @@ class CreateProfileScreenBody extends StatelessWidget {
 
   _formBody({required ProfileScreenState state}) {
     if (state.selectedPrediction == null) {
-      return PlaceForm();
+      return PlaceForm(profileScreenBloc: _profileScreenBloc);
     }
     final Profile profile = Profile(
       name: state.selectedPrediction!.name,
@@ -71,10 +75,10 @@ class CreateProfileScreenBody extends StatelessWidget {
       hours: Hours.empty(),
       identifier: ""
     );
-    return BodyForm(profile: profile);
+    return BodyForm(profile: profile, profileScreenBloc: _profileScreenBloc);
   }
 
-  void _showSuccess({required BuildContext context}) {    
+  void _showSuccess({required BuildContext context}) {   
     ToastMessage(
       context: context,
       message: "Profile Saved!",

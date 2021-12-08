@@ -64,7 +64,13 @@ class _PasswordFormState extends State<PasswordForm> {
   @override
   void dispose() {
     _passwordController.dispose();
+    _passwordFocus.dispose();
+
     _passwordConfirmationController.dispose();
+    _passwordConfirmationFocus.dispose();
+
+    _passwordFormBloc.close();
+
     super.dispose();
   }
 

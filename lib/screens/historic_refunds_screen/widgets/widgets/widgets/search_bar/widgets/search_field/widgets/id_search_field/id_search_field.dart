@@ -64,7 +64,8 @@ class _IdSearchFieldState extends State<IdSearchField> {
 
   @override
   void dispose() {
-    _controller.dispose();  
+    _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 

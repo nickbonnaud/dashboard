@@ -1,8 +1,8 @@
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
-import 'package:responsive_framework/responsive_wrapper.dart';
 
 import 'widgets/net_sales_today.dart';
 import 'widgets/total_refunds_today.dart';
@@ -10,9 +10,10 @@ import 'widgets/total_sales_today.dart';
 import 'widgets/total_tips_today.dart';
 
 class Today extends StatelessWidget {
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
   final bool _takesTips;
 
-  const Today({required bool takesTips})
+  Today({required bool takesTips})
     : _takesTips = takesTips;
 
   @override
@@ -34,7 +35,7 @@ class Today extends StatelessWidget {
 
   Widget _topToday({required BuildContext context}) {
     return ResponsiveRowColumn(
-      rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+      layout: _layoutHelper.setLayout(context: context),
       rowCrossAxisAlignment: CrossAxisAlignment.start,
       columnCrossAxisAlignment: CrossAxisAlignment.center,
       columnMainAxisSize: MainAxisSize.min,
@@ -63,7 +64,7 @@ class Today extends StatelessWidget {
 
   Widget _takesTipsBottom({required BuildContext context}) {
     return ResponsiveRowColumn(
-      rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+      layout: _layoutHelper.setLayout(context: context),
       rowCrossAxisAlignment: CrossAxisAlignment.start,
       columnCrossAxisAlignment: CrossAxisAlignment.center,
       columnMainAxisSize: MainAxisSize.min,

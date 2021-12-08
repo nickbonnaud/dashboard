@@ -24,7 +24,7 @@ void main() {
       observer = MockNavigatorObserver();
       customerResource = mockDataGenerator.createCustomerResource(requiresTransaction: true, requiresRefund: true);
       screenBuilder = ScreenBuilder(child: ReceiptScreen(customerResource: customerResource), observer: observer);
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Receipt Screen shows relevant customer data", (tester) async {

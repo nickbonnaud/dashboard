@@ -73,7 +73,7 @@ void main() {
           next: "next_url"
       )));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Historic Transactions Screen creates SearchDisplay", (tester) async {

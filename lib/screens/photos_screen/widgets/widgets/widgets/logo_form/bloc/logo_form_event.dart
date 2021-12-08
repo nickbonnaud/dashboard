@@ -8,7 +8,7 @@ abstract class LogoFormEvent extends Equatable {
 }
 
 class LogoPicked extends LogoFormEvent {
-  final PickedFile logoFile;
+  final XFile logoFile;
 
   const LogoPicked({required this.logoFile});
 

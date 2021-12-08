@@ -22,7 +22,7 @@ void main() {
       refundsListBloc = MockRefundsListBloc();
       nameSearchFieldBloc = NameSearchFieldBloc(refundsListBloc: refundsListBloc);
       baseState = NameSearchFieldState.initial();
-      registerFallbackValue<RefundsListEvent>(MockRefundsListEvent());
+      registerFallbackValue(MockRefundsListEvent());
     }); 
 
     tearDown(() {

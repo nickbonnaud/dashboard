@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockPhoto extends Mock implements Photo {}
-class MockPickedFile extends Mock implements PickedFile {}
+class MockXFile extends Mock implements XFile {}
 
 void main() {
   group("Banner Form Bloc Tests", () {
@@ -14,7 +14,7 @@ void main() {
     late BannerFormBloc bannerFormBloc;
     late BannerFormState baseState;
 
-    late PickedFile pickedBanner;
+    late XFile pickedBanner;
 
     setUp(() {
       banner = MockPhoto();
@@ -34,7 +34,7 @@ void main() {
       "BannerPicked event changes state: [bannerFile: banner]",
       build: () => bannerFormBloc,
       act: (bloc) {
-        pickedBanner = MockPickedFile();
+        pickedBanner = MockXFile();
         bloc.add(BannerPicked(bannerFile: pickedBanner));
       },
       expect: () => [baseState.update(bannerFile: pickedBanner)]

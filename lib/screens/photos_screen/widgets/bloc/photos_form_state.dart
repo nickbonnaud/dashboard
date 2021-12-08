@@ -2,8 +2,8 @@ part of 'photos_form_bloc.dart';
 
 @immutable
 class PhotosFormState extends Equatable {
-  final PickedFile? logoFile;
-  final PickedFile? bannerFile;
+  final XFile? logoFile;
+  final XFile? bannerFile;
   final bool isSubmitting;
   final bool isSuccess;
   final String errorMessage;
@@ -27,13 +27,13 @@ class PhotosFormState extends Equatable {
       isSubmitting: false,
       isSuccess: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP,
+      errorButtonControl: CustomAnimationControl.stop,
     );
   }
 
   PhotosFormState update({
-    PickedFile? logoFile,
-    PickedFile? bannerFile,
+    XFile? logoFile,
+    XFile? bannerFile,
     bool? photosValid,
     bool? isSubmitting,
     bool? isSuccess,
@@ -52,8 +52,8 @@ class PhotosFormState extends Equatable {
   }
 
   PhotosFormState _copyWith({
-    PickedFile? logoFile,
-    PickedFile? bannerFile,
+    XFile? logoFile,
+    XFile? bannerFile,
     bool? photosValid,
     bool? isSubmitting,
     bool? isSuccess,

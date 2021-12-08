@@ -76,7 +76,7 @@ class OwnerFormState extends Equatable {
       isSubmitting: false,
       isSuccess: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 

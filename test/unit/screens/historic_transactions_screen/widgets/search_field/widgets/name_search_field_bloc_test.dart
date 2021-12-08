@@ -27,7 +27,7 @@ void main() {
       filterButtonCubit = MockFilterButtonCubit();
       nameSearchFieldBloc = NameSearchFieldBloc(transactionsListBloc: transactionsListBloc, filterButtonCubit: filterButtonCubit);
       baseState = nameSearchFieldBloc.state;
-      registerFallbackValue<TransactionsListEvent>(MockTransactionsListEvent());
+      registerFallbackValue(MockTransactionsListEvent());
     });
 
     tearDown(() {

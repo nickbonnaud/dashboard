@@ -118,8 +118,8 @@ void main() {
         zip: any(named: "zip")
       )).thenThrow(ApiException(error: "An error occurred!"));
       
-      registerFallbackValue<BusinessEvent>(BankAccountUpdated(bankAccount: MockBankAccount()));
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(BankAccountUpdated(bankAccount: MockBankAccount()));
+      registerFallbackValue(MockRoute());
       
       when(() => businessBloc.add(any(that: isA<BusinessEvent>())))
         .thenReturn(null);

@@ -61,6 +61,8 @@ class _EmailFormState extends State<EmailForm> {
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
+    _emailFormBloc.close();
     super.dispose();
   }
 

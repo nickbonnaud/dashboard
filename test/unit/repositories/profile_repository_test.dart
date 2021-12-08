@@ -19,7 +19,7 @@ void main() {
       _profileRepository = ProfileRepository(profileProvider: ProfileProvider());
       _mockProfileProvider = MockProfileProvider();
       _profileRepositoryWithMock = ProfileRepository(profileProvider: _mockProfileProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
     
     test("Profile Repository can Store profile", () async {

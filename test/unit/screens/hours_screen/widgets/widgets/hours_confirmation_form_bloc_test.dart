@@ -53,7 +53,7 @@ void main() {
 
       baseState = hoursConfirmationFormBloc.state;
 
-      registerFallbackValue<BusinessEvent>(HoursUpdated(hours: MockHours()));
+      registerFallbackValue(HoursUpdated(hours: MockHours()));
     });
 
     tearDown(() {
@@ -112,7 +112,7 @@ void main() {
           saturday: "saturday"
         ));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)],
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)],
     );
 
     blocTest<HoursConfirmationFormBloc, HoursConfirmationFormState>(
@@ -175,15 +175,15 @@ void main() {
           saturday: "saturday"
         ));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)],
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)],
     );
 
     blocTest<HoursConfirmationFormBloc, HoursConfirmationFormState>(
       "Reset event updates state: [isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => hoursConfirmationFormBloc,
-      seed: () => baseState.update(errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY),
+      seed: () => baseState.update(errorMessage: "error", errorButtonControl: CustomAnimationControl.play),
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)],
+      expect: () => [baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)],
     );
   });
 }

@@ -34,7 +34,7 @@ void main() {
       );
 
       baseState = EditHoursScreenState.initial(hours: hours);
-      registerFallbackValue<BusinessEvent>(HoursUpdated(hours: hours));
+      registerFallbackValue(HoursUpdated(hours: hours));
     });
 
     tearDown(() {
@@ -61,7 +61,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<EditHoursScreenBloc, EditHoursScreenState>(
@@ -101,7 +101,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<EditHoursScreenBloc, EditHoursScreenState>(
@@ -122,7 +122,7 @@ void main() {
       "Reset event changes state: isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP", 
       build: () => editHoursScreenBloc,
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [baseState.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [baseState.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

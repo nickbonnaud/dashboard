@@ -13,7 +13,7 @@ void main() {
     setUpAll(() {
       observer = MockNavigatorObserver();
       screenBuilder = ScreenBuilder(child: AccountMenuScreen(), observer: observer);
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
     
     testWidgets("menu list shows up", (tester) async {

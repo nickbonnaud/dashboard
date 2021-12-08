@@ -33,11 +33,11 @@ void main() {
     setUp(() {
       businessRepository = MockBusinessRepository();
       businessBloc = BusinessBloc(businessRepository: businessRepository);
-      registerFallbackValue<BankAccount>(MockBankAccount());
-      registerFallbackValue<BusinessAccount>(MockBusinessAccount());
-      registerFallbackValue<Accounts>(MockAccounts());
-      registerFallbackValue<Photos>(MockPhotos());
-      registerFallbackValue<Hours>(MockHours());
+      registerFallbackValue(MockBankAccount());
+      registerFallbackValue(MockBusinessAccount());
+      registerFallbackValue(MockAccounts());
+      registerFallbackValue(MockPhotos());
+      registerFallbackValue(MockHours());
     });
 
     tearDown(() {

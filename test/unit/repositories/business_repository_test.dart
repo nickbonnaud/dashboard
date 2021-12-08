@@ -22,7 +22,7 @@ void main() {
       _businessRepository = BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: _tokenRepository);
       _mockBusinessProvider = MockBusinessProvider();
       _businessRepositoryWithMock = BusinessRepository(businessProvider: _mockBusinessProvider, tokenRepository: _tokenRepository);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
     
     test("Business Repository can Fetch a business", () async {

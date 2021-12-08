@@ -27,7 +27,7 @@ class LoginFormState extends Equatable {
       isSubmitting: false,
       isSuccess: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 
@@ -38,7 +38,7 @@ class LoginFormState extends Equatable {
       isSubmitting: true,
       isSuccess: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 
@@ -49,7 +49,7 @@ class LoginFormState extends Equatable {
       isSubmitting: false,
       isSuccess: false,
       errorMessage: errorMessage,
-      errorButtonControl: CustomAnimationControl.PLAY_FROM_START
+      errorButtonControl: CustomAnimationControl.playFromStart
     );
   }
 
@@ -60,7 +60,7 @@ class LoginFormState extends Equatable {
       isSubmitting: false,
       isSuccess: true,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 

@@ -61,12 +61,12 @@ void main() {
       when(() => businessRepository.updatePassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), identifier: any(named: "identifier")))
         .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => true));
 
-      registerFallbackValue<BusinessEvent>(MockBusinessEvent());
+      registerFallbackValue(MockBusinessEvent());
       
       when(() => businessBloc.add(any(that: isA<BusinessEvent>())))
         .thenReturn(null);
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Settings Screen creates DefaultAppBar", (tester) async {

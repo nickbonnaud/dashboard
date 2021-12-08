@@ -11,7 +11,7 @@ class BannerFormBloc extends Bloc<BannerFormEvent, BannerFormState> {
   BannerFormBloc({required Photo banner})
     : super(BannerFormState.initial(banner: banner)) { _eventHandler(); }
 
-  PickedFile? get bannerFile => state.bannerFile;
+  XFile? get bannerFile => state.bannerFile;
   
   void _eventHandler() {
     on<BannerPicked>((event, emit) => _mapBannerPickedToState(event: event, emit: emit));

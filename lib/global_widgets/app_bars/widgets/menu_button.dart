@@ -28,7 +28,7 @@ class MenuButton extends StatelessWidget {
             Text4(
               text: "Settings",
               context: context,
-              color: Theme.of(context).colorScheme.onCallToAction,
+              color: Theme.of(context).colorScheme.callToAction
             ),
             Icon(
               Icons.arrow_drop_down,

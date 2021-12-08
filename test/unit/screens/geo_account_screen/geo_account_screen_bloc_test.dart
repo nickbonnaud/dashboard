@@ -33,7 +33,7 @@ void main() {
       );
 
       baseState = GeoAccountScreenState.initial(location: location);
-      registerFallbackValue<BusinessEvent>(LocationUpdated(location: location));
+      registerFallbackValue(LocationUpdated(location: location));
     });
 
     tearDown(() {
@@ -67,7 +67,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Submitted());
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<GeoAccountScreenBloc, GeoAccountScreenState>(
@@ -122,7 +122,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Submitted());
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: 'error', errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: 'error', errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<GeoAccountScreenBloc, GeoAccountScreenState>(
@@ -134,7 +134,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Updated(identifier: 'identifier'));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
     
     blocTest<GeoAccountScreenBloc, GeoAccountScreenState>(
@@ -174,14 +174,14 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Updated(identifier: 'identifier'));
       },
-      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<GeoAccountScreenBloc, GeoAccountScreenState>(
       "Reset event changes state: [isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => geoAccountScreenBloc,
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [baseState.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [baseState.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

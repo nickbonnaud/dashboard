@@ -1,5 +1,6 @@
 import 'package:dashboard/models/business/hours.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/hours_screen/bloc/hours_screen_bloc.dart';
@@ -21,6 +22,8 @@ class MaxHoursForm extends StatefulWidget {
 class _MaxHoursFormState extends State<MaxHoursForm> {
   final FocusNode _openingTimeFocus = FocusNode();
   final FocusNode _closingTimeFocus = FocusNode();
+
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
 
   late TextEditingController _openingTimeController;
   late TextEditingController _closingTimeController;
@@ -45,7 +48,7 @@ class _MaxHoursFormState extends State<MaxHoursForm> {
             BoldText5(text: 'Please set the earliest and latest time your business is open.', context: context),
             SizedBox(height: SizeConfig.getHeight(3)),
             ResponsiveRowColumn(
-              rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+              layout: _layoutHelper.setLayout(context: context),
               rowCrossAxisAlignment: CrossAxisAlignment.start,
               columnCrossAxisAlignment: CrossAxisAlignment.center,
               columnMainAxisSize: MainAxisSize.min,
@@ -73,7 +76,10 @@ class _MaxHoursFormState extends State<MaxHoursForm> {
   @override
   void dispose() {
     _openingTimeController.dispose();
+    _openingTimeFocus.dispose();
+
     _closingTimeController.dispose();
+    _closingTimeFocus.dispose();
     super.dispose();
   }
 

@@ -40,7 +40,7 @@ void main() {
         filterButtonBloc: filterButtonBloc,
         dateRangeCubit: dateRangeCubit
       );
-      registerFallbackValue<CustomerResource>(MockCustomer());
+      registerFallbackValue(MockCustomer());
     });
 
     tearDown(() {

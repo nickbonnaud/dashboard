@@ -41,6 +41,12 @@ class _CustomersListState extends State<CustomersList> {
     );
   }
 
+  @override
+  void dispose() {
+    _customersListBloc.close();
+    super.dispose();
+  }
+
   Widget _customers({required CustomersListState state}) {
     return SliverList(
       delegate: SliverChildBuilderDelegate(

@@ -28,7 +28,7 @@ void main() {
 
       _baseState = registerFormBloc.state;
 
-      registerFallbackValue<AuthenticationEvent>(LoggedIn(business: MockBusiness()));
+      registerFallbackValue(LoggedIn(business: MockBusiness()));
     });
 
     tearDown(() {
@@ -81,7 +81,7 @@ void main() {
         return registerFormBloc;
       },
       act: (bloc) => bloc.add(Submitted(email: faker.internet.password(), password: "password", passwordConfirmation: "password")),
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<RegisterFormBloc, RegisterFormState>(
@@ -124,14 +124,14 @@ void main() {
         return registerFormBloc;
       },
       act: (bloc) => bloc.add(Submitted(email: faker.internet.password(), password: "password", passwordConfirmation: "password")),
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<RegisterFormBloc, RegisterFormState>(
       "Reset event changes state: [isSuccess: false, errorButtonControl: CustomAnimationControl.STOP]",
       build: () => registerFormBloc,
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [_baseState.update(isSuccess: false, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSuccess: false, errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

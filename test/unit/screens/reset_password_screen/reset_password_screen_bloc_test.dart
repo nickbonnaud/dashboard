@@ -62,7 +62,7 @@ void main() {
         return resetPasswordScreenBloc;
       },
       act: (bloc) => bloc.add(Submitted(password: "password", passwordConfirmation: "password")),
-      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<ResetPasswordScreenBloc, ResetPasswordScreenState>(
@@ -86,14 +86,14 @@ void main() {
         return resetPasswordScreenBloc;
       },
       act: (bloc) => bloc.add(Submitted(password: "password", passwordConfirmation: "password")),
-      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: 'error', errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: 'error', errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<ResetPasswordScreenBloc, ResetPasswordScreenState>(
       "Reset event changes state: [isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => resetPasswordScreenBloc,
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [_baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

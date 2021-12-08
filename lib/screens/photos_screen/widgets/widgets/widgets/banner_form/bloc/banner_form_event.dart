@@ -8,7 +8,7 @@ abstract class BannerFormEvent extends Equatable {
 }
 
 class BannerPicked extends BannerFormEvent {
-  final PickedFile bannerFile;
+  final XFile bannerFile;
 
   const BannerPicked({required this.bannerFile});
 

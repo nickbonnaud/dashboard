@@ -40,6 +40,7 @@ class _UnassignedTransactionsListState extends State<UnassignedTransactionsList>
   @override
   void dispose() {
     _scrollController.dispose();
+    _listBloc.close();
     super.dispose();
   }
 

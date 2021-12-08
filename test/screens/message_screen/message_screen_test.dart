@@ -31,7 +31,7 @@ void main() {
     setUp(() {
       mockDataGenerator = MockDataGenerator();
       observer = MockNavigatorObserver();
-      message = mockDataGenerator.createMessage(index: 0, numberReplies: 15);
+      message = mockDataGenerator.createMessage(index: 0, numberReplies: 4);
       messageListScreenBloc = MockMessageListScreenBloc();
       messageRepository = MockMessageRepository();
       screenBuilder = ScreenBuilder(
@@ -39,7 +39,7 @@ void main() {
         observer: observer
       );
 
-      registerFallbackValue<MessageListScreenEvent>(MessageUpdated(message: message, messageHistoryRead: true));
+      registerFallbackValue(MessageUpdated(message: message, messageHistoryRead: true));
       
       when(() => messageListScreenBloc.add(any(that: isA<MessageListScreenEvent>())))
         .thenReturn(null);

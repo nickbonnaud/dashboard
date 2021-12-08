@@ -46,9 +46,9 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
         radius: _roundRadius(originalRadius: state.radius)
       );
       _updateBusinessBloc(location: location);
-      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
@@ -63,14 +63,14 @@ class GeoAccountScreenBloc extends Bloc<GeoAccountScreenEvent, GeoAccountScreenS
         radius: _roundRadius(originalRadius: state.radius)
       );
       _updateBusinessBloc(location: location);
-      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
   void _mapResetToState({required Emitter<GeoAccountScreenState> emit}) {
-    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 
   int _roundRadius({required double originalRadius}) {

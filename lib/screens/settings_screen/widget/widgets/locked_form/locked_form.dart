@@ -48,6 +48,8 @@ class _LockedFormState extends State<LockedForm> {
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
+    _lockedFormBloc.close();
     super.dispose();
   }
 

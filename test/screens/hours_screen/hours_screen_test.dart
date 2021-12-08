@@ -43,7 +43,7 @@ void main() {
       when(() => hoursRepository.store(sunday: any(named: "sunday"), monday: any(named: "monday"), tuesday: any(named: "tuesday"), wednesday: any(named: "wednesday"), thursday: any(named: "thursday"), friday: any(named: "friday"), saturday: any(named: "saturday")))
         .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createHours()));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     Future<void> _setupSelectionForm({required WidgetTester tester}) async {

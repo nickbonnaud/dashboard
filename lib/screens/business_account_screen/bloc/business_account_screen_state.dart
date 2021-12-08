@@ -55,7 +55,7 @@ class BusinessAccountScreenState extends Equatable {
       isSuccess: false,
       isFailure: false,
       errorMessage: "",
-      errorButtonControl: CustomAnimationControl.STOP
+      errorButtonControl: CustomAnimationControl.stop
     );
   }
 

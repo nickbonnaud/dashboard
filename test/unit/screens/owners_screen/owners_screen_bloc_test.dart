@@ -31,7 +31,7 @@ main() {
       });
       ownersScreenBloc = OwnersScreenBloc(businessBloc: businessBloc, ownerRepository: ownerRepository, ownerAccounts: _ownersList);
       _baseState = ownersScreenBloc.state;
-      registerFallbackValue<BusinessEvent>(OwnerAccountsUpdated(ownerAccounts: _ownersList));
+      registerFallbackValue(OwnerAccountsUpdated(ownerAccounts: _ownersList));
     });
 
     tearDown(() {

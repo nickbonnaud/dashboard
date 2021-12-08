@@ -50,7 +50,7 @@ class BannerForm extends StatelessWidget {
     );
   }
 
-  Widget _fileDisplay({required PickedFile bannerFile}) {
+  Widget _fileDisplay({required XFile bannerFile}) {
     if (bannerFile.path.isEmpty) return Container();
     
     return Material(
@@ -101,7 +101,7 @@ class BannerForm extends StatelessWidget {
   }
 
   void _buttonPressed({required BuildContext context}) async {
-    final PickedFile? bannerFile = await _photoPickerRepository.choosePhoto();
+    final XFile? bannerFile = await _photoPickerRepository.choosePhoto();
     if (bannerFile != null) {
       BlocProvider.of<BannerFormBloc>(context).add(BannerPicked(bannerFile: bannerFile));
     }

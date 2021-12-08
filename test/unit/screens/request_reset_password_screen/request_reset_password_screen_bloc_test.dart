@@ -45,7 +45,7 @@ void main() {
         return requestResetPasswordScreenBloc;
       },
       act: (bloc) => bloc.add(Submitted(email: "email")),
-      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(
@@ -69,7 +69,7 @@ void main() {
         return requestResetPasswordScreenBloc;
       },
       act: (bloc) => bloc.add(Submitted(email: "email")),
-      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(

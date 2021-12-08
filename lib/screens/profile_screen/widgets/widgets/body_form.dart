@@ -2,6 +2,7 @@ import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/models/business/profile.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/input_formatters.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/profile_screen/bloc/profile_screen_bloc.dart';
@@ -13,9 +14,11 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class BodyForm extends StatefulWidget {
   final Profile _profile;
+  final ProfileScreenBloc _profileScreenBloc;
 
-  BodyForm({required Profile profile})
-    : _profile = profile;
+  BodyForm({required Profile profile, required ProfileScreenBloc profileScreenBloc})
+    : _profile = profile,
+      _profileScreenBloc = profileScreenBloc;
 
   @override
   State<BodyForm> createState() => _BodyFormState();
@@ -27,14 +30,14 @@ class _BodyFormState extends State<BodyForm> {
   final FocusNode _descriptionFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
 
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+
   late TextEditingController _nameController;
   late TextEditingController _websiteController;
   late TextEditingController _phoneController;
   late TextEditingController _descriptionController;
 
   late MaskTextInputFormatter _phoneFormatter;
-  
-  late ProfileScreenBloc _profileScreenBloc;
   
   bool get _isPopulated => 
     _nameController.text.isNotEmpty &&
@@ -45,7 +48,6 @@ class _BodyFormState extends State<BodyForm> {
   @override
   void initState() {
     super.initState();
-    _profileScreenBloc = BlocProvider.of<ProfileScreenBloc>(context);
     _nameController = TextEditingController(text: widget._profile.name);
     _websiteController = TextEditingController(text: _scrubWebsite(website: widget._profile.website));
     _descriptionController = TextEditingController(text: widget._profile.description);
@@ -68,7 +70,7 @@ class _BodyFormState extends State<BodyForm> {
         ),
         SizedBox(height: SizeConfig.getHeight(3)),
         ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(DESKTOP),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,
@@ -119,9 +121,17 @@ class _BodyFormState extends State<BodyForm> {
   @override
   void dispose() {
     _nameController.dispose();
+    _nameFocus.dispose();
+
     _websiteController.dispose();
+    _websiteFocus.dispose();
+
     _descriptionController.dispose();
+    _descriptionFocus.dispose();
+
     _phoneController.dispose();
+    _phoneFocus.dispose();
+
     super.dispose();
   }
 
@@ -265,15 +275,16 @@ class _BodyFormState extends State<BodyForm> {
   }
 
   void _submitButtonPressed({required ProfileScreenState state}) {
+    print("submit button pressed");
     if (_buttonEnabled(state: state)) {
       widget._profile.identifier.isEmpty
-        ? _profileScreenBloc.add(Submitted(
+        ? widget._profileScreenBloc.add(Submitted(
             name: _nameController.text,
             website: _websiteController.text,
             description: _descriptionController.text,
             phone: _phoneController.text,
           ))
-        : _profileScreenBloc.add(Updated(
+        : widget._profileScreenBloc.add(Updated(
             name: _nameController.text,
             website: _websiteController.text,
             description: _descriptionController.text,
@@ -284,10 +295,14 @@ class _BodyFormState extends State<BodyForm> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _profileScreenBloc.add(Reset()));
+    Future.delayed(Duration(seconds: 1), () => widget._profileScreenBloc.add(Reset()));
   }
 
   bool _buttonEnabled({required ProfileScreenState state}) {
+    _nameController.text.isNotEmpty &&
+    _websiteController.text.isNotEmpty &&
+    _descriptionController.text.isNotEmpty &&
+    _phoneController.text.isNotEmpty;
     return state.isFormValid && _isPopulated && !state.isSubmitting && _fieldsChanged();
   }
 
@@ -315,18 +330,18 @@ class _BodyFormState extends State<BodyForm> {
   }
 
   void _onNameChanged() {
-    _profileScreenBloc.add(NameChanged(name: _nameController.text));
+    widget._profileScreenBloc.add(NameChanged(name: _nameController.text));
   }
 
   void _onWebsiteChanged() {
-    _profileScreenBloc.add(WebsiteChanged(website: _websiteController.text));
+    widget._profileScreenBloc.add(WebsiteChanged(website: _websiteController.text));
   }
 
   void _onDescriptionChanged() {
-    _profileScreenBloc.add(DescriptionChanged(description: _descriptionController.text));
+    widget._profileScreenBloc.add(DescriptionChanged(description: _descriptionController.text));
   }
 
   void _onPhoneChanged() {
-    _profileScreenBloc.add(PhoneChanged(phone: _phoneFormatter.getUnmaskedText()));
+    widget._profileScreenBloc.add(PhoneChanged(phone: _phoneFormatter.getUnmaskedText()));
   }
 }

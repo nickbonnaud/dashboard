@@ -22,7 +22,7 @@ void main() {
       nameFieldBloc = NameFieldBloc(employeeTipFinderBloc: employeeTipFinderBloc);
       _baseState = nameFieldBloc.state;
 
-      registerFallbackValue<EmployeeTipFinderEvent>(MockFetch());
+      registerFallbackValue(MockFetch());
     });
 
     tearDown(() {

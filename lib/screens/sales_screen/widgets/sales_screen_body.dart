@@ -1,4 +1,5 @@
 import 'package:dashboard/repositories/transaction_repository.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/screens/sales_screen/cubit/date_range_cubit.dart';
 import 'package:dashboard/theme/global_colors.dart';
@@ -17,9 +18,11 @@ import 'widgets/total_tips/bloc/total_tips_bloc.dart';
 import 'widgets/total_tips/total_tips.dart';
 
 class SalesScreenBody extends StatelessWidget {
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+
   final TransactionRepository _transactionRepository;
 
-  const SalesScreenBody({required TransactionRepository transactionRepository})
+  SalesScreenBody({required TransactionRepository transactionRepository})
     : _transactionRepository = transactionRepository;
   
   @override
@@ -88,7 +91,7 @@ class SalesScreenBody extends StatelessWidget {
   
   Widget _salesData({required BuildContext context}) {
     return ResponsiveRowColumn(
-      rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(TABLET),
+      layout: _layoutHelper.setLayout(context: context, deviceSize: TABLET),
       rowCrossAxisAlignment: CrossAxisAlignment.start,
       columnCrossAxisAlignment: CrossAxisAlignment.center,
       columnSpacing: SizeConfig.getHeight(3),
@@ -110,7 +113,7 @@ class SalesScreenBody extends StatelessWidget {
 
   Widget _taxTipData({required BuildContext context}) {
     return ResponsiveRowColumn(
-      rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(TABLET),
+      layout: _layoutHelper.setLayout(context: context, deviceSize: TABLET),
       rowCrossAxisAlignment: CrossAxisAlignment.start,
       columnCrossAxisAlignment: CrossAxisAlignment.center,
       columnSpacing: SizeConfig.getHeight(3),

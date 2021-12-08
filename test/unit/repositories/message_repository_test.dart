@@ -22,7 +22,7 @@ void main() {
       _messageRepository = MessageRepository(messageProvider: MessageProvider());
       _mockMessageProvider = MockMessageProvider();
       _messageRepositoryWithMock = MessageRepository(messageProvider: _mockMessageProvider);
-      registerFallbackValue<Map<String, dynamic>>(Map());
+      registerFallbackValue(Map());
     });
     
     test("Message Repository can Check Unread Messages", () async {

@@ -31,7 +31,7 @@ void main() {
         observer: observer
       );
 
-      registerFallbackValue<AuthenticationEvent>(LoggedIn(business: MockBusiness()));
+      registerFallbackValue(LoggedIn(business: MockBusiness()));
       
       when(() => authenticationRepository.register(email: any(named: "email"), password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation")))
         .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => MockBusiness()));
@@ -39,7 +39,7 @@ void main() {
       when(() => authenticationBloc.add(any(that: isA<AuthenticationEvent>())))
         .thenReturn(null);
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Register Screen creates RegisterCard", (tester) async {

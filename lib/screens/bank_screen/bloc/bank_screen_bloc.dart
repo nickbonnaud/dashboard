@@ -100,9 +100,9 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
         zip: event.zip
       );
       _updateBusinessBloc(bankAccount: account);
-      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
@@ -123,14 +123,14 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
         zip: event.zip
       );
       _updateBusinessBloc(bankAccount: account);
-      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
   void _mapResetToState({required Emitter<BankScreenState> emit}) {
-    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 
   void _mapChangeAccountTypeSelectedToState({required Emitter<BankScreenState> emit}) {

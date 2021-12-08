@@ -72,9 +72,9 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
         saturday: event.saturday
       );
       _updateBusinessBloc(hours: hours);
-      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, isFailure: true, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 
@@ -131,7 +131,7 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
   }
 
   void _mapResetToState({required Emitter<EditHoursScreenState> emit}) {
-    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(isSuccess: false, isFailure: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 
   void _updateBusinessBloc({required Hours hours}) {

@@ -77,7 +77,10 @@ class _BottomModalAppBarState extends State<BottomModalAppBar> with TickerProvid
       builder: (context, child) => Transform.rotate(
         angle: _showAnimation.value,
         child: IconButton(
-          icon: Icon(Icons.arrow_downward),
+          icon: Icon(
+            Icons.arrow_downward,
+            color: Colors.white,
+          ),
           onPressed: () => Navigator.of(context).pop(),
           iconSize: FontSizeAdapter.setSize(size: 4, context: context),
         ),

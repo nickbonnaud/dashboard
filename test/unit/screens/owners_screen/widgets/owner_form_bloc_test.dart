@@ -25,8 +25,8 @@ void main() {
       ownersScreenBloc = MockOwnersScreenBloc();
       ownerFormBloc = OwnerFormBloc(ownerRepository: ownerRepository, ownersScreenBloc: ownersScreenBloc);
       _baseState = ownerFormBloc.state;
-      registerFallbackValue<OwnersScreenEvent>(OwnerAdded(owner: MockOwnerAccount()));
-      registerFallbackValue<OwnersScreenEvent>(OwnerUpdated(owner: MockOwnerAccount()));
+      registerFallbackValue(OwnerAdded(owner: MockOwnerAccount()));
+      registerFallbackValue(OwnerUpdated(owner: MockOwnerAccount()));
     });
 
     tearDown(() {
@@ -157,7 +157,7 @@ void main() {
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
         bloc.add(Submitted(firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -198,7 +198,7 @@ void main() {
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
         bloc.add(Submitted(firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -210,7 +210,7 @@ void main() {
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
         bloc.add(Updated(identifier: "identifier", firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -250,15 +250,15 @@ void main() {
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
         bloc.add(Updated(identifier: "identifier", firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Reset event changes state: [isFirstNameValid: false]",
       build: () => ownerFormBloc,
-      seed: () => _baseState.update(isSuccess: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START),
+      seed: () => _baseState.update(isSuccess: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart),
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [_baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

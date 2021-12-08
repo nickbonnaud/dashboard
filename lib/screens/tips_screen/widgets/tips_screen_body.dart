@@ -1,5 +1,6 @@
 import 'package:dashboard/repositories/tips_repository.dart';
 import 'package:dashboard/repositories/transaction_repository.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/tips_screen/cubits/date_range_cubit.dart';
@@ -18,10 +19,12 @@ import 'widgets/total_tips/bloc/total_tips_bloc.dart';
 import 'widgets/total_tips/total_tips.dart';
 
 class TipsScreenBody extends StatelessWidget {
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+
   final TipsRepository _tipsRepository;
   final TransactionRepository _transactionRepository;
 
-  const TipsScreenBody({required TipsRepository tipsRepository, required TransactionRepository transactionRepository})
+  TipsScreenBody({required TipsRepository tipsRepository, required TransactionRepository transactionRepository})
     : _tipsRepository = tipsRepository,
       _transactionRepository = transactionRepository;
   
@@ -73,7 +76,7 @@ class TipsScreenBody extends StatelessWidget {
                   ], 
                   child: ResponsiveRowColumn(
                     rowMainAxisSize: MainAxisSize.min,
-                    rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(TABLET),
+                    layout: _layoutHelper.setLayout(context: context, deviceSize: TABLET),
                     rowCrossAxisAlignment: CrossAxisAlignment.start,
                     columnCrossAxisAlignment: CrossAxisAlignment.center,
                     columnMainAxisSize: MainAxisSize.max,

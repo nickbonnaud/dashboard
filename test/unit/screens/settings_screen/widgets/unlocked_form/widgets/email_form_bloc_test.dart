@@ -28,7 +28,7 @@ void main() {
 
       _baseState = emailFormBloc.state;
 
-      registerFallbackValue<BusinessEvent>(MockEmailUpdated());
+      registerFallbackValue(MockEmailUpdated());
     });
 
     tearDown(() {
@@ -56,7 +56,7 @@ void main() {
         return emailFormBloc;
       },
       act: (bloc) => bloc.add(Submitted(email: "email", identifier: "identifier")),
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<EmailFormBloc, EmailFormState>(
@@ -95,14 +95,14 @@ void main() {
         return emailFormBloc;
       },
       act: (bloc) => bloc.add(Submitted(email: "email", identifier: "identifier")),
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<EmailFormBloc, EmailFormState>(
       "Reset event changes state: [isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => emailFormBloc,
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [_baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

@@ -1,5 +1,6 @@
 import 'package:dashboard/resources/helpers/cupertino_box_decoration.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
+import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/screens/historic_transactions_screen/widgets/bloc/transactions_list_bloc.dart';
 import 'package:dashboard/theme/main_theme.dart';
@@ -22,6 +23,8 @@ class _NameSearchFieldState extends State<NameSearchField> {
   final TextEditingController _lastNameController = TextEditingController();
   final FocusNode _firstNameFocus = FocusNode();
   final FocusNode _lastNameFocus = FocusNode();
+
+  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
 
   late NameSearchFieldBloc _nameSearchFieldBloc;
   
@@ -46,7 +49,12 @@ class _NameSearchFieldState extends State<NameSearchField> {
   @override
   void dispose() {
     _firstNameController.dispose();
+    _firstNameFocus.dispose();
+
     _lastNameController.dispose();
+    _lastNameFocus.dispose();
+
+    _nameSearchFieldBloc.close();
     super.dispose();
   }
 
@@ -54,7 +62,7 @@ class _NameSearchFieldState extends State<NameSearchField> {
     return ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
       ? _lastNameTextField()
       : ResponsiveRowColumn(
-          rowColumn: !ResponsiveWrapper.of(context).isSmallerThan(MOBILE),
+          layout: _layoutHelper.setLayout(context: context),
           rowCrossAxisAlignment: CrossAxisAlignment.start,
           columnCrossAxisAlignment: CrossAxisAlignment.center,
           columnMainAxisSize: MainAxisSize.min,

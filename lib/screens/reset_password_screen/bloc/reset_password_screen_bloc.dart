@@ -49,20 +49,20 @@ class ResetPasswordScreenBloc extends Bloc<ResetPasswordScreenEvent, ResetPasswo
           isSubmitting: false,
           isSuccess: true,
           errorMessage: "",
-          errorButtonControl: CustomAnimationControl.STOP
+          errorButtonControl: CustomAnimationControl.stop
         ));
       } on ApiException catch (exception) {
         emit(state.update(
           isSubmitting: false,
           isSuccess: false,
           errorMessage: exception.error,
-          errorButtonControl: CustomAnimationControl.PLAY_FROM_START
+          errorButtonControl: CustomAnimationControl.playFromStart
         ));
       }
     }
   }
 
   void _mapResetToState({required Emitter<ResetPasswordScreenState> emit}) {
-    emit(state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 }

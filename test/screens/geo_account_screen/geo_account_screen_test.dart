@@ -61,7 +61,7 @@ void main() {
       when(() => geoAccountRepository.update(identifier: any(named: "identifier"), lat: any(named: "lat"), lng: any(named: "lng"), radius: any(named: "radius")))
         .thenAnswer((_) async=> Future.delayed(Duration(milliseconds: 500), () => location));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
     
     testWidgets("New Geo Account Screen displays AppBar", (tester) async {

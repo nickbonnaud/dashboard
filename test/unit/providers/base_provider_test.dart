@@ -17,7 +17,7 @@ void main() {
 
     setUp(() {
       dio = Dio();
-      dioAdapter = DioAdapter();
+      dioAdapter = DioAdapter(dio: dio);
     });
 
     test("Successful get request returns ApiResponse", () async {

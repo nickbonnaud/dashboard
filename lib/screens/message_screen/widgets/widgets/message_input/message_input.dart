@@ -41,6 +41,8 @@ class _MessageInputState extends State<MessageInput> {
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
+    _messageInputBloc.close();
     super.dispose();
   }
 

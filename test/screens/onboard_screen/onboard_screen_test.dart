@@ -14,7 +14,7 @@ void main() {
 
     setUp(() {
       observer = MockNavigatorObserver();
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     void _setScreenBuilder({required int code}) {

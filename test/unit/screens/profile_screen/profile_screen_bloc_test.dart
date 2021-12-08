@@ -35,7 +35,7 @@ void main() {
       profileScreenBloc = ProfileScreenBloc(profileRepository: profileRepository, businessBloc: businessBloc, places: places);
       _baseState = profileScreenBloc.state;
 
-      registerFallbackValue<BusinessEvent>(MockBusinessEvent());
+      registerFallbackValue(MockBusinessEvent());
     });
 
     tearDown(() {
@@ -181,7 +181,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Submitted(name: "name", website: "website", description: "description", phone: "phone"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
@@ -241,7 +241,7 @@ void main() {
           .thenThrow(ApiException(error: "error"));
         bloc.add(Submitted(name: "name", website: "website", description: "description", phone: "phone"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
@@ -253,7 +253,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
@@ -314,15 +314,15 @@ void main() {
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START)]
+      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "Reset event changes state: [isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => profileScreenBloc,
-      seed: () => _baseState.update(isSuccess: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.PLAY_FROM_START),
+      seed: () => _baseState.update(isSuccess: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart),
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [_baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [_baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

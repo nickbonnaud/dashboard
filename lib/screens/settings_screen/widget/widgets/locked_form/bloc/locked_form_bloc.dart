@@ -35,14 +35,14 @@ class LockedFormBloc extends Bloc<LockedFormEvent, LockedFormState> {
 
     try {
       await _authenticationRepository.verifyPassword(password: event.password);
-      emit(state.update(isSubmitting: false, errorButtonControl: CustomAnimationControl.STOP));
+      emit(state.update(isSubmitting: false, errorButtonControl: CustomAnimationControl.stop));
       _settingsScreenCubit.unlock();
     } on ApiException catch (exception) {
-      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START));
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
   
   void _mapResetToState({required Emitter<LockedFormState> emit}) {
-    emit(state.update(errorMessage: "", errorButtonControl: CustomAnimationControl.STOP));
+    emit(state.update(errorMessage: "", errorButtonControl: CustomAnimationControl.stop));
   }
 }

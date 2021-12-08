@@ -20,7 +20,7 @@ main() {
     late Reply _newReply;
 
     setUp(() {
-      registerFallbackValue<MessageListScreenEvent>(MockMessageListScreenEvent());
+      registerFallbackValue(MockMessageListScreenEvent());
       messageListScreenBloc = MockMessageListScreenBloc();
       when(() => messageListScreenBloc.add(any(that: isA<MessageListScreenEvent>()))).thenReturn(null);
       message = MockMessage();

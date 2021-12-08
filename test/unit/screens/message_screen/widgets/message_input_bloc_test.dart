@@ -26,7 +26,7 @@ void main() {
       messageHistoryBloc = MockMessageHistoryBloc();
       messageInputBloc = MessageInputBloc(messageRepository: messageRepository, messageHistoryBloc: messageHistoryBloc);
       _baseState = messageInputBloc.state;
-      registerFallbackValue<MessageHistoryEvent>(MockMessageHistoryEvent());
+      registerFallbackValue(MockMessageHistoryEvent());
     });
 
     tearDown(() {

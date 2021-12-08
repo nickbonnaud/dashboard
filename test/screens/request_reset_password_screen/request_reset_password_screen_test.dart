@@ -29,7 +29,7 @@ void main() {
       when(() => authenticationRepository.requestPasswordReset(email: any(named: "email")))
         .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => true));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Request Reset Password Screen creates Appbar", (tester) async {

@@ -28,7 +28,7 @@ void main() {
 
       baseState = loginFormBloc.state;
 
-      registerFallbackValue<AuthenticationEvent>(LoggedIn(business: MockBusiness()));
+      registerFallbackValue(LoggedIn(business: MockBusiness()));
     });
 
     tearDown(() {
@@ -113,7 +113,7 @@ void main() {
       "Reset event changes state: [isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => loginFormBloc,
       act: (bloc) => bloc.add(Reset()),
-      expect: () => [baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP)]
+      expect: () => [baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });
 }

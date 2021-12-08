@@ -47,7 +47,7 @@ void main() {
       when(() => unassignedTransactionRepository.paginate(url: any(named: "url")))
         .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(data: List<UnassignedTransaction>.generate(15, (_) => mockDataGenerator.createUnassignedTransaction()), next: "next_url")));
 
-      registerFallbackValue<Route>(MockRoute());
+      registerFallbackValue(MockRoute());
     });
 
     testWidgets("Unassigned Transactions Screen creates UnassignedTransactionsScreenBody", (tester) async {

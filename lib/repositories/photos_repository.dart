@@ -10,7 +10,7 @@ class PhotosRepository extends BaseRepository {
   PhotosRepository({required PhotosProvider photosProvider})
     : _photosProvider = photosProvider;
 
-  Future<Photos> storeLogo({required PickedFile file, required String profileIdentifier}) async {
+  Future<Photos> storeLogo({required XFile file, required String profileIdentifier}) async {
     Map<String, dynamic> body = {
       'photo': file,
       'is_logo': true
@@ -20,7 +20,7 @@ class PhotosRepository extends BaseRepository {
     return deserialize(json: json);
   }
 
-  Future<Photos> storeBanner({required PickedFile file, required String profileIdentifier}) async {
+  Future<Photos> storeBanner({required XFile file, required String profileIdentifier}) async {
     Map<String, dynamic> body = {
       'photo': file,
       'is_logo': false
