@@ -24,7 +24,7 @@ void main() {
     
     test("Unassigned Transaction Repository can Fetch All", () async {
       var unassignedTransactionData = await _unassignedRepository.fetchAll();
-      expect(unassignedTransactionData is PaginateDataHolder, true);
+      expect(unassignedTransactionData, isA<PaginateDataHolder>());
       expect(unassignedTransactionData.data is List<UnassignedTransaction>, true);
       expect(unassignedTransactionData.data.isNotEmpty, true);
     });
@@ -34,7 +34,7 @@ void main() {
       final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
 
       var unassignedTransactionData = await _unassignedRepository.fetchAll(dateRange: dateRange);
-      expect(unassignedTransactionData is PaginateDataHolder, true);
+      expect(unassignedTransactionData, isA<PaginateDataHolder>());
       expect(unassignedTransactionData.data is List<UnassignedTransaction>, true);
       expect(unassignedTransactionData.data.isNotEmpty, true);
     });
@@ -51,7 +51,7 @@ void main() {
     test("Unassigned Transaction Repository can Paginate", () async {
       final String url = "http://novapay.ai/api/business/unassigned-transactions?page=2";
       var unassignedTransactionData = await _unassignedRepository.paginate(url: url);
-      expect(unassignedTransactionData is PaginateDataHolder, true);
+      expect(unassignedTransactionData, isA<PaginateDataHolder>());
       expect(unassignedTransactionData.data is List<UnassignedTransaction>, true);
       expect(unassignedTransactionData.data.isNotEmpty, true);
     });

@@ -8,7 +8,7 @@ void main() {
     test("A transaction can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateTransaction();
       var transaction = Transaction.fromJson(json: json);
-      expect(transaction is Transaction, true);
+      expect(transaction, isA<Transaction>());
     }); 
   });
 }

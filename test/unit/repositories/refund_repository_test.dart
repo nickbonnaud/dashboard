@@ -26,7 +26,7 @@ void main() {
     
     test("Refund Repository can Fetch All Refunds", () async {
       var refundPaginateData = await _refundRepository.fetchAll();
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -35,7 +35,7 @@ void main() {
       final DateTime now = DateTime.now();
       final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var refundPaginateData = await _refundRepository.fetchAll(dateRange: dateRange);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -52,7 +52,7 @@ void main() {
       String firstName = faker.person.firstName();
       String lastName = faker.person.lastName();
       var refundPaginateData = await _refundRepository.fetchByCustomerName(firstName: firstName, lastName: lastName);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -60,7 +60,7 @@ void main() {
     test("Refund Repository can Fetch By Customer Name, queries: firstName", () async {
       String firstName = faker.person.firstName();
       var refundPaginateData = await _refundRepository.fetchByCustomerName(firstName: firstName);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -68,7 +68,7 @@ void main() {
     test("Refund Repository can Fetch By Customer Name, queries: lastName", () async {
       String lastName = faker.person.lastName();
       var refundPaginateData = await _refundRepository.fetchByCustomerName(lastName: lastName);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -79,7 +79,7 @@ void main() {
       final DateTime now = DateTime.now();
       final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var refundPaginateData = await _refundRepository.fetchByCustomerName(firstName: firstName, lastName: lastName, dateRange: dateRange);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -98,7 +98,7 @@ void main() {
     test("Refund Repository can Fetch By Refund ID", () async {
       final String refundId = faker.guid.guid();
       var refundPaginateData = await _refundRepository.fetchByRefundId(refundId: refundId);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -116,7 +116,7 @@ void main() {
     test("Refund Repository can Fetch By Transaction ID", () async {
       final String transactionId = faker.guid.guid();
       var refundPaginateData = await _refundRepository.fetchByTransactionId(transactionId: transactionId);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -134,7 +134,7 @@ void main() {
     test("Refund Repository can Fetch By Customer ID", () async {
       final String customerId = faker.guid.guid();
       var refundPaginateData = await _refundRepository.fetchByCustomerId(customerId: customerId);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
       expect(refundPaginateData.data.isNotEmpty, true);
     });
@@ -152,7 +152,7 @@ void main() {
     test("Refund Repository can Paginate", () async {
       final String url = "http://novapay.ai/api/business/refunds?page=2";
       var refundPaginateData = await _refundRepository.paginate(url: url);
-      expect(refundPaginateData is PaginateDataHolder, true);
+      expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
     });
 
@@ -168,7 +168,7 @@ void main() {
 
     test("Refund Repository can Fetch Total Refunds Today", () async {
       var refundsToday = await _refundRepository.fetchTotalRefundsToday();
-      expect(refundsToday is int, true);
+      expect(refundsToday, isA<int>());
     });
 
     test("Refund Repository throws error on Fetch Total Refunds Today fail", () async {
@@ -182,7 +182,7 @@ void main() {
 
     test("Refund Repository can Fetch Total Refunds Month", () async {
       var refundsMonth = await _refundRepository.fetchTotalRefundsMonth();
-      expect(refundsMonth is int, true);
+      expect(refundsMonth, isA<int>());
     });
 
     test("Refund Repository throws error on Fetch Total Refunds Month fail", () async {

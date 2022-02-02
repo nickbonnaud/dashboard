@@ -275,7 +275,6 @@ class _BodyFormState extends State<BodyForm> {
   }
 
   void _submitButtonPressed({required ProfileScreenState state}) {
-    print("submit button pressed");
     if (_buttonEnabled(state: state)) {
       widget._profile.identifier.isEmpty
         ? widget._profileScreenBloc.add(Submitted(

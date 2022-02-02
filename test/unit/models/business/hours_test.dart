@@ -9,12 +9,12 @@ void main() {
     test("Hours can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateHours();
       var hours = Hours.fromJson(json: json);
-      expect(hours is Hours, true);
+      expect(hours, isA<Hours>());
     });
 
     test("Hours can generate Empty", () {
       var hours = Hours.empty();
-      expect(hours is Hours, true);
+      expect(hours, isA<Hours>());
     });
 
     test("Hours can get earliest opening", () {

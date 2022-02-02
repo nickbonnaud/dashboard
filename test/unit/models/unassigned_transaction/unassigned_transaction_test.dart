@@ -8,7 +8,7 @@ void main() {
     test("An Unassigned Transaction can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateUnassignedTransaction();
       var unassignedTransaction = UnassignedTransaction.fromJson(json: json);
-      expect(unassignedTransaction is UnassignedTransaction, true);
+      expect(unassignedTransaction, isA<UnassignedTransaction>());
     });
   });
 }

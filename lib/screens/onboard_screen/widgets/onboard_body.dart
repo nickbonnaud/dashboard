@@ -128,7 +128,7 @@ class OnboardBody extends StatelessWidget {
               state: _setCurrentStepState(currentStep: currentStep, stepIndex: 7)
             ),
           ],
-          controlsBuilder: (BuildContext context, {VoidCallback? onStepContinue, VoidCallback? onStepCancel}) {
+          controlsBuilder: (context, details) {
             return TextButton(
               onPressed: () => _buttonPressed(context: context, currentStep: currentStep),
               child: BoldText5(text: _buttonText(currentStep: currentStep), context: context, color: Theme.of(context).colorScheme.callToAction),

@@ -8,7 +8,7 @@ void main() {
     test("A Customer Resource can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateCustomerResource();
       var customerResource = CustomerResource.fromJson(json: json);
-      expect(customerResource is CustomerResource, true);
+      expect(customerResource, isA<CustomerResource>());
     });
   });
 }

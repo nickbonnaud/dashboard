@@ -8,7 +8,7 @@ void main() {
     test("An Employee Tip can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateEmployeeTip();
       var tip = EmployeeTip.fromJson(json: json);
-      expect(tip is EmployeeTip, true);
+      expect(tip, isA<EmployeeTip>());
     });
   });
 }

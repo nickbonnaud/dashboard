@@ -9,12 +9,12 @@ void main() {
     test("A Profile can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateProfile();
       var profile = Profile.fromJson(json: json);
-      expect(profile is Profile, true);
+      expect(profile, isA<Profile>());
     });
 
     test("A Profile can create an empty placeholder", () {
       var profile = Profile.empty();
-      expect(profile is Profile, true);
+      expect(profile, isA<Profile>());
     });
 
     test("A Profile can update it's attributes", () {

@@ -26,7 +26,7 @@ void main() {
     
     test("Tips Repository can Fetch All Tips", () async {
       var tipsPaginateData = await _tipRepository.fetchAll();
-      expect(tipsPaginateData is PaginateDataHolder, true);
+      expect(tipsPaginateData, isA<PaginateDataHolder>());
       expect(tipsPaginateData.data is List<EmployeeTip>, true);
       expect(tipsPaginateData.data.isNotEmpty, true);
     });
@@ -35,7 +35,7 @@ void main() {
       final DateTime now = DateTime.now();
       final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var tipsPaginateData = await _tipRepository.fetchAll(dateRange: dateRange);
-      expect(tipsPaginateData is PaginateDataHolder, true);
+      expect(tipsPaginateData, isA<PaginateDataHolder>());
       expect(tipsPaginateData.data is List<EmployeeTip>, true);
       expect(tipsPaginateData.data.isNotEmpty, true);
     });
@@ -54,7 +54,7 @@ void main() {
       String lastName = faker.person.lastName();
 
       var tipsData= await _tipRepository.fetchByCustomerName(firstName: firstName, lastName: lastName);
-      expect(tipsData is List<EmployeeTip>, true);
+      expect(tipsData, isA<List<EmployeeTip>>());
       expect(tipsData.isNotEmpty, true);
     });
 
@@ -62,7 +62,7 @@ void main() {
       String lastName = faker.person.lastName();
 
       var tipsData= await _tipRepository.fetchByCustomerName(lastName: lastName);
-      expect(tipsData is List<EmployeeTip>, true);
+      expect(tipsData, isA<List<EmployeeTip>>());
       expect(tipsData.isNotEmpty, true);
     });
 
@@ -70,7 +70,7 @@ void main() {
       String firstName = faker.person.firstName();
 
       var tipsData= await _tipRepository.fetchByCustomerName(firstName: firstName);
-      expect(tipsData is List<EmployeeTip>, true);
+      expect(tipsData, isA<List<EmployeeTip>>());
       expect(tipsData.isNotEmpty, true);
     });
     
@@ -81,7 +81,7 @@ void main() {
       final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
 
       var tipsData = await _tipRepository.fetchByCustomerName(firstName: firstName, lastName: lastName, dateRange: dateRange);
-      expect(tipsData is List<EmployeeTip>, true);
+      expect(tipsData, isA<List<EmployeeTip>>());
       expect(tipsData.isNotEmpty, true);
     });
 
@@ -99,7 +99,7 @@ void main() {
     test("Tips Repository can Paginate", () async {
       final String url = "http://novapay.ai/api/business/tips?employees=all&page=2";
       var tipsData = await _tipRepository.paginate(url: url);
-      expect(tipsData is PaginateDataHolder, true);
+      expect(tipsData, isA<PaginateDataHolder>());
       expect(tipsData.data is List<EmployeeTip>, true);
     });
 

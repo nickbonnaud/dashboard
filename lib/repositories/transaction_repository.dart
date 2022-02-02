@@ -3,7 +3,6 @@ import 'package:dashboard/models/transaction/transaction_resource.dart';
 import 'package:dashboard/providers/transaction_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 class TransactionRepository extends BaseRepository {
   late TransactionProvider _transactionProvider;

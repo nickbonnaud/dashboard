@@ -22,7 +22,7 @@ void main() {
     
     test("Credentials Repository can Fetch credentials", () async {
       var credentials = await _credentialsRepository.fetch();
-      expect(credentials is Credentials, true);
+      expect(credentials, isA<Credentials>());
     });
 
     test("Credentials Repository throws error on Fetch credentials fail", () async {

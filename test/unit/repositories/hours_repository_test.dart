@@ -25,7 +25,7 @@ void main() {
     test("Hours Repository can Store businesses hours", () async {
       final String hour = "9:00 AM - 10:00 PM";
       var hours = await _hoursRepository.store(sunday: hour, monday: hour, tuesday: hour, wednesday: hour, thursday: hour, friday: hour, saturday: hour);
-      expect(hours is Hours, true);
+      expect(hours, isA<Hours>());
     });
 
     test("Hours Repository throws error on Store business hours fail", () async {
@@ -42,7 +42,7 @@ void main() {
       final String hour = "8:00 AM - 10:00 PM";
       final String identifier = faker.guid.guid();
       var hours = await _hoursRepository.update(identifier: identifier, sunday: hour, monday: hour, tuesday: hour, wednesday: hour, thursday: hour, friday: hour, saturday: hour);
-      expect(hours is Hours, true);
+      expect(hours, isA<Hours>());
     });
 
     test("Hours Repository throws error on Update business hours fail", () async {

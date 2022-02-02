@@ -32,7 +32,7 @@ void main() {
         zip: faker.address.zipCode(),
         entityType: "llc",
       );
-      expect(account is BusinessAccount, true);
+      expect(account, isA<BusinessAccount>());
     });
 
     test("The Business Account Repository throws error on store fail", () async {
@@ -78,7 +78,7 @@ void main() {
         entityType: "llc"
       );
 
-      expect(account is BusinessAccount, true);
+      expect(account, isA<BusinessAccount>());
     });
 
     test("The Business Account Repository throws error on update fail", () async {

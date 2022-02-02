@@ -8,7 +8,7 @@ void main() {
     test("A Notification can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateNotification();
       var notification = Notification.fromJson(json: json);
-      expect(notification is Notification, true);
+      expect(notification, isA<Notification>());
     });
 
     test("A Notification converts last notification to human readable", () {

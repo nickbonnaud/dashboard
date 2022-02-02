@@ -35,7 +35,7 @@ void main() {
         state: 'NC', 
         zip: faker.address.zipCode()
       );
-      expect(bankAccount is BankAccount, true);
+      expect(bankAccount, isA<BankAccount>());
     });
 
     test("The Bank Repository throws error on store fail", () async {
@@ -69,7 +69,7 @@ void main() {
         zip: faker.address.zipCode()
       );
 
-      expect(bankAccount is BankAccount, true);
+      expect(bankAccount, isA<BankAccount>());
     });
 
     test("The Bank Repository throws error on update fail", () async {

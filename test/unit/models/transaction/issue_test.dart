@@ -8,12 +8,12 @@ void main() {
     test("An Issue can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateIssue();
       var issue = Issue.fromJson(json: json);
-      expect(issue is Issue, true);
+      expect(issue, isA<Issue>());
     });
 
     test("An Issue converts string Issue Type to IssueType", () {
       var issue = Issue.fromJson(json: MockResponses.generateIssue());
-      expect(issue.type is IssueType, true);
+      expect(issue.type, isA<IssueType>());
     });
   });
 }

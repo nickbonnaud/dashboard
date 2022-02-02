@@ -8,7 +8,7 @@ void main() {
     test("A Purchased Item can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generatePurchasedItem();
       var purchasedItem = PurchasedItem.fromJson(json: json);
-      expect(purchasedItem is PurchasedItem, true);
+      expect(purchasedItem, isA<PurchasedItem>());
     });
   });
 }

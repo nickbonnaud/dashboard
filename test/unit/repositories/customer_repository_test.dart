@@ -24,28 +24,28 @@ void main() {
     
     test("Customer Repository can Fetch All customers, queries: historic, withoutTransaction", () async {
       var customersPaginateData = await _customerRepository.fetchAll(searchHistoric: true, withTransactions: false);
-      expect(customersPaginateData is PaginateDataHolder, true);
+      expect(customersPaginateData, isA<PaginateDataHolder>());
       expect(customersPaginateData.data is List<CustomerResource>, true);
       expect(customersPaginateData.data.isNotEmpty, true);
     });
 
     test("Customer Repository can Fetch All customers, queries: active, withoutTransaction", () async {
       var customersPaginateData = await _customerRepository.fetchAll(searchHistoric: false, withTransactions: false);
-      expect(customersPaginateData is PaginateDataHolder, true);
+      expect(customersPaginateData, isA<PaginateDataHolder>());
       expect(customersPaginateData.data is List<CustomerResource>, true);
       expect(customersPaginateData.data.isNotEmpty, true);
     });
 
     test("Customer Repository can Fetch All customers, queries: historic, withTransaction", () async {
       var customersPaginateData = await _customerRepository.fetchAll(searchHistoric: true, withTransactions: true);
-      expect(customersPaginateData is PaginateDataHolder, true);
+      expect(customersPaginateData, isA<PaginateDataHolder>());
       expect(customersPaginateData.data is List<CustomerResource>, true);
       expect(customersPaginateData.data.isNotEmpty, true);
     });
 
     test("Customer Repository can Fetch All customers, queries: active, withTransaction", () async {
       var customersPaginateData = await _customerRepository.fetchAll(searchHistoric: false, withTransactions: true);
-      expect(customersPaginateData is PaginateDataHolder, true);
+      expect(customersPaginateData, isA<PaginateDataHolder>());
       expect(customersPaginateData.data is List<CustomerResource>, true);
       expect(customersPaginateData.data.isNotEmpty, true);
     });
@@ -54,7 +54,7 @@ void main() {
       final DateTime now = DateTime.now();
       final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var customersPaginateData = await _customerRepository.fetchAll(searchHistoric: true, withTransactions: true, dateRange: dateRange);
-      expect(customersPaginateData is PaginateDataHolder, true);
+      expect(customersPaginateData, isA<PaginateDataHolder>());
       expect(customersPaginateData.data is List<CustomerResource>, true);
       expect(customersPaginateData.data.isNotEmpty, true);
     });
@@ -70,7 +70,7 @@ void main() {
     test("Customer Repository can Paginate", () async {
       final String url = "http://novapay.ai/api/business/customers?page=2";
       var customersPaginateData = await _customerRepository.paginate(url: url);
-      expect(customersPaginateData is PaginateDataHolder, true);
+      expect(customersPaginateData, isA<PaginateDataHolder>());
       expect(customersPaginateData.data is List<CustomerResource>, true);
     });
 

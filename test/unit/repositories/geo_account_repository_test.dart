@@ -28,7 +28,7 @@ void main() {
       final int radius = 50;
 
       var location = await _geoAccountRepository.store(lat: lat, lng: lng, radius: radius);
-      expect(location is Location, true);
+      expect(location, isA<Location>());
     });
 
     test("Geo Account Repository throws error on Store geo account fail", () async {
@@ -50,7 +50,7 @@ void main() {
       final int radius = 25;
 
       var location = await _geoAccountRepository.update(identifier: identifier, lat: lat, lng: lng, radius: radius);
-      expect(location is Location, true);
+      expect(location, isA<Location>());
     });
 
     test("Geo Account Repository throws error on Update geo account fail", () async {

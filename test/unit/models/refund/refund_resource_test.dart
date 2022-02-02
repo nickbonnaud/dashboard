@@ -8,7 +8,7 @@ void main() {
     test("A Refund Resource can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateRefundResource();
       var refundResource = RefundResource.fromJson(json: json);
-      expect(refundResource is RefundResource, true);
+      expect(refundResource, isA<RefundResource>());
     });
   });
 }

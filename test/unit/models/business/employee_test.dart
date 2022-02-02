@@ -8,7 +8,7 @@ void main() {
     test("An Employee can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateEmployee();
       var employee = Employee.fromJson(json: json);
-      expect(employee is Employee, true);
+      expect(employee, isA<Employee>());
     });
   });
 }

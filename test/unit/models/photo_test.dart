@@ -8,12 +8,12 @@ void main() {
     test("A Photo can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generatePhoto();
       var photo = Photo.fromJson(json: json);
-      expect(photo is Photo, true);
+      expect(photo, isA<Photo>());
     });
 
     test("A Photo can generate an empty placeholder", () {
       var photo = Photo.empty();
-      expect(photo is Photo, true);
+      expect(photo, isA<Photo>());
     });
   });
 }

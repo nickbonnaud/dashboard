@@ -27,7 +27,7 @@ void main() {
     
     test("Message Repository can Check Unread Messages", () async {
       var hasUnread = await _messageRepository.checkUnreadMessages();
-      expect(hasUnread is bool, true);
+      expect(hasUnread, isA<bool>());
     });
 
     test("Message Repository throws error on Check Unread Messages fail", () async {
@@ -40,7 +40,7 @@ void main() {
 
     test("Message Repository can Fetch All messages", () async {
       var messagePaginateData = await _messageRepository.fetchAll();
-      expect(messagePaginateData is PaginateDataHolder, true);
+      expect(messagePaginateData, isA<PaginateDataHolder>());
       expect(messagePaginateData.data is List<Message>, true);
       expect(messagePaginateData.data.isNotEmpty, true);
     });
@@ -56,7 +56,7 @@ void main() {
     test("Message Repository can Paginate", () async {
       final String url = "http://novapay.ai/api/business/message?page=2";
       var messagePaginateData = await _messageRepository.paginate(url: url);
-      expect(messagePaginateData is PaginateDataHolder, true);
+      expect(messagePaginateData, isA<PaginateDataHolder>());
       expect(messagePaginateData.data is List<Message>, true);
     });
 
@@ -73,7 +73,7 @@ void main() {
       final String title = faker.lorem.sentence();
       final String body = faker.lorem.sentence();
       var message = await _messageRepository.addMessage(title: title, messageBody: body);
-      expect(message is Message, true);
+      expect(message, isA<Message>());
     });
 
     test("Message Repository throws error on Add Message", () async {
@@ -91,7 +91,7 @@ void main() {
       final String identifier = faker.guid.guid();
       final String body = faker.lorem.sentence();
       var reply = await _messageRepository.addReply(messageIdentifier: identifier, replyBody: body);
-      expect(reply is Reply, true);
+      expect(reply, isA<Reply>());
     });
 
     test("Message Repository throws error on Add Reply fail", () async {
@@ -108,7 +108,7 @@ void main() {
     test("Message Repository can Update Message", () async {
       final String identifier = faker.guid.guid();
       var messageUpdated = await _messageRepository.updateMessage(messageIdentifier: identifier);
-      expect(messageUpdated is bool, true);
+      expect(messageUpdated, isA<bool>());
     });
 
     test("Message Repository throws error on Update Message fail", () async {

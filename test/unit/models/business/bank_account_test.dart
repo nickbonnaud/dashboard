@@ -14,25 +14,25 @@ void main() {
     test("A Bank Account can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateBankAccount();
       var bankAccount = BankAccount.fromJson(json: json);
-      expect(bankAccount is BankAccount, true);
+      expect(bankAccount, isA<BankAccount>());
     });
 
     test("A Bank Account can create empty placeholder", () {
       var bankAccount = BankAccount.empty();
-      expect(bankAccount is BankAccount, true);
+      expect(bankAccount, isA<BankAccount>());
     });
 
     test("A Bank Account converts string account type to AccountType", () {
       final Map<String, dynamic> json = MockResponses.generateBankAccount();
       var bankAccount = BankAccount.fromJson(json: json);
-      expect(bankAccount.accountType is AccountType, true);
+      expect(bankAccount.accountType, isA<AccountType>());
     });
 
     test("A Bank Account converts Account Type to string", () {
       final Map<String, dynamic> json = MockResponses.generateBankAccount();
       var bankAccount = BankAccount.fromJson(json: json);
-      expect(bankAccount.accountType is AccountType, true);
-      expect(BankAccount.accountTypeToString(accountType: bankAccount.accountType) is String, true);
+      expect(bankAccount.accountType, isA<AccountType>());
+      expect(BankAccount.accountTypeToString(accountType: bankAccount.accountType), isA<String>());
     });
   });
 }

@@ -8,7 +8,7 @@ void main() {
     test("An Owner Account can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateOwnerAccount();
       var ownerAccount = OwnerAccount.fromJson(json: json);
-      expect(ownerAccount is OwnerAccount, true);
+      expect(ownerAccount, isA<OwnerAccount>());
     });
   });
 }

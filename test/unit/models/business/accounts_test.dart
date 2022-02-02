@@ -10,12 +10,12 @@ void main() {
     test('Accounts can deserialize json', () {
       final Map<String, dynamic> json = MockResponses.generateAccounts();
       var accounts = Accounts.fromJson(json: json);
-      expect(accounts is Accounts, true);
+      expect(accounts, isA<Accounts>());
     });
 
     test('Accounts can create an empty placeholder', () {
       var accounts = Accounts.empty();
-      expect(accounts is Accounts, true);
+      expect(accounts, isA<Accounts>());
     });
 
     test("Accounts can update it's attributes", () {

@@ -9,25 +9,25 @@ void main() {
     test("A Pos Account can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generatePosAccount();
       var posAccount = PosAccount.fromJson(json: json);
-      expect(posAccount is PosAccount, true);
+      expect(posAccount, isA<PosAccount>());
     });
 
     test("A Pos Account can create an Empty placeholder", () {
       var posAccount = PosAccount.empty();
-      expect(posAccount is PosAccount, true);
+      expect(posAccount, isA<PosAccount>());
     });
 
     test("A Pos Account formats string type to PosType", () {
       final Map<String, dynamic> json = MockResponses.generatePosAccount();
       var posAccount = PosAccount.fromJson(json: json);
-      expect(posAccount.type is PosType, true);
+      expect(posAccount.type, isA<PosType>());
     });
 
     test("A Pos Account converts PosType to string", () {
       final Map<String, dynamic> json = MockResponses.generatePosAccount();
       final String type = json['type'];
       var posAccount = PosAccount.fromJson(json: json);
-      expect(posAccount.typeToString is String, true);
+      expect(posAccount.typeToString, isA<String>());
       expect(posAccount.typeToString, type.capitalizeFirstEach);
     });
   });

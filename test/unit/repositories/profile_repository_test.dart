@@ -29,7 +29,7 @@ void main() {
         description: faker.lorem.sentence(),
         phone: faker.phoneNumber.us()
       );
-      expect(profile is Profile, true);
+      expect(profile, isA<Profile>());
     });
 
     test("Profile Repository throw error on Store profile fail", () async {
@@ -53,7 +53,7 @@ void main() {
         description: faker.lorem.sentence(),
         phone: faker.phoneNumber.us()
       );
-      expect(profile is Profile, true);
+      expect(profile, isA<Profile>());
     });
 
     test("Profile Repository throw error on Update profile fail", () async {

@@ -11,12 +11,12 @@ void main() {
     test("A Business Account can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateBusinessAccount();
       var businessAccount = BusinessAccount.fromJson(json: json);
-      expect(businessAccount is BusinessAccount, true);
+      expect(businessAccount, isA<BusinessAccount>());
     });
 
     test("A Business Account can create empty placeholder", () {
       var businessAccount = BusinessAccount.empty();
-      expect(businessAccount is BusinessAccount, true);
+      expect(businessAccount, isA<BusinessAccount>());
     });
 
     test("A Business Account can deserialize from Maps", () {
@@ -35,7 +35,7 @@ void main() {
       );
 
       var businessAccount = BusinessAccount.fromMaps(details: details);
-      expect(businessAccount is BusinessAccount, true);
+      expect(businessAccount, isA<BusinessAccount>());
 
       details = PlaceDetails(
         name: faker.company.name(),
@@ -51,20 +51,20 @@ void main() {
       );
 
       businessAccount = BusinessAccount.fromMaps(details: details);
-      expect(businessAccount is BusinessAccount, true);
+      expect(businessAccount, isA<BusinessAccount>());
     });
 
     test("A business Account converts string entity type to Entity Type", () {
       final Map<String, dynamic> json = MockResponses.generateBusinessAccount();
       var businessAccount = BusinessAccount.fromJson(json: json);
-      expect(businessAccount.entityType is EntityType, true);
+      expect(businessAccount.entityType, isA<EntityType>());
     });
 
     test("A Bank Account converts Entity Type to string", () {
       final Map<String, dynamic> json = MockResponses.generateBusinessAccount();
       var businessAccount = BusinessAccount.fromJson(json: json);
-      expect(businessAccount.entityType is EntityType, true);
-      expect(BusinessAccount.entityTypeToString(entityType: businessAccount.entityType) is String, true);
+      expect(businessAccount.entityType, isA<EntityType>());
+      expect(BusinessAccount.entityTypeToString(entityType: businessAccount.entityType), isA<String>());
     });
   });
 }

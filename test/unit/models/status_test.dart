@@ -7,12 +7,12 @@ void main() {
     test("A Status can deserialize json", () {
       final Map<String, dynamic> json = { 'name': 'open', 'code': 100 };
       var status = Status.fromJson(json: json);
-      expect(status is Status, true);
+      expect(status, isA<Status>());
     });
 
     test("A Status can create an unknown Status", () {
       var status = Status.unknown();
-      expect(status is Status, true);
+      expect(status, isA<Status>());
     });
   });
 }

@@ -22,7 +22,7 @@ void main() {
     
     test("Status Repository can Fetch Transaction Statuses", () async {
       var statuses = await _statusRepository.fetchTransactionStatuses();
-      expect(statuses is List<Status>, true);
+      expect(statuses, isA<List<Status>>());
     });
 
     test("Status Repository throws error on Fetch Transaction Statuses fail", () async {

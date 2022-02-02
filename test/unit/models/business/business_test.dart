@@ -9,7 +9,7 @@ void main() {
     test('A Business can deserialize json', () {
       final Map<String, dynamic> json = MockResponses.generateBusiness();
       var business = Business.fromJson(json: json);
-      expect(business is Business, true);
+      expect(business, isA<Business>());
     });
     
     test("A business can update it's attributes", () {

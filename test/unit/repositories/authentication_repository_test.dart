@@ -28,7 +28,7 @@ void main() {
       final String email = faker.internet.email();
       final String password = faker.internet.password();
       var business = await _authRepository.register(email: email, password: password, passwordConfirmation: password);
-      expect(business is Business, true);
+      expect(business, isA<Business>());
     });
 
     test("Registering a Business throws error on fails", () async {
@@ -60,7 +60,7 @@ void main() {
       final String email = faker.internet.email();
       final String password = faker.internet.password();
       var business = await _authRepository.login(email: email, password: password);
-      expect(business is Business, true);
+      expect(business, isA<Business>());
     });
 
     test("Logging in a Business throw error on fail", () async {
@@ -89,7 +89,6 @@ void main() {
 
     test("Logging Out a business is returned a bool on Success", () async {
       var loggedOut = await _authRepository.logout();
-      expect(loggedOut is bool, true);
       expect(loggedOut, true);
     });
 
@@ -110,7 +109,7 @@ void main() {
     test("A Business can verify it's password successfully", () async {
       final String password = faker.internet.password();
       var passwordVerified = await _authRepository.verifyPassword(password: password);
-      expect(passwordVerified is bool, true);
+      expect(passwordVerified, true);
     });
 
     test("Verifying Password throws error on failure", () async {
@@ -125,7 +124,7 @@ void main() {
     test("A Business can request password reset", () async {
       final String email = faker.internet.email();
       var requestSent = await _authRepository.requestPasswordReset(email: email);
-      expect(requestSent is bool, true);
+      expect(requestSent, true);
     });
 
     test("Requesting reset throws error on failure", () async {
@@ -141,7 +140,7 @@ void main() {
       final String password = faker.internet.password();
       final String token = faker.guid.guid();
       var passwordReset = await _authRepository.resetPassword(password: password, passwordConfirmation: password, token: token);
-      expect(passwordReset is bool, true);
+      expect(passwordReset, true);
     });
 
     test("Reseting Password throws error on fail", () async {
@@ -160,7 +159,7 @@ void main() {
 
     test("A Business can check if it is signed in", () {
       final isSignedIn = _authRepository.isSignedIn();
-      expect(isSignedIn is bool, true);
+      expect(isSignedIn, isA<bool>());
     });
   });
 }

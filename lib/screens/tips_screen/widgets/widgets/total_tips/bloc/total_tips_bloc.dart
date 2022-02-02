@@ -6,7 +6,6 @@ import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/tips_screen/cubits/date_range_cubit.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 part 'total_tips_event.dart';
 part 'total_tips_state.dart';

@@ -9,12 +9,12 @@ void main() {
     test("Location can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateLocation();
       var location = Location.fromJson(json: json);
-      expect(location is Location, true);
+      expect(location, isA<Location>());
     });
 
     test("Location can create an Empty placeholder", () {
       var location = Location.empty();
-      expect(location is Location, true);
+      expect(location, isA<Location>());
     });
   });
 }

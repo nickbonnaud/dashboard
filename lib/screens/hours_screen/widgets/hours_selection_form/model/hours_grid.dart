@@ -1,6 +1,5 @@
 import 'package:dashboard/models/hour.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 class HoursGrid {

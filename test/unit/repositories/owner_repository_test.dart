@@ -40,7 +40,7 @@ void main() {
         zip: faker.address.zipCode()
       );
 
-      expect(ownerAccount is OwnerAccount, true);
+      expect(ownerAccount, isA<OwnerAccount>());
     });
 
   test("Owner Repository throws error on Store owner account fail", () async {
@@ -85,7 +85,7 @@ void main() {
         zip: faker.address.zipCode()
       );
 
-      expect(ownerAccount is OwnerAccount, true);
+      expect(ownerAccount, isA<OwnerAccount>());
     });
 
   test("Owner Repository throws error on Update owner account fail", () async {
@@ -115,7 +115,7 @@ void main() {
 
     test("Owner Repository can remove an owner", () async {
       var ownerRemoved = await _ownerRepository.remove(identifier: faker.guid.guid());
-      expect(ownerRemoved is bool, true);
+      expect(ownerRemoved, isA<bool>());
     });
 
     test("Owner Repository throws error on remove owner fail", () async {

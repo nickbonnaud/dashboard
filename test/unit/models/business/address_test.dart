@@ -11,12 +11,12 @@ void main() {
     test("An Address can deserialize json", () {
       final Map<String, dynamic> json = _scrubber.scrub(json: MockResponses.generateAddress());
       var address = Address.fromJson(json: json);
-      expect(address is Address, true);
+      expect(address, isA<Address>());
     });
     
     test("An Address can create an empty placeholder", () {
       var address = Address.empty();
-      expect(address is Address, true);
+      expect(address, isA<Address>());
     });
   });
 }

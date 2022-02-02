@@ -8,7 +8,7 @@ void main() {
     test("A Transaction Resource can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateTransactionResource();
       var transactionResource = TransactionResource.fromJson(json: json);
-      expect(transactionResource is TransactionResource, true);
+      expect(transactionResource, isA<TransactionResource>());
     });
   });
 }

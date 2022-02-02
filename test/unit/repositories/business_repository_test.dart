@@ -27,7 +27,7 @@ void main() {
     
     test("Business Repository can Fetch a business", () async {
       var business = await _businessRepository.fetch();
-      expect(business is Business, true);
+      expect(business, isA<Business>());
     });
 
     test("Business Repository throws error on Fetch business fail", () async {
@@ -69,7 +69,7 @@ void main() {
       final String newPassword = faker.internet.password();
       final String identifier = faker.guid.guid();
       var passwordReset = await _businessRepository.updatePassword(password: newPassword, passwordConfirmation: newPassword, identifier: identifier);
-      expect(passwordReset is bool, true);
+      expect(passwordReset, true);
     });
 
     test("The Business Repository throws error on Update Password fail", () async {

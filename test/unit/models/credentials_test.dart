@@ -8,7 +8,7 @@ void main() {
     test("Credentials can deserialize json", () {
       final Map<String, dynamic> json = { 'google_key': faker.guid.guid() };
       var credentials = Credentials.fromJson(json: json);
-      expect(credentials is Credentials, true);
+      expect(credentials, isA<Credentials>());
     });
   });
 }

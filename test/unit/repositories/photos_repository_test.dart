@@ -27,7 +27,7 @@ void main() {
       final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
       var photos = await _photosRepository.storeLogo(file: file, profileIdentifier: identifier);
-      expect(photos is Photos, true);
+      expect(photos, isA<Photos>());
       expect(photos.logo.name.isNotEmpty, true);
     });
 
@@ -46,7 +46,7 @@ void main() {
       final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
       var photos = await _photosRepository.storeBanner(file: file, profileIdentifier: identifier);
-      expect(photos is Photos, true);
+      expect(photos, isA<Photos>());
       expect(photos.banner.name.isNotEmpty, true);
     });
 

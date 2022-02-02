@@ -7,7 +7,6 @@ import 'package:dashboard/repositories/customer_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 
 import '../../cubit/date_range_cubit.dart';
 import '../../bloc/filter_button_bloc.dart';

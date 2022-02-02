@@ -9,7 +9,7 @@ void main() {
     test("A Message can deserialize json", () {
       final Map<String, dynamic> json = MockResponses.generateMessage();
       var message = Message.fromJson(json: json);
-      expect(message is Message, true);
+      expect(message, isA<Message>());
     });
 
     test("A Message can update it's attributes", () {
@@ -22,7 +22,7 @@ void main() {
 
     test("A Message can check for unread", () {
       var message = Message.fromJson(json: MockResponses.generateMessage());
-      expect(message.hasUnread is bool, true);
+      expect(message.hasUnread, isA<bool>());
     });
   });
 }
