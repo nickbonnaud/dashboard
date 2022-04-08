@@ -7,14 +7,14 @@ class Photo extends Equatable {
   final String smallUrl;
   final String largeUrl;
 
-  Photo({required this.name, required this.smallUrl, required this.largeUrl});
+  const Photo({required this.name, required this.smallUrl, required this.largeUrl});
 
   Photo.fromJson({required Map<String, dynamic> json})
     : name = json['name']!,
       smallUrl = json['small_url']!,
       largeUrl = json['large_url']!;
 
-  factory Photo.empty() => Photo(
+  factory Photo.empty() => const Photo(
     name: "",
     smallUrl: "",
     largeUrl: ""

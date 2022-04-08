@@ -41,7 +41,7 @@ void main() {
     });
 
     test("Refund Repository throw error on Fetch All refunds fail", () async {
-      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       expect(
         _refundRepositoryWithMock.fetchAll(), 
         throwsA(isA<ApiException>())
@@ -87,7 +87,7 @@ void main() {
     test("Refund Repository throw error on Fetch By Customer Name fail", () async {
       String firstName = faker.person.firstName();
       String lastName = faker.person.lastName();
-      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _refundRepositoryWithMock.fetchByCustomerName(firstName: firstName, lastName: lastName), 
@@ -105,7 +105,7 @@ void main() {
 
     test("Refund Repository throw error on Fetch By Refund ID fail", () async {
       final String refundId = faker.guid.guid();
-      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _refundRepositoryWithMock.fetchByRefundId(refundId: refundId), 
@@ -123,7 +123,7 @@ void main() {
 
     test("Refund Repository throw error on Fetch By Transaction ID fail", () async {
       final String transactionId = faker.guid.guid();
-      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _refundRepositoryWithMock.fetchByTransactionId(transactionId: transactionId), 
@@ -141,7 +141,7 @@ void main() {
 
     test("Refund Repository throw error on Fetch By Customer ID fail", () async {
       final String customerId = faker.guid.guid();
-      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockRefundProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _refundRepositoryWithMock.fetchByCustomerId(customerId: customerId), 
@@ -150,15 +150,15 @@ void main() {
     });
 
     test("Refund Repository can Paginate", () async {
-      final String url = "http://novapay.ai/api/business/refunds?page=2";
+      String url = "http://novapay.ai/api/business/refunds?page=2";
       var refundPaginateData = await _refundRepository.paginate(url: url);
       expect(refundPaginateData, isA<PaginateDataHolder>());
       expect(refundPaginateData.data is List<RefundResource>, true);
     });
 
     test("Refund Repository throw error on Paginate fail", () async {
-      final String url = "http://novapay.ai/api/business/refunds?page=2";
-      when(() => _mockRefundProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String url = "http://novapay.ai/api/business/refunds?page=2";
+      when(() => _mockRefundProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _refundRepositoryWithMock.paginate(url: url), 
@@ -172,7 +172,7 @@ void main() {
     });
 
     test("Refund Repository throws error on Fetch Total Refunds Today fail", () async {
-      when(() => _mockRefundProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockRefundProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _refundRepositoryWithMock.fetchTotalRefundsToday(), 
@@ -186,7 +186,7 @@ void main() {
     });
 
     test("Refund Repository throws error on Fetch Total Refunds Month fail", () async {
-      when(() => _mockRefundProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockRefundProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _refundRepositoryWithMock.fetchTotalRefundsMonth(), 

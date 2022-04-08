@@ -14,9 +14,14 @@ class OwnersScreenBody extends StatelessWidget {
   final OwnerRepository _ownerRepository;
   final List<OwnerAccount> _initialOwners;
 
-  const OwnersScreenBody({required OwnerRepository ownerRepository, required List<OwnerAccount> initialOwners})
+  const OwnersScreenBody({
+    required OwnerRepository ownerRepository,
+    required List<OwnerAccount> initialOwners,
+    Key? key
+  })
     : _ownerRepository = ownerRepository,
-      _initialOwners = initialOwners;
+      _initialOwners = initialOwners,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,20 +61,20 @@ class OwnersScreenBody extends StatelessWidget {
         BoldText3(text: 'Current Owners', context: context),
         Text4(text: "Only those who own 25% or more.", context: context),
         SizedBox(height: SizeConfig.getHeight(2)),
-        if (!state.owners.any((owner) => owner.primary) && state.owners.length > 0)
+        if (!state.owners.any((owner) => owner.primary) && state.owners.isNotEmpty)
           Text4(text: "An Account Controller is Required!", context: context, color: Theme.of(context).colorScheme.warning),
       ],
     );
   }
   
   Widget _ownersList({required OwnersScreenState state, required BuildContext context}) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height - kToolbarHeight,
       width: MediaQuery.of(context).size.width,  
       child: ListView.builder(
-        itemCount: state.owners.length > 0 ? state.owners.length + 1 : state.owners.length,
+        itemCount: state.owners.isNotEmpty ? state.owners.length + 1 : state.owners.length,
         itemBuilder: (BuildContext context, int index) {
-          if (index == state.owners.length && state.owners.length != 0) {
+          if (index == state.owners.length && state.owners.isNotEmpty) {
             return _saveButton(context: context, state: state);
           }
           return Card(
@@ -82,19 +87,19 @@ class OwnersScreenBody extends StatelessWidget {
                 : Container(),
               leading: ResponsiveWrapper.of(context).isSmallerThan(TABLET) ? null : Icon(Icons.account_circle, size: state.owners[index].primary ? 56 : 46),
               trailing: state.isSubmitting 
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
                       key: Key("editOwnerButton-$index"),
-                      icon: Icon(Icons.edit),
+                      icon: const Icon(Icons.edit),
                       color: Theme.of(context).colorScheme.callToAction,
                       onPressed: () => _showOwnerForm(context: context, ownerAccount: state.owners[index]),
                     ),
                     IconButton(
                       key: Key("deleteOwnerButton-$index"),
-                      icon: Icon(Icons.cancel),
+                      icon: const Icon(Icons.cancel),
                       color: Theme.of(context).colorScheme.danger,
                       onPressed: () => _deleteButtonPressed(context: context, ownerAccount: state.owners[index]),
                     ),
@@ -112,9 +117,9 @@ class OwnersScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(25),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
-        key: Key("newOwnerButtonKey"),
+        key: const Key("newOwnerButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () => _showOwnerForm(context: context, ownerAccount: null),
       ),
     );
@@ -125,17 +130,17 @@ class OwnersScreenBody extends StatelessWidget {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        key: Key("deleteOwnerDialogKey"),
+        key: const Key("deleteOwnerDialogKey"),
         title: Text("Remove ${ownerAccount.firstName} as owner?"),
         content: Text('This will remove ${ownerAccount.firstName} as an owner!'),
         actions: [
           TextButton(
-            key: Key("cancelDeleteOwnerButtonKey"),
+            key: const Key("cancelDeleteOwnerButtonKey"),
             child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.callToAction)),
             onPressed: () => Navigator.of(context).pop(false),
           ),
           TextButton(
-            key: Key("confirmDeleteOwnerButtonKey"),
+            key: const Key("confirmDeleteOwnerButtonKey"),
             child: Text('Confirm', style: TextStyle(color: Theme.of(context).colorScheme.danger)),
             onPressed: () => Navigator.of(context).pop(true),
           )
@@ -152,7 +157,7 @@ class OwnersScreenBody extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(top: SizeConfig.getHeight(5)),
       child: ElevatedButton(
-        key: Key("saveButtonKey"),
+        key: const Key("saveButtonKey"),
         onPressed: _buttonEnabled(state: state) 
           ? () => _finishButtonPressed(context: context) 
           : null,
@@ -163,7 +168,7 @@ class OwnersScreenBody extends StatelessWidget {
   
   Widget _buttonChild({required BuildContext context}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }

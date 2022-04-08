@@ -15,9 +15,10 @@ class MessageHistory extends StatelessWidget {
   final BoxConstraints _constraints;
   final TextSizer _textSizer;
 
-  const MessageHistory({required BoxConstraints constraints, required TextSizer textSizer})
+  const MessageHistory({required BoxConstraints constraints, required TextSizer textSizer, Key? key})
     : _constraints = constraints,
-      _textSizer = textSizer;
+      _textSizer = textSizer,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class MessageHistory extends StatelessWidget {
       child: BlocBuilder<MessageHistoryBloc, MessageHistoryState>(
         builder: (context, state) {
           return ListView.builder(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             itemCount: state.message.replies.length + 1,
             reverse: true,
             itemBuilder: (context, index) {
@@ -51,7 +52,7 @@ class MessageHistory extends StatelessWidget {
 
   Widget _fromBusiness({required BuildContext context, required Message message}) {
     return Container(
-      key: Key("initialMessage"),
+      key: const Key("initialMessage"),
       margin: EdgeInsets.only(bottom: SizeConfig.getHeight(5)),
       child: Column(
         children: [
@@ -78,20 +79,20 @@ class MessageHistory extends StatelessWidget {
                     )
                   ],
                 ),
-                padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                 width: _bubbleWidth(context: context),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.callToAction,
                   borderRadius: BorderRadius.circular(8.0)
                 ),
-                margin: EdgeInsets.only(right: 10.0),
+                margin: const EdgeInsets.only(right: 10.0),
               )
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
+              SizedBox(
                 width: _dateWidth(context: context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -104,12 +105,12 @@ class MessageHistory extends StatelessWidget {
                           fontSize: _textSizer.set(size: 2, maxWidth: _constraints.maxWidth)
                         ),
                       ),
-                      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                     ),
 
                     if (message.read)
                       Container(
-                        padding: EdgeInsets.only(right: 15.0, top: 5.0, bottom: 5.0),
+                        padding: const EdgeInsets.only(right: 15.0, top: 5.0, bottom: 5.0),
                         child: Text(
                           "Read",
                           style: TextStyle(
@@ -130,7 +131,7 @@ class MessageHistory extends StatelessWidget {
 
   Widget _fromAdmin({required BuildContext context, required Message message}) {
     return Container(
-      key: Key("initialMessage"),
+      key: const Key("initialMessage"),
       margin: EdgeInsets.only(bottom: SizeConfig.getHeight(5)),
       child: Column(
         children: [
@@ -155,19 +156,19 @@ class MessageHistory extends StatelessWidget {
                     ),
                   ],
                 ),
-                padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                 width: _bubbleWidth(context: context),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.callToActionDisabled,
                   borderRadius: BorderRadius.circular(8.0)
                 ),
-                margin: EdgeInsets.only(left: 10.0),
+                margin: const EdgeInsets.only(left: 10.0),
               )
             ],
           ),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: _dateWidth(context: context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -180,11 +181,11 @@ class MessageHistory extends StatelessWidget {
                           fontSize: _textSizer.set(size: 2, maxWidth: _constraints.maxWidth)
                         ),
                       ),
-                      padding: EdgeInsets.only(left: 8.0, top: 5.0, bottom: 5.0),
+                      padding: const EdgeInsets.only(left: 8.0, top: 5.0, bottom: 5.0),
                   ),
 
                   if (message.read)
-                    Container(
+                    SizedBox(
                       child: Text(
                         'Read',
                         style: TextStyle(

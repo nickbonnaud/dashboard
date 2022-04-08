@@ -8,6 +8,9 @@ import 'package:dashboard/theme/global_colors.dart';
 
 class DateDisplay extends StatelessWidget {
 
+  const DateDisplay({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -16,7 +19,7 @@ class DateDisplay extends StatelessWidget {
           if (dateRange == null) return Container();
 
           return Row(
-            key: Key("datesRowKey"),
+            key: const Key("datesRowKey"),
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text5(
@@ -24,7 +27,7 @@ class DateDisplay extends StatelessWidget {
                 context: context
               ),
               IconButton(
-                key: Key("clearDatesButtonKey"),
+                key: const Key("clearDatesButtonKey"),
                 icon: Icon(
                   Icons.clear, 
                   color: Theme.of(context).colorScheme.danger,

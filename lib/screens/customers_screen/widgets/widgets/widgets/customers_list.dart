@@ -10,8 +10,9 @@ import 'widgets/customer_widget.dart';
 class CustomersList extends StatefulWidget {
   final ScrollController _scrollController;
 
-  const CustomersList({required ScrollController scrollController})
-    : _scrollController = scrollController;
+  const CustomersList({required ScrollController scrollController, Key? key})
+    : _scrollController = scrollController,
+      super(key: key);
   
   @override
   State<CustomersList> createState() => _CustomersListState();
@@ -51,7 +52,7 @@ class _CustomersListState extends State<CustomersList> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => index >= state.customers.length
-          ? BottomLoader()
+          ? const BottomLoader()
           : CustomerWidget(index: index, customerResource: state.customers[index]),
         childCount: state.hasReachedEnd
           ? state.customers.length

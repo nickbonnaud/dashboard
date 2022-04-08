@@ -34,7 +34,7 @@ class BankRepository extends BaseRepository {
       'zip': zip
     };
     
-    final Map<String, dynamic> json = await this.send(request: _bankProvider.store(body: body));
+    Map<String, dynamic> json = await send(request: _bankProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -64,7 +64,7 @@ class BankRepository extends BaseRepository {
       'zip': zip
     };
 
-    final Map<String, dynamic> json = await this.send(request: _bankProvider.update(body: body, identifier: identifier));
+    Map<String, dynamic> json = await send(request: _bankProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 

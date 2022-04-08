@@ -82,7 +82,7 @@ void main() {
       "Init event on error changes state: [loading: true], [loading: false, errorMessage: error]",
       build: () => refundsListBloc,
       act: (bloc) {
-        when(() => refundRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => refundRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         bloc.add(Init());
       },
       expect: () => [baseState.update(loading: true), baseState.update(loading: false, errorMessage: "error")]
@@ -126,7 +126,7 @@ void main() {
       seed: () => baseState.update(refunds: _generateRefunds(), nextUrl: "nextUrl", hasReachedEnd: false, errorMessage: "error"),
       act: (bloc) {
         when(() => refundRepository.fetchAll(dateRange: baseState.currentDateRange))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(FetchAll());
       },
       expect: () {
@@ -187,7 +187,7 @@ void main() {
       },
       act: (bloc) {
         when(() => refundRepository.paginate(url: any(named: "url")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(FetchMore());
       },
       expect: () {
@@ -205,7 +205,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByRefundId(refundId: any(named: "refundId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByRefundId(refundId: "refundId"));
+        bloc.add(const FetchByRefundId(refundId: "refundId"));
       },
       expect: () {
         RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentIdQuery: "refundId");
@@ -222,7 +222,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByRefundId(refundId: any(named: "refundId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByRefundId(refundId: "refundId"));
+        bloc.add(const FetchByRefundId(refundId: "refundId"));
       },
       verify: (_) {
         verify(() => refundRepository.fetchByRefundId(refundId: any(named: "refundId"))).called(1);
@@ -235,8 +235,8 @@ void main() {
       seed: () => baseState.update(refunds: _generateRefunds(), nextUrl: "nextUrl", hasReachedEnd: false, errorMessage: "error"),
       act: (bloc) {
         when(() => refundRepository.fetchByRefundId(refundId: any(named: "refundId")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByRefundId(refundId: "refundId"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByRefundId(refundId: "refundId"));
       },
       expect: () {
         RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentIdQuery: "refundId");
@@ -253,7 +253,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByTransactionId(transactionId: any(named: "transactionId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByTransactionId(transactionId: "transactionId"));
+        bloc.add(const FetchByTransactionId(transactionId: "transactionId"));
       },
       expect: () {
         RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentIdQuery: "transactionId");
@@ -270,7 +270,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByTransactionId(transactionId: any(named: "transactionId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByTransactionId(transactionId: "transactionId"));
+        bloc.add(const FetchByTransactionId(transactionId: "transactionId"));
       },
       verify: (_) {
         verify(() => refundRepository.fetchByTransactionId(transactionId: any(named: "transactionId"))).called(1);
@@ -283,8 +283,8 @@ void main() {
       seed: () => baseState.update(refunds: _generateRefunds(), nextUrl: "nextUrl", hasReachedEnd: false, errorMessage: "error"),
       act: (bloc) {
         when(() => refundRepository.fetchByTransactionId(transactionId: any(named: "transactionId")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByTransactionId(transactionId: "transactionId"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByTransactionId(transactionId: "transactionId"));
       },
       expect: () {
         RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentIdQuery: "transactionId");
@@ -301,7 +301,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByCustomerId(customerId: any(named: "customerId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByCustomerId(customerId: "customerId"));
+        bloc.add(const FetchByCustomerId(customerId: "customerId"));
       },
       expect: () {
         RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentIdQuery: "customerId");
@@ -318,7 +318,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByCustomerId(customerId: any(named: "customerId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByCustomerId(customerId: "customerId"));
+        bloc.add(const FetchByCustomerId(customerId: "customerId"));
       },
       verify: (_) {
         verify(() => refundRepository.fetchByCustomerId(customerId: any(named: "customerId"))).called(1);
@@ -331,8 +331,8 @@ void main() {
       seed: () => baseState.update(refunds: _generateRefunds(), nextUrl: "nextUrl", hasReachedEnd: false, errorMessage: "error"),
       act: (bloc) {
         when(() => refundRepository.fetchByCustomerId(customerId: any(named: "customerId")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByCustomerId(customerId: "customerId"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByCustomerId(customerId: "customerId"));
       },
       expect: () {
         RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentIdQuery: "customerId");
@@ -349,10 +349,10 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByCustomerName(firstName: "first", lastName: 'last'));
+        bloc.add(const FetchByCustomerName(firstName: "first", lastName: 'last'));
       },
       expect: () {
-        RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentNameQuery:  FullName(first: "first", last: "last"));
+        RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentNameQuery:  const FullName(first: "first", last: "last"));
         RefundsListState secondState = firstState.update(loading: false, refunds: _refundsList, nextUrl: 'next', hasReachedEnd: false);
         return [firstState, secondState];
       }
@@ -366,7 +366,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FetchByCustomerName(firstName: "first", lastName: 'last'));
+        bloc.add(const FetchByCustomerName(firstName: "first", lastName: 'last'));
       },
       verify: (_) {
         verify(() => refundRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName"))).called(1);
@@ -379,11 +379,11 @@ void main() {
       seed: () => baseState.update(refunds: _generateRefunds(), nextUrl: "nextUrl", hasReachedEnd: false, errorMessage: "error"),
       act: (bloc) {
         when(() => refundRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByCustomerName(firstName: "first", lastName: 'last'));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByCustomerName(firstName: "first", lastName: 'last'));
       },
       expect: () {
-        RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentNameQuery:  FullName(first: "first", last: "last"));
+        RefundsListState firstState = baseState.update(loading: true, refunds: [], nextUrl: null, hasReachedEnd: false, errorMessage: "", currentNameQuery:  const FullName(first: "first", last: "last"));
         RefundsListState secondState = firstState.update(loading: false, errorMessage: "error");
         return [firstState, secondState];
       }
@@ -414,7 +414,7 @@ void main() {
     blocTest<RefundsListBloc, RefundsListState>(
       "FilterChanged event not FilterType.All changes state: [currentFilter: filter]",
       build: () => refundsListBloc,
-      act: (bloc) => bloc.add(FilterChanged(filter: FilterType.customerName)),
+      act: (bloc) => bloc.add(const FilterChanged(filter: FilterType.customerName)),
       expect: () => [baseState.update(currentFilter: FilterType.customerName)]
     );
 
@@ -429,7 +429,7 @@ void main() {
         _refundsList = _generateRefunds();
         when(() => refundRepository.fetchAll(dateRange: baseState.currentDateRange))
           .thenAnswer((_) async => PaginateDataHolder(data: _refundsList, next: "next"));
-        bloc.add(FilterChanged(filter: FilterType.all));
+        bloc.add(const FilterChanged(filter: FilterType.all));
       },
       expect: () {
         RefundsListState firstState = baseState.update(currentFilter: FilterType.all, refunds: _previousRefundsList, nextUrl: "nextUrl", hasReachedEnd: false, errorMessage: "error");

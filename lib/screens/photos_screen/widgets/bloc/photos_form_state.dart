@@ -21,7 +21,7 @@ class PhotosFormState extends Equatable {
   bool get photosValid => logoFile != null && bannerFile != null;
 
   factory PhotosFormState.intial() {
-    return PhotosFormState(
+    return const PhotosFormState(
       logoFile: null,
       bannerFile: null,
       isSubmitting: false,

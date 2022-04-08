@@ -12,7 +12,7 @@ class LogoFormState extends Equatable {
   }
 
   LogoFormState update({required XFile logoFile}) {
-    return LogoFormState(initialLogo: this.initialLogo, logoFile: logoFile);
+    return LogoFormState(initialLogo: initialLogo, logoFile: logoFile);
   }
   
   @override

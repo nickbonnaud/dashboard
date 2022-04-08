@@ -16,8 +16,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 class BusinessAccountScreenBody extends StatefulWidget {
   final BusinessAccount _businessAccount;
   
-  const BusinessAccountScreenBody({required BusinessAccount businessAccount})
-    : _businessAccount = businessAccount;
+  const BusinessAccountScreenBody({required BusinessAccount businessAccount, Key? key})
+    : _businessAccount = businessAccount,
+      super(key: key);
   
   @override
   State<BusinessAccountScreenBody> createState() => _BusinessAccountScreenBodyState();
@@ -84,14 +85,14 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         }
       },
       child: SingleChildScrollView(
-        key: Key("scrollKey"),
+        key: const Key("scrollKey"),
         child: Padding(
           padding: EdgeInsets.only(
             left: SizeConfig.getWidth(10),
             right: SizeConfig.getWidth(10)
           ),
           child: Form(
-            key: Key("formKey"),
+            key: const Key("formKey"),
             child: BlocBuilder<BusinessAccountScreenBloc, BusinessAccountScreenState>(
               builder: (context, state) {
                 return Column(
@@ -159,7 +160,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
 
   Widget _businessDataBody({required BusinessAccountScreenState state}) {
     return Column(
-      key: Key("businessDataBody"),
+      key: const Key("businessDataBody"),
       children: [
         _nameTextField(state: state),
         SizedBox(height: SizeConfig.getHeight(3)),
@@ -225,7 +226,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
 
   Widget _changeEntityButton() {
     return ElevatedButton(
-      key: Key("changeEntityKey"),
+      key: const Key("changeEntityKey"),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.warning)
       ),
@@ -236,7 +237,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   
   Widget _changeEntityButtonChild() {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: Text4(text: 'Change Entity Type', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -246,7 +247,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
       control: state.errorButtonControl,
       onAnimationComplete: _resetForm,
       child: ElevatedButton(
-        key: Key("submitButtonKey"),
+        key: const Key("submitButtonKey"),
         onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
         child: _submitButtonChild(state: state),
       )
@@ -255,9 +256,9 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
 
   Widget _submitButtonChild({required BusinessAccountScreenState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -277,7 +278,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
     if (state.entityType == EntityType.soleProprietorship) return Container();
 
     return TextFormField(
-      key: Key("einKey"),
+      key: const Key("einKey"),
       decoration: InputDecoration(
         labelText: 'EIN',
         labelStyle: TextStyle(
@@ -305,7 +306,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   
   Widget _zipTextField({required BusinessAccountScreenState state}) {
     return TextFormField(
-      key: Key("zipKey"),
+      key: const Key("zipKey"),
       decoration: InputDecoration(
         labelText: 'Zip',
         labelStyle: TextStyle(
@@ -333,7 +334,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
 
   Widget _stateTextField({required BusinessAccountScreenState state}) {    
     return TextFormField(
-      key: Key("stateKey"),
+      key: const Key("stateKey"),
       textCapitalization: TextCapitalization.characters,
       decoration: InputDecoration(
         labelText: 'State',
@@ -362,7 +363,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   
   Widget _cityTextField({required BusinessAccountScreenState state}) {
     return TextFormField(
-      key: Key("cityKey"),
+      key: const Key("cityKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'City',
@@ -390,7 +391,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   
   Widget _addressSecondaryTextField({required BusinessAccountScreenState state}) {
     return TextFormField(
-      key: Key("addressSecondaryKey"),
+      key: const Key("addressSecondaryKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Address Line 2 (optional)',
@@ -418,7 +419,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   
   Widget _addressTextField({required BusinessAccountScreenState state}) {
     return TextFormField(
-      key: Key("addressKey"),
+      key: const Key("addressKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Address Line 1',
@@ -446,7 +447,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
 
   Widget _nameTextField({required BusinessAccountScreenState state}) {
     return TextFormField(
-      key: Key("nameKey"),
+      key: const Key("nameKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Business Name on Taxes',
@@ -478,7 +479,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         SizedBox(width: SizeConfig.getWidth(5)),
         Expanded(
           child: Column(
-            key: Key("entityTypeBody"),
+            key: const Key("entityTypeBody"),
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -548,7 +549,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _accountFormBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => _accountFormBloc.add(Reset()));
   }
 
   void _submitButtonPressed({required BusinessAccountScreenState state}) {

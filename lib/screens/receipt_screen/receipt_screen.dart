@@ -12,8 +12,9 @@ import '../../global_widgets/purchased_item_widget.dart';
 class ReceiptScreen extends StatelessWidget {
   final TransactionResource _transactionResource;
 
-  ReceiptScreen({required TransactionResource transactionResource})
-    : _transactionResource = transactionResource;
+  const ReceiptScreen({required TransactionResource transactionResource, Key? key})
+    : _transactionResource = transactionResource,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,10 @@ class ReceiptScreen extends StatelessWidget {
           BottomModalAppBar(
             context: context,
             isSliver: true,
-            trailingWidgets: [],
+            trailingWidgets: const [],
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 32, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 32, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: _buildBody(context: context)
@@ -42,7 +43,7 @@ class ReceiptScreen extends StatelessWidget {
   List<Widget> _buildBody({required BuildContext context}) {
     return <Widget> [
       Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: Row(
           children: [
             Hero(
@@ -74,17 +75,17 @@ class ReceiptScreen extends StatelessWidget {
       ),
       SizedBox(height: SizeConfig.getHeight(3)),
       ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (_, index) => PurchasedItemWidget(purchasedItem: _transactionResource.purchasedItems[index]),
         itemCount: _transactionResource.purchasedItems.length,
-        separatorBuilder: (_, __) => Divider(thickness: 1),
+        separatorBuilder: (_, __) => const Divider(thickness: 1),
       ),
-      Divider(thickness: 1),
+      const Divider(thickness: 1),
       Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: ListView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: [
             SizedBox(height:SizeConfig.getHeight(3)),
@@ -95,9 +96,9 @@ class ReceiptScreen extends StatelessWidget {
               SizedBox(height:SizeConfig.getHeight(1)),
             if (_transactionResource.transaction.tip != 0)
               _footerRow(context: context, title: "Tip", value: _transactionResource.transaction.tip),
-            if (_transactionResource.refunds.length > 0)
+            if (_transactionResource.refunds.isNotEmpty)
               SizedBox(height: SizeConfig.getHeight(1)),
-            if (_transactionResource.refunds.length > 0)
+            if (_transactionResource.refunds.isNotEmpty)
               _refundRow(context: context),
             SizedBox(height:SizeConfig.getHeight(3)),
             Row(
@@ -111,7 +112,7 @@ class ReceiptScreen extends StatelessWidget {
         ),
       ),
       SizedBox(height: SizeConfig.getHeight(2)),
-      Divider(thickness: 2),
+      const Divider(thickness: 2),
       SizedBox(height: SizeConfig.getHeight(2)),
       Center(
         child: Text5(
@@ -159,7 +160,7 @@ class ReceiptScreen extends StatelessWidget {
   }
 
   int _setTotal() {
-    return _transactionResource.refunds.length > 0
+    return _transactionResource.refunds.isNotEmpty
       ? _transactionResource.transaction.total - _transactionResource.refunds.fold(0, (total, refund) => total + refund.total)
       : _transactionResource.transaction.total;
   }

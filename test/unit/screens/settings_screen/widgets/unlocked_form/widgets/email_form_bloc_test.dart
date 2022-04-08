@@ -42,8 +42,8 @@ void main() {
     blocTest<EmailFormBloc, EmailFormState>(
       "EmailChanged event changes state: [isEmailValid: false]",
       build: () => emailFormBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(EmailChanged(email: "notEmail")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const EmailChanged(email: "notEmail")),
       expect: () => [_baseState.update(isEmailValid: false)]
     );
 
@@ -55,7 +55,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<EmailUpdated>()))).thenReturn(null);
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -67,7 +67,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<EmailUpdated>()))).thenReturn(null);
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
       verify: (_) {
         verify(() => businessRepository.updateEmail(email: any(named: "email"), identifier: any(named: "identifier"))).called(1);
       }
@@ -81,7 +81,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<EmailUpdated>()))).thenReturn(null);
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<EmailUpdated>()))).called(1);
       }
@@ -91,10 +91,10 @@ void main() {
       "Submitted event on error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]",
       build: () {
         when(() => businessRepository.updateEmail(email: any(named: "email"), identifier: any(named: "identifier")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 

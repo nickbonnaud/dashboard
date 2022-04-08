@@ -17,7 +17,7 @@ class OwnerAccount extends Equatable {
   final int percentOwnership;
   final Address address;
 
-  OwnerAccount({
+  const OwnerAccount({
     required this.identifier,
     required this.dob,
     required this.ssn,

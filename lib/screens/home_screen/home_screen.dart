@@ -24,14 +24,16 @@ class HomeScreen extends StatelessWidget {
     required TipsRepository tipsRepository,
     required UnassignedTransactionRepository unassignedTransactionRepository,
     required CustomerRepository customerRepository,
-    required PosAccount posAccount
+    required PosAccount posAccount,
+    Key? key
   })
     : _transactionRepository = transactionRepository,
       _refundRepository = refundRepository,
       _tipsRepository = tipsRepository,
       _unassignedTransactionRepository = unassignedTransactionRepository,
       _customerRepository = customerRepository,
-      _posAccount = posAccount;
+      _posAccount = posAccount,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

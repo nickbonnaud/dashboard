@@ -24,15 +24,15 @@ main() {
     blocTest<HoursScreenBloc, HoursScreenState>(
       "EarliestOpeningChanged event changes state: [earliesStart: startTime]",
       build: () => hoursScreenBloc,
-      act: (bloc) => bloc.add(EarliestOpeningChanged(time: TimeOfDay(hour: 6, minute: 0))),
-      expect: () => [baseState.update(earliestStart: TimeOfDay(hour: 6, minute: 0))]
+      act: (bloc) => bloc.add(const EarliestOpeningChanged(time: TimeOfDay(hour: 6, minute: 0))),
+      expect: () => [baseState.update(earliestStart: const TimeOfDay(hour: 6, minute: 0))]
     );
 
     blocTest<HoursScreenBloc, HoursScreenState>(
       "LatestClosingChanged event changes state: [latestEnd: endTime]",
       build: () => hoursScreenBloc,
-      act: (bloc) => bloc.add(LatestClosingChanged(time: TimeOfDay(hour: 20, minute: 0))),
-      expect: () => [baseState.update(latestEnd: TimeOfDay(hour: 20, minute: 0))]
+      act: (bloc) => bloc.add(const LatestClosingChanged(time: TimeOfDay(hour: 20, minute: 0))),
+      expect: () => [baseState.update(latestEnd: const TimeOfDay(hour: 20, minute: 0))]
     );
 
     blocTest<HoursScreenBloc, HoursScreenState>(

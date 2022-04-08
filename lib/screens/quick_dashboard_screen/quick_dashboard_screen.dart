@@ -29,11 +29,13 @@ class QuickDashboardScreen extends StatefulWidget {
   const QuickDashboardScreen({
     required TransactionRepository transactionRepository,
     required RefundRepository refundRepository,
-    required bool takesTips
+    required bool takesTips,
+    Key? key
   })
     : _transactionRepository = transactionRepository,
       _refundRepository = refundRepository,
-      _takesTip = takesTips;
+      _takesTip = takesTips,
+      super(key: key);
   
   @override
   State<QuickDashboardScreen> createState() => _QuickDashboardScreenState();

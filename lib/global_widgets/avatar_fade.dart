@@ -5,9 +5,10 @@ class AvatarFade extends StatefulWidget {
   final PickedFile _file;
   final double _size;
 
-  AvatarFade({required PickedFile file, required double size})
+  const AvatarFade({required PickedFile file, required double size, Key? key})
     : _file = file,
-      _size = size;
+      _size = size,
+      super(key: key);
 
   @override
   State<AvatarFade> createState() => _AvatarFade();
@@ -21,7 +22,7 @@ class _AvatarFade extends State<AvatarFade> with SingleTickerProviderStateMixin 
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 800)
+      duration: const Duration(milliseconds: 800)
     )..forward();
   }
   
@@ -29,7 +30,7 @@ class _AvatarFade extends State<AvatarFade> with SingleTickerProviderStateMixin 
   Widget build(BuildContext context) {
     return AnimatedOpacity(
       opacity: _controller.value,
-      duration: Duration(milliseconds: 800),
+      duration: const Duration(milliseconds: 800),
       child: Material(
         child: Container(
           width: widget._size * 2,
@@ -43,7 +44,7 @@ class _AvatarFade extends State<AvatarFade> with SingleTickerProviderStateMixin 
           ),
         ),
         elevation: 10,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
       )
     );
   }

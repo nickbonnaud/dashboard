@@ -9,7 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dashboard/theme/global_colors.dart';
 
 class SearchDisplay extends StatelessWidget {
-  
+
+  const SearchDisplay({Key? key})
+    : super(key: key);
+ 
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -37,9 +40,6 @@ class SearchDisplay extends StatelessWidget {
           case FilterType.customerId:
             headerText = "Customer ID";
             break;
-          case FilterType.transactionId:
-            headerText = "Transaction ID";
-            break;
           case FilterType.customerName:
             headerText = "Customer Name";
             break;
@@ -60,7 +60,7 @@ class SearchDisplay extends StatelessWidget {
         if (state.currentDateRange == null || state.currentFilter == FilterType.transactionId) return Container();
 
         return Row(
-          key: Key("dateDisplayKey"),
+          key: const Key("dateDisplayKey"),
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text5(

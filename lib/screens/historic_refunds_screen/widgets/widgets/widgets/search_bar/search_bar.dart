@@ -6,18 +6,21 @@ import 'widgets/filter_button.dart';
 import 'widgets/search_field/search_field.dart';
 
 class SearchBar extends StatelessWidget {
+  
+  const SearchBar({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      leading: DateRangePicker(),
+      leading: const DateRangePicker(),
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.scrollBackground,
       floating: true,
       snap: true,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.end,
-        children: [
+        children: const [
           Expanded(
             child: SearchField()
           ),

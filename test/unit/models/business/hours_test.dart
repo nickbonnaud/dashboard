@@ -18,14 +18,14 @@ void main() {
     });
 
     test("Hours can get earliest opening", () {
-      final String earliest = "6:00 AM";
+      String earliest = "6:00 AM";
       final Map<String, dynamic> json = MockResponses.generateHours(earliest: earliest);
       var hours = Hours.fromJson(json: json);
       expect(hours.earliest, earliest);
     });
 
     test("Hours can get latest closing", () {
-      final String latest = "2:00 AM";
+      String latest = "2:00 AM";
       final Map<String, dynamic> json = MockResponses.generateHours(latest: latest);
       var hours = Hours.fromJson(json: json);
       expect(hours.latest, latest);

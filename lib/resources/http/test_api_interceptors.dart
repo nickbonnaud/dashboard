@@ -29,7 +29,7 @@ class TestApiInterceptors extends InterceptorsWrapper {
     Response res = Response(
       requestOptions: response.requestOptions,
       data: response.data['data'] ?? response.data,
-      extra: response.data['links'] ?? null
+      extra: response.data['links']
     );
     return handler.resolve(res);
   }
@@ -38,7 +38,7 @@ class TestApiInterceptors extends InterceptorsWrapper {
     return Response(
       requestOptions: options, 
       data: json['data'] ?? json,
-      extra: json['links'] ?? null
+      extra: json['links']
     );
   }
 }

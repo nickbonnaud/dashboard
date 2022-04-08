@@ -28,7 +28,7 @@ class TransactionsListState extends Equatable {
 
   factory TransactionsListState.initial({required FilterType currentFilter, @required DateTimeRange? currentDateRange}) {
     return TransactionsListState(
-      transactions: [],
+      transactions: const [],
       nextUrl: null,
       hasReachedEnd: false,
       loading: false,
@@ -43,14 +43,14 @@ class TransactionsListState extends Equatable {
 
   TransactionsListState reset({String? currentIdQuery, FullName? currentNameQuery}) {
     return TransactionsListState(
-      transactions: [],
+      transactions: const [],
       nextUrl: null,
       hasReachedEnd: false,
       loading: true,
       paginating: false,
       errorMessage: '',
-      currentFilter: this.currentFilter,
-      currentDateRange: this.currentDateRange,
+      currentFilter: currentFilter,
+      currentDateRange: currentDateRange,
       currentIdQuery: currentIdQuery,
       currentNameQuery: currentNameQuery
     );

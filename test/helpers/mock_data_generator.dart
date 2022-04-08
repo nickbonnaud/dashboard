@@ -1,4 +1,4 @@
-import 'package:dashboard/models/business/address.dart' as BusinessAddress;
+import 'package:dashboard/models/business/address.dart' as business_address;
 import 'package:dashboard/models/business/employee.dart';
 import 'package:dashboard/models/business/employee_tip.dart';
 import 'package:dashboard/models/business/hours.dart';
@@ -15,13 +15,13 @@ import 'package:dashboard/models/photo.dart';
 import 'package:dashboard/models/refund/refund.dart';
 import 'package:dashboard/models/refund/refund_resource.dart';
 import 'package:dashboard/models/status.dart';
-import 'package:dashboard/models/customer/transaction.dart' as CustomerTransaction;
+import 'package:dashboard/models/customer/transaction.dart' as customer_transaction;
 import 'package:dashboard/models/transaction/purchased_item.dart';
 import 'package:dashboard/models/transaction/transaction.dart';
 import 'package:dashboard/models/transaction/transaction_resource.dart';
 import 'package:dashboard/models/unassigned_transaction/unassigned_transaction.dart';
 import 'package:faker/faker.dart';
-import 'package:dashboard/models/unassigned_transaction/transaction.dart' as Unassigned;
+import 'package:dashboard/models/unassigned_transaction/transaction.dart' as unassigned;
 
 class MockDataGenerator {
 
@@ -48,8 +48,8 @@ class MockDataGenerator {
     );
   }
 
-  CustomerTransaction.Transaction createCustomerTransaction({bool requiresRefund = false}) {
-    return CustomerTransaction.Transaction(
+  customer_transaction.Transaction createCustomerTransaction({bool requiresRefund = false}) {
+    return customer_transaction.Transaction(
       identifier: faker.guid.guid(), 
       tax: faker.randomGenerator.integer(1000, min: 100), 
       tip: faker.randomGenerator.integer(1000, min: 100),
@@ -59,7 +59,7 @@ class MockDataGenerator {
       locked: true,
       billCreatedAt: faker.date.dateTime(minYear: 2018, maxYear: 2021),
       updatedAt: faker.date.dateTime(minYear: 2018, maxYear: 2021), 
-      status: Status(name: "Paid", code: 200),
+      status: const Status(name: "Paid", code: 200),
       refunds: requiresRefund
         ? List.generate(
             faker.randomGenerator.integer(3, min: 1), 
@@ -124,7 +124,7 @@ class MockDataGenerator {
       locked: true,
       createdAt: faker.date.dateTime(minYear: 2018, maxYear: 2021),
       updatedAt: faker.date.dateTime(minYear: 2018, maxYear: 2021),
-      status: Status(name: "Paid", code: 200)
+      status: const Status(name: "Paid", code: 200)
     );
   }
 
@@ -156,7 +156,7 @@ class MockDataGenerator {
     final int tax = (netSales * 0.04).round();
     final int total = netSales + tax;
     return UnassignedTransaction(
-      transaction: Unassigned.Transaction(
+      transaction: unassigned.Transaction(
         identifier: faker.guid.guid(),
         netSales: netSales,
         tax: tax,
@@ -232,7 +232,7 @@ class MockDataGenerator {
       email: faker.internet.email(),
       primary: index == 0,
       percentOwnership: 10, 
-      address: BusinessAddress.Address(
+      address: business_address.Address(
         address: faker.address.streetAddress(),
         addressSecondary: faker.address.buildingNumber(),
         city: faker.address.city(),
@@ -282,7 +282,7 @@ class MockDataGenerator {
       type: PosType.clover, 
       takesTips: true,
       allowsOpenTickets: true, 
-      connectionStatus: Status(name: "connected", code: 200)
+      connectionStatus: const Status(name: "connected", code: 200)
     );
   }
 }

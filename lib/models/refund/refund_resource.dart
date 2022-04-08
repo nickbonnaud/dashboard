@@ -8,7 +8,7 @@ class RefundResource extends Equatable {
   final Refund refund;
   final TransactionResource transactionResource;
 
-  RefundResource({required this.refund, required this.transactionResource});
+  const RefundResource({required this.refund, required this.transactionResource});
 
   RefundResource.fromJson({required Map<String, dynamic> json})
     : refund = Refund.fromJson(json: json['refund']!),

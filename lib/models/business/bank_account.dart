@@ -19,7 +19,7 @@ class BankAccount extends Equatable {
   final AccountType accountType;
   final Address address;
 
-  BankAccount({
+  const BankAccount({
     required this.identifier,
     required this.firstName,
     required this.lastName,

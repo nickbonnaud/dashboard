@@ -11,8 +11,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 class MaxHoursForm extends StatefulWidget {
   final Hours _hours;
 
-  MaxHoursForm({required Hours hours})
-    : _hours = hours;
+  const MaxHoursForm({required Hours hours, Key? key})
+    : _hours = hours,
+      super(key: key);
       
 
   @override
@@ -85,7 +86,7 @@ class _MaxHoursFormState extends State<MaxHoursForm> {
 
   Widget _openingTimeTextField() {
     return TextFormField(
-      key: Key("openingTimeFieldKey"),
+      key: const Key("openingTimeFieldKey"),
       textCapitalization: TextCapitalization.none,
       decoration: InputDecoration(
         labelText: 'Earliest opening time',
@@ -118,7 +119,7 @@ class _MaxHoursFormState extends State<MaxHoursForm> {
 
   Widget _closingTimeTextField() {
     return TextFormField(
-      key: Key("closingTimeFieldKey"),
+      key: const Key("closingTimeFieldKey"),
       textCapitalization: TextCapitalization.none,
       decoration: InputDecoration(
         labelText: 'Latest closing time',
@@ -170,7 +171,7 @@ class _MaxHoursFormState extends State<MaxHoursForm> {
       helpText: isOpening ? 'Set earliest opening' : 'Set latest closing',
       builder: (context, child) {
         return Theme(
-          key: Key("timePickerKey"),
+          key: const Key("timePickerKey"),
           data: ThemeData.light(),
           child: child!,
         );

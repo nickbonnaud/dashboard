@@ -9,8 +9,9 @@ import 'package:dashboard/theme/global_colors.dart';
 class TransactionsList extends StatefulWidget {
   final ScrollController _scrollController;
 
-  const TransactionsList({required ScrollController scrollController})
-    : _scrollController = scrollController;
+  const TransactionsList({required ScrollController scrollController, Key? key})
+    : _scrollController = scrollController,
+      super(key: key);
   
   @override
   State<StatefulWidget> createState() => _TransactionsListState();
@@ -49,7 +50,7 @@ class _TransactionsListState extends State<TransactionsList> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => index >= state.transactions.length
-          ? BottomLoader()
+          ? const BottomLoader()
           : TransactionWidget(index: index, transactionResource: state.transactions[index]),
         childCount: state.hasReachedEnd
           ? state.transactions.length

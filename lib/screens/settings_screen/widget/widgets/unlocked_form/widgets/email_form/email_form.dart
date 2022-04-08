@@ -14,9 +14,10 @@ class EmailForm extends StatefulWidget {
   final String _email;
   final BusinessBloc _businessBloc;
 
-  const EmailForm({required String email, required BusinessBloc businessBloc})
+  const EmailForm({required String email, required BusinessBloc businessBloc, Key? key})
     : _email = email,
-      _businessBloc = businessBloc;
+      _businessBloc = businessBloc,
+      super(key: key);
   
   @override
   State<StatefulWidget> createState() => _EmailFormState();
@@ -70,7 +71,7 @@ class _EmailFormState extends State<EmailForm> {
     return BlocBuilder<EmailFormBloc, EmailFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("emailTextFieldKey"),
+          key: const Key("emailTextFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: "New Email",
@@ -129,7 +130,7 @@ class _EmailFormState extends State<EmailForm> {
                 control: state.errorButtonControl,
                 onAnimationComplete: () => _resetForm(),
                 child: ElevatedButton(
-                  key: Key("emailSubmitButtonKey"),
+                  key: const Key("emailSubmitButtonKey"),
                   onPressed: _emailValid(state: state)
                     ? () => _submitEmail(state: state)
                     : null,
@@ -146,7 +147,7 @@ class _EmailFormState extends State<EmailForm> {
 
   Widget _buttonChild({required EmailFormState state}) {
     return state.isSubmitting
-      ? Padding(padding: EdgeInsets.only(top: 5, bottom: 5), child: CircularProgressIndicator())
+      ? const Padding(padding: EdgeInsets.only(top: 5, bottom: 5), child: CircularProgressIndicator())
       : Text4(text: "Change", context: context, color: Theme.of(context).colorScheme.onSecondary);
   }
 
@@ -171,7 +172,7 @@ class _EmailFormState extends State<EmailForm> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _emailFormBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => _emailFormBloc.add(Reset()));
   }
 
   void _showSuccess() {

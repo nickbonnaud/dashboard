@@ -21,7 +21,7 @@ void main() {
     return BusinessAccount(
       identifier: isNew ? "" : "identifier",
       businessName: "Acme Inc.",
-      address: Address(
+      address: const Address(
         address: "123 Main",
         addressSecondary: "F33",
         city: "City",
@@ -83,7 +83,7 @@ void main() {
         entityType: any(named: "entityType"), 
         identifier: any(named: "identifier"), 
         ein: any(named: "ein")
-      )).thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => MockBusinessAccount()));
+      )).thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => MockBusinessAccount()));
 
       when(() => accountRepository.store(
         name: any(named: "name"),
@@ -94,7 +94,7 @@ void main() {
         zip: any(named: "zip"),
         entityType: any(named: "entityType"), 
         ein: any(named: "ein")
-      )).thenThrow(ApiException(error: "An error occurred!"));
+      )).thenThrow(const ApiException(error: "An error occurred!"));
 
       registerFallbackValue(BusinessAccountUpdated(businessAccount: MockBusinessAccount()));
       registerFallbackValue(MockRoute());
@@ -115,12 +115,12 @@ void main() {
 
     testWidgets("Business Account Screen has SingleChildScrollView", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
-      expect(find.byKey(Key("scrollKey")), findsOneWidget);
+      expect(find.byKey(const Key("scrollKey")), findsOneWidget);
     });
 
     testWidgets("Business Account Screen has Form", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
-      expect(find.byKey(Key("formKey")), findsOneWidget);
+      expect(find.byKey(const Key("formKey")), findsOneWidget);
     });
 
     testWidgets("New Business Account Screen title has distinct title", (tester) async {
@@ -135,53 +135,53 @@ void main() {
 
     testWidgets("New Business Account Screen initially displays Entity Type Body", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      expect(find.byKey(Key("entityTypeBody")), findsOneWidget);
+      expect(find.byKey(const Key("entityTypeBody")), findsOneWidget);
     });
 
     testWidgets("New Business Account Screen Entity Type Body contains all EntityTypeButtons", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      EntityType.values.forEach((entityType) {
+      for (var entityType in EntityType.values) {
         if (entityType != EntityType.unknown) {
           expect(find.byKey(Key(entityType.toString())), findsOneWidget); 
         }
-      });
+      }
     });
 
     testWidgets("Tapping EntityTypeButton hides entityTypeBody and shows BusinessDataBody", (tester) async {
       final List<EntityType> types = [EntityType.corporation, EntityType.llc, EntityType.partnership, EntityType.soleProprietorship];
       await screenBuilderNew.createScreen(tester: tester);
-      expect(find.byKey(Key("entityTypeBody")), findsOneWidget);
-      expect(find.byKey(Key("businessDataBody")), findsNothing);
+      expect(find.byKey(const Key("entityTypeBody")), findsOneWidget);
+      expect(find.byKey(const Key("businessDataBody")), findsNothing);
       await tester.tap(find.byKey(Key((types..shuffle()).first.toString())));
       await tester.pump();
-      expect(find.byKey(Key("entityTypeBody")), findsNothing);
-      expect(find.byKey(Key("businessDataBody")), findsOneWidget);
+      expect(find.byKey(const Key("entityTypeBody")), findsNothing);
+      expect(find.byKey(const Key("businessDataBody")), findsOneWidget);
     });
 
     testWidgets("Business Data body has correct TextFields", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
      
-      expect(find.byKey(Key("nameKey")), findsOneWidget);
-      expect(find.byKey(Key("addressKey")), findsOneWidget);
-      expect(find.byKey(Key("addressSecondaryKey")), findsOneWidget);
-      expect(find.byKey(Key("cityKey")), findsOneWidget);
-      expect(find.byKey(Key("stateKey")), findsOneWidget);
-      expect(find.byKey(Key("zipKey")), findsOneWidget);
-      expect(find.byKey(Key("einKey")), findsOneWidget);
+      expect(find.byKey(const Key("nameKey")), findsOneWidget);
+      expect(find.byKey(const Key("addressKey")), findsOneWidget);
+      expect(find.byKey(const Key("addressSecondaryKey")), findsOneWidget);
+      expect(find.byKey(const Key("cityKey")), findsOneWidget);
+      expect(find.byKey(const Key("stateKey")), findsOneWidget);
+      expect(find.byKey(const Key("zipKey")), findsOneWidget);
+      expect(find.byKey(const Key("einKey")), findsOneWidget);
     });
 
     testWidgets("Ein field is hidden if Sole Prop", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       await tester.tap(find.byKey(Key(EntityType.soleProprietorship.toString())));
       await tester.pump();
-      expect(find.byKey(Key("einKey")), findsNothing);
+      expect(find.byKey(const Key("einKey")), findsNothing);
     });
 
     testWidgets("Name field can take text", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       String name = "Test Co.";
       expect(find.text(name), findsNothing);
-      await tester.enterText(find.byKey(Key("nameKey")), name);
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
       expect(find.text(name), findsOneWidget);
     });
 
@@ -189,8 +189,8 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String name = "?";
       expect(find.text("Invalid Business Name"), findsNothing);
-      await tester.enterText(find.byKey(Key("nameKey")), name);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid Business Name"), findsOneWidget);
     });
 
@@ -198,7 +198,7 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String address = "12 Main Ave";
       expect(find.text(address), findsNothing);
-      await tester.enterText(find.byKey(Key("addressKey")), address);
+      await tester.enterText(find.byKey(const Key("addressKey")), address);
       expect(find.text(address), findsOneWidget);
     });
 
@@ -206,8 +206,8 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String address = "*";
       expect(find.text("Invalid Address"), findsNothing);
-      await tester.enterText(find.byKey(Key("addressKey")), address);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("addressKey")), address);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid Address"), findsOneWidget);
     });
 
@@ -215,7 +215,7 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String addressSecondary = "D13";
       expect(find.text(addressSecondary), findsNothing);
-      await tester.enterText(find.byKey(Key("addressSecondaryKey")), addressSecondary);
+      await tester.enterText(find.byKey(const Key("addressSecondaryKey")), addressSecondary);
       expect(find.text(addressSecondary), findsOneWidget);
     });
 
@@ -223,8 +223,8 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String addressSecondary = "1";
       expect(find.text("Invalid Address"), findsNothing);
-      await tester.enterText(find.byKey(Key("addressSecondaryKey")), addressSecondary);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("addressSecondaryKey")), addressSecondary);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid Address"), findsOneWidget);
     });
 
@@ -232,7 +232,7 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String city = "Chapel Hill";
       expect(find.text(city), findsNothing);
-      await tester.enterText(find.byKey(Key("cityKey")), city);
+      await tester.enterText(find.byKey(const Key("cityKey")), city);
       expect(find.text(city), findsOneWidget);
     });
 
@@ -240,8 +240,8 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String city = "n";
       expect(find.text("Invalid City"), findsNothing);
-      await tester.enterText(find.byKey(Key("cityKey")), city);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("cityKey")), city);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid City"), findsOneWidget);
     });
 
@@ -249,8 +249,8 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String state = "NY";
       expect(find.text(state), findsNothing);
-      await tester.enterText(find.byKey(Key("stateKey")), "");
-      await tester.enterText(find.byKey(Key("stateKey")), state);
+      await tester.enterText(find.byKey(const Key("stateKey")), "");
+      await tester.enterText(find.byKey(const Key("stateKey")), state);
       expect(find.text(state), findsOneWidget);
     });
 
@@ -258,9 +258,9 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String state = "a";
       expect(find.text("Invalid State"), findsNothing);
-      await tester.enterText(find.byKey(Key("stateKey")), "");
-      await tester.enterText(find.byKey(Key("stateKey")), state);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("stateKey")), "");
+      await tester.enterText(find.byKey(const Key("stateKey")), state);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid State"), findsOneWidget);
     });
 
@@ -268,8 +268,8 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String zip = "13507";
       expect(find.text(zip), findsNothing);
-      await tester.enterText(find.byKey(Key("zipKey")), "");
-      await tester.enterText(find.byKey(Key("zipKey")), zip);
+      await tester.enterText(find.byKey(const Key("zipKey")), "");
+      await tester.enterText(find.byKey(const Key("zipKey")), zip);
       expect(find.text(zip), findsOneWidget);
     });
 
@@ -278,9 +278,9 @@ void main() {
 
       String zip = "12";
       expect(find.text("Invalid Zip"), findsNothing);
-      await tester.enterText(find.byKey(Key("zipKey")), "");
-      await tester.enterText(find.byKey(Key("zipKey")), zip);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("zipKey")), "");
+      await tester.enterText(find.byKey(const Key("zipKey")), zip);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid Zip"), findsOneWidget);
     });
 
@@ -288,8 +288,8 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String ein = "99-3456489";
       expect(find.text(ein), findsNothing);
-      await tester.enterText(find.byKey(Key("einKey")), "");
-      await tester.enterText(find.byKey(Key("einKey")), ein);
+      await tester.enterText(find.byKey(const Key("einKey")), "");
+      await tester.enterText(find.byKey(const Key("einKey")), ein);
       expect(find.text(ein), findsOneWidget);
     });
 
@@ -297,33 +297,33 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       String ein = "56";
       expect(find.text("Invalid EIN"), findsNothing);
-      await tester.enterText(find.byKey(Key("einKey")), "");
-      await tester.enterText(find.byKey(Key("einKey")), ein);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("einKey")), "");
+      await tester.enterText(find.byKey(const Key("einKey")), ein);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid EIN"), findsOneWidget);
     });
 
     testWidgets("Business Data Form creates ChangeEntityButton", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
-      expect(find.byKey(Key("changeEntityKey")), findsOneWidget);
+      expect(find.byKey(const Key("changeEntityKey")), findsOneWidget);
     });
 
     testWidgets("Tapping ChangeEntityButton hide Business Data Form and shows Entity Type Body", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
-      expect(find.byKey(Key("businessDataBody")), findsOneWidget);
-      expect(find.byKey(Key("entityTypeBody")), findsNothing);
+      expect(find.byKey(const Key("businessDataBody")), findsOneWidget);
+      expect(find.byKey(const Key("entityTypeBody")), findsNothing);
 
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
-      await tester.tap(find.byKey(Key("changeEntityKey")));
+      await tester.tap(find.byKey(const Key("changeEntityKey")));
       await tester.pump();
-      expect(find.byKey(Key("businessDataBody")), findsNothing);
-      expect(find.byKey(Key("entityTypeBody")), findsOneWidget);
+      expect(find.byKey(const Key("businessDataBody")), findsNothing);
+      expect(find.byKey(const Key("entityTypeBody")), findsOneWidget);
     });
 
     testWidgets("Business Data Form creates SubmitButton", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
-      expect(find.byKey(Key("submitButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("submitButtonKey")), findsOneWidget);
     });
 
     testWidgets("Submit Button is disabled on empty form", (tester) async {
@@ -331,87 +331,87 @@ void main() {
       await tester.tap(find.byKey(Key(EntityType.llc.toString())));
       await tester.pump();
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
     testWidgets("Submit Button is disabled on invalid form", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String name = "?";
-      await tester.enterText(find.byKey(Key("nameKey")), name);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
     testWidgets("Submit Button is enabled on valid form", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String name = "Test LLC";
-      await tester.enterText(find.byKey(Key("nameKey")), name);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, true);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
     });
 
     testWidgets("Tapping Submit Button shows CircularProgressIndicator", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String name = "Test LLC";
-      await tester.enterText(find.byKey(Key("nameKey")), name);
-      await tester.pump(Duration(milliseconds: 300));
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
     });
 
     testWidgets("Tapping Submit Button shows Toast on Success", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String name = "Test LLC";
-      await tester.enterText(find.byKey(Key("nameKey")), name);
-      await tester.pump(Duration(milliseconds: 300));
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
 
       expect(find.text("Details Saved!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 2));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text("Details Saved!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 2));
     });
 
     testWidgets("Tapping Submit Button on success pops nav", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String name = "Test LLC";
-      await tester.enterText(find.byKey(Key("nameKey")), name);
-      await tester.pump(Duration(milliseconds: 300));
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
 
       expect(find.text("Details Saved!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 4));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 4));
       verify(() => observer.didPop(any(), any()));
     });
 
     testWidgets("Tapping Submit Button on error shows error message", (tester) async {
       await screenBuilderNewFilled.createScreen(tester: tester);
 
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
 
       expect(find.text("An error occurred!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("An error occurred!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 1));
       expect(find.text("An error occurred!"), findsNothing);
     });
   });

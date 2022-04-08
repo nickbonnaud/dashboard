@@ -14,7 +14,7 @@ class Hours extends Equatable {
   final String saturday;
   final bool empty;
 
-  Hours({
+  const Hours({
     required this.identifier,
     required this.sunday,
     required this.monday,
@@ -27,24 +27,24 @@ class Hours extends Equatable {
   });
 
   List<String> get days => [
-    this.sunday,
-    this.monday,
-    this.tuesday,
-    this.wednesday,
-    this.thursday,
-    this.friday,
-    this.saturday
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday
   ];
 
   String get earliest {
     List<String> hours = [
-      this.sunday,
-      this.monday,
-      this.tuesday,
-      this.wednesday,
-      this.thursday,
-      this.friday,
-      this.saturday
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday
     ];
     var newHours = hours.where((hour) => hour.toLowerCase() != 'closed')
       .map((hour) => DateFormat.jm().parse(hour.substring(0,  hour.indexOf("-")))).toList()
@@ -54,20 +54,20 @@ class Hours extends Equatable {
 
   String get latest {
     List<String> hours = [
-      this.sunday,
-      this.monday,
-      this.tuesday,
-      this.wednesday,
-      this.thursday,
-      this.friday,
-      this.saturday
+      sunday,
+      monday,
+      tuesday,
+      wednesday,
+      thursday,
+      friday,
+      saturday
     ];
     var newHours = hours.where((hour) => hour.toLowerCase() != 'closed')
       .map((hour) {
         final String strHour = hour.substring(hour.lastIndexOf("- ") + 2);
         DateTime formattedHour = DateFormat.jm().parse(strHour);
         if (strHour.toLowerCase().contains("am")) {
-          formattedHour = formattedHour.add(Duration(days: 1));
+          formattedHour = formattedHour.add(const Duration(days: 1));
         }
         return formattedHour;
       }).toList()
@@ -90,7 +90,7 @@ class Hours extends Equatable {
   }
 
   factory Hours.empty() {
-    return Hours(
+    return const Hours(
       sunday: "",
       identifier: "",
       monday: "",

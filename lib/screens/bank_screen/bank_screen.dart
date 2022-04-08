@@ -16,11 +16,13 @@ class BankScreen extends StatelessWidget {
   const BankScreen({
     required BankAccount bankAccount,
     required BankRepository bankRepository,
-    required BusinessBloc businessBloc
+    required BusinessBloc businessBloc,
+    Key? key
   })
     : _bankAccount = bankAccount,
       _bankRepository = bankRepository,
-      _businessBloc = businessBloc;
+      _businessBloc = businessBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

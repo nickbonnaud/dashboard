@@ -7,7 +7,7 @@ class NameFieldState extends Equatable {
   final String firstName;
   final String lastName;
 
-  NameFieldState({
+  const NameFieldState({
     required this.isFirstNameValid,
     required this.isLastNameValid,
     required this.firstName,

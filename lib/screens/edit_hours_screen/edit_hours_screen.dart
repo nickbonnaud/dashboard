@@ -16,11 +16,13 @@ class EditHoursScreen extends StatelessWidget {
   const EditHoursScreen({
     required HoursRepository hoursRepository,
     required BusinessBloc businessBloc,
-    required Hours hours
+    required Hours hours,
+    Key? key
   })
     : _hoursRepository = hoursRepository,
       _businessBloc = businessBloc,
-      _hours = hours;
+      _hours = hours,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

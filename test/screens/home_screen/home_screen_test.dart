@@ -58,40 +58,40 @@ void main() {
       );
 
       when(() => transactionRepository.fetchNetSalesToday())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => refundRepository.fetchTotalRefundsToday())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => transactionRepository.fetchTotalTipsToday())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
       
       when(() => transactionRepository.fetchTotalSalesToday())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => transactionRepository.fetchNetSalesMonth())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => transactionRepository.fetchTotalTaxesMonth())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => transactionRepository.fetchTotalTipsMonth())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => transactionRepository.fetchTotalSalesMonth())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => refundRepository.fetchTotalRefundsMonth())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000)));
 
       when(() => transactionRepository.fetchTotalUniqueCustomersMonth())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(100)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(100)));
 
       when(() => transactionRepository.fetchTotalTransactionsMonth())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(100)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(100)));
 
       when(() => transactionRepository.fetchAll())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(data: List<TransactionResource>.generate(10, (index) => mockDataGenerator.createTransactionResource()))));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(data: List<TransactionResource>.generate(10, (index) => mockDataGenerator.createTransactionResource()))));
     });
 
     testWidgets("Home Screen creates HomeScreenBody", (tester) async {
@@ -106,14 +106,14 @@ void main() {
 
     testWidgets("Home Screen Body can show drawer menu", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("menuDrawerKey")), findsNothing);
+      expect(find.byKey(const Key("menuDrawerKey")), findsNothing);
 
       expect(find.byIcon(Icons.menu), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.menu));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key("menuDrawerKey")), findsOneWidget);
+      expect(find.byKey(const Key("menuDrawerKey")), findsOneWidget);
     });
 
     testWidgets("Home Screen Body contains TabBarView", (tester) async {

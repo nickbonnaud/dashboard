@@ -15,9 +15,14 @@ class HoursSelectionForm extends StatelessWidget {
   final HoursRepository _hoursRepository;
   final BusinessBloc _businessBloc;
 
-  HoursSelectionForm({required HoursRepository hoursRepository, required BusinessBloc businessBloc})
+  HoursSelectionForm({
+    required HoursRepository hoursRepository,
+    required BusinessBloc businessBloc,
+    Key? key
+  })
     : _hoursRepository = hoursRepository,
-      _businessBloc = businessBloc;
+      _businessBloc = businessBloc,
+      super(key: key);
   
   final GlobalKey _gridKey = GlobalKey();
   
@@ -38,11 +43,11 @@ class HoursSelectionForm extends StatelessWidget {
       );
     }
     return Column(
-      key: Key("hoursSelectionFormKey"),
+      key: const Key("hoursSelectionFormKey"),
       children: [
         BoldText5(text: "Drag or click to select hours.", context: context),
         TextButton(
-          key: Key("toggleAllButtonKey"),
+          key: const Key("toggleAllButtonKey"),
           child: Text(
             state.operatingHoursGrid.allHoursSelected
               ? "Clear All?"
@@ -57,7 +62,7 @@ class HoursSelectionForm extends StatelessWidget {
         ),
         SizedBox(height: SizeConfig.getHeight(2)),
         Container(
-          key: Key("hoursSelectionGrid"),
+          key: const Key("hoursSelectionGrid"),
           child: GridView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
@@ -144,7 +149,7 @@ class HoursSelectionForm extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: _resetMaxHours(context: context)),
-          SizedBox(width: 20.0),
+          const SizedBox(width: 20.0),
           Expanded(child: _submitButton(context:  context))
         ],
       )
@@ -153,7 +158,7 @@ class HoursSelectionForm extends StatelessWidget {
 
   Widget _resetMaxHours({required BuildContext context}) {
     return OutlinedButton(
-      key: Key("resetMaxHoursButtonKey"),
+      key: const Key("resetMaxHoursButtonKey"),
       onPressed: () => BlocProvider.of<HoursScreenBloc>(context).add(Reset()),
       child: Text4(text: "Back", context: context, color: Theme.of(context).colorScheme.callToAction),
     );
@@ -163,7 +168,7 @@ class HoursSelectionForm extends StatelessWidget {
     return BlocBuilder<HoursSelectionFormBloc, HoursSelectionFormState>(
       builder: (context, state) {
         return ElevatedButton(
-          key: Key("submitButtonKey"),
+          key: const Key("submitButtonKey"),
           onPressed: _buttonEnabled(state: state) ? () => _finalizeButtonPressed(context: context, state: state) : null, 
           child: Text4(text: 'Finalize', context: context, color: Theme.of(context).colorScheme.onSecondary),
         );
@@ -177,7 +182,7 @@ class HoursSelectionForm extends StatelessWidget {
 
   void _finalizeButtonPressed({required BuildContext context, required HoursSelectionFormState state}) {
     if (_buttonEnabled(state: state)) {
-      BlocProvider.of<HoursSelectionFormBloc>(context).add(Finished(isFinished: true));
+      BlocProvider.of<HoursSelectionFormBloc>(context).add(const Finished(isFinished: true));
     }
   }
   

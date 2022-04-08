@@ -6,10 +6,10 @@ class MessagesState extends Equatable {
   final bool loading;
   final String errorMessage;
 
-  MessagesState({required this.hasUnreadMessages, required this.loading, required this.errorMessage});
+  const MessagesState({required this.hasUnreadMessages, required this.loading, required this.errorMessage});
 
   factory MessagesState.initial() {
-    return MessagesState(
+    return const MessagesState(
       hasUnreadMessages: false,
       loading: false,
       errorMessage: ""

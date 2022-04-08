@@ -12,8 +12,9 @@ import 'package:dashboard/extensions/string_extensions.dart';
 class ReceiptScreen extends StatelessWidget {
   final CustomerResource _customerResource;
 
-  const ReceiptScreen({required CustomerResource customerResource})
-    : _customerResource = customerResource;
+  const ReceiptScreen({required CustomerResource customerResource, Key? key})
+    : _customerResource = customerResource,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,10 @@ class ReceiptScreen extends StatelessWidget {
           BottomModalAppBar(
             context: context,
             isSliver: true,
-            trailingWidgets: [],
+            trailingWidgets: const [],
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 32, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 32, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: _buildBody(context: context)
@@ -42,7 +43,7 @@ class ReceiptScreen extends StatelessWidget {
   List<Widget> _buildBody({required BuildContext context}) {
     return <Widget> [
       Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -73,7 +74,7 @@ class ReceiptScreen extends StatelessWidget {
               ],
             ),
             Text5(
-              text: "${_customerResource.transaction!.status.name.capitalizeFirstEach}",
+              text: _customerResource.transaction!.status.name.capitalizeFirstEach,
               context: context,
             ),
           ],
@@ -81,17 +82,17 @@ class ReceiptScreen extends StatelessWidget {
       ),
       SizedBox(height: SizeConfig.getHeight(3)),
       ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (_, index) => PurchasedItemWidget(purchasedItem: _customerResource.transaction!.purchasedItems[index]),
         itemCount: _customerResource.transaction!.purchasedItems.length,
-        separatorBuilder: (_, __) => Divider(thickness: 1),
+        separatorBuilder: (_, __) => const Divider(thickness: 1),
       ),
-      Divider(thickness: 1),
+      const Divider(thickness: 1),
       Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: ListView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: [
             SizedBox(height:SizeConfig.getHeight(3)),
@@ -102,9 +103,9 @@ class ReceiptScreen extends StatelessWidget {
               SizedBox(height:SizeConfig.getHeight(1)),
             if (_customerResource.transaction!.tip != 0)
               _footerRow(context: context, title: "Tip", value: _customerResource.transaction!.tip),
-            if (_customerResource.transaction!.refunds.length > 0)
+            if (_customerResource.transaction!.refunds.isNotEmpty)
               SizedBox(height: SizeConfig.getHeight(1)),
-            if (_customerResource.transaction!.refunds.length > 0)
+            if (_customerResource.transaction!.refunds.isNotEmpty)
               _refundRow(context: context),
             SizedBox(height:SizeConfig.getHeight(3)),
             Row(
@@ -117,7 +118,7 @@ class ReceiptScreen extends StatelessWidget {
           ],
         ),
       ),
-      Divider(thickness: 2),
+      const Divider(thickness: 2),
       Center(
         child: Text5(
           text: "Transaction ID: ${_customerResource.transaction!.identifier}",
@@ -125,7 +126,7 @@ class ReceiptScreen extends StatelessWidget {
           color: Theme.of(context).colorScheme.onPrimarySubdued
         ),
       ),
-      Divider(thickness: 2),
+      const Divider(thickness: 2),
       Center(
         child: _customerResource.notification != null
           ? Text5(
@@ -174,7 +175,7 @@ class ReceiptScreen extends StatelessWidget {
   }
 
   int _setTotal() {
-    return _customerResource.transaction!.refunds.length > 0
+    return _customerResource.transaction!.refunds.isNotEmpty
       ? _customerResource.transaction!.total - _customerResource.transaction!.refunds.fold(0, (total, refund) => total + refund.total)
       : _customerResource.transaction!.total;
   }

@@ -38,14 +38,16 @@ class HomeScreenBody extends StatefulWidget {
     required TipsRepository tipsRepository,
     required UnassignedTransactionRepository unassignedTransactionRepository,
     required CustomerRepository customerRepository,
-    required PosAccount posAccount
+    required PosAccount posAccount,
+    Key? key
   })
     : _transactionRepository = transactionRepository,
       _refundRepository = refundRepository,
       _tipsRepository = tipsRepository,
       _unassignedTransactionRepository = unassignedTransactionRepository,
       _customerRepository = customerRepository,
-      _posAccount = posAccount;
+      _posAccount = posAccount,
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HomeScreenBodyState();
@@ -114,7 +116,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
         icon: Icons.person_pin
       ),
       AppTab(
-        child: AccountMenuScreen(),
+        child: const AccountMenuScreen(),
         title: "Account",
         icon: Icons.business
       )
@@ -135,9 +137,9 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
       ),
       drawer: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
         ? Padding(
-            padding: EdgeInsets.only(top: 56),
+            padding: const EdgeInsets.only(top: 56),
             child: Drawer(
-              key: Key("menuDrawerKey"),
+              key: const Key("menuDrawerKey"),
               child: _drawerItems(drawerOpen: true),
             ),
           )
@@ -157,7 +159,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
       : Card(
         elevation: 2.0,
         child: Container(
-          margin: EdgeInsets.all(0),
+          margin: const EdgeInsets.all(0),
           height: MediaQuery.of(context).size.height,
           width: 300,
           color: Colors.white,
@@ -167,12 +169,12 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
   }
 
   Widget _body() {
-    return Container(
+    return SizedBox(
       width: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
         ? MediaQuery.of(context).size.width
         : MediaQuery.of(context).size.width - 310,
       child: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
         children: _tabs.map((tab) => tab.child).toList()
       ),
@@ -212,7 +214,7 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
           child: Align(
             alignment: Alignment.centerLeft,
             child: Container(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Row(
                 children: [
                   Icon(

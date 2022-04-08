@@ -12,7 +12,7 @@ class BannerFormState extends Equatable {
   }
 
   BannerFormState update({required XFile bannerFile}) {
-    return BannerFormState(initialBanner: this.initialBanner, bannerFile: bannerFile);
+    return BannerFormState(initialBanner: initialBanner, bannerFile: bannerFile);
   }
   
   @override

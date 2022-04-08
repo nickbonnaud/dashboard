@@ -107,7 +107,7 @@ void main() {
         return baseState;
       },
       act: (bloc) {
-        bloc.add(Submitted(identifier: "identifier"));
+        bloc.add(const Submitted(identifier: "identifier"));
       },
       expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true)]
     );
@@ -120,7 +120,7 @@ void main() {
         return baseState;
       },
       act: (bloc) {
-        bloc.add(Submitted(identifier: "identifier"));
+        bloc.add(const Submitted(identifier: "identifier"));
       },
       verify: (_) {
         verify(() => photosRepository.storeLogo(file: any(named: "file"), profileIdentifier: any(named: "profileIdentifier"))).called(1);
@@ -136,7 +136,7 @@ void main() {
         return baseState;
       },
       act: (bloc) {
-        bloc.add(Submitted(identifier: "identifier"));
+        bloc.add(const Submitted(identifier: "identifier"));
       },
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<PhotosUpdated>()))).called(1);
@@ -152,8 +152,8 @@ void main() {
       },
       act: (bloc) {
         when(() => photosRepository.storeLogo(file: any(named: "file"), profileIdentifier: any(named: "profileIdentifier")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(Submitted(identifier: "identifier"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const Submitted(identifier: "identifier"));
       },
       expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
@@ -167,8 +167,8 @@ void main() {
       },
       act: (bloc) {
         when(() => photosRepository.storeBanner(file: any(named: "file"), profileIdentifier: any(named: "profileIdentifier")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(Submitted(identifier: "identifier"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const Submitted(identifier: "identifier"));
       },
       expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );

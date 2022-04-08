@@ -73,7 +73,7 @@ void main() {
     blocTest<BusinessBloc, BusinessState>(
       "BusinessBloc event BusinessAuthenticated yields BusinessLoading, BusinessFailedToLoad on error",
       build: () {
-        when(() => businessRepository.fetch()).thenThrow(ApiException(error: "error"));
+        when(() => businessRepository.fetch()).thenThrow(const ApiException(error: "error"));
         return businessBloc;
       },
       act: (bloc) => bloc.add(BusinessAuthenticated()),
@@ -210,7 +210,7 @@ void main() {
         return BusinessLoaded(business: business);
       },
       build: () => businessBloc,
-      act: (bloc) => bloc.add(EmailUpdated(email: "email")),
+      act: (bloc) => bloc.add(const EmailUpdated(email: "email")),
       expect: () => [isA<BusinessLoaded>()]
     );
   });

@@ -13,6 +13,10 @@ import 'package:dashboard/theme/global_colors.dart';
 import 'bloc/login_form_bloc.dart';
 
 class LoginForm extends StatefulWidget {
+
+  const LoginForm({Key? key})
+    : super(key: key);
+
   @override
   State<LoginForm> createState() => _LoginFormState();
 }
@@ -45,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
       },
       child: Form(
         child: SingleChildScrollView(
-          key: Key("scrollKey"),
+          key:const  Key("scrollKey"),
           child: Column(
             children: [
               SizedBox(height: SizeConfig.getHeight(6)),
@@ -95,7 +99,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("emailTextFieldKey"),
+          key: const Key("emailTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Email',
             labelStyle: TextStyle(
@@ -128,7 +132,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocBuilder<LoginFormBloc, LoginFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("passwordTextFieldKey"),
+          key: const Key("passwordTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Password',
             labelStyle: TextStyle(
@@ -178,7 +182,7 @@ class _LoginFormState extends State<LoginForm> {
           control: state.errorButtonControl,
           onAnimationComplete: () => _resetForm(),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
             child: _submitButtonChild(state: state)
           )
@@ -192,7 +196,7 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocBuilder<LoginFormBloc, LoginFormState>(
         builder: (context, state) {
           return TextButton(
-            key: Key("goToRegisterButtonKey"),
+            key: const Key("goToRegisterButtonKey"),
             child: Text(
               "Don't have an account?",
               style: TextStyle(
@@ -217,7 +221,7 @@ class _LoginFormState extends State<LoginForm> {
       child: BlocBuilder<LoginFormBloc, LoginFormState>(
         builder: (context, state) {
           return TextButton(
-            key: Key("resetPasswordButtonKey"),
+            key: const Key("resetPasswordButtonKey"),
             child: Text(
               "Forgot your Password?",
               style: TextStyle(
@@ -239,9 +243,9 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget _submitButtonChild({required LoginFormState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Login', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -260,7 +264,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _loginFormBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => _loginFormBloc.add(Reset()));
   }
 
   void _onEmailChanged() {

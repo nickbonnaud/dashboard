@@ -9,7 +9,7 @@ class PasswordFormState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  PasswordFormState({
+  const PasswordFormState({
     required this.isPasswordValid,
     required this.isPasswordConfirmationValid,
     required this.isSubmitting,
@@ -19,7 +19,7 @@ class PasswordFormState extends Equatable {
   });
 
   factory PasswordFormState.initial() {
-    return PasswordFormState(
+    return const PasswordFormState(
       isPasswordValid: true,
       isPasswordConfirmationValid: true,
       isSubmitting: false,

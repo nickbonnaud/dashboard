@@ -11,11 +11,14 @@ import 'widgets/search_field/search_field.dart';
 
 class SearchBar extends StatelessWidget {
   final StatusRepository _statusRepository = StatusRepository(statusProvider: StatusProvider());
+
+  SearchBar({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      leading: DateRangePicker(),
+      leading: const DateRangePicker(),
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.scrollBackground,
       floating: true,
@@ -28,10 +31,10 @@ class SearchBar extends StatelessWidget {
               create: (_) => TransactionStatusesBloc(
                 statusRepository: _statusRepository
               )..add(InitStatuses()),
-              child: SearchField(),
+              child: const SearchField(),
             ),
           ),
-          FilterButton()
+          const FilterButton()
         ],
       ),
     );

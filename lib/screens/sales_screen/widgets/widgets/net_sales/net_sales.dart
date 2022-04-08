@@ -9,12 +9,15 @@ import 'bloc/net_sales_bloc.dart';
 
 class NetSales extends StatelessWidget {
 
+  const NetSales({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
       child: Container(
-        padding: EdgeInsets.all(22),
+        padding: const EdgeInsets.all(22),
         color: Colors.pink,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,8 +35,8 @@ class NetSales extends StatelessWidget {
             ),
             BlocBuilder<NetSalesBloc, NetSalesState>(
               builder: (context, state) {
-                if (state is Loading || state is NetSalesInitial) return CircularProgressIndicator();
-                if (state is FetchFailed) return FetchFailWidget();
+                if (state is Loading || state is NetSalesInitial) return const CircularProgressIndicator();
+                if (state is FetchFailed) return const FetchFailWidget();
                 
                 return Amount(total: (state as NetSalesLoaded).netSales);
               }

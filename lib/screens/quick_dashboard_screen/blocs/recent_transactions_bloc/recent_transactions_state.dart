@@ -13,7 +13,7 @@ class RecentTransactionsState extends Equatable {
   });
 
   factory RecentTransactionsState.initial() {
-    return RecentTransactionsState(
+    return const RecentTransactionsState(
       transactions: [],
       loading: false,
       errorMessage: ""

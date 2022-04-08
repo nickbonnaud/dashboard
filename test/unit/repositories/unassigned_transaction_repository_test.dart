@@ -40,7 +40,7 @@ void main() {
     });
 
     test("Unassigned Transaction Repository throws error on Fetch All fail", () async {
-      when(() => _mockUnassignedTransactionProvider.fetch(query: any(named: 'query'))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockUnassignedTransactionProvider.fetch(query: any(named: 'query'))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
 
       expect(
         _unassignedTransactionProviderWithMock.fetchAll(), 
@@ -49,7 +49,7 @@ void main() {
     });
 
     test("Unassigned Transaction Repository can Paginate", () async {
-      final String url = "http://novapay.ai/api/business/unassigned-transactions?page=2";
+      String url = "http://novapay.ai/api/business/unassigned-transactions?page=2";
       var unassignedTransactionData = await _unassignedRepository.paginate(url: url);
       expect(unassignedTransactionData, isA<PaginateDataHolder>());
       expect(unassignedTransactionData.data is List<UnassignedTransaction>, true);
@@ -57,8 +57,8 @@ void main() {
     });
 
     test("Unassigned Transaction Repository throws error on Paginate fail", () async {
-      final String url = "http://novapay.ai/api/business/unassigned-transactions?page=2";
-      when(() => _mockUnassignedTransactionProvider.fetch(paginateUrl: any(named: 'paginateUrl'))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String url = "http://novapay.ai/api/business/unassigned-transactions?page=2";
+      when(() => _mockUnassignedTransactionProvider.fetch(paginateUrl: any(named: 'paginateUrl'))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
 
       expect(
         _unassignedTransactionProviderWithMock.paginate(url: url), 

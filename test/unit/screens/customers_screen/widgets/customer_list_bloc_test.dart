@@ -87,7 +87,7 @@ void main() {
       act: (bloc) {
         _customersList = _generateCustomers();
         when(() => customerRepository.fetchAll(searchHistoric: any(named: 'searchHistoric'), withTransactions: any(named: 'withTransactions')))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(Init());
       },
       expect: () => [baseState.update(loading: true), baseState.update(loading: false, errorMessage: "error")]
@@ -128,7 +128,7 @@ void main() {
       build: () => customersListBloc,
       act: (bloc) {
         when(() => customerRepository.fetchAll(searchHistoric: any(named: 'searchHistoric'), withTransactions: any(named: 'withTransactions')))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(FetchAll());
       },
       expect: () {
@@ -187,7 +187,7 @@ void main() {
       },
       act: (bloc) {
         when(() => customerRepository.paginate(url: any(named: "url")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(FetchMore());
       },
       expect: () {
@@ -213,7 +213,7 @@ void main() {
       },
       expect: () {
         CustomersListState firstState = baseState.update(customers: _previousCustomersList, nextUrl: "nextUrl", hasReachedEnd: false, errorMessage: "error", currentDateRange: _dateRange);
-        CustomersListState secondState = CustomersListState(loading: true, paginating: false, customers: [], nextUrl: null, hasReachedEnd: false, errorMessage: '', currentDateRange: _dateRange);
+        CustomersListState secondState = CustomersListState(loading: true, paginating: false, customers: const [], nextUrl: null, hasReachedEnd: false, errorMessage: '', currentDateRange: _dateRange);
         CustomersListState thirdState = secondState.update(loading: false, customers: _customersList, nextUrl: "next", hasReachedEnd: false);
         return [firstState, secondState, thirdState]; 
       }
@@ -235,7 +235,7 @@ void main() {
         bloc.add(FilterButtonChanged());
       },
       expect: () {
-        CustomersListState secondState = CustomersListState(loading: true, paginating: false, customers: [], nextUrl: null, hasReachedEnd: false, errorMessage: '', currentDateRange: null);
+        CustomersListState secondState = const CustomersListState(loading: true, paginating: false, customers: [], nextUrl: null, hasReachedEnd: false, errorMessage: '', currentDateRange: null);
         CustomersListState thirdState = secondState.update(loading: false, customers: _customersList, nextUrl: "next", hasReachedEnd: false);
         return [secondState, thirdState]; 
       }

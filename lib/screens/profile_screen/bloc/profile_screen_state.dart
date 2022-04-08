@@ -29,7 +29,7 @@ class ProfileScreenState extends Equatable {
   });
 
   factory ProfileScreenState.empty() {
-    return ProfileScreenState(
+    return const ProfileScreenState(
       selectedPrediction: null,
       predictions: [],
       isNameValid: true,

@@ -12,16 +12,16 @@ class Constants {
   ];
 
   static List<Status> defaultStatuses = [
-    Status(name: "Open", code: 100),
-    Status(name: "Closed", code: 101),
-    Status(name: "Payment Processing", code: 103),
-    Status(name: "Customer Approved", code: 104),
-    Status(name: "Keep Open Notification Sent", code: 105),
-    Status(name: "Customer Request Keep Open", code: 106),
-    Status(name: "Paid", code: 200),
-    Status(name: "Wrong Bill", code: 500),
-    Status(name: "Error in Bill", code: 501),
-    Status(name: "Error Notifying Customer", code: 502),
-    Status(name: "Other Error", code: 503),
+    const Status(name: "Open", code: 100),
+    const Status(name: "Closed", code: 101),
+    const Status(name: "Payment Processing", code: 103),
+    const Status(name: "Customer Approved", code: 104),
+    const Status(name: "Keep Open Notification Sent", code: 105),
+    const Status(name: "Customer Request Keep Open", code: 106),
+    const Status(name: "Paid", code: 200),
+    const Status(name: "Wrong Bill", code: 500),
+    const Status(name: "Error in Bill", code: 501),
+    const Status(name: "Error Notifying Customer", code: 502),
+    const Status(name: "Other Error", code: 503),
   ];
 }

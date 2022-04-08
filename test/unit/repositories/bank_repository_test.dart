@@ -19,7 +19,7 @@ void main() {
       _bankRepository = BankRepository(bankProvider: BankProvider());
       _mockBankProvider = MockBankProvider();
       _bankRepositoryWithMock = BankRepository(bankProvider: _mockBankProvider);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
 
     test("The Bank Repository can store a BankAccount", () async {
@@ -39,7 +39,7 @@ void main() {
     });
 
     test("The Bank Repository throws error on store fail", () async {
-      when(() => _mockBankProvider.store(body: any(named: 'body'))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockBankProvider.store(body: any(named: 'body'))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_bankRepositoryWithMock.store(
         firstName: faker.person.firstName(),
         lastName: faker.person.lastName(), 
@@ -74,7 +74,7 @@ void main() {
 
     test("The Bank Repository throws error on update fail", () async {
       final String identifier = faker.guid.guid();
-      when(() => _mockBankProvider.update(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockBankProvider.update(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_bankRepositoryWithMock.update(
         identifier: identifier,
         firstName: faker.person.firstName(),

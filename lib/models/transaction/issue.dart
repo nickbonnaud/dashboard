@@ -2,20 +2,26 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 enum IssueType {
-  wrong_bill,
-  error_in_bill,
+  wrongBill,
+  errorInBill,
   other
 }
 
 @immutable
 class Issue extends Equatable {
+  static const Map<IssueType, String> _issueTypeMap = {
+    IssueType.wrongBill: 'wrong_bill',
+    IssueType.errorInBill: 'error_in_bill',
+    IssueType.other: 'other'
+  };
+
   final String identifier;
   final IssueType type;
   final String issue;
   final bool resolved;
   final String updatedAt;
 
-  Issue({required this.identifier, required this.type, required this.issue, required this.resolved, required this.updatedAt});
+  const Issue({required this.identifier, required this.type, required this.issue, required this.resolved, required this.updatedAt});
 
   Issue.fromJson({required Map<String, dynamic> json})
     : identifier =  json['identifier']!,
@@ -25,7 +31,7 @@ class Issue extends Equatable {
       updatedAt = json['updated_at']!;
       
   static IssueType _formatType({required String jsonType}) {
-    return IssueType.values.firstWhere((issueType) => issueType.toString().substring(issueType.toString().indexOf('.') + 1).toLowerCase() == jsonType.toLowerCase());
+    return (_issueTypeMap.entries.firstWhere((typeMap) => typeMap.value.toLowerCase() == jsonType.toLowerCase())).key;
   }
   
   @override

@@ -13,6 +13,9 @@ import 'bloc/name_field_bloc.dart';
 
 class NameField extends StatefulWidget {
 
+  const NameField({Key? key})
+    : super(key: key);
+
   @override
   State<NameField> createState() => _NameFieldState();
 }
@@ -49,7 +52,7 @@ class _NameFieldState extends State<NameField> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 10, right: 10),
+      padding: const EdgeInsets.only(left: 10, right: 10),
       child: ResponsiveWrapper.of(context).isSmallerThan(MOBILE)
         ? _lastNameTextField()
         : ResponsiveRowColumn(
@@ -91,7 +94,7 @@ class _NameFieldState extends State<NameField> {
     return BlocBuilder<NameFieldBloc, NameFieldState>(
       builder: (context, state) {
         return CupertinoTextField(
-          key: Key("firstNameTextFieldKey"),
+          key: const Key("firstNameTextFieldKey"),
           decoration: CupertinoBoxDecoration.validator(isValid: (state.isFirstNameValid || _firstNameController.text.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,
@@ -115,7 +118,7 @@ class _NameFieldState extends State<NameField> {
     return BlocBuilder<NameFieldBloc, NameFieldState>(
       builder: (context, state) {
         return CupertinoTextField(
-          key: Key("lastNameTextFieldKey"),
+          key: const Key("lastNameTextFieldKey"),
           decoration: CupertinoBoxDecoration.validator(isValid: (state.isLastNameValid || _lastNameController.text.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,

@@ -22,11 +22,13 @@ class PhotosFormBody extends StatefulWidget {
   const PhotosFormBody({
     required PhotoPickerRepository photoPickerRepository, 
     required String profileIdentifier,
-    required bool isEdit
+    required bool isEdit,
+    Key? key
   })
     : _photoPickerRepository = photoPickerRepository,
       _profileIdentifier = profileIdentifier,
-      _isEdit = isEdit;
+      _isEdit = isEdit,
+      super(key: key);
 
   @override
   State<PhotosFormBody> createState() => _PhotosFormBodyState();
@@ -42,8 +44,8 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
         BlocListener<PhotosScreenCubit, int>(
           listener: (context, page) {
             page == 1 
-              ? _controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn)
-              : _controller.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+              ? _controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn)
+              : _controller.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
           }
         ),
         BlocListener<PhotosFormBloc, PhotosFormState>(
@@ -58,7 +60,7 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
         children: [
           SizedBox(height: SizeConfig.getHeight(5)),
           _title(),
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height / 2,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -97,8 +99,8 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
     return BlocBuilder<PhotosScreenCubit, int>(
       builder: (context, page) {
         return IconButton(
-          key: Key("leftChevronKey"),
-          icon: Icon(Icons.chevron_left),
+          key: const Key("leftChevronKey"),
+          icon: const Icon(Icons.chevron_left),
           iconSize: SizeConfig.getWidth(10),
           color: page == 0 
             ? Theme.of(context).colorScheme.callToActionDisabled
@@ -114,7 +116,7 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
   Widget _body() {
     return Expanded(
       child: PageView(
-        key: Key("pageViewKey"),
+        key: const Key("pageViewKey"),
         controller: _controller,
         children: [
           LogoForm(photoPickerRepository: widget._photoPickerRepository),
@@ -128,8 +130,8 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
     return BlocBuilder<PhotosScreenCubit, int>(
       builder: (context, page) {
         return IconButton(
-          key: Key("rightChevronKey"),
-          icon: Icon(Icons.chevron_right),
+          key: const Key("rightChevronKey"),
+          icon: const Icon(Icons.chevron_right),
           iconSize: SizeConfig.getWidth(10),
           color: page == 1 
             ? Theme.of(context).colorScheme.callToActionDisabled
@@ -164,7 +166,7 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
           control: state.errorButtonControl,
           onAnimationComplete: () => _resetForm(),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
             child: _buttonChild(state: state),
           )
@@ -175,9 +177,9 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
 
   Widget _buttonChild({required PhotosFormState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -196,7 +198,7 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => BlocProvider.of<PhotosFormBloc>(context).add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => BlocProvider.of<PhotosFormBloc>(context).add(Reset()));
   }
 
   void _showSuccessToast() {

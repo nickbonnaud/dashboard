@@ -22,7 +22,7 @@ void main() {
       _businessRepository = BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: _tokenRepository);
       _mockBusinessProvider = MockBusinessProvider();
       _businessRepositoryWithMock = BusinessRepository(businessProvider: _mockBusinessProvider, tokenRepository: _tokenRepository);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
     
     test("Business Repository can Fetch a business", () async {
@@ -31,7 +31,7 @@ void main() {
     });
 
     test("Business Repository throws error on Fetch business fail", () async {
-      when(() => _mockBusinessProvider.fetch()).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockBusinessProvider.fetch()).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(
         _businessRepositoryWithMock.fetch(), 
         throwsA(isA<ApiException>())
@@ -57,7 +57,7 @@ void main() {
     test("Business Repository throws error on Update email fail", () async {
       final String email = faker.internet.email();
       final String identifier = faker.guid.guid();
-      when(() => _mockBusinessProvider.update(body: any(named: "body"), identifier: identifier)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockBusinessProvider.update(body: any(named: "body"), identifier: identifier)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _businessRepositoryWithMock.updateEmail(email: email, identifier: identifier),
@@ -75,7 +75,7 @@ void main() {
     test("The Business Repository throws error on Update Password fail", () async {
       final String newPassword = faker.internet.password();
       final String identifier = faker.guid.guid();
-      when(() => _mockBusinessProvider.update(body: any(named: 'body'), identifier: identifier)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockBusinessProvider.update(body: any(named: 'body'), identifier: identifier)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _businessRepositoryWithMock.updatePassword(password: newPassword, passwordConfirmation: newPassword, identifier: identifier),

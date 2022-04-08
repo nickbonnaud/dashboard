@@ -5,10 +5,10 @@ class PaginateDataHolder {
   final List<dynamic> data;
   final String? next;
 
-  PaginateDataHolder({required this.data, this.next});
+  const PaginateDataHolder({required this.data, this.next});
 
   PaginateDataHolder update({required List<dynamic> data}) {
-    return PaginateDataHolder(data: data, next: this.next);
+    return PaginateDataHolder(data: data, next: next);
   }
 
   @override

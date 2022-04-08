@@ -41,7 +41,7 @@ void main() {
     });
 
     test("Tips Repository throws error on Fetch All Tips fail", () async {
-      when(() => _mockTipsProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockTipsProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _tipRepositoryWithMock.fetchAll(),
@@ -88,7 +88,7 @@ void main() {
     test("Tips Repository throws error on Fetch By Customer Name fail", () async {
       String firstName = faker.person.firstName();
       String lastName = faker.person.lastName();
-      when(() => _mockTipsProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockTipsProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _tipRepositoryWithMock.fetchByCustomerName(firstName: firstName, lastName: lastName),
@@ -97,15 +97,15 @@ void main() {
     });
 
     test("Tips Repository can Paginate", () async {
-      final String url = "http://novapay.ai/api/business/tips?employees=all&page=2";
+      String url = "http://novapay.ai/api/business/tips?employees=all&page=2";
       var tipsData = await _tipRepository.paginate(url: url);
       expect(tipsData, isA<PaginateDataHolder>());
       expect(tipsData.data is List<EmployeeTip>, true);
     });
 
     test("Tips Repository throws error on Paginate fail", () async {
-      final String url = "http://novapay.ai/api/business/tips?employees=all&page=2";
-      when(() => _mockTipsProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String url = "http://novapay.ai/api/business/tips?employees=all&page=2";
+      when(() => _mockTipsProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _tipRepositoryWithMock.paginate(url: url),

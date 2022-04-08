@@ -5,13 +5,13 @@ class HoursScreenState extends Equatable {
   final TimeOfDay? earliestStart;
   final TimeOfDay? latestEnd;
 
-  HoursScreenState({
+  const HoursScreenState({
     this.earliestStart,
     this.latestEnd
   });
 
   factory HoursScreenState.initial() {
-    return HoursScreenState(
+    return const HoursScreenState(
       earliestStart: null,
       latestEnd: null
     );

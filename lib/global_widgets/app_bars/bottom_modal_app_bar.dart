@@ -13,16 +13,22 @@ class BottomModalAppBar extends StatefulWidget implements PreferredSizeWidget {
   final List<Widget> _trailingWidgets;
   final String _title;
 
-  BottomModalAppBar({required BuildContext context, bool isSliver = false, List<Widget> trailingWidgets = const [], String title = "", Color? backgroundColor})
-    : _backgroundColor = backgroundColor == null 
-        ? Theme.of(context).colorScheme.secondary
-        : backgroundColor,
+  BottomModalAppBar({
+    required BuildContext context,
+    bool isSliver = false,
+    List<Widget> trailingWidgets = const [],
+    String title = "",
+    Color? backgroundColor,
+    Key? key
+  })
+    : _backgroundColor = backgroundColor ?? Theme.of(context).colorScheme.secondary,
       _isSliver = isSliver,
       _trailingWidgets = trailingWidgets,
-      _title = title;
+      _title = title,
+      super(key: key);
   
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 
   @override
   State<BottomModalAppBar> createState() => _BottomModalAppBarState();
@@ -35,7 +41,7 @@ class _BottomModalAppBarState extends State<BottomModalAppBar> with TickerProvid
   @override
   void initState() {
     super.initState();
-    _showAnimationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _showAnimationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
     _showAnimation = Tween(begin: pi / 2, end: 0.0).animate(_showAnimationController);
     _showAnimationController.forward();
   }
@@ -76,7 +82,7 @@ class _BottomModalAppBarState extends State<BottomModalAppBar> with TickerProvid
       builder: (context, child) => Transform.rotate(
         angle: _showAnimation.value,
         child: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_downward,
             color: Colors.white,
           ),
@@ -94,7 +100,7 @@ class _BottomModalAppBarState extends State<BottomModalAppBar> with TickerProvid
   }
 
   List<Widget> _actions() {
-    if (widget._trailingWidgets.isEmpty) return [MessageButton(),  MenuButton()];
+    if (widget._trailingWidgets.isEmpty) return [const MessageButton(), const MenuButton()];
     return widget._trailingWidgets;
   }
 }

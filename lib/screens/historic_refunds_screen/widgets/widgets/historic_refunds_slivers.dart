@@ -8,6 +8,9 @@ import 'widgets/search_display.dart';
 
 class HistoricRefundsSlivers extends StatefulWidget {
 
+  const HistoricRefundsSlivers({Key? key})
+    : super(key: key);
+
   @override
   State<HistoricRefundsSlivers> createState() => _HistoricRefundsSliversState();
 }
@@ -36,7 +39,7 @@ class _HistoricRefundsSliversState extends State<HistoricRefundsSlivers> {
   Widget _searchDisplay() {
     return SliverPadding(
       padding: _padding(),
-      sliver: SliverToBoxAdapter(
+      sliver: const SliverToBoxAdapter(
         child: SearchDisplay(),
       ),
     );
@@ -45,7 +48,7 @@ class _HistoricRefundsSliversState extends State<HistoricRefundsSlivers> {
   Widget _searchBar() {
     return SliverPadding(
       padding: _padding(),
-      sliver: SearchBar(),
+      sliver: const SearchBar(),
     );
   }
   

@@ -9,7 +9,7 @@ class Address extends Equatable {
   final String state;
   final String zip;
 
-  Address({
+  const Address({
     required this.address,
     required this.city,
     required this.state,
@@ -24,7 +24,7 @@ class Address extends Equatable {
       state = json['state']!,
       zip = json['zip']!;
 
-  factory Address.empty() => Address(
+  factory Address.empty() => const Address(
     address: "",
     city: "",
     state: "",

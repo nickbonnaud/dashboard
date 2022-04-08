@@ -29,7 +29,7 @@ class BankScreenState extends Equatable {
     isStateValid &&
     isZipValid;
 
-  BankScreenState({
+  const BankScreenState({
     required this.isFirstNameValid,
     required this.isLastNameValid,
     required this.isRoutingNumberValid,

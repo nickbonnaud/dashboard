@@ -9,8 +9,9 @@ import 'package:dashboard/theme/global_colors.dart';
 class RefundsList extends StatefulWidget {
   final ScrollController _scrollController;
 
-  const RefundsList({required ScrollController scrollController})
-    : _scrollController = scrollController;
+  const RefundsList({required ScrollController scrollController, Key? key})
+    : _scrollController = scrollController,
+      super(key: key);
 
   @override
   State<RefundsList> createState() => _RefundsListState();
@@ -32,8 +33,8 @@ class _RefundsListState extends State<RefundsList> {
   Widget build(BuildContext context) {
     return BlocBuilder<RefundsListBloc, RefundsListState>(
       builder: (context, state) {
-        if (state.errorMessage.length > 0) return _error(error: state.errorMessage);
-        if (state.refunds.length == 0) return state.loading ? _loading() : _noRefundsFound();
+        if (state.errorMessage.isNotEmpty) return _error(error: state.errorMessage);
+        if (state.refunds.isEmpty) return state.loading ? _loading() : _noRefundsFound();
         return _refunds(state: state);
       }
     );
@@ -82,7 +83,7 @@ class _RefundsListState extends State<RefundsList> {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => index >= state.refunds.length
-          ? BottomLoader()
+          ? const BottomLoader()
           : RefundWidget(index: index, refundResource: state.refunds[index]),
         childCount: state.hasReachedEnd
           ? state.refunds.length

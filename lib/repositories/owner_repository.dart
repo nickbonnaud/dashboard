@@ -4,7 +4,7 @@ import 'package:dashboard/providers/owner_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class OwnerRepository extends BaseRepository {
-  late OwnerProvider _ownerProvider;
+  final OwnerProvider _ownerProvider;
 
   OwnerRepository({required OwnerProvider ownerProvider})
     : _ownerProvider = ownerProvider;
@@ -25,7 +25,7 @@ class OwnerRepository extends BaseRepository {
     required String state,
     required String zip,
   }) async {
-    final Map<String, dynamic> body = {
+    Map<String, dynamic> body = {
       'first_name': firstName,
       'last_name': lastName,
       'title': title,
@@ -42,7 +42,7 @@ class OwnerRepository extends BaseRepository {
       'zip': zip
     };
     
-    final Map<String, dynamic> json = await this.send(request: _ownerProvider.store(body: body));
+    Map<String, dynamic> json = await send(request: _ownerProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -63,7 +63,7 @@ class OwnerRepository extends BaseRepository {
     required String state,
     required String zip,
   }) async {
-    final Map<String, dynamic> body = {
+    Map<String, dynamic> body = {
       'first_name': firstName,
       'last_name': lastName,
       'title': title,
@@ -80,12 +80,12 @@ class OwnerRepository extends BaseRepository {
       'zip': zip
     };
     
-    final Map<String, dynamic> json = await this.send(request: _ownerProvider.update(identifier: identifier, body: body));
+    Map<String, dynamic> json = await send(request: _ownerProvider.update(identifier: identifier, body: body));
     return deserialize(json: json);
   }
 
   Future<bool> remove({required String identifier}) async {
-    await this.send(request: _ownerProvider.remove(identifier: identifier));
+    await send(request: _ownerProvider.remove(identifier: identifier));
     return true;
   }
 

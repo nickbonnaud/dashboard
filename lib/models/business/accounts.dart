@@ -13,7 +13,7 @@ class Accounts extends Equatable {
   final BankAccount bankAccount;
   final Status accountStatus;
 
-  Accounts({
+  const Accounts({
     required this.businessAccount,
     required this.ownerAccounts,
     required this.bankAccount,
@@ -38,7 +38,7 @@ class Accounts extends Equatable {
 
   factory Accounts.empty() => Accounts(
     businessAccount: BusinessAccount.empty(),
-    ownerAccounts: [],
+    ownerAccounts: const [],
     bankAccount: BankAccount.empty(),
     accountStatus: Status.unknown()
   );

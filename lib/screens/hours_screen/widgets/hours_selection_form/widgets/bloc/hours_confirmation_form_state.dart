@@ -13,7 +13,7 @@ class HoursConfirmationFormState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  HoursConfirmationFormState({
+  const HoursConfirmationFormState({
     required this.sunday,
     required this.monday,
     required this.tuesday,
@@ -28,13 +28,13 @@ class HoursConfirmationFormState extends Equatable {
   });
 
   List<List<Hour>> get days => [
-    this.sunday,
-    this.monday,
-    this.tuesday,
-    this.wednesday,
-    this.thursday,
-    this.friday,
-    this.saturday
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday
   ];
 
   factory HoursConfirmationFormState.initial({

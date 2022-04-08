@@ -12,9 +12,14 @@ class TipsScreen extends StatefulWidget {
   final TipsRepository _tipsRepository;
   final TransactionRepository _transactionRepository;
   
-  const TipsScreen({required TipsRepository tipsRepository, required TransactionRepository transactionRepository})
+  const TipsScreen({
+    required TipsRepository tipsRepository,
+    required TransactionRepository transactionRepository,
+    Key? key
+  })
     : _tipsRepository = tipsRepository,
-      _transactionRepository = transactionRepository;
+      _transactionRepository = transactionRepository,
+      super(key: key);
   
   @override
   State<TipsScreen> createState() => _TipsScreenState();

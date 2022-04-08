@@ -6,22 +6,22 @@ import 'package:flutter/material.dart';
 import 'base_repository.dart';
 
 class CustomerRepository extends BaseRepository{
-  late CustomerProvider _customerProvider;
+  final CustomerProvider _customerProvider;
 
   CustomerRepository({required CustomerProvider customerProvider})
     : _customerProvider = customerProvider;
   
   Future<PaginateDataHolder> fetchAll({required bool searchHistoric, required bool withTransactions, DateTimeRange? dateRange}) async {
-    final String searchHistoricQuery = searchHistoric ? 'status=historic' : 'status=active';
-    final String withTransactionsQuery = 'withTransaction=$withTransactions';
-    final String query = this.formatQuery(baseQuery: "$searchHistoricQuery&$withTransactionsQuery", dateRange: dateRange);
+    String searchHistoricQuery = searchHistoric ? 'status=historic' : 'status=active';
+    String withTransactionsQuery = 'withTransaction=$withTransactions';
+    String query = formatQuery(baseQuery: "$searchHistoricQuery&$withTransactionsQuery", dateRange: dateRange);
 
-    final PaginateDataHolder holder = await this.sendPaginated(request: _customerProvider.fetchPaginated(query: query));
+    PaginateDataHolder holder = await sendPaginated(request: _customerProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> paginate({required String url}) async {
-    final PaginateDataHolder holder = await this.sendPaginated(request: _customerProvider.fetchPaginated(paginateUrl: url));
+    PaginateDataHolder holder = await sendPaginated(request: _customerProvider.fetchPaginated(paginateUrl: url));
     return deserialize(holder: holder);
   }
 

@@ -49,7 +49,7 @@ void main() {
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "PlaceQueryChanged event changes state: [isSubmitting: true], [isSubmitting: false, predictions: response.predictions]",
       build: () => profileScreenBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).thenAnswer((_) async {
           _predictions = [Prediction(), Prediction()];
@@ -58,7 +58,7 @@ void main() {
             predictions: _predictions,
           );
         });
-        bloc.add(PlaceQueryChanged(query: "query"));
+        bloc.add(const PlaceQueryChanged(query: "query"));
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, predictions: _predictions)]
     );
@@ -66,7 +66,7 @@ void main() {
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "PlaceQueryChanged event calls _places.autocomplete()",
       build: () => profileScreenBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).thenAnswer((_) async {
           _predictions = [Prediction(), Prediction()];
@@ -75,7 +75,7 @@ void main() {
             predictions: _predictions
           );
         });
-        bloc.add(PlaceQueryChanged(query: "query"));
+        bloc.add(const PlaceQueryChanged(query: "query"));
       },
       verify: (_) {
         verify(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).called(1);
@@ -85,7 +85,7 @@ void main() {
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "PlaceQueryChanged event on error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: response.errorMessage]",
       build: () => profileScreenBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).thenAnswer((_) async {
           _predictions = [Prediction(), Prediction()];
@@ -95,7 +95,7 @@ void main() {
             errorMessage: "error"
           );
         });
-        bloc.add(PlaceQueryChanged(query: "query"));
+        bloc.add(const PlaceQueryChanged(query: "query"));
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error")]
     );
@@ -143,32 +143,32 @@ void main() {
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "NameChanged event changes state: [isNameValid: false]", 
       build: () => profileScreenBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(NameChanged(name: "a")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const NameChanged(name: "a")),
       expect: () => [_baseState.update(isNameValid: false)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "WebsiteChanged event changes state: [isWebsiteValid: false]", 
       build: () => profileScreenBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(WebsiteChanged(website: "not&!wbe/")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const WebsiteChanged(website: "not&!wbe/")),
       expect: () => [_baseState.update(isWebsiteValid: false)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "PhoneChanged event changes state: [isPhoneValid: false]", 
       build: () => profileScreenBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(PhoneChanged(phone: "wrong&222-s")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const PhoneChanged(phone: "wrong&222-s")),
       expect: () => [_baseState.update(isPhoneValid: false)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
       "DescriptionChanged event changes state: [isDescriptionValid: false]", 
       build: () => profileScreenBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(DescriptionChanged(description: "not long enough")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const DescriptionChanged(description: "not long enough")),
       expect: () => [_baseState.update(isDescriptionValid: false)]
     );
 
@@ -179,7 +179,7 @@ void main() {
         when(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Submitted(name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Submitted(name: "name", website: "website", description: "description", phone: "phone"));
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -191,7 +191,7 @@ void main() {
         when(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Submitted(name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Submitted(name: "name", website: "website", description: "description", phone: "phone"));
       },
       verify: (_) {
         verify(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone"))).called(1);
@@ -212,7 +212,7 @@ void main() {
         when(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Submitted(name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Submitted(name: "name", website: "website", description: "description", phone: "phone"));
       },
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<BusinessEvent>()))).called(4);
@@ -226,7 +226,7 @@ void main() {
         when(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Submitted(name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Submitted(name: "name", website: "website", description: "description", phone: "phone"));
       },
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<BusinessEvent>()))).called(1);
@@ -238,8 +238,8 @@ void main() {
       build: () => profileScreenBloc,
       act: (bloc) {
         when(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(Submitted(name: "name", website: "website", description: "description", phone: "phone"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const Submitted(name: "name", website: "website", description: "description", phone: "phone"));
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
@@ -251,7 +251,7 @@ void main() {
         when(() => profileRepository.update(identifier: any(named: "identifier"), name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -263,7 +263,7 @@ void main() {
         when(() => profileRepository.update(identifier: any(named: "identifier"), name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
       },
       verify: (_) {
         verify(() => profileRepository.update(identifier: any(named: "identifier"), name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone"))).called(1);
@@ -284,7 +284,7 @@ void main() {
         when(() => profileRepository.update(identifier: any(named: "identifier"), name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
       },
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<BusinessEvent>()))).called(4);
@@ -298,7 +298,7 @@ void main() {
         when(() => profileRepository.update(identifier: any(named: "identifier"), name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
           .thenAnswer((_) async => MockProfile());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
       },
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<BusinessEvent>()))).called(1);
@@ -310,9 +310,9 @@ void main() {
       build: () => profileScreenBloc,
       act: (bloc) {
         when(() => profileRepository.update(identifier: any(named: "identifier"), name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
+        bloc.add(const Updated(id: "id", name: "name", website: "website", description: "description", phone: "phone"));
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );

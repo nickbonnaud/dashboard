@@ -14,8 +14,9 @@ class PhaseOne extends StatelessWidget {
   final BusinessRepository _businessRepository = BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository());
   final GeoRepository _geoRepository = GeoRepository();
 
-  PhaseOne({MaterialApp? testApp})
-    : _testApp = testApp;
+  PhaseOne({MaterialApp? testApp, Key? key})
+    : _testApp = testApp,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

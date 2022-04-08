@@ -13,10 +13,12 @@ class UnassignedTransactionsScreen extends StatefulWidget {
 
   const UnassignedTransactionsScreen({
     required UnassignedTransactionRepository unassignedTransactionRepository,
-    required PosAccount posAccount
+    required PosAccount posAccount,
+    Key? key
   })
     : _unassignedTransactionRepository = unassignedTransactionRepository,
-      _posAccount = posAccount;
+      _posAccount = posAccount,
+      super(key: key);
 
   @override
   State<UnassignedTransactionsScreen> createState() => _UnassignedTransactionsScreenState();

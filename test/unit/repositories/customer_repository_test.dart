@@ -60,7 +60,7 @@ void main() {
     });
 
     test("Customer Repository throws error on Fetch All customers fail", () async {
-      when(() => _mockCustomerProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockCustomerProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       expect(
         _customerRepositoryWithMock.fetchAll(searchHistoric: true, withTransactions: false),
         throwsA(isA<ApiException>())
@@ -68,15 +68,15 @@ void main() {
     });
 
     test("Customer Repository can Paginate", () async {
-      final String url = "http://novapay.ai/api/business/customers?page=2";
+      String url = "http://novapay.ai/api/business/customers?page=2";
       var customersPaginateData = await _customerRepository.paginate(url: url);
       expect(customersPaginateData, isA<PaginateDataHolder>());
       expect(customersPaginateData.data is List<CustomerResource>, true);
     });
 
     test("Customer Repository throws error on Paginate fail", () async {
-      final String url = "http://novapay.ai/api/business/customers?page=2";
-      when(() => _mockCustomerProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String url = "http://novapay.ai/api/business/customers?page=2";
+      when(() => _mockCustomerProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       expect(
         _customerRepositoryWithMock.paginate(url: url),
         throwsA(isA<ApiException>())

@@ -14,7 +14,7 @@ class ResetPasswordScreenBloc extends Bloc<ResetPasswordScreenEvent, ResetPasswo
   final AuthenticationRepository _authenticationRepository;
   final String? _token;
 
-  final Duration _debounceTime = Duration(milliseconds: 300);
+  final Duration _debounceTime = const Duration(milliseconds: 300);
   
   ResetPasswordScreenBloc({required AuthenticationRepository authenticationRepository, required String? token}) 
     : _authenticationRepository = authenticationRepository,

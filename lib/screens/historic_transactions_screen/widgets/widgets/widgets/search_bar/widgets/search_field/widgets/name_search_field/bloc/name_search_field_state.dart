@@ -7,7 +7,7 @@ class NameSearchFieldState extends Equatable {
   final String firstName;
   final String lastName;
 
-  NameSearchFieldState({
+  const NameSearchFieldState({
     required this.isFirstNameValid,
     required this.isLastNameValid,
     required this.firstName,
@@ -15,7 +15,7 @@ class NameSearchFieldState extends Equatable {
   });
 
   factory NameSearchFieldState.initial() {
-    return NameSearchFieldState(
+    return const NameSearchFieldState(
       isFirstNameValid: true,
       isLastNameValid: true,
       firstName: "",

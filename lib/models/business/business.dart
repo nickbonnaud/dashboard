@@ -17,7 +17,7 @@ class Business extends Equatable {
   final Location location;
   final PosAccount posAccount;
 
-  Business({
+  const Business({
     required this.identifier,
     required this.email,
     required this.profile,

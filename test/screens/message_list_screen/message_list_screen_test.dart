@@ -31,13 +31,13 @@ void main() {
       );
 
       when(() => messageRepository.fetchAll())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<Message>.generate(15, (index) => mockDataGenerator.createMessage(index: index)),
           next: "next_url"
       )));
 
       when(() => messageRepository.paginate(url: any(named: "url")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<Message>.generate(15, (index) => mockDataGenerator.createMessage(index: index)),
           next: "next_url"
       )));
@@ -60,7 +60,7 @@ void main() {
 
     testWidgets("MessageListScreenBody shows error message on fetch fail", (tester) async {
       when(() => messageRepository.fetchAll())
-        .thenThrow(ApiException(error: "Error Occurred!"));
+        .thenThrow(const ApiException(error: "Error Occurred!"));
       await screenBuilder.createScreen(tester: tester);
 
       expect(find.text("Error: Error Occurred!"), findsOneWidget);
@@ -69,12 +69,12 @@ void main() {
     testWidgets("MessageListScreenBody shows no messages widget if no messages", (tester) async {
       List<Message> emptyMessages = [];
       when(() => messageRepository.fetchAll())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: emptyMessages,
           next: null
       )));
       await screenBuilder.createScreen(tester: tester);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text("No Messages."), findsOneWidget);
     });
@@ -86,35 +86,35 @@ void main() {
 
     testWidgets("Messages list is scrollable", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("message-0")), findsWidgets);
-      await tester.fling(find.byType(CustomScrollView), Offset(0, -500), 3000);
+      expect(find.byKey(const Key("message-0")), findsWidgets);
+      await tester.fling(find.byType(CustomScrollView), const Offset(0, -500), 3000);
       await tester.pump();
-      expect(find.byKey(Key("message-0")), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      expect(find.byKey(const Key("message-0")), findsNothing);
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Messages list fetches more messages when threshold reached", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       verifyNever(() => messageRepository.paginate(url: any(named: "url")));
-      await tester.fling(find.text("Message Center"), Offset(0, -3000), 3000);
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.fling(find.text("Message Center"), const Offset(0, -3000), 3000);
+      await tester.pump(const Duration(milliseconds: 250));
       verify(() => messageRepository.paginate(url: any(named: "url"))).called(1);
-      await tester.pump(Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 1));
     });
     
     testWidgets("MessageWidget tileColor is white if hasUnread", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(tester.widget<ListTile>(find.byKey(Key("message-tile-0"))).tileColor, Colors.white);
+      expect(tester.widget<ListTile>(find.byKey(const Key("message-tile-0"))).tileColor, Colors.white);
     });
 
     testWidgets("MessageWidget tileColor is grey.shade200 if !hasUnread", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(tester.widget<ListTile>(find.byKey(Key("message-tile-1"))).tileColor, Colors.grey.shade200);
+      expect(tester.widget<ListTile>(find.byKey(const Key("message-tile-1"))).tileColor, Colors.grey.shade200);
     });
 
     testWidgets("Tapping on Message Widget pushes MessageScreen", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.tap(find.byKey(Key("message-0")));
+      await tester.tap(find.byKey(const Key("message-0")));
       await tester.pump();
       verify(() => observer.didPush(any(), any()));
     });

@@ -49,8 +49,8 @@ void main() {
       },
       act: (bloc) => bloc.add(Init()),
       expect: () => [
-        PermissionsState(loading: true, isGeoEnabled: false, hasGeoPermission: false),
-        PermissionsState(loading: false, isGeoEnabled: true, hasGeoPermission: true),
+        const PermissionsState(loading: true, isGeoEnabled: false, hasGeoPermission: false),
+        const PermissionsState(loading: false, isGeoEnabled: true, hasGeoPermission: true),
       ]
     );
   });

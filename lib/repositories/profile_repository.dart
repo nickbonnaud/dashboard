@@ -4,7 +4,7 @@ import 'package:dashboard/providers/profile_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class ProfileRepository extends BaseRepository {
-  late ProfileProvider _profileProvider;
+  final ProfileProvider _profileProvider;
 
   ProfileRepository({required ProfileProvider profileProvider})
     : _profileProvider = profileProvider;
@@ -15,14 +15,14 @@ class ProfileRepository extends BaseRepository {
     required String description,
     required String phone,
   }) async {
-    final Map<String, dynamic> body = {
+    Map<String, dynamic> body = {
       'name': name,
       'website': website,
       'description': description,
       'phone': phone,
     };
     
-    final Map<String, dynamic> json = await this.send(request: _profileProvider.store(body: body));
+    Map<String, dynamic> json = await send(request: _profileProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -33,14 +33,14 @@ class ProfileRepository extends BaseRepository {
     required String phone,
     required String identifier
   }) async {
-    final Map<String, dynamic> body = {
+    Map<String, dynamic> body = {
       'name': name,
       'website': website,
       'description': description,
       'phone': phone,
     };
 
-    final Map<String, dynamic> json = await this.send(request: _profileProvider.update(body: body, identifier: identifier));
+    Map<String, dynamic> json = await send(request: _profileProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 

@@ -10,9 +10,14 @@ class TransactionWidget extends StatelessWidget {
   final int _index;
   final TransactionResource _transactionResource;
 
-  const TransactionWidget({required int index, required TransactionResource transactionResource})
+  const TransactionWidget({
+    required int index,
+    required TransactionResource transactionResource,
+    Key? key
+  })
     : _index = index,
-      _transactionResource = transactionResource;
+      _transactionResource = transactionResource,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

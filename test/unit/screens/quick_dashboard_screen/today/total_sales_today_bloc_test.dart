@@ -55,11 +55,11 @@ void main() {
     blocTest<TotalSalesTodayBloc, TotalSalesTodayState>(
       "FetchTotalSalesToday event on error changes state: [Loading()], [FetchFailed(error: exception.error)]",
       build: () {
-        when(() => transactionRepository.fetchTotalSalesToday()).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchTotalSalesToday()).thenThrow(const ApiException(error: "error"));
         return totalSalesTodayBloc;
       },
       act: (bloc) => bloc.add(FetchTotalSalesToday()),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
   });
 }

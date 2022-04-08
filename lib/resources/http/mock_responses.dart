@@ -110,7 +110,7 @@ class MockResponses {
       'data': {
         'csrf_token': {
           'value': 'fake_token',
-          'expiry': DateTime.now().add(Duration(hours: 2)).toString()
+          'expiry': DateTime.now().add(const Duration(hours: 2)).toString()
         },
         'business': {
           'identifier': 'fake_identifier',
@@ -138,7 +138,7 @@ class MockResponses {
       'data': {
         'csrf_token': {
           'value': 'fake_token',
-          'expiry': DateTime.now().add(Duration(hours: 2)).toString()
+          'expiry': DateTime.now().add(const Duration(hours: 2)).toString()
         },
         'business': {
           'identifier': 'fake_identifier',
@@ -208,7 +208,7 @@ class MockResponses {
       'data': {
         'csrf_token': {
           'value': 'fake_token',
-          'expiry': DateTime.now().add(Duration(hours: 2)).toString()
+          'expiry': DateTime.now().add(const Duration(hours: 2)).toString()
         },
         'business': generateBusiness()
       }
@@ -250,7 +250,7 @@ class MockResponses {
     return {
       'data': {
         'identifier': faker.guid.guid(),
-        'ein': options.data['ein'] ?? null,
+        'ein': options.data['ein'],
         'business_name': options.data['business_name'],
         'address': {
           'address': options.data['address'],
@@ -803,9 +803,7 @@ class MockResponses {
     final bool doPaginate = canPaginate && faker.randomGenerator.boolean();
     numberTransactions = doPaginate 
       ? 25 
-      : numberTransactions == null
-        ? _randomInt(floor: 1, ceiling: 25)
-        : numberTransactions;
+      : numberTransactions ?? _randomInt(floor: 1, ceiling: 25);
     
     final List<Map<String, dynamic>> data = List.generate(
       numberTransactions,
@@ -926,9 +924,7 @@ class MockResponses {
     final bool doPaginate = canPaginate && faker.randomGenerator.boolean();
     numberRefunds = doPaginate 
       ? 25 
-      : numberRefunds == null
-        ? _randomInt(floor: 1, ceiling: 25)
-        : numberRefunds;
+      : numberRefunds ?? _randomInt(floor: 1, ceiling: 25);
 
     final List<Map<String, dynamic>> data = List.generate(
       numberRefunds, 
@@ -992,7 +988,7 @@ class MockResponses {
     final int total = netSales + tax + tip;
     final DateTime billDate = DateTime(now.year, now.month, now.day - index);
     return {
-      'identifier': transactionId == null ? _createIdentifier() : transactionId,
+      'identifier': transactionId ?? _createIdentifier(),
       'tax': tax,
       'tip': tip,
       'net_sales': netSales,
@@ -1013,7 +1009,7 @@ class MockResponses {
     final DateTime refundDate = DateTime(now.year, now.month, now.day - index);
 
     return {
-      'identifier': refundId == null ? _createIdentifier() : refundId,
+      'identifier': refundId ?? _createIdentifier(),
       'total': _randomInt(floor: 100, ceiling: 500),
       'status': faker.randomGenerator.boolean() ? 'refund paid' : 'refund pending',
       'created_at': refundDate.toIso8601String()
@@ -1043,10 +1039,10 @@ class MockResponses {
   
   static Map<String, dynamic> generateCustomer({String? customerId, String? customerFirst, String? customerLast}) {
     return {
-      'identifier': customerId == null ? _createIdentifier() : customerId,
+      'identifier': customerId ?? _createIdentifier(),
       'email': faker.internet.email(),
-      'first_name': customerFirst == null ? faker.person.firstName() : customerFirst,
-      'last_name': customerLast == null ? faker.person.lastName() : customerLast,
+      'first_name': customerFirst ?? faker.person.firstName(),
+      'last_name': customerLast ?? faker.person.lastName(),
       'photo': generatePhoto()
     };
   }
@@ -1063,8 +1059,8 @@ class MockResponses {
     return {
       'identifier': _createIdentifier(),
       'external_id': faker.guid.guid(),
-      'first_name': employeeFirst == null ? faker.person.firstName() : employeeFirst,
-      'last_name': employeeLast == null ? faker.person.lastName() : employeeLast,
+      'first_name': employeeFirst ?? faker.person.firstName(),
+      'last_name': employeeLast ?? faker.person.lastName(),
       'email': faker.randomGenerator.boolean() ? faker.internet.email() : null
     };
   }
@@ -1290,9 +1286,9 @@ class MockResponses {
   }
 
   static Map<String, dynamic> generateCustomerTransaction({int? index}) {
-    Map<String, dynamic> transaction = generateTransaction(index: index == null ? 0 : index);
+    Map<String, dynamic> transaction = generateTransaction(index: index ?? 0);
     final Map<String, dynamic> purchasedItems = { 'purchased_items': _generatePurchasedItems() };
-    final Map<String, dynamic> refunds =  { 'refunds': _generateRefunds(hasRefunds: faker.randomGenerator.boolean(), index: index == null ? 0 : index) };
+    final Map<String, dynamic> refunds =  { 'refunds': _generateRefunds(hasRefunds: faker.randomGenerator.boolean(), index: index ?? 0) };
     transaction.addAll(purchasedItems..addAll(refunds));
     return transaction;
   }

@@ -8,11 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OnboardBody extends StatelessWidget {
+  
+  const OnboardBody({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      key: Key("scrollKey"),
+      key: const Key("scrollKey"),
       child: Padding(
         padding: EdgeInsets.only(left: SizeConfig.getWidth(5), right: SizeConfig.getWidth(5)),
         child: Column(
@@ -187,7 +190,8 @@ class OnboardBody extends StatelessWidget {
       return StepState.complete;
     } else if (currentStep == stepIndex) {
       return StepState.editing;
-    } else return StepState.indexed;
+    }
+    return StepState.indexed;
   }
 
   void _buttonPressed({required BuildContext context, required int currentStep}) {

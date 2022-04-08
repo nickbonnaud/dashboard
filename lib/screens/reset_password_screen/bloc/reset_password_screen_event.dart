@@ -37,7 +37,7 @@ class Submitted extends ResetPasswordScreenEvent {
   final String password;
   final String passwordConfirmation;
 
-  Submitted({required this.password, required this.passwordConfirmation});
+  const Submitted({required this.password, required this.passwordConfirmation});
 
   @override
   List<Object> get props => [password, passwordConfirmation];

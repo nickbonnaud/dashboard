@@ -17,11 +17,13 @@ class SettingsScreen extends StatelessWidget {
   const SettingsScreen({
     required AuthenticationRepository authenticationRepository,
     required BusinessRepository businessRepository,
-    required BusinessBloc businessBloc
+    required BusinessBloc businessBloc,
+    Key? key
   })
     : _authenticationRepository = authenticationRepository,
       _businessRepository = businessRepository,
-      _businessBloc = businessBloc;
+      _businessBloc = businessBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

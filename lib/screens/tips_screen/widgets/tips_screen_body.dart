@@ -24,9 +24,14 @@ class TipsScreenBody extends StatelessWidget {
   final TipsRepository _tipsRepository;
   final TransactionRepository _transactionRepository;
 
-  TipsScreenBody({required TipsRepository tipsRepository, required TransactionRepository transactionRepository})
+  TipsScreenBody({
+    required TipsRepository tipsRepository,
+    required TransactionRepository transactionRepository,
+    Key? key
+  })
     : _tipsRepository = tipsRepository,
-      _transactionRepository = transactionRepository;
+      _transactionRepository = transactionRepository,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -40,13 +45,13 @@ class TipsScreenBody extends StatelessWidget {
   }
 
   Widget _body({required BuildContext context}) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           SizedBox(height: SizeConfig.getHeight(1)),
-          EmployeeTipsHeader(),
+          const EmployeeTipsHeader(),
           SizedBox(height: SizeConfig.getHeight(3)),
           Expanded(
             child: BlocBuilder<TipsScreenCubit, bool>(
@@ -89,7 +94,7 @@ class TipsScreenBody extends StatelessWidget {
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              TotalTips(),
+                              const TotalTips(),
                               _employeeTipFinder(context: context, isListVisible: isListVisible)
                             ],
                           ),
@@ -118,7 +123,7 @@ class TipsScreenBody extends StatelessWidget {
               children: [
                 Text4(text: "All Employee Tips", context: context),
                 SizedBox(height: SizeConfig.getHeight(1)),
-                Expanded(child: EmployeeTipsList()) 
+                const Expanded(child: EmployeeTipsList()) 
               ],
             )
           : Container()
@@ -126,7 +131,7 @@ class TipsScreenBody extends StatelessWidget {
             children: [
               Text4(text: "All Employee Tips", context: context),
               SizedBox(height: SizeConfig.getHeight(1)),
-              Expanded(child: EmployeeTipsList()) 
+              const Expanded(child: EmployeeTipsList()) 
             ],
           )
     );
@@ -136,8 +141,8 @@ class TipsScreenBody extends StatelessWidget {
     return ResponsiveWrapper.of(context).isSmallerThan(TABLET)
       ? isListVisible
         ? Container()
-        : EmployeeTipFinder()
-      : EmployeeTipFinder();
+        : const EmployeeTipFinder()
+      : const EmployeeTipFinder();
   }
 
   Widget _changeDateButton({required BuildContext context}) {
@@ -145,9 +150,9 @@ class TipsScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
-        key: Key("changeDateButtonKey"),
+        key: const Key("changeDateButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
-        child: Icon(Icons.date_range),
+        child: const Icon(Icons.date_range),
         onPressed: () => _showDateRangePicker(context: context),
       )
     );
@@ -160,12 +165,12 @@ class TipsScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       left: SizeConfig.getHeight(4),
       child: FloatingActionButton(
-        key: Key("toggleSearchButtonKey"),
+        key: const Key("toggleSearchButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
         child: BlocBuilder<TipsScreenCubit, bool>(
           builder: (context, isListVisible) => isListVisible
-            ? Icon(Icons.search)
-            : Icon(Icons.list),
+            ? const Icon(Icons.search)
+            : const Icon(Icons.list),
         ) ,
         onPressed: () => context.read<TipsScreenCubit>().toggle(),
       )
@@ -190,7 +195,7 @@ class TipsScreenBody extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
-        key: Key("dateRangePickerKey"),
+        key: const Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

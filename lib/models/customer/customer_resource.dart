@@ -13,7 +13,7 @@ class CustomerResource extends Equatable {
   final Notification? notification;
   final DateTime enteredAt;
 
-  CustomerResource({
+  const CustomerResource({
     required this.customer, 
     this.transaction, 
     this.notification, 

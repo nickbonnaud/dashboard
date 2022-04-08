@@ -12,6 +12,9 @@ import 'bloc/message_input_bloc.dart';
 
 class MessageInput extends StatefulWidget {
 
+  const MessageInput({Key? key})
+    : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _MessageInputState();
 }
@@ -33,7 +36,7 @@ class _MessageInputState extends State<MessageInput> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: _input(),
     );
   }
@@ -84,10 +87,10 @@ class _MessageInputState extends State<MessageInput> {
 
   Widget _submitButton({required MessageInputState state}) {
     return state.isSubmitting
-      ? Padding(padding: EdgeInsets.only(right: 5), child: CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction))
+      ? Padding(padding: const EdgeInsets.only(right: 5), child: CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction))
       : IconButton(
-          key: Key("submitButtonKey"),
-          icon: Icon(Icons.send), 
+          key: const Key("submitButtonKey"),
+          icon: const Icon(Icons.send), 
           iconSize: FontSizeAdapter.setSize(size: 4, context: context),
           onPressed: state.isInputValid && _controller.text.isNotEmpty
             ? () => _submitButtonPressed()

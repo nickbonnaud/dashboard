@@ -77,7 +77,7 @@ void main() {
         _lastName = "last";
         _tips = List.generate(10, (index) => MockEmployeeTip());
         when(() => tipsRepository.fetchByCustomerName(firstName: _firstName, lastName: _lastName))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         return employeeTipFinderBloc;
       },
       act: (bloc) => bloc.add(Fetch(firstName: _firstName, lastName: _lastName)),
@@ -137,7 +137,7 @@ void main() {
       build: () {
         _tips = List.generate(10, (index) => MockEmployeeTip());
         when(() => tipsRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName"), dateRange: any(named: "dateRange")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         return employeeTipFinderBloc;
       },
       seed: () {

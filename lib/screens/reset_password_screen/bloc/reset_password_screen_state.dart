@@ -11,7 +11,7 @@ class ResetPasswordScreenState extends Equatable {
 
   bool get isFormValid => isPasswordValid && isPasswordConfirmationValid;
 
-  ResetPasswordScreenState({
+  const ResetPasswordScreenState({
     required this.isPasswordValid,
     required this.isPasswordConfirmationValid,
     required this.isSubmitting,
@@ -21,7 +21,7 @@ class ResetPasswordScreenState extends Equatable {
   });
 
   factory ResetPasswordScreenState.initial() {
-    return ResetPasswordScreenState(
+    return const ResetPasswordScreenState(
       isPasswordValid: true,
       isPasswordConfirmationValid: true,
       isSubmitting: false,

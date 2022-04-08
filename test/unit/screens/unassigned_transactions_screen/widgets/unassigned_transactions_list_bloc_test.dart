@@ -69,7 +69,7 @@ void main() {
       build: () => unassignedTransactionsListBloc,
       act: (bloc) {
         _transactions = List.generate(10, (index) => MockUnassignedTransaction());
-        when(() => unassignedTransactionRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => unassignedTransactionRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         bloc.add(Init());
       },
       expect: () => [_baseState.update(loading: true), _baseState.update(loading: false, errorMessage: "error")]
@@ -107,7 +107,7 @@ void main() {
       seed: () => _baseState.update(transactions: List.generate(4, (index) => MockUnassignedTransaction()), nextUrl: "next-url", hasReachedEnd: false, errorMessage: "error"),
       act: (bloc) {
         _transactions = List.generate(10, (index) => MockUnassignedTransaction());
-        when(() => unassignedTransactionRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => unassignedTransactionRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         bloc.add(FetchAll());
       },
       expect: () => [_baseState.update(loading: true, transactions: [], nextUrl: null, hasReachedEnd: true, errorMessage: ""), _baseState.update(loading: false, transactions: [], nextUrl: null, hasReachedEnd: true, errorMessage: "error")]
@@ -160,7 +160,7 @@ void main() {
       },
       act: (bloc) {
         _paginateTransactions = List.generate(10, (index) => MockUnassignedTransaction());
-        when(() => unassignedTransactionRepository.paginate(url: any(named: "url"))).thenThrow(ApiException(error: "error"));
+        when(() => unassignedTransactionRepository.paginate(url: any(named: "url"))).thenThrow(const ApiException(error: "error"));
         bloc.add(FetchMore());
       },
       expect: () {
@@ -256,7 +256,7 @@ void main() {
       act: (bloc) {
         _transactions = List.generate(10, (index) => MockUnassignedTransaction());
         _dateRange = DateTimeRange(start: DateTime.now(), end: DateTime.now());
-        when(() => unassignedTransactionRepository.fetchAll(dateRange: _dateRange)).thenThrow(ApiException(error: "error"));
+        when(() => unassignedTransactionRepository.fetchAll(dateRange: _dateRange)).thenThrow(const ApiException(error: "error"));
         bloc.add(DateRangeChanged(dateRange: _dateRange));
       },
       expect: () {

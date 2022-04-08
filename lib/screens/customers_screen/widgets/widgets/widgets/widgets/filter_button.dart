@@ -5,15 +5,17 @@ import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilterButton extends StatelessWidget {
+  final List<String> _options = const ["historic", "withTransaction"];
 
-  final List<String> _options = ["historic", "withTransaction"];
+  const FilterButton({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FilterButtonBloc, FilterButtonState>(
       builder: (context, state) {
         return PopupMenuButton(
-          key: Key("filterButtonKey"),
+          key: const Key("filterButtonKey"),
           icon: Icon(
             Icons.filter_list,
             color: Theme.of(context).colorScheme.callToAction,

@@ -14,8 +14,9 @@ import 'bloc/id_search_field_bloc.dart';
 class IdSearchField extends StatefulWidget {
   final FilterType _currentFilter;
 
-  const IdSearchField({required FilterType currentFilter})
-    : _currentFilter = currentFilter;
+  const IdSearchField({required FilterType currentFilter, Key? key})
+    : _currentFilter = currentFilter,
+      super(key: key);
 
   @override
   State<IdSearchField> createState() => _IdSearchFieldState();
@@ -40,7 +41,7 @@ class _IdSearchFieldState extends State<IdSearchField> {
       child: BlocBuilder<IdSearchFieldBloc, IdSearchFieldState>(
         builder: (context, state) {
           return CupertinoTextField(
-            key: Key("idSearchFieldKey"),
+            key: const Key("idSearchFieldKey"),
             decoration: CupertinoBoxDecoration.validator(isValid: state.isFieldValid || _controller.text.isEmpty),
             cursorColor: Colors.black,
             textCapitalization: TextCapitalization.none,

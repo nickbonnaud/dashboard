@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:dashboard/models/token.dart';
 import 'package:dashboard/providers/storage_provider.dart';
 
-const String TOKEN_KEY = 'token';
-
 class TokenRepository {
+  static const String tokenKey = 'token';
+
   final StorageProvider _tokenProvider = StorageProvider();
 
   void saveToken({required Token token}) {
-    _tokenProvider.write(key: TOKEN_KEY, value: jsonEncode(token.toJson()));
+    _tokenProvider.write(key: tokenKey, value: jsonEncode(token.toJson()));
   }
 
   void deleteToken() {
-    _tokenProvider.delete(key: TOKEN_KEY);
+    _tokenProvider.delete(key: tokenKey);
   }
 
   Token? fetchToken() {
-    String? jsonToken = _tokenProvider.read(key: TOKEN_KEY);
+    String? jsonToken = _tokenProvider.read(key: tokenKey);
     if (jsonToken == null) return null;
     return Token.fromJson(json: jsonDecode(jsonToken));
   }

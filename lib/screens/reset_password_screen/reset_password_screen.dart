@@ -11,9 +11,14 @@ class ResetPasswordScreen extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
   final String? _token;
 
-  ResetPasswordScreen({required AuthenticationRepository authenticationRepository, @required String? token})
+  const ResetPasswordScreen({
+    required AuthenticationRepository authenticationRepository,
+    @required String? token,
+    Key? key
+  })
     : _authenticationRepository = authenticationRepository,
-      _token = token;
+      _token = token,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -23,7 +28,7 @@ class ResetPasswordScreen extends StatelessWidget {
         child: Card(
           elevation: 2.0,
           child: Container(
-            padding: EdgeInsets.all(42),
+            padding: const EdgeInsets.all(42),
             width: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
               ? MediaQuery.of(context).size.width
               : MediaQuery.of(context).size.width / 2.5,

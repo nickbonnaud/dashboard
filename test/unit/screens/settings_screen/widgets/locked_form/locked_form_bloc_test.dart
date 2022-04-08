@@ -36,8 +36,8 @@ void main() {
     blocTest<LockedFormBloc, LockedFormState>(
       "PasswordChanged event changes state: [isPasswordValid: false]",
       build: () => lockedFormBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(PasswordChanged(password: "p")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const PasswordChanged(password: "p")),
       expect: () => [_baseState.update(isPasswordValid: false)]
     );
 
@@ -48,7 +48,7 @@ void main() {
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(password: "password")),
+      act: (bloc) => bloc.add(const Submitted(password: "password")),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -59,7 +59,7 @@ void main() {
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(password: "password")),
+      act: (bloc) => bloc.add(const Submitted(password: "password")),
       verify: (_) {
         verify(() => authenticationRepository.verifyPassword(password: any(named: "password"))).called(1);
       }
@@ -72,7 +72,7 @@ void main() {
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(password: "password")),
+      act: (bloc) => bloc.add(const Submitted(password: "password")),
       verify: (_) {
         verify(() => settingsScreenCubit.unlock()).called(1);
       }
@@ -81,11 +81,11 @@ void main() {
     blocTest<LockedFormBloc, LockedFormState>(
       "Submitted event on error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]",
       build: () {
-        when(() => authenticationRepository.verifyPassword(password: any(named: "password"))).thenThrow(ApiException(error: "error"));
+        when(() => authenticationRepository.verifyPassword(password: any(named: "password"))).thenThrow(const ApiException(error: "error"));
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(password: "password")),
+      act: (bloc) => bloc.add(const Submitted(password: "password")),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 

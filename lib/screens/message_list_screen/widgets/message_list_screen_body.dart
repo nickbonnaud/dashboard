@@ -13,8 +13,9 @@ import '../bloc/message_list_screen_bloc.dart';
 class MessageListScreenBody extends StatefulWidget {
   final MessageRepository _messageRepository;
 
-  const MessageListScreenBody({required MessageRepository messageRepository})
-    : _messageRepository = messageRepository;
+  const MessageListScreenBody({required MessageRepository messageRepository, Key? key})
+    : _messageRepository = messageRepository,
+      super(key: key);
 
   @override
   State<MessageListScreenBody> createState() => _MessageListScreenBodyState();
@@ -80,7 +81,7 @@ class _MessageListScreenBodyState extends State<MessageListScreenBody> {
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) => index >= state.messages.length
-            ? BottomLoader()
+            ? const BottomLoader()
             : MessageWidget(
                 index: index,
                 message: state.messages[index],
@@ -108,7 +109,7 @@ class _MessageListScreenBodyState extends State<MessageListScreenBody> {
   }
   
   Widget _loading() {
-    return SliverFillRemaining(
+    return const SliverFillRemaining(
       child: Center(
         child: CircularProgressIndicator(),
       ),

@@ -8,7 +8,7 @@ class IdSearchFieldState extends Equatable {
   const IdSearchFieldState({required this.isFieldValid, required this.currentId});
 
   factory IdSearchFieldState.initial() {
-    return IdSearchFieldState(isFieldValid: true, currentId: "");
+    return const IdSearchFieldState(isFieldValid: true, currentId: "");
   }
 
   IdSearchFieldState update({bool? isFieldValid, String? currentId}) {

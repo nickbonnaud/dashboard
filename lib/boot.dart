@@ -12,8 +12,9 @@ class Boot extends StatelessWidget {
   final MaterialApp? _testApp;
   final AppRouter _router = AppRouter();
 
-  Boot({MaterialApp? testApp})
-    : _testApp = testApp;
+  Boot({MaterialApp? testApp, Key? key})
+    : _testApp = testApp,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -37,10 +38,10 @@ class Boot extends StatelessWidget {
           minWidth: 480,
           maxWidth: 1200,
           breakpoints: [
-            ResponsiveBreakpoint.resize(480, name: MOBILE),
-            ResponsiveBreakpoint.autoScale(800, name: TABLET),
-            ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-            ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+            const ResponsiveBreakpoint.resize(480, name: MOBILE),
+            const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+            const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+            const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
           ]
         );
       },

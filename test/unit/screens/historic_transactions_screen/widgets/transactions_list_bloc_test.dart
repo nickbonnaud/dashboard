@@ -83,7 +83,7 @@ void main() {
       build: () => transactionsListBloc,
       act: (bloc) {
         _transactionsList = _generateTransactions();
-        when(() => transactionRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         bloc.add(Init());
       },
       expect: () => [baseState.update(loading: true), baseState.update(loading: false, errorMessage: "error")]
@@ -128,7 +128,7 @@ void main() {
       act: (bloc) {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchAll(dateRange: baseState.currentDateRange))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(FetchAll());
       },
       expect: () {
@@ -189,7 +189,7 @@ void main() {
       },
       act: (bloc) {
         when(() => transactionRepository.paginate(url: any(named: 'url')))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(FetchMoreTransactions());
       },
       expect: () {
@@ -207,7 +207,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByCode(code: any(named: "code")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByStatus(code: 200));
+        bloc.add(const FetchByStatus(code: 200));
       },
       expect: () {
         TransactionsListState firstState = baseState.reset(currentIdQuery: 200.toString(), currentNameQuery: baseState.currentNameQuery);
@@ -224,7 +224,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByCode(code: any(named: "code")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByStatus(code: 200));
+        bloc.add(const FetchByStatus(code: 200));
       },
       verify: (_) {
         verify(() => transactionRepository.fetchByCode(code: any(named: "code"))).called(1);
@@ -237,8 +237,8 @@ void main() {
       seed: () => baseState.update(transactions: _generateTransactions(numTransactions: 4), nextUrl: null, hasReachedEnd: true, errorMessage: "error"),
       act: (bloc) {
         when(() => transactionRepository.fetchByCode(code: any(named: "code")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByStatus(code: 200));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByStatus(code: 200));
       },
       expect: () {
         TransactionsListState firstState = baseState.reset(currentIdQuery: 200.toString(), currentNameQuery: baseState.currentNameQuery);
@@ -255,7 +255,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByCustomerId(customerId: any(named: "customerId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByCustomerId(customerId: "customerId"));
+        bloc.add(const FetchByCustomerId(customerId: "customerId"));
       },
       expect: () {
         TransactionsListState firstState = baseState.reset(currentIdQuery: "customerId", currentNameQuery: baseState.currentNameQuery);
@@ -272,7 +272,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByCustomerId(customerId: any(named: "customerId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByCustomerId(customerId: "customerId"));
+        bloc.add(const FetchByCustomerId(customerId: "customerId"));
       },
       verify: (_) {
         verify(() => transactionRepository.fetchByCustomerId(customerId: any(named: "customerId"))).called(1);
@@ -285,8 +285,8 @@ void main() {
       seed: () => baseState.update(transactions: _generateTransactions(numTransactions: 4), nextUrl: null, hasReachedEnd: true, errorMessage: "error"),
       act: (bloc) {
         when(() => transactionRepository.fetchByCustomerId(customerId: any(named: "customerId")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByCustomerId(customerId: "customerId"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByCustomerId(customerId: "customerId"));
       },
       expect: () {
         TransactionsListState firstState = baseState.reset(currentIdQuery: "customerId", currentNameQuery: baseState.currentNameQuery);
@@ -303,7 +303,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByTransactionId(transactionId: any(named: "transactionId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByTransactionId(transactionId: "transactionId"));
+        bloc.add(const FetchByTransactionId(transactionId: "transactionId"));
       },
       expect: () {
         TransactionsListState firstState = baseState.reset(currentIdQuery: "transactionId", currentNameQuery: baseState.currentNameQuery);
@@ -320,7 +320,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByTransactionId(transactionId: any(named: "transactionId")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByTransactionId(transactionId: "transactionId"));
+        bloc.add(const FetchByTransactionId(transactionId: "transactionId"));
       },
       verify: (_) {
         verify(() => transactionRepository.fetchByTransactionId(transactionId: any(named: "transactionId"))).called(1);
@@ -333,8 +333,8 @@ void main() {
       seed: () => baseState.update(transactions: _generateTransactions(numTransactions: 4), nextUrl: null, hasReachedEnd: true, errorMessage: "error"),
       act: (bloc) {
         when(() => transactionRepository.fetchByTransactionId(transactionId: any(named: "transactionId")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByTransactionId(transactionId: "transactionId"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByTransactionId(transactionId: "transactionId"));
       },
       expect: () {
         TransactionsListState firstState = baseState.reset(currentIdQuery: "transactionId", currentNameQuery: baseState.currentNameQuery);
@@ -351,10 +351,10 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByCustomerName(firstName: "first", lastName: "last"));
+        bloc.add(const FetchByCustomerName(firstName: "first", lastName: "last"));
       },
       expect: () {
-        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: FullName(first: "first", last: "last"));
+        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: const FullName(first: "first", last: "last"));
         TransactionsListState secondState = firstState.update(loading: false, transactions: _transactionsList, nextUrl: "next", hasReachedEnd: false);
         return [firstState, secondState];
       }
@@ -368,7 +368,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByCustomerName(firstName: "first", lastName: "last"));
+        bloc.add(const FetchByCustomerName(firstName: "first", lastName: "last"));
       },
       verify: (_) {
         verify(() => transactionRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName"))).called(1);
@@ -381,11 +381,11 @@ void main() {
       seed: () => baseState.update(transactions: _generateTransactions(numTransactions: 4), nextUrl: null, hasReachedEnd: true, errorMessage: "error"),
       act: (bloc) {
         when(() => transactionRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByCustomerName(firstName: "first", lastName: "last"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByCustomerName(firstName: "first", lastName: "last"));
       },
       expect: () {
-        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: FullName(first: "first", last: "last"));
+        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: const FullName(first: "first", last: "last"));
         TransactionsListState secondState = firstState.update(loading: false, errorMessage: "error");
         return [firstState, secondState];
       }
@@ -399,10 +399,10 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByEmployeeName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByEmployeeName(firstName: "first", lastName: "last"));
+        bloc.add(const FetchByEmployeeName(firstName: "first", lastName: "last"));
       },
       expect: () {
-        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: FullName(first: "first", last: "last"));
+        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: const FullName(first: "first", last: "last"));
         TransactionsListState secondState = firstState.update(loading: false, transactions: _transactionsList, nextUrl: "next", hasReachedEnd: false);
         return [firstState, secondState];
       }
@@ -416,7 +416,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchByEmployeeName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FetchByEmployeeName(firstName: "first", lastName: "last"));
+        bloc.add(const FetchByEmployeeName(firstName: "first", lastName: "last"));
       },
       verify: (_) {
         verify(() => transactionRepository.fetchByEmployeeName(firstName: any(named: "firstName"), lastName: any(named: "lastName"))).called(1);
@@ -429,11 +429,11 @@ void main() {
       seed: () => baseState.update(transactions: _generateTransactions(numTransactions: 4), nextUrl: null, hasReachedEnd: true, errorMessage: "error"),
       act: (bloc) {
         when(() => transactionRepository.fetchByEmployeeName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(FetchByEmployeeName(firstName: "first", lastName: "last"));
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const FetchByEmployeeName(firstName: "first", lastName: "last"));
       },
       expect: () {
-        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: FullName(first: "first", last: "last"));
+        TransactionsListState firstState = baseState.reset(currentIdQuery: baseState.currentIdQuery, currentNameQuery: const FullName(first: "first", last: "last"));
         TransactionsListState secondState = firstState.update(loading: false, errorMessage: "error");
         return [firstState, secondState];
       }
@@ -464,7 +464,7 @@ void main() {
     blocTest<TransactionsListBloc, TransactionsListState>(
       "FilterChanged event not FilterType.All changes state: [currentFilter: filter]",
       build: () => transactionsListBloc,
-      act: (bloc) => bloc.add(FilterChanged(filter: FilterType.customerId)),
+      act: (bloc) => bloc.add(const FilterChanged(filter: FilterType.customerId)),
       expect: () => [baseState.update(currentFilter: FilterType.customerId)]
     );
 
@@ -479,7 +479,7 @@ void main() {
         _transactionsList = _generateTransactions();
         when(() => transactionRepository.fetchAll(dateRange: baseState.currentDateRange))
           .thenAnswer((_) async => PaginateDataHolder(data: _transactionsList, next: "next"));
-        bloc.add(FilterChanged(filter: FilterType.all));
+        bloc.add(const FilterChanged(filter: FilterType.all));
       },
       expect: () {
         TransactionsListState firstState = baseState.update(currentFilter: FilterType.all, transactions: _previousTransactionsList, nextUrl: null, hasReachedEnd: true, errorMessage: "error");

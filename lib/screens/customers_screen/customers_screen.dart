@@ -10,8 +10,9 @@ import 'widgets/customers_screen_body.dart';
 class CustomersScreen extends StatefulWidget {
   final CustomerRepository _customerRepository;
 
-  const CustomersScreen({required CustomerRepository customerRepository})
-    : _customerRepository = customerRepository;
+  const CustomersScreen({required CustomerRepository customerRepository, Key? key})
+    : _customerRepository = customerRepository,
+      super(key: key);
 
   @override
   State<CustomersScreen> createState() => _CustomersScreenState();

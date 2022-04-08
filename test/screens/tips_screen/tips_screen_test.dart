@@ -3,7 +3,7 @@ import 'package:dashboard/models/paginate_data_holder.dart';
 import 'package:dashboard/repositories/tips_repository.dart';
 import 'package:dashboard/repositories/transaction_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
-import 'package:dashboard/resources/helpers/currency.dart' as appCurrency;
+import 'package:dashboard/resources/helpers/currency.dart' as app_currency;
 import 'package:dashboard/screens/tips_screen/tips_screen.dart';
 import 'package:dashboard/screens/tips_screen/widgets/tips_screen_body.dart';
 import 'package:dashboard/screens/tips_screen/widgets/widgets/employee_tip_finder/employee_tip_finder.dart';
@@ -42,22 +42,22 @@ void main() {
       );
 
       when(() => transactionRepository.fetchTotalTipsToday())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000, min: 100)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000, min: 100)));
 
       when(() => transactionRepository.fetchTotalTipsDateRange(dateRange: any(named: "dateRange")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000, min: 100)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.randomGenerator.integer(10000, min: 100)));
 
       when(() => tipsRepository.fetchAll())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(data: List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip()), next: "next_url")));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(data: List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip()), next: "next_url")));
 
       when(() => tipsRepository.fetchAll(dateRange: any(named: "dateRange")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(data: List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip()), next: "next_url")));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(data: List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip()), next: "next_url")));
 
       when(() => tipsRepository.paginate(url: any(named: "url")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(data: List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip()), next: null)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(data: List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip()), next: null)));
 
       when(() => tipsRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName"), dateRange: any(named: "dateRange")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip())));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => List<EmployeeTip>.generate(15, (_) => mockDataGenerator.createEmployeeTip())));
     });
 
     testWidgets("Tips Screen creates TipsScreenBody", (tester) async {
@@ -72,22 +72,22 @@ void main() {
 
     testWidgets("Tips Screen Body creates TotalTips", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("totalTipsCardKey")), findsOneWidget);
+      expect(find.byKey(const Key("totalTipsCardKey")), findsOneWidget);
     });
 
     testWidgets("Total Tips displays correct amount", (tester) async {
       int totalTips = faker.randomGenerator.integer(10000, min: 100);
       when(() => transactionRepository.fetchTotalTipsToday())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => totalTips));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => totalTips));
       
       await screenBuilder.createScreen(tester: tester);
 
-      expect(find.text(appCurrency.Currency.create(cents: totalTips)), findsOneWidget);
+      expect(find.text(app_currency.Currency.create(cents: totalTips)), findsOneWidget);
     });
 
     testWidgets("Total Tips displays error message on fail", (tester) async {
       when(() => transactionRepository.fetchTotalTipsToday())
-        .thenThrow(ApiException(error: "error"));
+        .thenThrow(const ApiException(error: "error"));
       
       await screenBuilder.createScreen(tester: tester);
 
@@ -100,7 +100,7 @@ void main() {
     });
 
     testWidgets("Tips Screen Body hides EmployeeTipFinder on screen < TABLET", (tester) async {
-      tester.binding.window.physicalSizeTestValue = Size(900, 900);
+      tester.binding.window.physicalSizeTestValue = const Size(900, 900);
       addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
       
       await screenBuilder.createScreen(tester: tester);
@@ -114,16 +114,16 @@ void main() {
     
     testWidgets("Name Field creates first and last name textfields on screen > TABLET", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("firstNameTextFieldKey")), findsOneWidget);
-      expect(find.byKey(Key("lastNameTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("firstNameTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("lastNameTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("First Name Text Field can receive input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       
       String firstName = faker.person.firstName();
-      await tester.enterText(find.byKey(Key("firstNameTextFieldKey")), firstName);
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("firstNameTextFieldKey")), firstName);
+      await tester.pump(const Duration(milliseconds: 1500));
 
       expect(find.text(firstName), findsOneWidget);
     });
@@ -132,8 +132,8 @@ void main() {
       await screenBuilder.createScreen(tester: tester);
       
       String firstName = faker.person.firstName();
-      await tester.enterText(find.byKey(Key("firstNameTextFieldKey")), firstName);
-      await tester.pump(Duration(seconds: 2));
+      await tester.enterText(find.byKey(const Key("firstNameTextFieldKey")), firstName);
+      await tester.pump(const Duration(seconds: 2));
 
       verify(() => tipsRepository.fetchByCustomerName(firstName: firstName)).called(1);
     });
@@ -142,8 +142,8 @@ void main() {
       await screenBuilder.createScreen(tester: tester);
       
       String lastName = faker.person.lastName();
-      await tester.enterText(find.byKey(Key("lastNameTextFieldKey")), lastName);
-      await tester.pump(Duration(seconds: 2));
+      await tester.enterText(find.byKey(const Key("lastNameTextFieldKey")), lastName);
+      await tester.pump(const Duration(seconds: 2));
 
       verify(() => tipsRepository.fetchByCustomerName(lastName: lastName)).called(1);
     });
@@ -152,8 +152,8 @@ void main() {
       await screenBuilder.createScreen(tester: tester);
       
       String lastName = faker.person.lastName();
-      await tester.enterText(find.byKey(Key("lastNameTextFieldKey")), lastName);
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("lastNameTextFieldKey")), lastName);
+      await tester.pump(const Duration(milliseconds: 1500));
 
       expect(find.text(lastName), findsOneWidget);
     });
@@ -165,7 +165,7 @@ void main() {
 
     testWidgets("Tip Finder List is initially empty", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("emptyTipFinderListKey")), findsOneWidget);
+      expect(find.byKey(const Key("emptyTipFinderListKey")), findsOneWidget);
     });
 
     testWidgets("Tip Finder List shows CircularProgressIndicator on name changed", (tester) async {
@@ -174,11 +174,11 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsNothing);
 
       String lastName = faker.person.lastName();
-      await tester.enterText(find.byKey(Key("lastNameTextFieldKey")), lastName);
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("lastNameTextFieldKey")), lastName);
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
@@ -186,41 +186,41 @@ void main() {
     testWidgets("Tip Finder List shows TipsList on success", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       
-      expect(find.byKey(Key("employeeTipsListKey")), findsNothing);
+      expect(find.byKey(const Key("employeeTipsListKey")), findsNothing);
 
       String lastName = faker.person.lastName();
-      await tester.enterText(find.byKey(Key("lastNameTextFieldKey")), lastName);
-      await tester.pump(Duration(seconds: 2));
+      await tester.enterText(find.byKey(const Key("lastNameTextFieldKey")), lastName);
+      await tester.pump(const Duration(seconds: 2));
 
-      expect(find.byKey(Key("employeeTipsListKey")), findsOneWidget);
+      expect(find.byKey(const Key("employeeTipsListKey")), findsOneWidget);
     });
 
     testWidgets("Tip Finder List shows error on fail", (tester) async {
       when(() => tipsRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName"), dateRange: any(named: "dateRange")))
-        .thenThrow(ApiException(error: "Something went very wrong"));
+        .thenThrow(const ApiException(error: "Something went very wrong"));
       
       await screenBuilder.createScreen(tester: tester);
       
       expect(find.text("Error: Something went very wrong"), findsNothing);
 
       String lastName = faker.person.lastName();
-      await tester.enterText(find.byKey(Key("lastNameTextFieldKey")), lastName);
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("lastNameTextFieldKey")), lastName);
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.text("Error: Something went very wrong"), findsOneWidget);
     });
 
     testWidgets("Tip Finder List shows not tips found widget on empty list", (tester) async {
       when(() => tipsRepository.fetchByCustomerName(firstName: any(named: "firstName"), lastName: any(named: "lastName"), dateRange: any(named: "dateRange")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => []));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => []));
       
       await screenBuilder.createScreen(tester: tester);
       
       expect(find.text("No Tips Found!"), findsNothing);
 
       String lastName = faker.person.lastName();
-      await tester.enterText(find.byKey(Key("lastNameTextFieldKey")), lastName);
-      await tester.pump(Duration(seconds: 2));
+      await tester.enterText(find.byKey(const Key("lastNameTextFieldKey")), lastName);
+      await tester.pump(const Duration(seconds: 2));
 
       expect(find.text("No Tips Found!"), findsOneWidget);
     });
@@ -232,12 +232,12 @@ void main() {
 
     testWidgets("Employee Tips List displays tipsList on success", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("tipsListKey")), findsOneWidget);
+      expect(find.byKey(const Key("tipsListKey")), findsOneWidget);
     });
 
     testWidgets("Employee Tips List displays error message on fail", (tester) async {
       when(() => tipsRepository.fetchAll())
-        .thenThrow(ApiException(error: "An Error Occurred!"));
+        .thenThrow(const ApiException(error: "An Error Occurred!"));
       
       await screenBuilder.createScreen(tester: tester);
       expect(find.text("Error: An Error Occurred!"), findsOneWidget);
@@ -246,7 +246,7 @@ void main() {
     testWidgets("Employee Tips List displays no tips found widget on empty list", (tester) async {
       final List<EmployeeTip> tips = [];
       when(() => tipsRepository.fetchAll())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(data: tips, next: null)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(data: tips, next: null)));
       
       await screenBuilder.createScreen(tester: tester);
       expect(find.text("No Tips Found!"), findsOneWidget);
@@ -254,20 +254,20 @@ void main() {
 
     testWidgets("Tips Screen Body creates changeDateButton", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("changeDateButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("changeDateButtonKey")), findsOneWidget);
     });
 
     testWidgets("Tips Screen Body creates toggleSearchButton if screen width <= TABLET", (tester) async {
-      tester.binding.window.physicalSizeTestValue = Size(900, 900);
+      tester.binding.window.physicalSizeTestValue = const Size(900, 900);
       addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
 
       await screenBuilder.createScreen(tester: tester);
 
-      expect(find.byKey(Key("toggleSearchButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("toggleSearchButtonKey")), findsOneWidget);
     });
 
     testWidgets("Screen width <= TABLET shows EmployeeTipsList hides EmployeeTipFinder", (tester) async {
-      tester.binding.window.physicalSizeTestValue = Size(900, 900);
+      tester.binding.window.physicalSizeTestValue = const Size(900, 900);
       addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
       await screenBuilder.createScreen(tester: tester);
 
@@ -276,14 +276,14 @@ void main() {
     });
 
     testWidgets("Tapping toggleSearchButton hides EmployeeTipsList and shows EmployeeTipFinder", (tester) async {
-      tester.binding.window.physicalSizeTestValue = Size(900, 900);
+      tester.binding.window.physicalSizeTestValue = const Size(900, 900);
       addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
       await screenBuilder.createScreen(tester: tester);
 
       expect(find.byType(EmployeeTipsList), findsOneWidget);
       expect(find.byType(EmployeeTipFinder), findsNothing);
 
-      await tester.tap(find.byKey(Key("toggleSearchButtonKey")));
+      await tester.tap(find.byKey(const Key("toggleSearchButtonKey")));
       await tester.pump();
 
       expect(find.byType(EmployeeTipsList), findsNothing);
@@ -291,48 +291,48 @@ void main() {
     });
 
     testWidgets("Employee Tip Finder only shows last name if screen size < MOBILE", (tester) async {
-      tester.binding.window.physicalSizeTestValue = Size(450, 450);
+      tester.binding.window.physicalSizeTestValue = const Size(450, 450);
       addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.tap(find.byKey(Key("toggleSearchButtonKey")));
+      await tester.tap(find.byKey(const Key("toggleSearchButtonKey")));
       await tester.pump();
 
-      expect(find.byKey(Key("firstNameTextFieldKey")), findsNothing);
-      expect(find.byKey(Key("lastNameTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("firstNameTextFieldKey")), findsNothing);
+      expect(find.byKey(const Key("lastNameTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("Tips Screen Body hides toggleSearchButton if screen width > TABLET", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("toggleSearchButtonKey")), findsNothing);
+      expect(find.byKey(const Key("toggleSearchButtonKey")), findsNothing);
     });
 
     testWidgets("Tapping dateRangePickerButton shows dateRangePicker", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
     });
 
     testWidgets("Tapping cancel on dateRangepicker dismisses dateRangePicker", (tester) async {
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.close));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
     });
 
     testWidgets("Tapping cancel on dateRangepicker does not call tipsRepository or transactionRepository", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       verify(() => tipsRepository.fetchAll(dateRange: any(named: "dateRange"))).called(1);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
 
       await tester.tap(find.byIcon(Icons.close));
@@ -345,10 +345,10 @@ void main() {
     testWidgets("Selecting date range dismisses dateRangePicker", (tester) async {
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
 
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.text("1"));
       await tester.pump();
@@ -359,7 +359,7 @@ void main() {
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
     });
 
     testWidgets("Employee Tips Header displays default text with no dateRange", (tester) async {
@@ -369,9 +369,9 @@ void main() {
 
     testWidgets("Selecting dateRange on picker shows dateRangeHeader", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("dateRangeHeaderKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangeHeaderKey")), findsNothing);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
 
       await tester.tap(find.text("1"));
@@ -383,14 +383,14 @@ void main() {
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key("dateRangeHeaderKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangeHeaderKey")), findsOneWidget);
     });
 
     testWidgets("Selecting dateRange on picker calls tipsRepository && transactionRepository", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       verify(() => tipsRepository.fetchAll(dateRange: any(named: "dateRange"))).called(1);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
 
       await tester.tap(find.text("1"));
@@ -409,7 +409,7 @@ void main() {
     testWidgets("Tapping clearDatesButtonKey hides header", (tester) async {
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
 
       await tester.tap(find.text("1"));
@@ -421,19 +421,19 @@ void main() {
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key("dateRangeHeaderKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangeHeaderKey")), findsOneWidget);
       
-      await tester.tap(find.byKey(Key("clearDatesButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("clearDatesButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(find.byKey(Key("dateRangeHeaderKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangeHeaderKey")), findsNothing);
     });
 
     testWidgets("Tapping clearDatesButtonKey calls tipsRepository && transactionRepository", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       verify(() => tipsRepository.fetchAll(dateRange: any(named: "dateRange"))).called(1);
 
-      await tester.tap(find.byKey(Key("changeDateButtonKey")));
+      await tester.tap(find.byKey(const Key("changeDateButtonKey")));
       await tester.pump();
 
       await tester.tap(find.text("1"));
@@ -445,8 +445,8 @@ void main() {
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
       
-      await tester.tap(find.byKey(Key("clearDatesButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("clearDatesButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       verify(() => transactionRepository.fetchTotalTipsToday()).called(1);
       verify(() => tipsRepository.fetchAll()).called(1);

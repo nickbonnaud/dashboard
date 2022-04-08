@@ -8,6 +8,9 @@ import 'widgets/filter_button.dart';
 
 class SearchDisplay extends StatelessWidget {
 
+  const SearchDisplay({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
@@ -21,7 +24,7 @@ class SearchDisplay extends StatelessWidget {
           Expanded(
             child: _header()
           ),
-          FilterButton()
+          const FilterButton()
         ],
       ),
     );

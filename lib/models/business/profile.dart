@@ -13,7 +13,7 @@ class Profile extends Equatable {
   final String? googlePlaceId;
   final Hours hours;
 
-  Profile({
+  const Profile({
     required this.identifier,
     required this.name,
     required this.website,

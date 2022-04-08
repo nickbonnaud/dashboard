@@ -10,12 +10,15 @@ import 'bloc/total_taxes_bloc.dart';
 
 class TotalTaxes extends StatelessWidget {
 
+  const TotalTaxes({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
       child: Container(
-        padding: EdgeInsets.all(22),
+        padding: const EdgeInsets.all(22),
         color: Colors.amber,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,8 +36,8 @@ class TotalTaxes extends StatelessWidget {
             ),
             BlocBuilder<TotalTaxesBloc, TotalTaxesState>(
               builder: (context, state) {
-                if (state is Loading || state is TotalTaxesInitial) return CircularProgressIndicator();
-                if (state is FetchFailed) return FetchFailWidget();
+                if (state is Loading || state is TotalTaxesInitial) return const CircularProgressIndicator();
+                if (state is FetchFailed) return const FetchFailWidget();
                 
                 return Amount(total: (state as TotalTaxesLoaded).totalTaxes);
               }

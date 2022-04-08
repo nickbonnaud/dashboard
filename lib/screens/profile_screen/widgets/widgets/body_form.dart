@@ -16,9 +16,10 @@ class BodyForm extends StatefulWidget {
   final Profile _profile;
   final ProfileScreenBloc _profileScreenBloc;
 
-  BodyForm({required Profile profile, required ProfileScreenBloc profileScreenBloc})
+  const BodyForm({required Profile profile, required ProfileScreenBloc profileScreenBloc, Key? key})
     : _profile = profile,
-      _profileScreenBloc = profileScreenBloc;
+      _profileScreenBloc = profileScreenBloc,
+      super(key: key);
 
   @override
   State<BodyForm> createState() => _BodyFormState();
@@ -137,7 +138,7 @@ class _BodyFormState extends State<BodyForm> {
 
   Widget _nameField({required ProfileScreenState state}) {
     return TextFormField(
-      key: Key("nameFieldKey"),
+      key: const Key("nameFieldKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Official Name (as appears on taxes)',
@@ -164,7 +165,7 @@ class _BodyFormState extends State<BodyForm> {
   
   Widget _websiteTextField({required ProfileScreenState state}) {
     return TextFormField(
-      key: Key("websiteFieldKey"),
+      key: const Key("websiteFieldKey"),
       decoration: InputDecoration(
         prefixText: 'www.',
         prefixStyle: TextStyle(
@@ -197,7 +198,7 @@ class _BodyFormState extends State<BodyForm> {
 
   Widget _phoneTextField({required ProfileScreenState state}) {
     return TextFormField(
-      key: Key("phoneTextFieldKey"),
+      key: const Key("phoneTextFieldKey"),
       decoration: InputDecoration(
         labelText: 'Phone',
         labelStyle: TextStyle(
@@ -225,7 +226,7 @@ class _BodyFormState extends State<BodyForm> {
 
   Widget _descriptionTextField({required ProfileScreenState state}) {
     return TextFormField(
-      key: Key("descriptionTextKey"),
+      key: const Key("descriptionTextKey"),
       textCapitalization: TextCapitalization.sentences,
       maxLines: 2,
       decoration: InputDecoration(
@@ -267,7 +268,7 @@ class _BodyFormState extends State<BodyForm> {
       control: state.errorButtonControl,
       onAnimationComplete: () => _resetForm(),
       child: ElevatedButton(
-        key: Key("submitButtonKey"),
+        key: const Key("submitButtonKey"),
         onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
         child: _buttonChild(state: state),
       )
@@ -294,7 +295,7 @@ class _BodyFormState extends State<BodyForm> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => widget._profileScreenBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => widget._profileScreenBloc.add(Reset()));
   }
 
   bool _buttonEnabled({required ProfileScreenState state}) {
@@ -315,7 +316,7 @@ class _BodyFormState extends State<BodyForm> {
 
   Widget _buttonChild({required ProfileScreenState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: state.isSubmitting
         ? CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction)
         : Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary)

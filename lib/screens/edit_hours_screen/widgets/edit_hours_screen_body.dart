@@ -12,11 +12,12 @@ import 'package:dashboard/theme/global_colors.dart';
 
 
 class EditHoursScreenBody extends StatelessWidget {
-  final List<String> _days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  final List<String> _days = const ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   final Hours _hours;
 
-  EditHoursScreenBody({required Hours hours})
-    : _hours = hours;
+  const EditHoursScreenBody({required Hours hours, Key? key})
+    : _hours = hours,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class EditHoursScreenBody extends StatelessWidget {
         }
       },
       child: SingleChildScrollView(
-        key: Key("scrollKey"),
+        key: const Key("scrollKey"),
         child: Padding(
           padding: EdgeInsets.only(
             left: SizeConfig.getWidth(4),
@@ -194,7 +195,7 @@ class EditHoursScreenBody extends StatelessWidget {
           control: state.errorButtonControl,
           onAnimationComplete: () => _resetForm(context: context),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(context: context, state: state) ? () => _submitButtonPressed(context: context, state: state) : null, 
             child: _buttonChild(context: context, state: state)
           )
@@ -205,9 +206,9 @@ class EditHoursScreenBody extends StatelessWidget {
 
   Widget _buttonChild({required BuildContext context, required EditHoursScreenState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Update', context: context, color: Theme.of(context).colorScheme.onSecondary),
     );
   }
@@ -242,7 +243,7 @@ class EditHoursScreenBody extends StatelessWidget {
   }
 
   void _resetForm({required BuildContext context}) {
-    Future.delayed(Duration(seconds: 1), () => BlocProvider.of<EditHoursScreenBloc>(context).add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => BlocProvider.of<EditHoursScreenBloc>(context).add(Reset()));
   }
 
   void _editHourButtonPressed({required BuildContext context, required int hourIndex, required List<Hour> day, required bool isOpenHour, required int dayIndex}) async {
@@ -308,10 +309,10 @@ class EditHoursScreenBody extends StatelessWidget {
 
   String _listHoursToString({required BuildContext context, required List<Hour> listHours}) {
     String stringHours = listHours.fold("", (String previousValue, hour) {
-      String formattedPrev = previousValue.length > 0 ? "$previousValue || " : previousValue;
+      String formattedPrev = previousValue.isNotEmpty ? "$previousValue || " : previousValue;
       return "$formattedPrev${hour.start.format(context)} - ${hour.end.format(context)}";
     }).trim();
-    return stringHours.length == 0 ? 'closed' : stringHours;
+    return stringHours.isEmpty ? 'closed' : stringHours;
   }
   
   void _showSuccess({required BuildContext context}) {

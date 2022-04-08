@@ -12,7 +12,7 @@ import 'widgets/total_unique_customers_month.dart';
 
 class LastMonth extends StatelessWidget {
     
-  final List<Widget> monthData = [
+  final List<Widget> monthData = const [
     NetSalesMonth(),
     TotalTaxesMonth(),
     TotalTipsMonth(),
@@ -21,6 +21,9 @@ class LastMonth extends StatelessWidget {
     TotalUniqueCustomersMonth(),
     TotalTransactionsMonth()
   ];
+
+  const LastMonth({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -28,15 +31,15 @@ class LastMonth extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: BoldText5(text: 'Last 30 Days', context: context),
           ),
           SizedBox(height: SizeConfig.getHeight(2)),
           ListView.separated(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: monthData.length,
-            separatorBuilder: (context, index) => Divider(),
+            separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) {
               return monthData[index];
             },

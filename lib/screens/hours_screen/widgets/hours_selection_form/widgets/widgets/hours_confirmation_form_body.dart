@@ -12,7 +12,10 @@ import 'package:dashboard/theme/global_colors.dart';
 import '../bloc/hours_confirmation_form_bloc.dart';
 
 class HoursConfirmationFormBody extends StatelessWidget {
-  final List<String> _days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  static const List<String> _days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const HoursConfirmationFormBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -52,7 +55,7 @@ class HoursConfirmationFormBody extends StatelessWidget {
     return BlocBuilder<HoursConfirmationFormBloc, HoursConfirmationFormState>(
       builder: (context, state) {
         return Column(
-          key: Key("hoursList"),
+          key: const Key("hoursList"),
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: List.generate(
             state.days.length, 
@@ -153,7 +156,7 @@ class HoursConfirmationFormBody extends StatelessWidget {
       child: Row(
         children: [
           Expanded(child: _goBackButton(context: context)),
-          SizedBox(width: 20.0),
+          const SizedBox(width: 20.0),
           Expanded(child: _submitButton())
         ],
       )
@@ -162,8 +165,8 @@ class HoursConfirmationFormBody extends StatelessWidget {
 
   Widget _goBackButton({required BuildContext context}) {
     return OutlinedButton(
-      key: Key("goBackButtonKey"),
-      onPressed: () => BlocProvider.of<HoursSelectionFormBloc>(context).add(Finished(isFinished: false)),
+      key: const Key("goBackButtonKey"),
+      onPressed: () => BlocProvider.of<HoursSelectionFormBloc>(context).add(const Finished(isFinished: false)),
       child: Text4(text: "Back", context: context, color: Theme.of(context).colorScheme.callToAction),
     );
   }
@@ -175,7 +178,7 @@ class HoursConfirmationFormBody extends StatelessWidget {
           control: state.errorButtonControl, 
           onAnimationComplete: () => _resetForm(context: context),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(context: context, state: state) : null, 
             child: _buttonChild(context: context, state: state)
           )
@@ -186,9 +189,9 @@ class HoursConfirmationFormBody extends StatelessWidget {
 
   Widget _buttonChild({required BuildContext context, required HoursConfirmationFormState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary),
     );
   }
@@ -221,7 +224,7 @@ class HoursConfirmationFormBody extends StatelessWidget {
       confirmText: "Change",
       helpText: "Edit Operating Hour",
       builder: (context, child) {
-        return Theme(key: Key("timePickerKey"), data: ThemeData.light(), child: child!);
+        return Theme(key: const Key("timePickerKey"), data: ThemeData.light(), child: child!);
       }
     ).then((newTime) {
       List<Hour> updatedHours = day.where(
@@ -251,15 +254,15 @@ class HoursConfirmationFormBody extends StatelessWidget {
   }
 
   void _resetForm({required BuildContext context}) {
-    Future.delayed(Duration(seconds: 1), () =>  BlocProvider.of<HoursConfirmationFormBloc>(context).add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () =>  BlocProvider.of<HoursConfirmationFormBloc>(context).add(Reset()));
   }
 
   String _listHoursToString({required BuildContext context, required List<Hour> listHours}) {
     String stringHours = listHours.fold("", (String previousValue, hour) {
-      String formattedPrev = previousValue.length > 0 ? "$previousValue || " : previousValue;
+      String formattedPrev = previousValue.isNotEmpty ? "$previousValue || " : previousValue;
       return "$formattedPrev${hour.start.format(context)} - ${hour.end.format(context)}";
     }).trim();
-    return stringHours.length == 0 ? 'closed' : stringHours;
+    return stringHours.isEmpty ? 'closed' : stringHours;
   }
 
   void _showSuccess({required BuildContext context}) {    

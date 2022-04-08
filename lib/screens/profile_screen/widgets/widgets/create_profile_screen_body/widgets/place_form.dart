@@ -10,8 +10,9 @@ import 'package:dashboard/theme/global_colors.dart';
 class PlaceForm extends StatefulWidget {
   final ProfileScreenBloc _profileFormBloc;
 
-  const PlaceForm({required ProfileScreenBloc profileScreenBloc})
-    : _profileFormBloc = profileScreenBloc;
+  const PlaceForm({required ProfileScreenBloc profileScreenBloc, Key? key})
+    : _profileFormBloc = profileScreenBloc,
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PlaceFormState();
@@ -32,7 +33,7 @@ class _PlaceFormState extends State<PlaceForm> {
     return Column(
       children: [
         TextFormField(
-          key: Key("placeNameFieldKey"),
+          key: const Key("placeNameFieldKey"),
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
             labelText: 'Business Name',
@@ -82,9 +83,9 @@ class _PlaceFormState extends State<PlaceForm> {
   }
   
   Widget _predictions({required ProfileScreenState state}) {
-    if (state.predictions.length > 0) {
+    if (state.predictions.isNotEmpty) {
       return Column(
-        key: Key("predictionsListKey"),
+        key: const Key("predictionsListKey"),
         children: [
           SizedBox(height: SizeConfig.getHeight(5)),
           BoldText5(text: 'Please select your business.', context: context),
@@ -92,7 +93,7 @@ class _PlaceFormState extends State<PlaceForm> {
           ListBody(
             children: state.predictions.map((prediction) => prediction.description != null
               ? ListTile(
-                  leading: Icon(Icons.location_on),
+                  leading: const Icon(Icons.location_on),
                   title: Text(prediction.description!),
                   onTap: () => _onPredictionSelected(prediction: prediction),
                   hoverColor: Theme.of(context).colorScheme.callToActionDisabled,

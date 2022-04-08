@@ -12,8 +12,9 @@ class PhaseTwo extends StatelessWidget {
   final MaterialApp? _testApp;
   final AuthenticationRepository _authenticationRepository = AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider());
 
-  PhaseTwo({MaterialApp? testApp})
-    : _testApp = testApp;
+  PhaseTwo({MaterialApp? testApp, Key? key})
+    : _testApp = testApp,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

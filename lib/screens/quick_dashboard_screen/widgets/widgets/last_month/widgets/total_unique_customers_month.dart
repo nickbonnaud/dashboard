@@ -6,10 +6,13 @@ import 'package:dashboard/theme/global_colors.dart';
 
 class TotalUniqueCustomersMonth extends StatelessWidget {
 
+  const TotalUniqueCustomersMonth({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('Unique Customers'),
+      title: const Text('Unique Customers'),
       trailing: BlocBuilder<TotalUniqueCustomersMonthBloc, TotalUniqueCustomersMonthState>(
         builder: (context, state) {
           if (state is TotalUniqueCustomersInitial || state is Loading) return CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction);

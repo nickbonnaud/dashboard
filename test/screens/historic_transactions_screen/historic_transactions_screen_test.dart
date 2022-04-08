@@ -38,37 +38,37 @@ void main() {
       );
 
       when(() => transactionRepository.fetchAll())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<TransactionResource>.generate(15, (index) => mockDataGenerator.createTransactionResource()),
           next: "next_url"
       )));
 
       when(() => transactionRepository.fetchAll(dateRange: any(named: "dateRange")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<TransactionResource>.generate(15, (index) => mockDataGenerator.createTransactionResource()),
           next: "next_url"
       )));
 
       when(() => transactionRepository.fetchByTransactionId(transactionId: any(named: "transactionId")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<TransactionResource>.generate(15, (index) => mockDataGenerator.createTransactionResource()),
           next: "next_url"
       )));
 
       when(() => transactionRepository.fetchByEmployeeName(firstName: any(named: "firstName"), lastName: any(named: "lastName")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<TransactionResource>.generate(15, (index) => mockDataGenerator.createTransactionResource()),
           next: "next_url"
       )));
 
       when(() => transactionRepository.fetchByCode(code: any(named: "code")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<TransactionResource>.generate(15, (index) => mockDataGenerator.createTransactionResource()),
           next: "next_url"
       )));
 
       when(() => transactionRepository.paginate(url: any(named: "url")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<TransactionResource>.generate(15, (index) => mockDataGenerator.createTransactionResource()),
           next: "next_url"
       )));
@@ -113,29 +113,29 @@ void main() {
 
     testWidgets("Tapping dateRangePicker button shows DateRangePicker", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
       await tester.tap(find.byIcon(Icons.date_range));
       await tester.pump();
 
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
     });
 
     testWidgets("Tapping cancel on DateRangePicker dismisses DateRangePicker", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       await tester.tap(find.byIcon(Icons.date_range));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.close));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
     });
 
     testWidgets("Selecting dates on DateRangePicker hides DateRangePicker", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       await tester.tap(find.byIcon(Icons.date_range));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.text("1"));
       await tester.pump();
@@ -143,12 +143,12 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
     });
 
     testWidgets("Selecting dates on DateRangePicker shows SearchDisplay date display", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("dateDisplayKey")), findsNothing);
+      expect(find.byKey(const Key("dateDisplayKey")), findsNothing);
       await tester.tap(find.byIcon(Icons.date_range));
       await tester.pump();
 
@@ -158,7 +158,7 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("dateDisplayKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateDisplayKey")), findsOneWidget);
     });
 
     testWidgets("Selecting dates on DateRangePicker redos search", (tester) async {
@@ -172,10 +172,10 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.text("Set"));
-      await tester.pump(Duration(milliseconds: 400));
+      await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(TransactionWidget), findsNothing);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(TransactionWidget), findsWidgets);
     });
 
@@ -190,12 +190,12 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.text("Set"));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.clear));
-      await tester.pump(Duration(milliseconds: 400));
+      await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(TransactionWidget), findsNothing);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(TransactionWidget), findsWidgets);
     });
 
@@ -212,13 +212,13 @@ void main() {
 
     testWidgets("Selecting new ID Filter displays Id Search Field", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("idSearchFieldKey")), findsNothing);
+      expect(find.byKey(const Key("idSearchFieldKey")), findsNothing);
       await tester.tap(find.byIcon(Icons.filter_list));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(Key(FilterType.transactionId.toString())));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("idSearchFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("idSearchFieldKey")), findsOneWidget);
     });
 
     testWidgets("Entering correct identifier in ID Search field redos search", (tester) async {
@@ -228,12 +228,12 @@ void main() {
 
       await tester.tap(find.byKey(Key(FilterType.transactionId.toString())));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(Key("idSearchFieldKey")), "5b58ccc1-32d2-45bf-8b7e-204a3a651d84");
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("idSearchFieldKey")), "5b58ccc1-32d2-45bf-8b7e-204a3a651d84");
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       expect(find.byType(TransactionWidget), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.byType(TransactionWidget), findsWidgets);
     });
 
@@ -244,8 +244,8 @@ void main() {
 
       await tester.tap(find.byKey(Key(FilterType.transactionId.toString())));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(Key("idSearchFieldKey")), "5b5_ccc1-32d-8b7e-204!a651d84");
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("idSearchFieldKey")), "5b5_ccc1-32d-8b7e-204!a651d84");
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.byType(TransactionWidget), findsWidgets);
@@ -253,13 +253,13 @@ void main() {
 
     testWidgets("Selecting new Name Filter displays Name Search Fields", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("lastNameSearchFieldKey")), findsNothing);
+      expect(find.byKey(const Key("lastNameSearchFieldKey")), findsNothing);
       await tester.tap(find.byIcon(Icons.filter_list));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(Key(FilterType.employeeName.toString())));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("lastNameSearchFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("lastNameSearchFieldKey")), findsOneWidget);
     });
 
     testWidgets("Entering valid name in last name search field redos search", (tester) async {
@@ -269,12 +269,12 @@ void main() {
 
       await tester.tap(find.byKey(Key(FilterType.employeeName.toString())));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(Key("lastNameSearchFieldKey")), "last");
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("lastNameSearchFieldKey")), "last");
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       expect(find.byType(TransactionWidget), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.byType(TransactionWidget), findsWidgets);
     });
 
@@ -285,8 +285,8 @@ void main() {
 
       await tester.tap(find.byKey(Key(FilterType.employeeName.toString())));
       await tester.pumpAndSettle();
-      await tester.enterText(find.byKey(Key("lastNameSearchFieldKey")), "l");
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("lastNameSearchFieldKey")), "l");
+      await tester.pump(const Duration(seconds: 1));
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
       expect(find.byType(TransactionWidget), findsWidgets);
@@ -294,30 +294,30 @@ void main() {
 
     testWidgets("Selecting new Status Filter displays Status Search picker", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("statusPickerKey")), findsNothing);
+      expect(find.byKey(const Key("statusPickerKey")), findsNothing);
       await tester.tap(find.byIcon(Icons.filter_list));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(Key(FilterType.status.toString())));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("statusPickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("statusPickerKey")), findsOneWidget);
     });
 
     testWidgets("Selecting status to filter by redos search", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("statusPickerKey")), findsNothing);
+      expect(find.byKey(const Key("statusPickerKey")), findsNothing);
       await tester.tap(find.byIcon(Icons.filter_list));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(Key(FilterType.status.toString())));
       await tester.pump();
-      await tester.tap(find.byKey(Key("statusPickerKey")));
+      await tester.tap(find.byKey(const Key("statusPickerKey")));
       await tester.pump();
       await tester.tap(find.text("Paid").last);
       await tester.pump();
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
       expect(find.byType(TransactionWidget), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.byType(TransactionWidget), findsWidgets);
     });
 
@@ -330,13 +330,13 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.byType(TransactionWidget), findsWidgets);
     });
 
     testWidgets("Api Exception displays message", (tester) async {
       when(() => transactionRepository.fetchAll())
-        .thenThrow(ApiException(error: "An error occurred!"));
+        .thenThrow(const ApiException(error: "An error occurred!"));
       
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       expect(find.text("Error: An error occurred!"), findsOneWidget);
@@ -345,7 +345,7 @@ void main() {
     testWidgets("Empty response displays empty response text", (tester) async {
       List<TransactionResource> emptyResponse = [];
       when(() => transactionRepository.fetchAll())
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: emptyResponse,
           next: "next_url"
         )));
@@ -356,25 +356,25 @@ void main() {
 
     testWidgets("TransactionsList List is scrollable", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("transaction-0")), findsOneWidget);
-      await tester.fling(find.byType(CustomScrollView), Offset(0, -200), 3000);
+      expect(find.byKey(const Key("transaction-0")), findsOneWidget);
+      await tester.fling(find.byType(CustomScrollView), const Offset(0, -200), 3000);
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("transaction-0")), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      expect(find.byKey(const Key("transaction-0")), findsNothing);
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("TransactionsList fetches more data when threshold reached", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       verifyNever(() => transactionRepository.paginate(url: any(named: "url")));
-      await tester.fling(find.byType(CustomScrollView), Offset(0, -1000), 1000);
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.fling(find.byType(CustomScrollView), const Offset(0, -1000), 1000);
+      await tester.pump(const Duration(milliseconds: 1000));
       verify(() => transactionRepository.paginate(url: any(named: "url"))).called(1);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Tapping on Transaction Widget navigates to Receipt Screen", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("transaction-0")));
+      await tester.tap(find.byKey(const Key("transaction-0")));
       await tester.pumpAndSettle();
       verify(() => observer.didPush(any(), any()));
     });

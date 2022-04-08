@@ -12,7 +12,10 @@ import 'widgets/name_search_field/name_search_field.dart';
 import 'widgets/status_search_field.dart';
 
 class SearchField extends StatelessWidget {
-  
+
+  const SearchField({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TransactionsListBloc, TransactionsListState>(
@@ -35,7 +38,7 @@ class SearchField extends StatelessWidget {
     Widget textField;
     switch (listState.currentFilter) {
       case FilterType.status:
-        textField = StatusSearchField();
+        textField = const StatusSearchField();
         break;
       case FilterType.customerId:
       case FilterType.transactionId:
@@ -54,7 +57,7 @@ class SearchField extends StatelessWidget {
             transactionsListBloc: BlocProvider.of<TransactionsListBloc>(context),
             filterButtonCubit: context.read<FilterButtonCubit>()
           ),
-          child: NameSearchField(),
+          child: const NameSearchField(),
         );
         break;
       default:

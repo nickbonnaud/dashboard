@@ -39,18 +39,18 @@ void main() {
     blocTest<IdSearchFieldBloc, IdSearchFieldState>(
       "FieldChanged event changes state: [isFieldValid: false, currentId: currentId]",
       build: () => idSearchFieldBloc,
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(FieldChanged(id: "453")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const FieldChanged(id: "453")),
       expect: () => [baseState.update(isFieldValid: false, currentId: "453")]
     );
 
     blocTest<IdSearchFieldBloc, IdSearchFieldState>(
       "FieldChanged event only calls transactionsListBloc.add when isFieldValid",
       build: () => idSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);
-        bloc.add(FieldChanged(id: "453"));
+        bloc.add(const FieldChanged(id: "453"));
       },
       verify: (_) {
         verifyNever(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>())));
@@ -64,7 +64,7 @@ void main() {
         _currentId = "67b4655e-27c3-453a-b438-99c53d38735f";
         return IdSearchFieldState(isFieldValid: true, currentId: _currentId);
       },
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);
         bloc.add(FieldChanged(id: _currentId));
@@ -77,11 +77,11 @@ void main() {
     blocTest<IdSearchFieldBloc, IdSearchFieldState>(
       "FieldChanged event calls transactionsListBloc.add when isFieldValid: true, currentId: event.id",
       build: () => idSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);
         when(() => filterButtonCubit.state).thenReturn(FilterType.customerId);
-        bloc.add(FieldChanged(id: "67b4655e-27c3-453a-b438-99c53d38735f"));
+        bloc.add(const FieldChanged(id: "67b4655e-27c3-453a-b438-99c53d38735f"));
       },
       verify: (_) {
         verify(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).called(1);

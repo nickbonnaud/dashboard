@@ -7,10 +7,16 @@ class VeryBoldText1 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const VeryBoldText1({required String text, required BuildContext context, Color? color})
+  const VeryBoldText1({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,7 @@ class VeryBoldText1 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.w900,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(10) * multiplier
       ),
     );
@@ -35,10 +41,16 @@ class VeryBoldText2 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const VeryBoldText2({required String text, required BuildContext context, Color? color})
+  const VeryBoldText2({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +63,7 @@ class VeryBoldText2 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.w900,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(9) * multiplier
       ),
     );
@@ -63,10 +75,16 @@ class VeryBoldText3 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const VeryBoldText3({required String text, required BuildContext context, Color? color})
+  const VeryBoldText3({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +97,7 @@ class VeryBoldText3 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.w900,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(8) * multiplier
       ),
     );
@@ -91,10 +109,16 @@ class VeryBoldText4 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const VeryBoldText4({required String text, required BuildContext context, Color? color})
+  const VeryBoldText4({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +131,7 @@ class VeryBoldText4 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.w900,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(7) * multiplier
       ),
     );
@@ -119,10 +143,16 @@ class VeryBoldText5 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const VeryBoldText5({required String text, required BuildContext context, Color? color})
+  const VeryBoldText5({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -135,7 +165,7 @@ class VeryBoldText5 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.w900,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(6) * multiplier
       ),
     );
@@ -148,11 +178,18 @@ class BoldTextCustom extends StatelessWidget {
   final double _size;
   final Color? _color;
 
-  const BoldTextCustom({required String text, required BuildContext context, required double size, Color? color})
+  const BoldTextCustom({
+    required String text,
+    required BuildContext context,
+    required double size,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
       _size = size,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +202,7 @@ class BoldTextCustom extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: _size * multiplier
       ),
     );
@@ -177,10 +214,16 @@ class BoldText1 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const BoldText1({required String text, required BuildContext context, Color? color})
+  const BoldText1({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +236,7 @@ class BoldText1 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(8) * multiplier
       ),
     );
@@ -205,10 +248,16 @@ class BoldText2 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const BoldText2({required String text, required BuildContext context, Color? color})
+  const BoldText2({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +270,7 @@ class BoldText2 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(7) * multiplier,
       ),
     );
@@ -233,10 +282,16 @@ class BoldText3 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const BoldText3({required String text, required BuildContext context, Color? color})
+  const BoldText3({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -249,7 +304,7 @@ class BoldText3 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(6) * multiplier
       ),
     );
@@ -261,10 +316,16 @@ class BoldText4 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const BoldText4({required String text, required BuildContext context, Color? color})
+  const BoldText4({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -277,7 +338,7 @@ class BoldText4 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(5) * multiplier
       ),
     );
@@ -289,10 +350,16 @@ class BoldText5 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const BoldText5({required String text, required BuildContext context, Color? color})
+  const BoldText5({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -305,7 +372,7 @@ class BoldText5 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.bold,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(4) * multiplier,
         
       ),
@@ -319,11 +386,18 @@ class TextCustom extends StatelessWidget {
   final double _size;
   final Color? _color;
   
-  TextCustom({required String text, required BuildContext context, required double size, Color? color})
+  const TextCustom({
+    required String text,
+    required BuildContext context,
+    required double size,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
       _size = size,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +410,7 @@ class TextCustom extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.normal,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: _size * multiplier
       ),
     );
@@ -348,10 +422,16 @@ class Text1 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const Text1({required String text, required BuildContext context, Color? color})
+  const Text1({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -364,7 +444,7 @@ class Text1 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.normal,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(6) * multiplier
       ),
     );
@@ -376,10 +456,16 @@ class Text2 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const Text2({required String text, required BuildContext context, Color? color})
+  const Text2({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -392,7 +478,7 @@ class Text2 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.normal,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(5) * multiplier,
       ),
     );
@@ -404,10 +490,16 @@ class Text3 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const Text3({required String text, required BuildContext context, Color? color})
+  const Text3({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -420,7 +512,7 @@ class Text3 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.normal,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(4) * multiplier
       ),
     );
@@ -432,10 +524,16 @@ class Text4 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const Text4({required String text, required BuildContext context, Color? color})
+  const Text4({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -448,7 +546,7 @@ class Text4 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.normal,
-      color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+      color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(3) * multiplier
       ),
     );
@@ -460,10 +558,16 @@ class Text5 extends StatelessWidget {
   final BuildContext _context;
   final Color? _color;
 
-  const Text5({required String text, required BuildContext context, Color? color})
+  const Text5({
+    required String text,
+    required BuildContext context,
+    Color? color,
+    Key? key
+  })
     : _text = text,
       _context = context,
-      _color = color;
+      _color = color,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -476,7 +580,7 @@ class Text5 extends StatelessWidget {
       _text,
       style: TextStyle(
         fontWeight: FontWeight.normal,
-        color: _color == null ? Theme.of(_context).colorScheme.onPrimary : _color,
+        color: _color ?? Theme.of(_context).colorScheme.onPrimary,
         fontSize: SizeConfig.getWidth(2) * multiplier
       ),
     );

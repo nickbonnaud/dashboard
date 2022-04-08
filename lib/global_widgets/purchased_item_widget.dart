@@ -7,8 +7,9 @@ import 'package:dashboard/theme/global_colors.dart';
 class PurchasedItemWidget extends StatelessWidget {
   final PurchasedItem _purchasedItem;
 
-  PurchasedItemWidget({required PurchasedItem purchasedItem})
-    : _purchasedItem = purchasedItem;
+  const PurchasedItemWidget({required PurchasedItem purchasedItem, Key? key})
+    : _purchasedItem = purchasedItem,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

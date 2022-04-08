@@ -8,8 +8,9 @@ import 'widgets/sales_screen_body.dart';
 class SalesScreen extends StatefulWidget {
   final TransactionRepository _transactionRepository;
 
-  const SalesScreen({required TransactionRepository transactionRepository})
-    : _transactionRepository = transactionRepository;
+  const SalesScreen({required TransactionRepository transactionRepository, Key? key})
+    : _transactionRepository = transactionRepository,
+      super(key: key);
   
   @override
   State<SalesScreen> createState() => _SalesScreenState();

@@ -13,8 +13,9 @@ import 'bloc/password_form_bloc.dart';
 class PasswordForm extends StatefulWidget {
   final BusinessBloc _businessBloc;
 
-  const PasswordForm({required BusinessBloc businessBloc})
-    : _businessBloc = businessBloc;
+  const PasswordForm({required BusinessBloc businessBloc, Key? key})
+    : _businessBloc = businessBloc,
+      super(key: key);
 
   @override
   State<PasswordForm> createState() => _PasswordFormState();
@@ -78,7 +79,7 @@ class _PasswordFormState extends State<PasswordForm> {
     return BlocBuilder<PasswordFormBloc, PasswordFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("passwordTextFieldKey"),
+          key: const Key("passwordTextFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: "New Password",
@@ -115,7 +116,7 @@ class _PasswordFormState extends State<PasswordForm> {
     return BlocBuilder<PasswordFormBloc, PasswordFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("passwordConfirmationTextFieldKey"),
+          key: const Key("passwordConfirmationTextFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: "Confirm Password",
@@ -175,7 +176,7 @@ class _PasswordFormState extends State<PasswordForm> {
                 control: state.errorButtonControl,
                 onAnimationComplete: () => _resetForm(),
                 child: ElevatedButton(
-                  key: Key("submitPasswordButtonKey"),
+                  key: const Key("submitPasswordButtonKey"),
                   onPressed: _formValid(state: state)
                     ? () => _submitPassword(state: state)
                     : null,
@@ -192,7 +193,7 @@ class _PasswordFormState extends State<PasswordForm> {
 
   Widget _buttonChild({required PasswordFormState state}) {
     return state.isSubmitting
-      ? Padding(padding: EdgeInsets.only(top: 5, bottom: 5), child: CircularProgressIndicator())
+      ? const Padding(padding: EdgeInsets.only(top: 5, bottom: 5), child: CircularProgressIndicator())
       : Text4(text: "Change", context: context, color: Theme.of(context).colorScheme.onSecondary);
   }
 
@@ -227,7 +228,7 @@ class _PasswordFormState extends State<PasswordForm> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _passwordFormBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => _passwordFormBloc.add(Reset()));
   }
 
   void _showSuccess() {

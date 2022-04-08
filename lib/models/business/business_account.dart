@@ -20,7 +20,7 @@ class BusinessAccount extends Equatable {
   final Address address;
   final EntityType entityType;
 
-  BusinessAccount({
+  const BusinessAccount({
     required this.identifier,
     required this.businessName,
     required this.address,

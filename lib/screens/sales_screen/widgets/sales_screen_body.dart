@@ -22,8 +22,9 @@ class SalesScreenBody extends StatelessWidget {
 
   final TransactionRepository _transactionRepository;
 
-  SalesScreenBody({required TransactionRepository transactionRepository})
-    : _transactionRepository = transactionRepository;
+  SalesScreenBody({required TransactionRepository transactionRepository, Key? key})
+    : _transactionRepository = transactionRepository,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -79,7 +80,7 @@ class SalesScreenBody extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: SizeConfig.getHeight(5)),
-          SalesHeader(),
+          const SalesHeader(),
           SizedBox(height: SizeConfig.getHeight(2)),
           _salesData(context: context),
           SizedBox(height: SizeConfig.getHeight(3)),
@@ -96,13 +97,14 @@ class SalesScreenBody extends StatelessWidget {
       columnCrossAxisAlignment: CrossAxisAlignment.center,
       columnSpacing: SizeConfig.getHeight(3),
       rowSpacing: SizeConfig.getWidth(3),
+      // ignore: prefer_const_literals_to_create_immutables
       children: [
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: NetSales()
         ),
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: TotalSales()
@@ -118,13 +120,14 @@ class SalesScreenBody extends StatelessWidget {
       columnCrossAxisAlignment: CrossAxisAlignment.center,
       columnSpacing: SizeConfig.getHeight(3),
       rowSpacing: SizeConfig.getWidth(3),
+      // ignore: prefer_const_literals_to_create_immutables
       children: [
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: TotalTips()
         ),
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: TotalTaxes()
@@ -138,9 +141,9 @@ class SalesScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
-        key: Key("dateRangePickerButtonKey"),
+        key: const Key("dateRangePickerButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
-        child: Icon(Icons.date_range),
+        child: const Icon(Icons.date_range),
         onPressed: () => _showDateRangePicker(context: context),
       )
     );
@@ -164,7 +167,7 @@ class SalesScreenBody extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
-        key: Key("dateRangePickerKey"),
+        key: const Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

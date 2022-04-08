@@ -10,8 +10,9 @@ import 'widgets/historic_refunds_slivers.dart';
 class HistoricRefundsScreenBody extends StatelessWidget {
   final RefundRepository _refundRepository;
 
-  const HistoricRefundsScreenBody({required RefundRepository refundRepository})
-    : _refundRepository = refundRepository;
+  const HistoricRefundsScreenBody({required RefundRepository refundRepository, Key? key})
+    : _refundRepository = refundRepository,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class HistoricRefundsScreenBody extends StatelessWidget {
         dateRangeCubit: BlocProvider.of<DateRangeCubit>(context),
         refundRepository: _refundRepository
       )..add(Init()),
-      child: HistoricRefundsSlivers(),
+      child: const HistoricRefundsSlivers(),
     );
   }
 }

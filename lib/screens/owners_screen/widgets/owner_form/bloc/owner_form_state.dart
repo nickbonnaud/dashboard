@@ -36,7 +36,7 @@ class OwnerFormState extends Equatable {
     isStateValid &&
     isZipValid;
 
-  OwnerFormState({
+  const OwnerFormState({
     required this.isPrimary,
     required this.isFirstNameValid,
     required this.isLastNameValid,
@@ -58,7 +58,7 @@ class OwnerFormState extends Equatable {
   });
 
   factory OwnerFormState.empty() {
-    return OwnerFormState(
+    return const OwnerFormState(
       isPrimary: false,
       isFirstNameValid: true,
       isLastNameValid: true,

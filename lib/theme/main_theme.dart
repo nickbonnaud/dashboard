@@ -3,13 +3,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'global_colors.dart';
 
 class MainTheme {
-  static Color _primary = Colors.white;
-  static Color _primaryVariant = Colors.grey[300]!;
-  static Color _constrastPrimary = Colors.black;
+  static const Color _primary = Colors.white;
+  static final Color _primaryVariant = Colors.grey[300]!;
+  static const Color _constrastPrimary = Colors.black;
 
-  static Color _secondary = Colors.grey[800]!;
-  static Color _secondaryVariant = Colors.black;
-  static Color _constrastSecondary = Colors.white;
+  static final Color _secondary = Colors.grey[800]!;
+  static const Color _secondaryVariant = Colors.black;
+  static const Color _constrastSecondary = Colors.white;
   
   
   static ThemeData themeData({required BuildContext context}) {
@@ -18,7 +18,7 @@ class MainTheme {
       textSelectionTheme: TextSelectionThemeData(
         cursorColor: Theme.of(context).colorScheme.onSurface
       ),
-      floatingActionButtonTheme: FloatingActionButtonThemeData(
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
         foregroundColor: _primary
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -50,7 +50,7 @@ class MainTheme {
           shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
         ),
       ),
-      iconTheme: IconThemeData(
+      iconTheme: const IconThemeData(
         color: Color(0xFF016fb9)
       ),
       appBarTheme: AppBarTheme(
@@ -63,11 +63,11 @@ class MainTheme {
       ),
       colorScheme: ColorScheme(
         primary: _primary, 
-        primaryVariant: _primaryVariant,
+        primaryContainer: _primaryVariant,
         onPrimary: _constrastPrimary,
 
         secondary: _secondary,
-        secondaryVariant: _secondaryVariant, 
+        secondaryContainer: _secondaryVariant, 
         onSecondary: _constrastSecondary, 
 
         surface: Colors.grey,
@@ -80,7 +80,7 @@ class MainTheme {
         brightness: Brightness.light,
       ),
       textTheme: _getTextTheme(context: context),
-      disabledColor: Color(0xFFcce2f1),
+      disabledColor: const Color(0xFFcce2f1),
     );
   }
 

@@ -8,6 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessageButton extends StatelessWidget {
   
+  const MessageButton({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,11 +39,11 @@ class MessageButton extends StatelessWidget {
               children: [
                 Positioned.fill(
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white,
                     ),
-                    margin: EdgeInsets.all(3)
+                    margin: const EdgeInsets.all(3)
                   )
                 ),
                 Icon(

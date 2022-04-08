@@ -8,12 +8,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NetSalesToday extends StatelessWidget {
 
+  const NetSalesToday({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 2,
       child: Container(
-        padding: EdgeInsets.all(22),
+        padding: const EdgeInsets.all(22),
         color: Colors.pink,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -31,7 +34,7 @@ class NetSalesToday extends StatelessWidget {
             ),
             BlocBuilder<NetSalesTodayBloc, NetSalesTodayState>(
               builder: (context, state) {
-                if (state is Loading || state is NetSalesInitial) return CircularProgressIndicator(key: Key("netSalesTodayCircularProgressKey"));
+                if (state is Loading || state is NetSalesInitial) return const CircularProgressIndicator(key: Key("netSalesTodayCircularProgressKey"));
                 if (state is FetchFailed) return _error();
 
                 return _amount(netSales: (state as NetSalesLoaded).netSales);
@@ -46,11 +49,11 @@ class NetSalesToday extends StatelessWidget {
   Widget _amount({required int netSales}) {
     return Flexible(
       child: Padding(
-        padding: EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.only(left: 10),
         child: FittedBox(
           child: Text(
             Currency.create(cents: netSales),
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 25,
               color: Colors.white,
             ),
@@ -61,7 +64,7 @@ class NetSalesToday extends StatelessWidget {
   }
   
   Widget _error() {
-    return Flexible(
+    return const Flexible(
       child: Padding(
         padding: EdgeInsets.only(left: 10),
         child: FittedBox(

@@ -58,11 +58,11 @@ void main() {
       "InitTotalTips event on error changes state: [Loading(), FetchFailed()]",
       build: () {
         _totalTips = faker.randomGenerator.integer(500);
-        when(() => transactionRepository.fetchTotalTipsToday()).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchTotalTipsToday()).thenThrow(const ApiException(error: "error"));
         return totalTipsBloc;
       },
       act: (bloc) => bloc.add(InitTotalTips()),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
 
     blocTest<TotalTipsBloc, TotalTipsState>(
@@ -93,11 +93,11 @@ void main() {
       "DateRangeChanged event on error changes state: [Loading(), FetchFailed()]",
       build: () {
         _totalTips = faker.randomGenerator.integer(500);
-        when(() => transactionRepository.fetchTotalTipsDateRange(dateRange: any(named: "dateRange"))).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchTotalTipsDateRange(dateRange: any(named: "dateRange"))).thenThrow(const ApiException(error: "error"));
         return totalTipsBloc;
       },
       act: (bloc) => bloc.add(DateRangeChanged(dateRange: DateTimeRange(start: DateTime.now(), end: DateTime.now()))),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
   });
 }

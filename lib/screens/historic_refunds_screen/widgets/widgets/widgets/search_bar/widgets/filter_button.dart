@@ -7,13 +7,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FilterButton extends StatelessWidget {
 
-  final List<TransactionFilter> _filterOptions = [
+  final List<TransactionFilter> _filterOptions = const [
     TransactionFilter(value: FilterType.refundId, title: "Refund ID"),
     TransactionFilter(value: FilterType.transactionId, title: "Transaction ID"),
     TransactionFilter(value: FilterType.customerId, title: "Customer ID"),
     TransactionFilter(value: FilterType.customerName, title: "Customer Name"),
     TransactionFilter(value: FilterType.all, title: "Reset")
   ];
+
+  const FilterButton({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {

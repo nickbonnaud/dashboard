@@ -31,7 +31,7 @@ class BusinessAccountRepository extends BaseRepository {
     
     if (ein != null && ein != "") body.addAll({'ein': ein});
 
-    final Map<String, dynamic> json = await this.send(request: _accountProvider.store(body: body));
+    Map<String, dynamic> json = await send(request: _accountProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -46,7 +46,7 @@ class BusinessAccountRepository extends BaseRepository {
     required String identifier,
     String? ein,
   }) async {
-    final Map<String, dynamic> body = {
+    Map<String, dynamic> body = {
       'business_name': name,
       'entity_type': entityType,
       'address': address,
@@ -58,7 +58,7 @@ class BusinessAccountRepository extends BaseRepository {
 
     if (ein != null && ein != "") body.addAll({'ein': ein});
 
-    final Map<String, dynamic> json = await this.send(request: _accountProvider.update(body: body, identifier: identifier));
+    Map<String, dynamic> json = await send(request: _accountProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 

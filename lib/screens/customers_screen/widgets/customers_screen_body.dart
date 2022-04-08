@@ -13,8 +13,9 @@ import 'widgets/customers_screen_slivers.dart';
 class CustomersScreenBody extends StatelessWidget {
   final CustomerRepository _customerRepository;
 
-  const CustomersScreenBody({required CustomerRepository customerRepository})
-    : _customerRepository = customerRepository;
+  const CustomersScreenBody({required CustomerRepository customerRepository, Key? key})
+    : _customerRepository = customerRepository,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class CustomersScreenBody extends StatelessWidget {
         dateRangeCubit: BlocProvider.of<DateRangeCubit>(context),
         filterButtonBloc: BlocProvider.of<FilterButtonBloc>(context)
       )..add(Init()),
-      child: CustomersScreenSlivers(),
+      child: const CustomersScreenSlivers(),
     );
   }
 
@@ -42,9 +43,9 @@ class CustomersScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
-        key: Key("datePickerButtonKey"),
+        key: const Key("datePickerButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
-        child: Icon(Icons.date_range),
+        child: const Icon(Icons.date_range),
         onPressed: () => _showDateRangePicker(context: context),
       )
     );
@@ -67,7 +68,7 @@ class CustomersScreenBody extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
-        key: Key("dateRangePickerKey"),
+        key: const Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

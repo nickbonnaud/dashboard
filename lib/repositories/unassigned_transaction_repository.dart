@@ -5,20 +5,20 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:flutter/material.dart';
 
 class UnassignedTransactionRepository extends BaseRepository {
-  late UnassignedTransactionProvider _unassignedTransactionProvider;
+  final UnassignedTransactionProvider _unassignedTransactionProvider;
 
   UnassignedTransactionRepository({required UnassignedTransactionProvider unassignedTransactionProvider})
     : _unassignedTransactionProvider = unassignedTransactionProvider;
   
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {
-    final String query = this.formatDateQuery(dateRange: dateRange);
+    final String query = formatDateQuery(dateRange: dateRange);
 
-    final PaginateDataHolder holder = await this.sendPaginated(request: _unassignedTransactionProvider.fetch(query: query));
+    final PaginateDataHolder holder = await sendPaginated(request: _unassignedTransactionProvider.fetch(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> paginate({required String url}) async {
-    final PaginateDataHolder holder = await this.sendPaginated(request: _unassignedTransactionProvider.fetch(paginateUrl: url));
+    final PaginateDataHolder holder = await sendPaginated(request: _unassignedTransactionProvider.fetch(paginateUrl: url));
     return deserialize(holder: holder);
   }
 

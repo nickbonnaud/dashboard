@@ -11,6 +11,9 @@ import '../bloc/request_reset_password_screen_bloc.dart';
 
 class RequestResetPasswordScreenBody extends StatefulWidget {
 
+  const RequestResetPasswordScreenBody({Key? key})
+    : super(key: key);
+
   @override
   State<RequestResetPasswordScreenBody> createState() => _RequestResetPasswordScreenBodyState();
 }
@@ -76,7 +79,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
     return BlocBuilder<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("emailTextFieldKey"),
+          key: const Key("emailTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Email',
             labelStyle: TextStyle(
@@ -109,13 +112,14 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
   Widget _errorMessage() {
     return BlocBuilder<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(
       builder: (context, state) {
-        if (state.errorMessage.isNotEmpty) return Column(
-          children: [
-            SizedBox(height: SizeConfig.getHeight(2)),
-            TextCustom(text: state.errorMessage, size: SizeConfig.getWidth(3), context: context, color: Theme.of(context).colorScheme.danger)
-          ],
-        );
-
+        if (state.errorMessage.isNotEmpty) {
+          return Column(
+            children: [
+              SizedBox(height: SizeConfig.getHeight(2)),
+              TextCustom(text: state.errorMessage, size: SizeConfig.getWidth(3), context: context, color: Theme.of(context).colorScheme.danger)
+            ],
+          );
+        }
         return Container();
       },
     );
@@ -128,7 +132,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
           control: state.errorButtonControl,
           onAnimationComplete: () => _resetForm(),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state)
               ? () => _submitButtonPressed(state: state)
               : null,
@@ -141,9 +145,9 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
 
   Widget _submitButtonChild({required RequestResetPasswordScreenState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Request Reset', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -152,7 +156,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
     return BlocBuilder<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(
       builder: (context, state) {
         return TextButton(
-          key: Key("goToLoginButtonKey"),
+          key: const Key("goToLoginButtonKey"),
           child: Text(
             "Go to Login",
             style: TextStyle(
@@ -186,7 +190,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       _resetPasswordScreenBloc.add(Reset());
     });
   }

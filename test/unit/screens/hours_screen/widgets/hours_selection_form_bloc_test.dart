@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 main() {
   group("Hours Selection Form Bloc Tests", () {
-    final Hour operatingHoursRange = Hour(start: TimeOfDay(hour: 8, minute: 0), end: TimeOfDay(hour: 20, minute: 00));
+    const Hour operatingHoursRange = Hour(start: TimeOfDay(hour: 8, minute: 0), end: TimeOfDay(hour: 20, minute: 00));
     late HoursSelectionFormBloc hoursSelectionFormBloc;
     late HoursSelectionFormState baseState;
 
@@ -26,10 +26,10 @@ main() {
     });
 
     test("HoursSelectionFormState.initial() creates correct hours grid", () {
-      final TimeOfDay open = TimeOfDay(hour: 9, minute: 0);
-      final TimeOfDay close = TimeOfDay(hour: 21, minute: 0);
-      final int correctNumberColumns = 8;
-      final int correctNumberRows = 26;
+      TimeOfDay open = const TimeOfDay(hour: 9, minute: 0);
+      TimeOfDay close = const TimeOfDay(hour: 21, minute: 0);
+      int correctNumberColumns = 8;
+      int correctNumberRows = 26;
       HoursSelectionFormState state = HoursSelectionFormState.initial(operatingHoursRange: Hour(start: open, end: close));
       expect(state.operatingHoursGrid.cols, correctNumberColumns);
       expect(state.operatingHoursGrid.rows, correctNumberRows);
@@ -38,18 +38,18 @@ main() {
     });
 
     test("HoursSelectionFormState.initial() creates correct rows if close past midnight", () {
-      final TimeOfDay open = TimeOfDay(hour: 22, minute: 0);
-      final TimeOfDay close = TimeOfDay(hour: 1, minute: 0);
-      final int correctNumberRows = 8;
+      TimeOfDay open = const TimeOfDay(hour: 22, minute: 0);
+      TimeOfDay close = const TimeOfDay(hour: 1, minute: 0);
+      int correctNumberRows = 8;
       HoursSelectionFormState state = HoursSelectionFormState.initial(operatingHoursRange: Hour(start: open, end: close));
       expect(state.operatingHoursGrid.rows, correctNumberRows);
       expect(state.operatingHoursGrid.operatingHoursGrid.length, correctNumberRows);
     });
 
     test("HoursSelectionFormState.initial() creates correct rows times not 30 minute increments", () {
-      final TimeOfDay open = TimeOfDay(hour: 8, minute: 15);
-      final TimeOfDay close = TimeOfDay(hour: 11, minute: 45);
-      final int correctNumberRows = 9;
+      TimeOfDay open = const TimeOfDay(hour: 8, minute: 15);
+      TimeOfDay close = const TimeOfDay(hour: 11, minute: 45);
+      int correctNumberRows = 9;
       HoursSelectionFormState state = HoursSelectionFormState.initial(operatingHoursRange: Hour(start: open, end: close));
       expect(state.operatingHoursGrid.rows, correctNumberRows);
       expect(state.operatingHoursGrid.operatingHoursGrid.length, correctNumberRows);
@@ -58,7 +58,7 @@ main() {
     blocTest<HoursSelectionFormBloc, HoursSelectionFormState>(
       "GridSelectionChanged event with drag updates grid cell to true", 
       build: () => hoursSelectionFormBloc,
-      act: (bloc) => bloc.add(GridSelectionChanged(indexX: 1, indexY: 1, isDrag: true)),
+      act: (bloc) => bloc.add(const GridSelectionChanged(indexX: 1, indexY: 1, isDrag: true)),
       verify: (_) {
         expect(hoursSelectionFormBloc.state.operatingHoursGrid.operatingHoursGrid[1][1], true);
       }
@@ -68,8 +68,8 @@ main() {
       "GridSelectionChanged event with drag on cell already true maintains true", 
       build: () => hoursSelectionFormBloc,
       act: (bloc) {
-        bloc.add(GridSelectionChanged(indexX: 1, indexY: 1, isDrag: true));
-        bloc.add(GridSelectionChanged(indexX: 1, indexY: 1, isDrag: true));
+        bloc.add(const GridSelectionChanged(indexX: 1, indexY: 1, isDrag: true));
+        bloc.add(const GridSelectionChanged(indexX: 1, indexY: 1, isDrag: true));
       },
       verify: (_) {
         expect(hoursSelectionFormBloc.state.operatingHoursGrid.operatingHoursGrid[1][1], true);
@@ -79,7 +79,7 @@ main() {
     blocTest<HoursSelectionFormBloc, HoursSelectionFormState>(
       "GridSelectionChanged event tap updates grid cell to true", 
       build: () => hoursSelectionFormBloc,
-      act: (bloc) => bloc.add(GridSelectionChanged(indexX: 1, indexY: 1, isDrag: false)),
+      act: (bloc) => bloc.add(const GridSelectionChanged(indexX: 1, indexY: 1, isDrag: false)),
       verify: (_) {
         expect(hoursSelectionFormBloc.state.operatingHoursGrid.operatingHoursGrid[1][1], true);
       }
@@ -89,8 +89,8 @@ main() {
       "GridSelectionChanged event tap on true cell updates grid cell to false", 
       build: () => hoursSelectionFormBloc,
       act: (bloc) {
-        bloc.add(GridSelectionChanged(indexX: 1, indexY: 1, isDrag: false));
-        bloc.add(GridSelectionChanged(indexX: 1, indexY: 1, isDrag: false));
+        bloc.add(const GridSelectionChanged(indexX: 1, indexY: 1, isDrag: false));
+        bloc.add(const GridSelectionChanged(indexX: 1, indexY: 1, isDrag: false));
       },
       verify: (_) {
         expect(hoursSelectionFormBloc.state.operatingHoursGrid.operatingHoursGrid[1][1], false);
@@ -100,7 +100,7 @@ main() {
     blocTest<HoursSelectionFormBloc, HoursSelectionFormState>(
       "Finished event changes state: [isFinished: true]", 
       build: () => hoursSelectionFormBloc,
-      act: (bloc) => bloc.add(Finished(isFinished: true)),
+      act: (bloc) => bloc.add(const Finished(isFinished: true)),
       expect: () => [baseState.update(isFinished: true)]
     );
   });

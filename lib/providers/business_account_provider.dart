@@ -5,12 +5,12 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 class BusinessAccountProvider extends BaseProvider {
 
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
-    final String url = ApiEndpoints.payFacBusiness;
-    return await this.post(url: url, body: body);
+    String url = ApiEndpoints.payFacBusiness;
+    return await post(url: url, body: body);
   }
 
   Future<ApiResponse> update({required Map<String, dynamic> body, required String identifier}) async {
-    final String url = "${ApiEndpoints.payFacBusiness}/$identifier";
-    return await this.patch(url: url, body: body);
+    String url = "${ApiEndpoints.payFacBusiness}/$identifier";
+    return await patch(url: url, body: body);
   }
 }

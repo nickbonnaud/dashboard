@@ -14,7 +14,7 @@ class EditHoursScreenState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  EditHoursScreenState({
+  const EditHoursScreenState({
     required this.sunday,
     required this.monday,
     required this.tuesday,
@@ -30,13 +30,13 @@ class EditHoursScreenState extends Equatable {
   });
 
   List<List<Hour>> get days => [
-    this.sunday,
-    this.monday,
-    this.tuesday,
-    this.wednesday,
-    this.thursday,
-    this.friday,
-    this.saturday
+    sunday,
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday
   ];
 
   factory EditHoursScreenState.initial({required Hours hours}) {

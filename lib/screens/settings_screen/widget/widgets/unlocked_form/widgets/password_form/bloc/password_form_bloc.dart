@@ -13,7 +13,7 @@ part 'password_form_state.dart';
 class PasswordFormBloc extends Bloc<PasswordFormEvent, PasswordFormState> {
   final BusinessRepository _businessRepository;
 
-  final Duration _debounceTime = Duration(milliseconds: 300);
+  final Duration _debounceTime = const Duration(milliseconds: 300);
 
   PasswordFormBloc({required BusinessRepository businessRepository}) 
     : _businessRepository = businessRepository,

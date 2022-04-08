@@ -10,8 +10,9 @@ import 'widgets/historic_refunds_screen_body.dart';
 class HistoricRefundsScreen extends StatefulWidget {
   final RefundRepository _refundRepository;
 
-  const HistoricRefundsScreen({required RefundRepository refundRepository})
-    : _refundRepository = refundRepository;
+  const HistoricRefundsScreen({required RefundRepository refundRepository, Key? key})
+    : _refundRepository = refundRepository,
+      super(key: key);
 
   @override
   State<HistoricRefundsScreen> createState() =>_HistoricRefundsScreenState();

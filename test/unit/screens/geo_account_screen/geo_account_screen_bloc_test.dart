@@ -25,7 +25,7 @@ void main() {
     setUp(() {
       geoAccountRepository = MockGeoAccountRepository();
       businessBloc = MockBusinessBloc();
-      location = Location(identifier: "identifier", lat: 35.927560, lng: -79.035534, radius: 50);
+      location = const Location(identifier: "identifier", lat: 35.927560, lng: -79.035534, radius: 50);
       geoAccountScreenBloc = GeoAccountScreenBloc(
         accountRepository: geoAccountRepository,
         businessBloc: businessBloc,
@@ -47,14 +47,14 @@ void main() {
     blocTest<GeoAccountScreenBloc, GeoAccountScreenState>(
       "LocationChanged event changes state: [currentLocation]",
       build: () => geoAccountScreenBloc,
-      act: (bloc) => bloc.add(LocationChanged(location: LatLng(40.0, -70.0))),
-      expect: () => [baseState.update(currentLocation: LatLng(40.0, -70.0))]
+      act: (bloc) => bloc.add(const LocationChanged(location: LatLng(40.0, -70.0))),
+      expect: () => [baseState.update(currentLocation: const LatLng(40.0, -70.0))]
     );
 
     blocTest<GeoAccountScreenBloc, GeoAccountScreenState>(
       "RadiusChanged event changes state: [radius]",
       build: () => geoAccountScreenBloc,
-      act: (bloc) => bloc.add(RadiusChanged(radius: 25)),
+      act: (bloc) => bloc.add(const RadiusChanged(radius: 25)),
       expect: () => [baseState.update(radius: 25)]
     );
 
@@ -118,7 +118,7 @@ void main() {
       build: () => geoAccountScreenBloc,
       act: (bloc) {
         when(() => geoAccountRepository.store(lat: location.lat, lng: location.lng, radius: location.radius))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
         bloc.add(Submitted());
       },
@@ -132,7 +132,7 @@ void main() {
         when(() => geoAccountRepository.update(identifier: 'identifier', lat: location.lat, lng: location.lng, radius: location.radius))
           .thenAnswer((_) async =>  MockLocation());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: 'identifier'));
+        bloc.add(const Updated(identifier: 'identifier'));
       },
       expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -144,7 +144,7 @@ void main() {
         when(() => geoAccountRepository.update(identifier: 'identifier', lat: location.lat, lng: location.lng, radius: location.radius))
           .thenAnswer((_) async =>  MockLocation());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: 'identifier'));
+        bloc.add(const Updated(identifier: 'identifier'));
       },
       verify: (_) {
         verify(() => geoAccountRepository.update(identifier: 'identifier', lat: location.lat, lng: location.lng, radius: location.radius)).called(1);
@@ -158,7 +158,7 @@ void main() {
         when(() => geoAccountRepository.update(identifier: 'identifier', lat: location.lat, lng: location.lng, radius: location.radius))
           .thenAnswer((_) async =>  MockLocation());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: 'identifier'));
+        bloc.add(const Updated(identifier: 'identifier'));
       },
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<LocationUpdated>()))).called(1);
@@ -170,9 +170,9 @@ void main() {
       build: () => geoAccountScreenBloc,
       act: (bloc) {
         when(() => geoAccountRepository.update(identifier: 'identifier', lat: location.lat, lng: location.lng, radius: location.radius))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: 'identifier'));
+        bloc.add(const Updated(identifier: 'identifier'));
       },
       expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );

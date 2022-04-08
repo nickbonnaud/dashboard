@@ -4,7 +4,7 @@ import 'package:dashboard/providers/hours_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class HoursRepository extends BaseRepository {
-  late HoursProvider _hoursProvider;
+  final HoursProvider _hoursProvider;
 
   HoursRepository({required HoursProvider hoursProvider})
     : _hoursProvider = hoursProvider;
@@ -18,7 +18,7 @@ class HoursRepository extends BaseRepository {
     required String friday,
     required String saturday
   }) async {
-    final Map<String, String> body = {
+    Map<String, String> body = {
       'sunday': sunday,
       'monday': monday,
       'tuesday': tuesday,
@@ -28,7 +28,7 @@ class HoursRepository extends BaseRepository {
       'saturday': saturday
     };
 
-    final Map<String, dynamic> json = await this.send(request: _hoursProvider.store(body: body));
+    Map<String, dynamic> json = await send(request: _hoursProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -42,7 +42,7 @@ class HoursRepository extends BaseRepository {
     required String friday,
     required String saturday
   }) async {
-    final Map<String, String> body = {
+    Map<String, String> body = {
       'sunday': sunday,
       'monday': monday,
       'tuesday': tuesday,
@@ -52,7 +52,7 @@ class HoursRepository extends BaseRepository {
       'saturday': saturday
     };
 
-    final Map<String, dynamic> json = await this.send(request: _hoursProvider.update(body: body, identifier: identifier));
+    Map<String, dynamic> json = await send(request: _hoursProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 

@@ -68,7 +68,7 @@ void main() {
       "InitTipList event on error changes state: [loading: true], [loading: false, errorMessage: error]",
       build: () {
         _tips = List.generate(10, (index) => MockEmployeeTip());
-        when(() => tipsRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => tipsRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         return employeeTipsListBloc;
       },
       act: (bloc) => bloc.add(InitTipList()),
@@ -105,7 +105,7 @@ void main() {
       "FetchAll event on error changes state: [loading: true, tips: [], nextUrl: null, hasReachedEnd: false, errorMessage: ''], [loading: false, tips: tips, nextUrl: null, hasReachedEnd: true]",
       build: () {
         _tips = List.generate(10, (index) => MockEmployeeTip());
-        when(() => tipsRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => tipsRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         return employeeTipsListBloc;
       },
       seed: () => _baseState.update(tips: List.generate(4, (index) => MockEmployeeTip()), nextUrl: "next-url", hasReachedEnd: false, errorMessage: "error"),
@@ -148,7 +148,7 @@ void main() {
     blocTest<EmployeeTipsListBloc, EmployeeTipsListState>(
       "FetchMore event on error changes state: [loading: false, tips: moreTips, nextUrl: null, hasReachedEnd: true]",
       build: () {
-        when(() => tipsRepository.paginate(url: any(named: "url"))).thenThrow(ApiException(error: "error"));
+        when(() => tipsRepository.paginate(url: any(named: "url"))).thenThrow(const ApiException(error: "error"));
         return employeeTipsListBloc;
       },
       seed: () {
@@ -243,7 +243,7 @@ void main() {
       },
       act: (bloc) {
         _dateRange = DateTimeRange(start: DateTime.now(), end: DateTime.now());
-        when(() => tipsRepository.fetchAll(dateRange: _dateRange)).thenThrow(ApiException(error: "error"));
+        when(() => tipsRepository.fetchAll(dateRange: _dateRange)).thenThrow(const ApiException(error: "error"));
         return bloc.add(DateRangeChanged(dateRange: _dateRange));
       },
       expect: () {

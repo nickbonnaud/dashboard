@@ -5,10 +5,7 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 class CustomerProvider extends BaseProvider {
 
   Future<PaginatedApiResponse> fetchPaginated({String query = "", String? paginateUrl}) async {
-    final String url = paginateUrl == null
-      ? '${ApiEndpoints.customers}$query'
-      : paginateUrl;
-
-    return await this.getPaginated(url: url);
+    String url = paginateUrl ?? '${ApiEndpoints.customers}$query';
+    return await getPaginated(url: url);
   }
 }

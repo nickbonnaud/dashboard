@@ -19,7 +19,7 @@ void main() {
       _ownerRepository = OwnerRepository(ownerProvider: OwnerProvider());
       _mockOwnerProvider = MockOwnerProvider();
       _ownerRepositoryWithMock = OwnerRepository(ownerProvider: _mockOwnerProvider);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
     
     test("Owner Repository can Store owner account", () async {
@@ -44,7 +44,7 @@ void main() {
     });
 
   test("Owner Repository throws error on Store owner account fail", () async {
-    when(() => _mockOwnerProvider.store(body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+    when(() => _mockOwnerProvider.store(body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
     expect(
       _ownerRepositoryWithMock.store(
         firstName: faker.person.firstName(),
@@ -90,7 +90,7 @@ void main() {
 
   test("Owner Repository throws error on Update owner account fail", () async {
     final String identifier = faker.guid.guid();
-    when(() => _mockOwnerProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+    when(() => _mockOwnerProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
     expect(
       _ownerRepositoryWithMock.update(
         identifier: identifier,
@@ -120,7 +120,7 @@ void main() {
 
     test("Owner Repository throws error on remove owner fail", () async {
       final String identifier = faker.guid.guid();
-      when(() => _mockOwnerProvider.remove(identifier: identifier)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockOwnerProvider.remove(identifier: identifier)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(
         _ownerRepositoryWithMock.remove(identifier: identifier), 
         throwsA(isA<ApiException>())

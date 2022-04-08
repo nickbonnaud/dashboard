@@ -34,11 +34,11 @@ class Reply extends Equatable {
   
   Reply _copyWith({bool? read, DateTime? updatedAt}) {
     return Reply(
-      identifier: this.identifier,
-      body: this.body,
-      fromBusiness: this.fromBusiness,
+      identifier: identifier,
+      body: body,
+      fromBusiness: fromBusiness,
       read: read ?? this.read,
-      createdAt: this.createdAt,
+      createdAt: createdAt,
       updatedAt: updatedAt ?? this.updatedAt
     );
   }

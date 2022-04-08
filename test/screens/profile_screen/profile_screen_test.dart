@@ -51,7 +51,7 @@ void main() {
       );
 
       when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types")))
-        .thenAnswer((_) => Future.delayed(Duration(milliseconds: 500), () {
+        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 500), () {
           return PlacesAutocompleteResponse(
             status: "OK",
             predictions: [Prediction(placeId: faker.guid.guid(), description: "first"), Prediction(placeId: faker.guid.guid(), description: "second")],
@@ -59,7 +59,7 @@ void main() {
         }));
 
       when(() => places.getDetailsByPlaceId(any(that: isA<String>())))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () {
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () {
           return PlacesDetailsResponse(
             status: "OK", 
             result: PlaceDetails(
@@ -75,10 +75,10 @@ void main() {
         }));
 
       when(() => profileRepository.update(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone"), identifier: any(named: "identifier")))
-        .thenAnswer((_) => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createProfile()));
+        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createProfile()));
 
       when(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone")))
-        .thenAnswer((_) => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createProfile()));
+        .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createProfile()));
 
       registerFallbackValue(ProfileUpdated(profile: mockDataGenerator.createProfile()));
       registerFallbackValue(MockRoute());
@@ -108,79 +108,79 @@ void main() {
 
     testWidgets("PlaceForm creates placeNameField", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      expect(find.byKey(Key("placeNameFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("placeNameFieldKey")), findsOneWidget);
     });
 
     testWidgets("Entering less than 3 characters in placeNameField does nothing", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       String businessName = "aw";
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), businessName);
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
+      await tester.pump(const Duration(seconds: 1));
       verifyNever(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types")));
     });
 
     testWidgets("Entering valid name in placeNameField calls places.autoComplete", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       String businessName = faker.company.name();
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), businessName);
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
+      await tester.pump(const Duration(seconds: 1));
       verify(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).called(1);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Entering valid name in placeNameField shows CircularProgressIndicator", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       String businessName = faker.company.name();
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), businessName);
-      await tester.pump(Duration(seconds: 1));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
+      await tester.pump(const Duration(seconds: 1));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Entering valid name in placeNameField displays predictions", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       String businessName = faker.company.name();
-      expect(find.byKey(Key("predictionsListKey")), findsNothing);
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), businessName);
-      await tester.pump(Duration(milliseconds: 1500));
-      expect(find.byKey(Key("predictionsListKey")), findsOneWidget);
+      expect(find.byKey(const Key("predictionsListKey")), findsNothing);
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
+      await tester.pump(const Duration(milliseconds: 1500));
+      expect(find.byKey(const Key("predictionsListKey")), findsOneWidget);
     });
 
     testWidgets("Selecting prediction calls places.getDetailsByPlaceId", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       String businessName = faker.company.name();
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), businessName);
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
+      await tester.pump(const Duration(milliseconds: 1500));
       
       await tester.tap(find.byType(ListTile).first);
       await tester.pump();
       verify(() => places.getDetailsByPlaceId(any(that: isA<String>()))).called(1);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Selecting prediction shows CircularProgressIndicator", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       String businessName = faker.company.name();
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), businessName);
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
+      await tester.pump(const Duration(milliseconds: 1500));
       
       expect(find.byType(CircularProgressIndicator), findsNothing);
       await tester.tap(find.byType(ListTile).first);
       await tester.pump();
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Selecting prediction hides PlaceForm", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       expect(find.byType(PlaceForm), findsOneWidget);
       String businessName = faker.company.name();
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), businessName);
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
+      await tester.pump(const Duration(milliseconds: 1500));
       
       await tester.tap(find.byType(ListTile).first);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.byType(PlaceForm), findsNothing);
       expect(find.byType(BodyForm), findsOneWidget);
     });
@@ -207,32 +207,32 @@ void main() {
 
     testWidgets("New Profile fills in textfields from google data", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), faker.company.name());
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), faker.company.name());
+      await tester.pump(const Duration(milliseconds: 1500));
       
       await tester.tap(find.byType(ListTile).first);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
       
-      expect(tester.widget<TextFormField>(find.byKey(Key("nameFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(Key("websiteFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(Key("phoneTextFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(Key("descriptionTextKey"))).controller!.text.isNotEmpty, false);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("nameFieldKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("websiteFieldKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("phoneTextFieldKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("descriptionTextKey"))).controller!.text.isNotEmpty, false);
     });
 
     testWidgets("Edit Profile fills in all textfields", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       
-      expect(tester.widget<TextFormField>(find.byKey(Key("nameFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(Key("websiteFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(Key("phoneTextFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(Key("descriptionTextKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("nameFieldKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("websiteFieldKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("phoneTextFieldKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("descriptionTextKey"))).controller!.text.isNotEmpty, true);
     });
 
     testWidgets("NameTextField can receive text input", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       
       String name = faker.company.name();
-      await tester.enterText(find.byKey(Key("nameFieldKey")), name);
+      await tester.enterText(find.byKey(const Key("nameFieldKey")), name);
       await tester.pump();
       expect(find.text(name), findsOneWidget);
     });
@@ -242,8 +242,8 @@ void main() {
       
       expect(find.text('Invalid Business Name'), findsNothing);
       String name = "n";
-      await tester.enterText(find.byKey(Key("nameFieldKey")), name);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("nameFieldKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text('Invalid Business Name'), findsOneWidget);
     });
 
@@ -251,7 +251,7 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       
       String website = "${faker.lorem.word()}.com";
-      await tester.enterText(find.byKey(Key("websiteFieldKey")), website);
+      await tester.enterText(find.byKey(const Key("websiteFieldKey")), website);
       await tester.pump();
       expect(find.text(website), findsOneWidget);
     });
@@ -261,8 +261,8 @@ void main() {
       
       expect(find.text('Invalid Website url'), findsNothing);
       String website = "not valid !";
-      await tester.enterText(find.byKey(Key("websiteFieldKey")), website);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("websiteFieldKey")), website);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text('Invalid Website url'), findsOneWidget);
     });
 
@@ -270,9 +270,9 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       
       String phone = "7347419654";
-      await tester.enterText(find.byKey(Key("phoneTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 300));
-      await tester.enterText(find.byKey(Key("phoneTextFieldKey")), phone);
+      await tester.enterText(find.byKey(const Key("phoneTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("phoneTextFieldKey")), phone);
       await tester.pump();
       expect(find.text("(734) 741-9654"), findsOneWidget);
     });
@@ -282,8 +282,8 @@ void main() {
       
       expect(find.text("Invalid Phone Number"), findsNothing);
       String phone = "73*654";
-      await tester.enterText(find.byKey(Key("phoneTextFieldKey")), phone);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("phoneTextFieldKey")), phone);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid Phone Number"), findsOneWidget);
     });
 
@@ -291,7 +291,7 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       
       String description = faker.lorem.sentences(4).join();
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
       await tester.pump();
       expect(find.text(description), findsOneWidget);
     });
@@ -301,26 +301,26 @@ void main() {
       
       expect(find.text("Description must be longer"), findsNothing);
       String description = "a";
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Description must be longer"), findsOneWidget);
     });
 
     testWidgets("SubmitButton is disabled by default new Profile", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), faker.company.name());
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), faker.company.name());
+      await tester.pump(const Duration(milliseconds: 1500));
       
       await tester.tap(find.byType(ListTile).first);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
     
     testWidgets("SubmitButton is disabled by default Edit Profile", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
     testWidgets("Tapping submit button when form valid shows CircularProgressIndicator", (tester) async {
@@ -328,45 +328,45 @@ void main() {
       
       expect(find.byType(CircularProgressIndicator), findsNothing);
       String description = faker.lorem.sentences(4).join();
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
 
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
     });
 
     testWidgets("Tapping submit button when Editing Profile calls profileRepository.update", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String description = faker.lorem.sentences(4).join();
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
 
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 5));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 5));
       verify(() => profileRepository.update(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone"), identifier: any(named: "identifier"))).called(1);
     });
 
     testWidgets("Tapping submit button when New Profile calls profileRepository.store", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), faker.company.name());
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), faker.company.name());
+      await tester.pump(const Duration(milliseconds: 1500));
       
       await tester.tap(find.byType(ListTile).first);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
       
       String description = faker.lorem.sentences(4).join();
 
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 5));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 5));
 
       verify(() => profileRepository.store(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone"))).called(1);
     });
@@ -375,56 +375,56 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String description = faker.lorem.sentences(4).join();
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text("Profile Updated!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 3));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.text("Profile Updated!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text("Profile Updated!"), findsNothing);
     });
 
     testWidgets("Tapping submit button on New success shows success toast", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("placeNameFieldKey")), faker.company.name());
-      await tester.pump(Duration(milliseconds: 1500));
+      await tester.enterText(find.byKey(const Key("placeNameFieldKey")), faker.company.name());
+      await tester.pump(const Duration(milliseconds: 1500));
       
       await tester.tap(find.byType(ListTile).first);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
 
       String description = faker.lorem.sentences(4).join();
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), "");
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), "");
+      await tester.pump(const Duration(milliseconds: 300));
 
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text("Profile Saved!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
 
-      await tester.pump(Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.text("Profile Saved!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text("Profile Saved!"), findsNothing);
     });
 
     testWidgets("Tapping submit button on error shows errorMessage", (tester) async {
       when(() => profileRepository.update(name: any(named: "name"), website: any(named: "website"), description: any(named: "description"), phone: any(named: "phone"), identifier: any(named: "identifier")))
-        .thenThrow(ApiException(error: "error Message!"));
+        .thenThrow(const ApiException(error: "error Message!"));
       
       await screenBuilderEdit.createScreen(tester: tester);
 
       String description = faker.lorem.sentences(4).join();
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text("error Message!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("error Message!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.text("error Message!"), findsNothing);
     });
 
@@ -432,12 +432,12 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
 
       String description = faker.lorem.sentences(4).join();
-      await tester.enterText(find.byKey(Key("descriptionTextKey")), description);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text("Profile Updated!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 4));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 4));
       verify(() => observer.didPop(any(), any()));
     });
   });

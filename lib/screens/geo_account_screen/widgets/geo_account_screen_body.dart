@@ -15,9 +15,10 @@ class GeoAccountScreenBody extends StatelessWidget {
   final Location _location;
   final bool _isEdit;
 
-  const GeoAccountScreenBody({required Location location, required bool isEdit})
+  const GeoAccountScreenBody({required Location location, required bool isEdit, Key? key})
     : _location = location,
-      _isEdit = isEdit;
+      _isEdit = isEdit,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class GeoAccountScreenBody extends StatelessWidget {
         }
       },
       child: SingleChildScrollView(
-        key: Key("scrollKey"),
+        key: const Key("scrollKey"),
         child: Column(
           children: [
             SizedBox(height: SizeConfig.getHeight(5)),
@@ -55,7 +56,7 @@ class GeoAccountScreenBody extends StatelessWidget {
 
   Widget _title({required BuildContext context}) {
     return Column(
-      key: Key("titleKey"),
+      key: const Key("titleKey"),
       children: [
         BoldText3(text: 'Business Location & Geofence', context: context),
         Text5(text: 'Please ensure location is correct and geofence encircles business.', context: context)
@@ -66,7 +67,7 @@ class GeoAccountScreenBody extends StatelessWidget {
   Widget _map() {
     return BlocBuilder<GeoAccountScreenBloc, GeoAccountScreenState>(
       builder: (context, state) {
-        return Container(
+        return SizedBox(
           height: SizeConfig.getWidth(40),
           width: SizeConfig.getWidth(40),
           child: GoogleMap(
@@ -75,11 +76,11 @@ class GeoAccountScreenBody extends StatelessWidget {
               target: state.initialLocation,
               zoom: 18
             ),
-            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+            gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
               Factory<OneSequenceGestureRecognizer>(
                 () => EagerGestureRecognizer()
               )
-            ].toSet(),
+            },
             markers: _businessMarker(context: context, state: state),
             circles: _geoFence(context: context, state: state),
           )
@@ -94,7 +95,7 @@ class GeoAccountScreenBody extends StatelessWidget {
         BoldText5(text: 'Geofence Size', context: context),
         BlocBuilder<GeoAccountScreenBloc, GeoAccountScreenState>(
           builder: (context, state) {
-            return Container(
+            return SizedBox(
               width: SizeConfig.getWidth(40),
               child: Slider(
                 value: state.radius,
@@ -116,7 +117,7 @@ class GeoAccountScreenBody extends StatelessWidget {
           control: state.errorButtonControl,
           onAnimationComplete: () => _resetForm(context: context),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(context: context, state: state) : null,
             child: _buttonChild(context: context, state: state),
           )
@@ -127,9 +128,9 @@ class GeoAccountScreenBody extends StatelessWidget {
 
   Widget _buttonChild({required BuildContext context, required GeoAccountScreenState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -150,21 +151,21 @@ class GeoAccountScreenBody extends StatelessWidget {
   }
 
   Set<Marker> _businessMarker({required BuildContext context, required GeoAccountScreenState state}) {
-    return [Marker(
-      markerId: MarkerId("markerId"),
+    return {Marker(
+      markerId: const MarkerId("markerId"),
       position: state.currentLocation,
       draggable: true,
       onDragEnd: (latLng) => BlocProvider.of<GeoAccountScreenBloc>(context).add(LocationChanged(location: latLng)),
-    )].toSet();
+    )};
   }
 
   Set<Circle> _geoFence({required BuildContext context, required GeoAccountScreenState state}) {
-    return [Circle(
-      circleId: CircleId("circleId"),
+    return {Circle(
+      circleId: const CircleId("circleId"),
       center: state.currentLocation,
       radius: state.radius,
       strokeColor: Theme.of(context).colorScheme.callToAction
-    )].toSet();
+    )};
   }
 
   bool _buttonEnabled({required GeoAccountScreenState state}) {
@@ -178,7 +179,7 @@ class GeoAccountScreenBody extends StatelessWidget {
   }
   
   void _resetForm({required BuildContext context}) {
-    Future.delayed(Duration(seconds: 1), () => BlocProvider.of<GeoAccountScreenBloc>(context).add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => BlocProvider.of<GeoAccountScreenBloc>(context).add(Reset()));
   }
 
   void _submitButtonPressed({required BuildContext context, required GeoAccountScreenState state}) {

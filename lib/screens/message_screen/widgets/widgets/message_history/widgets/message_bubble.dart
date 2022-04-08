@@ -12,11 +12,18 @@ class MessageBubble extends StatelessWidget {
   final TextSizer _textSizer;
   final BoxConstraints _constraints;
 
-  const MessageBubble({required int index, required Reply reply, required TextSizer textSizer, required BoxConstraints constraints})
+  const MessageBubble({
+    required int index,
+    required Reply reply,
+    required TextSizer textSizer,
+    required BoxConstraints constraints,
+    Key? key
+  })
     : _index = index,
       _reply = reply,
       _textSizer = textSizer,
-      _constraints = constraints;
+      _constraints = constraints,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,20 +49,20 @@ class MessageBubble extends StatelessWidget {
                     fontSize: _textSizer.set(size: 2, maxWidth: _constraints.maxWidth)
                   ),
                 ),
-                padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                 width: _bubbleWidth(context: context),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.callToAction,
                   borderRadius: BorderRadius.circular(8.0)
                 ),
-                margin: EdgeInsets.only(right: 10.0),
+                margin: const EdgeInsets.only(right: 10.0),
               )
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Container(
+              SizedBox(
                 width: _dateWidth(context: context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -68,12 +75,12 @@ class MessageBubble extends StatelessWidget {
                           fontSize: _textSizer.set(size: 2, maxWidth: _constraints.maxWidth)
                         ),
                       ),
-                      padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
+                      padding: const EdgeInsets.only(top: 5.0, bottom: 5.0),
                     ),
 
                     if (_reply.read)
                       Container(
-                        padding: EdgeInsets.only(right: 8.0, top: 5.0, bottom: 5.0),
+                        padding: const EdgeInsets.only(right: 8.0, top: 5.0, bottom: 5.0),
                         child: Text(
                           "Read",
                           style: TextStyle(
@@ -107,19 +114,19 @@ class MessageBubble extends StatelessWidget {
                     fontSize: _textSizer.set(size: 2, maxWidth: _constraints.maxWidth)
                   ),
                 ),
-                padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                 width: _bubbleWidth(context: context),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.callToActionDisabled,
                   borderRadius: BorderRadius.circular(8.0)
                 ),
-                margin: EdgeInsets.only(left: 10.0),
+                margin: const EdgeInsets.only(left: 10.0),
               )
             ],
           ),
           Row(
             children: [
-              Container(
+              SizedBox(
                 width: _dateWidth(context: context),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -132,11 +139,11 @@ class MessageBubble extends StatelessWidget {
                           fontSize: _textSizer.set(size: 2, maxWidth: _constraints.maxWidth)
                         ),
                       ),
-                      padding: EdgeInsets.only(left: 8.0, top: 5.0, bottom: 5.0),
+                      padding: const EdgeInsets.only(left: 8.0, top: 5.0, bottom: 5.0),
                   ),
 
                   if (_reply.read)
-                    Container(
+                    SizedBox(
                       child: Text(
                         "Read",
                         style: TextStyle(

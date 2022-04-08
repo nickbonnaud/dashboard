@@ -9,7 +9,7 @@ main() {
     late OnboardBloc onboardBloc;
 
     setUp(() {
-      accountStatus = Status(name: "Test", code: 103);
+      accountStatus = const Status(name: "Test", code: 103);
       onboardBloc = OnboardBloc(accountStatus: accountStatus);
     });
 

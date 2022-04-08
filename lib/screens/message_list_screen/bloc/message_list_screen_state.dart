@@ -9,7 +9,7 @@ class MessageListScreenState extends Equatable {
   final bool paginating;
   final String errorMessage;
 
-  MessageListScreenState({
+  const MessageListScreenState({
     required this.messages,
     this.nextUrl,
     required this.hasReachedEnd,
@@ -19,7 +19,7 @@ class MessageListScreenState extends Equatable {
   });
 
   factory MessageListScreenState.initial() {
-    return MessageListScreenState(
+    return const MessageListScreenState(
       messages:  [],
       nextUrl: null,
       hasReachedEnd: false,

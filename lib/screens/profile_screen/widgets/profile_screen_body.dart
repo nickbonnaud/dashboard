@@ -9,8 +9,9 @@ import 'widgets/edit_profile_screen_body.dart';
 class ProfileScreenBody extends StatefulWidget {
   final Profile _profile;
 
-  const ProfileScreenBody({required Profile profile})
-    : _profile = profile;
+  const ProfileScreenBody({required Profile profile, Key? key})
+    : _profile = profile,
+      super(key: key);
 
   @override
   State<ProfileScreenBody> createState() => _ProfileScreenBodyState();

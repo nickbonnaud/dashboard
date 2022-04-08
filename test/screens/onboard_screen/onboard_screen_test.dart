@@ -117,7 +117,7 @@ void main() {
       _setScreenBuilder(code: 105);
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.drag(find.text("Account Setup"), Offset(0, -200));
+      await tester.drag(find.text("Account Setup"), const Offset(0, -200));
       await tester.pump();
 
       await tester.tap(find.text("Review Location").at(5));
@@ -153,7 +153,7 @@ void main() {
       _setScreenBuilder(code: 107);
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.drag(find.text("Account Setup"), Offset(0, -200));
+      await tester.drag(find.text("Account Setup"), const Offset(0, -200));
       await tester.pump();
 
       await tester.tap(find.text("Set Hours").at(7));

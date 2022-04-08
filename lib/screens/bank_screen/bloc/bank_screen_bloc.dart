@@ -17,7 +17,7 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
   final BankRepository _bankRepository;
   final BusinessBloc _businessBloc;
 
-  final Duration _debounceTime = Duration(milliseconds: 300);
+  final Duration _debounceTime = const Duration(milliseconds: 300);
   
   BankScreenBloc({required BankRepository bankRepository, required BusinessBloc businessBloc, required BankAccount bankAccount})
     : _bankRepository = bankRepository,

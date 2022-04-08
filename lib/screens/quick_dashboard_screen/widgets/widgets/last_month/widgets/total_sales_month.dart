@@ -6,11 +6,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dashboard/theme/global_colors.dart';
 
 class TotalSalesMonth extends StatelessWidget {
+  
+  const TotalSalesMonth({Key? key}) 
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('Total Sales'),
+      title: const Text('Total Sales'),
       trailing: BlocBuilder<TotalSalesMonthBloc, TotalSalesMonthState>(
         builder: (context, state) {
           if (state is TotalSalesInitial || state is Loading) return CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction);

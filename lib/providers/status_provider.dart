@@ -5,7 +5,7 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 class StatusProvider extends BaseProvider {
 
   Future<PaginatedApiResponse> fetchTransactionStatuses() async {
-    final String url = ApiEndpoints.transactionStatuses;
-    return await this.getPaginated(url: url);
+    String url = ApiEndpoints.transactionStatuses;
+    return await getPaginated(url: url);
   }
 }

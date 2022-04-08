@@ -7,7 +7,7 @@ class FilterButtonState extends Equatable {
   const FilterButtonState({required this.searchHistoric, required this.withTransactions});
 
   factory FilterButtonState.initial() {
-    return FilterButtonState(
+    return const FilterButtonState(
       searchHistoric: true,
       withTransactions: true
     );

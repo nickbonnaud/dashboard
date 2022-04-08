@@ -8,7 +8,7 @@ class EmailFormState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
   
-  EmailFormState({
+  const EmailFormState({
     required this.isEmailValid,
     required this.isSubmitting,
     required this.isSuccess,
@@ -17,7 +17,7 @@ class EmailFormState extends Equatable {
   });
 
   factory EmailFormState.initial() {
-    return EmailFormState(
+    return const EmailFormState(
       isEmailValid: true,
       isSubmitting: false,
       isSuccess: false,

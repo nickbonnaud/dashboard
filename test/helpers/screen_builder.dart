@@ -23,7 +23,7 @@ class ScreenBuilder {
           onGenerateRoute: (settings) {
             return MaterialPageRoute(
               builder: (_) => Container(),
-              settings: RouteSettings(name: "test")
+              settings: const RouteSettings(name: "test")
             );
           },
           builder: (context, widget) {
@@ -34,10 +34,10 @@ class ScreenBuilder {
               minWidth: 480,
               maxWidth: 1200,
               breakpoints: [
-                ResponsiveBreakpoint.resize(480, name: MOBILE),
-                ResponsiveBreakpoint.autoScale(800, name: TABLET),
-                ResponsiveBreakpoint.resize(1000, name: DESKTOP),
-                ResponsiveBreakpoint.autoScale(2460, name: '4K'),
+                const ResponsiveBreakpoint.resize(480, name: MOBILE),
+                const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+                const ResponsiveBreakpoint.autoScale(2460, name: '4K'),
               ]
             );
           },

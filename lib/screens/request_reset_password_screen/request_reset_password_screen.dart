@@ -11,8 +11,9 @@ import 'widgets/request_reset_password_screen_body.dart';
 class RequestResetPasswordScreen extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
 
-  const RequestResetPasswordScreen({required AuthenticationRepository authenticationRepository})
-    : _authenticationRepository = authenticationRepository;
+  const RequestResetPasswordScreen({required AuthenticationRepository authenticationRepository, Key? key})
+    : _authenticationRepository = authenticationRepository,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class RequestResetPasswordScreen extends StatelessWidget {
         child: Card(
           elevation: 2.0,
           child: Container(
-            padding: EdgeInsets.all(42),
+            padding: const EdgeInsets.all(42),
             width: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
               ? MediaQuery.of(context).size.width
               : MediaQuery.of(context).size.width / 2.5,
@@ -34,7 +35,7 @@ class RequestResetPasswordScreen extends StatelessWidget {
               create: (_) => RequestResetPasswordScreenBloc(
                 authenticationRepository: _authenticationRepository
               ),
-              child: RequestResetPasswordScreenBody(),
+              child: const RequestResetPasswordScreenBody(),
             ),
           ),
         ),
@@ -47,7 +48,7 @@ class RequestResetPasswordScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.scrollBackground,
       elevation: 0,
       leading: IconButton(
-        icon: Icon(Icons.close),
+        icon: const Icon(Icons.close),
         iconSize: FontSizeAdapter.setSize(size: 4, context: context), 
         color: Theme.of(context).colorScheme.callToAction,
         onPressed: () => Navigator.of(context).pop()

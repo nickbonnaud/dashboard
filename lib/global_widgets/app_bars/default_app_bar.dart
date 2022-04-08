@@ -10,12 +10,18 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final bool _isSliver;
   final List<Widget> _trailingWidgets;
 
-  DefaultAppBar({required BuildContext context, bool isSliver = false, List<Widget> trailingWidgets = const []})
+  const DefaultAppBar({
+    required BuildContext context,
+    bool isSliver = false,
+    List<Widget> trailingWidgets = const [],
+    Key? key
+  })
     : _isSliver = isSliver,
-      _trailingWidgets = trailingWidgets;
+      _trailingWidgets = trailingWidgets,
+      super(key: key);
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
   
   @override
   Widget build(BuildContext context) {
@@ -47,7 +53,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   List<Widget> _actions() {
-    if (_trailingWidgets.isEmpty) return [MessageButton(),  MenuButton()];
+    if (_trailingWidgets.isEmpty) return [const MessageButton(), const MenuButton()];
     return _trailingWidgets;
   }
 
@@ -57,8 +63,8 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: Image(
         fit: BoxFit.contain,
         image: ResponsiveWrapper.of(context).isSmallerThan(DESKTOP)
-          ? AssetImage('assets/icon.png')
-          : AssetImage('assets/logo.png')
+          ? const AssetImage('assets/icon.png')
+          : const AssetImage('assets/logo.png')
       ),
     );
   }

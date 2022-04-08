@@ -5,9 +5,7 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 class UnassignedTransactionProvider extends BaseProvider {
 
   Future<PaginatedApiResponse> fetch({String? query, String? paginateUrl}) async {
-    final String url = paginateUrl == null
-      ? '${ApiEndpoints.unassignedTransactions}$query' 
-      : paginateUrl;
-    return await this.getPaginated(url: url);
+    String url = paginateUrl ?? '${ApiEndpoints.unassignedTransactions}$query';
+    return await getPaginated(url: url);
   }
 }

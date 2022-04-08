@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class Credentials {
   final String? googleKey;
 
-  Credentials({this.googleKey});
+  const Credentials({this.googleKey});
 
   Credentials.fromJson({required Map<String, dynamic> json})
     : googleKey = json['google_key'];

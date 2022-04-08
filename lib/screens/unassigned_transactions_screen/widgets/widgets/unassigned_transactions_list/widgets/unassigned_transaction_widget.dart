@@ -10,16 +10,21 @@ class UnassignedTransactionWidget extends StatelessWidget {
   final UnassignedTransaction _unassignedTransaction;
   final int _index;
 
-  const UnassignedTransactionWidget({required UnassignedTransaction unassignedTransaction, required int index})
+  const UnassignedTransactionWidget({
+    required UnassignedTransaction unassignedTransaction,
+    required int index,
+    Key? key
+  })
     : _unassignedTransaction = unassignedTransaction,
-      _index = index;
+      _index = index,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       key: Key("unassignedTransactionsCard-$_index"),
       child: ListTile(
-        leading: CircleAvatar(
+        leading: const CircleAvatar(
           child: Icon(
             Icons.person,
           ),

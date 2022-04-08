@@ -7,7 +7,7 @@ class PaginatedApiResponse {
   final bool isOK;
   final String? next;
 
-  PaginatedApiResponse({
+  const PaginatedApiResponse({
     required this.body,
     this.error = "",
     required this.isOK,

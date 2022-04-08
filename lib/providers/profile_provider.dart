@@ -5,12 +5,12 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 class ProfileProvider extends BaseProvider {
 
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
-    final String url = ApiEndpoints.profile;
-    return await this.post(url: url, body: body);
+    String url = ApiEndpoints.profile;
+    return await post(url: url, body: body);
   }
 
   Future<ApiResponse> update({required Map<String, dynamic> body, required String identifier}) async {
-    final String url = "${ApiEndpoints.profile}/$identifier";
-    return await this.patch(url: url, body: body);
+    String url = "${ApiEndpoints.profile}/$identifier";
+    return await patch(url: url, body: body);
   }
 }

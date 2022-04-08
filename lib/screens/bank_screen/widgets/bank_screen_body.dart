@@ -16,8 +16,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 class BankScreenBody extends StatefulWidget {
   final BankAccount _bankAccount;
 
-  const BankScreenBody({required BankAccount bankAccount})
-    : _bankAccount = bankAccount;
+  const BankScreenBody({required BankAccount bankAccount, Key? key})
+    : _bankAccount = bankAccount,
+      super(key: key);
   
   @override
   State<BankScreenBody> createState() => _BankScreenBodyState();
@@ -103,7 +104,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         }
       },
       child: SingleChildScrollView(
-        key: Key("scrollKey"),
+        key: const Key("scrollKey"),
         child: Padding(
           padding: EdgeInsets.only(
             left: SizeConfig.getWidth(10),
@@ -188,7 +189,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         SizedBox(width: SizeConfig.getWidth(5)),
         Expanded(
           child: Column(
-            key: Key("accountTypeKey"),
+            key: const Key("accountTypeKey"),
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -214,7 +215,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _bankAccountDataBody({required BankScreenState state}) {
     return Column(
-      key: Key("AccountDataKey"),
+      key: const Key("AccountDataKey"),
       children: [
         ResponsiveRowColumn(
           layout: _layoutHelper.setLayout(context: context),
@@ -316,7 +317,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _firstNameTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("firstNameKey"),
+      key: const Key("firstNameKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Account holder first name',
@@ -344,7 +345,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _lastNameTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("lastNameKey"),
+      key: const Key("lastNameKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Account holder last name',
@@ -372,7 +373,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _routingNumberTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("routingKey"),
+      key: const Key("routingKey"),
       decoration: InputDecoration(
         labelText: 'Routing Number',
         labelStyle: TextStyle(
@@ -400,7 +401,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _accountNumberTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("accountKey"),
+      key: const Key("accountKey"),
       decoration: InputDecoration(
         labelText: 'Account Number',
         labelStyle: TextStyle(
@@ -428,7 +429,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _addressTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("addressKey"),
+      key: const Key("addressKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Address Line 1',
@@ -456,7 +457,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _addressSecondaryTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("addressSecondaryKey"),
+      key: const Key("addressSecondaryKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'Address Line 2 (optional)',
@@ -484,7 +485,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _cityTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("cityKey"),
+      key: const Key("cityKey"),
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: 'City',
@@ -512,7 +513,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _stateTextField({required BankScreenState state}) {    
     return TextFormField(
-      key: Key("stateKey"),
+      key: const Key("stateKey"),
       textCapitalization: TextCapitalization.characters,
       decoration: InputDecoration(
         labelText: 'State',
@@ -541,7 +542,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _zipTextField({required BankScreenState state}) {
     return TextFormField(
-      key: Key("zipKey"),
+      key: const Key("zipKey"),
       decoration: InputDecoration(
         labelText: 'Zip',
         labelStyle: TextStyle(
@@ -583,7 +584,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
       control: state.errorButtonControl,
       onAnimationComplete: _resetForm,
       child: ElevatedButton(
-        key: Key("submitButtonKey"),
+        key: const Key("submitButtonKey"),
         onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
         child: _buttonChild(state: state), 
       )
@@ -592,16 +593,16 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _buttonChild({required BankScreenState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary)
     ); 
   }
 
   Widget _changeAccountTypeButton() {
     return ElevatedButton(
-      key: Key("changeAccountTypeKey"),
+      key: const Key("changeAccountTypeKey"),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.warning)
       ),
@@ -612,7 +613,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   Widget _changeAccountButtonChild() {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: Text4(text: 'Change Account Type', context: context, color: Theme.of(context).colorScheme.onSecondary)
     ); 
   }
@@ -673,7 +674,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _bankScreenBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => _bankScreenBloc.add(Reset()));
   }
 
   void _submitButtonPressed({required BankScreenState state}) {

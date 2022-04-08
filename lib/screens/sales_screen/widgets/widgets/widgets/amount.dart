@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class Amount extends StatelessWidget {
   final int _total;
 
-  const Amount({required int total})
-    : _total = total;
+  const Amount({required int total, Key? key})
+    : _total = total,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class Amount extends StatelessWidget {
       child: FittedBox(
         child: Text(
           Currency.create(cents: _total),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 25,
             color: Colors.white
           ),

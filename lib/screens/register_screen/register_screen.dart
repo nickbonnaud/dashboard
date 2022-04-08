@@ -9,9 +9,14 @@ class RegisterScreen extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
   final AuthenticationBloc _authenticationBloc;
   
-  const RegisterScreen({required AuthenticationRepository authenticationRepository, required AuthenticationBloc authenticationBloc})
+  const RegisterScreen({
+    required AuthenticationRepository authenticationRepository, 
+    required AuthenticationBloc authenticationBloc,
+    Key? key
+  })
     : _authenticationRepository = authenticationRepository,
-      _authenticationBloc = authenticationBloc;
+      _authenticationBloc = authenticationBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

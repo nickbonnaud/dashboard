@@ -6,7 +6,7 @@ class Token extends Equatable {
   final String value;
   final DateTime expiry;
 
-  Token({required this.value, required this.expiry});
+  const Token({required this.value, required this.expiry});
 
   Token.fromJson({required Map<String, dynamic> json})
     : value = json['value']!,

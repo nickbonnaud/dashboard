@@ -7,7 +7,7 @@ class RequestResetPasswordScreenState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  RequestResetPasswordScreenState({
+  const RequestResetPasswordScreenState({
     required this.isEmailValid,
     required this.isSubmitting,
     required this.isSuccess,
@@ -16,7 +16,7 @@ class RequestResetPasswordScreenState extends Equatable {
   });
 
   factory RequestResetPasswordScreenState.initial() {
-    return RequestResetPasswordScreenState(
+    return const RequestResetPasswordScreenState(
       isEmailValid: true,
       isSubmitting: false,
       isSuccess: false,

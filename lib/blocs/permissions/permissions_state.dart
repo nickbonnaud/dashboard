@@ -6,14 +6,14 @@ class PermissionsState extends Equatable {
   final bool isGeoEnabled;
   final bool hasGeoPermission;
 
-  PermissionsState({
+  const PermissionsState({
     required this.isGeoEnabled,
     required this.hasGeoPermission,
     required this.loading
   });
 
   factory PermissionsState.initial() {
-    return PermissionsState(
+    return const PermissionsState(
       isGeoEnabled: false, 
       hasGeoPermission: false,
       loading: true

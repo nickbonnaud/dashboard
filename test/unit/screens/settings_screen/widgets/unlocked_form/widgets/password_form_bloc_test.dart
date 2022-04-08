@@ -32,24 +32,24 @@ void main() {
     blocTest<PasswordFormBloc, PasswordFormState>(
       "PasswordChanged event changes state if confirmation empty: [isPasswordValid: false, isPasswordConfirmationValid: true]",
       build: () => passwordFormBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(PasswordChanged(password: "pa", passwordConfirmation: "")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const PasswordChanged(password: "pa", passwordConfirmation: "")),
       expect: () => [_baseState.update(isPasswordValid: false, isPasswordConfirmationValid: true)]
     );
 
     blocTest<PasswordFormBloc, PasswordFormState>(
       "PasswordChanged event changes state if confirmation is not empty: [isPasswordValid: false, isPasswordConfirmationValid: false]",
       build: () => passwordFormBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(PasswordChanged(password: "pa", passwordConfirmation: "pass")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const PasswordChanged(password: "pa", passwordConfirmation: "pass")),
       expect: () => [_baseState.update(isPasswordValid: false, isPasswordConfirmationValid: false)]
     );
 
     blocTest<PasswordFormBloc, PasswordFormState>(
       "PasswordConfirmationChanged event changes state: [isPasswordConfirmationValid: false]",
       build: () => passwordFormBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(PasswordConfirmationChanged(password: "pass", passwordConfirmation: "pa")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const PasswordConfirmationChanged(password: "pass", passwordConfirmation: "pa")),
       expect: () => [_baseState.update(isPasswordConfirmationValid: false)]
     );
 
@@ -60,7 +60,7 @@ void main() {
           .thenAnswer((invocation) async => true);
         return passwordFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(password: "password", passwordConfirmation: "password", identifier: "identifier")),
+      act: (bloc) => bloc.add(const Submitted(password: "password", passwordConfirmation: "password", identifier: "identifier")),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -71,7 +71,7 @@ void main() {
           .thenAnswer((invocation) async => true);
         return passwordFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(password: "password", passwordConfirmation: "password", identifier: "identifier")),
+      act: (bloc) => bloc.add(const Submitted(password: "password", passwordConfirmation: "password", identifier: "identifier")),
       verify: (_) {
         verify(() => businessRepository.updatePassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), identifier: any(named: "identifier"))).called(1);
       }
@@ -81,10 +81,10 @@ void main() {
       "Submitted event changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]",
       build: () {
         when(() => businessRepository.updatePassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), identifier: any(named: "identifier")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         return passwordFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(password: "password", passwordConfirmation: "password", identifier: "identifier")),
+      act: (bloc) => bloc.add(const Submitted(password: "password", passwordConfirmation: "password", identifier: "identifier")),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 

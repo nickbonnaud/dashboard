@@ -28,8 +28,8 @@ void main() {
     setUp(() {
       hoursRepository = MockHoursRepository();
       businessBloc = MockBusinessBloc();
-      hoursGrid = HoursGrid.initial(operatingHoursRange: Hour(start: TimeOfDay(hour: 9, minute: 0), end: TimeOfDay(hour: 22, minute: 0))).toggle();
-      hoursList = hoursGrid.hoursList(earliestStart: TimeOfDay(hour: 9, minute: 0));
+      hoursGrid = HoursGrid.initial(operatingHoursRange: const Hour(start: TimeOfDay(hour: 9, minute: 0), end: TimeOfDay(hour: 22, minute: 0))).toggle();
+      hoursList = hoursGrid.hoursList(earliestStart: const TimeOfDay(hour: 9, minute: 0));
       
       // hoursSelectionFormState = HoursSelectionFormState.initial();
       // hoursSelectionFormState = hoursSelectionFormState.update(operatingHoursGrid: hoursSelectionFormState.operatingHoursGrid.operatingHoursGrid.map((row) => row.map((_) => true).toList()).toList());
@@ -66,33 +66,33 @@ void main() {
 
     test("HoursConfirmationFormState.initial() sets each days hours as list of Hour", () {
       HoursConfirmationFormState state = HoursConfirmationFormState.initial(hoursGrid: hoursGrid, hoursList: hoursList);
-      state.days.forEach((day) {
+      for (var day in state.days) {
         expect(day, isA<List<Hour>>());
         // expect(day.first.start, isA<TimeOfDay>());
         // expect(day.first.end, isA<TimeOfDay>());
-      });
+      }
     });
 
     test("HoursConfirmationFormState.initial() sets each days hours to correct time", () {
       HoursConfirmationFormState state = HoursConfirmationFormState.initial(hoursGrid: hoursGrid, hoursList: hoursList);
-      state.days.forEach((day) {
-        TimeOfDay start = TimeOfDay(hour: 9, minute: 0);
-        TimeOfDay end = TimeOfDay(hour: 22, minute: 0);
+      for (var day in state.days) {
+        TimeOfDay start = const TimeOfDay(hour: 9, minute: 0);
+        TimeOfDay end = const TimeOfDay(hour: 22, minute: 0);
         expect(day.first.start, start);
         expect(day.first.end, end);
-      });
+      }
     });
     
     blocTest<HoursConfirmationFormBloc, HoursConfirmationFormState>(
       "HoursChanged event updates selected days hours",
       build: () => hoursConfirmationFormBloc,
       act: (bloc) {
-        bloc.add(HoursChanged(
+        bloc.add(const HoursChanged(
           day: 3,
           hours: [Hour(start: TimeOfDay(hour: 9, minute: 0), end: TimeOfDay(hour: 13, minute: 0)), Hour(start: TimeOfDay(hour: 6, minute: 00), end: TimeOfDay(hour: 22, minute: 0))]
         ));
       },
-      expect: () => [baseState.update(wednesday: [Hour(start: TimeOfDay(hour: 9, minute: 0), end: TimeOfDay(hour: 13, minute: 0)), Hour(start: TimeOfDay(hour: 6, minute: 00), end: TimeOfDay(hour: 22, minute: 0))])],
+      expect: () => [baseState.update(wednesday: [const Hour(start: TimeOfDay(hour: 9, minute: 0), end: TimeOfDay(hour: 13, minute: 0)), const Hour(start: TimeOfDay(hour: 6, minute: 00), end: TimeOfDay(hour: 22, minute: 0))])],
     );
 
     blocTest<HoursConfirmationFormBloc, HoursConfirmationFormState>(
@@ -102,7 +102,7 @@ void main() {
         when(() => hoursRepository.store(sunday: any(named: "sunday"), monday: any(named: "monday"), tuesday: any(named: "tuesday"), wednesday: any(named: "wednesday"), thursday: any(named: "thursday"), friday: any(named: "friday"), saturday: any(named: "saturday")))
           .thenAnswer((_) async => MockHours());
         when(() => businessBloc.add(any(that: isA<HoursUpdated>()))).thenReturn(null);
-        bloc.add(Submitted(
+        bloc.add(const Submitted(
           sunday: "sunday",
           monday: "monday",
           tuesday: "tuesday",
@@ -122,7 +122,7 @@ void main() {
         when(() => hoursRepository.store(sunday: any(named: "sunday"), monday: any(named: "monday"), tuesday: any(named: "tuesday"), wednesday: any(named: "wednesday"), thursday: any(named: "thursday"), friday: any(named: "friday"), saturday: any(named: "saturday")))
           .thenAnswer((_) async => MockHours());
         when(() => businessBloc.add(any(that: isA<HoursUpdated>()))).thenReturn(null);
-        bloc.add(Submitted(
+        bloc.add(const Submitted(
           sunday: "sunday",
           monday: "monday",
           tuesday: "tuesday",
@@ -144,7 +144,7 @@ void main() {
         when(() => hoursRepository.store(sunday: any(named: "sunday"), monday: any(named: "monday"), tuesday: any(named: "tuesday"), wednesday: any(named: "wednesday"), thursday: any(named: "thursday"), friday: any(named: "friday"), saturday: any(named: "saturday")))
           .thenAnswer((_) async => MockHours());
         when(() => businessBloc.add(any(that: isA<HoursUpdated>()))).thenReturn(null);
-        bloc.add(Submitted(
+        bloc.add(const Submitted(
           sunday: "sunday",
           monday: "monday",
           tuesday: "tuesday",
@@ -164,8 +164,8 @@ void main() {
       build: () => hoursConfirmationFormBloc,
       act: (bloc) {
         when(() => hoursRepository.store(sunday: any(named: "sunday"), monday: any(named: "monday"), tuesday: any(named: "tuesday"), wednesday: any(named: "wednesday"), thursday: any(named: "thursday"), friday: any(named: "friday"), saturday: any(named: "saturday")))
-          .thenThrow(ApiException(error: "error"));
-        bloc.add(Submitted(
+          .thenThrow(const ApiException(error: "error"));
+        bloc.add(const Submitted(
           sunday: "sunday",
           monday: "monday",
           tuesday: "tuesday",

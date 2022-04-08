@@ -43,7 +43,7 @@ void main() {
       );
 
       when(() => hoursRepository.update(identifier: any(named: "identifier"), sunday: any(named: "sunday"), monday: any(named: "monday"), tuesday: any(named: "tuesday"), wednesday: any(named: "wednesday"), thursday: any(named: "thursday"), friday: any(named: "friday"), saturday: any(named: "saturday")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createHours()));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createHours()));
 
 
       registerFallbackValue(MockRoute());
@@ -142,17 +142,17 @@ void main() {
 
     testWidgets("Edit Hours Screen creates SubmitButton", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("submitButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("submitButtonKey")), findsOneWidget);
     });
 
     testWidgets("SubmitButton is disabled if hours unchanged", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
     testWidgets("SubmitButton is enabled if hours changed", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
       String hourToEdit = hours.days.firstWhere((hour) => hour.toLowerCase() != "closed").split(" - ").first;
       await tester.tap(find.text(hourToEdit).first);
       await tester.pump();
@@ -160,7 +160,7 @@ void main() {
       await tester.pump();
       await tester.tap(find.text("Change"));
       await tester.pump();
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, true);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
     });
 
     testWidgets("Tapping submit button shows CircularProgressIndicator", (tester) async {
@@ -173,12 +173,12 @@ void main() {
       await tester.pump();
       await tester.tap(find.text("Change"));
       await tester.pump();
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
     });
 
     testWidgets("Tapping submit button shows toast on success", (tester) async {
@@ -191,12 +191,12 @@ void main() {
       await tester.pump();
       await tester.tap(find.text("Change"));
       await tester.pump();
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 2));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text("Hours Updated!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 2));
     });
 
     testWidgets("Tapping submit button on success pops nav", (tester) async {
@@ -208,16 +208,16 @@ void main() {
       await tester.pump();
       await tester.tap(find.text("Change"));
       await tester.pump();
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 4));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 4));
       verify(() => observer.didPop(any(), any()));
     });
 
     testWidgets("Tapping submit button on error shows error message", (tester) async {
       when(() => hoursRepository.update(identifier: any(named: "identifier"), sunday: any(named: "sunday"), monday: any(named: "monday"), tuesday: any(named: "tuesday"), wednesday: any(named: "wednesday"), thursday: any(named: "thursday"), friday: any(named: "friday"), saturday: any(named: "saturday")))
-        .thenThrow(ApiException(error: "An error occurred!"));
+        .thenThrow(const ApiException(error: "An error occurred!"));
 
       await screenBuilder.createScreen(tester: tester);
       expect(find.text("An error Occurred!"), findsNothing);
@@ -228,12 +228,12 @@ void main() {
       await tester.pump();
       await tester.tap(find.text("Change"));
       await tester.pump();
-      await tester.drag(find.byKey(Key("scrollKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
-      await tester.tap(find.byKey(Key("submitButtonKey")));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("An error occurred!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.text("An error occurred!"), findsNothing);
     });
   });

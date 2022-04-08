@@ -11,9 +11,10 @@ class CustomerWidget extends StatelessWidget {
   final int _index;
   final CustomerResource _customerResource;
 
-  const CustomerWidget({required int index, required CustomerResource customerResource})
+  const CustomerWidget({required int index, required CustomerResource customerResource, Key? key})
     : _index = index,
-      _customerResource = customerResource;
+      _customerResource = customerResource,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -15,9 +15,14 @@ class UnlockedForm extends StatefulWidget {
   final BusinessRepository _businessRepository;
   final BusinessBloc _businessBloc;
 
-  const UnlockedForm({required BusinessRepository businessRepository, required BusinessBloc businessBloc})
+  const UnlockedForm({
+    required BusinessRepository businessRepository,
+    required BusinessBloc businessBloc,
+    Key? key
+  })
     : _businessRepository = businessRepository,
-      _businessBloc = businessBloc;
+      _businessBloc = businessBloc,
+      super(key: key);
 
   @override
     State<UnlockedForm> createState() => _UnlockedFormState();
@@ -31,8 +36,8 @@ class _UnlockedFormState extends State<UnlockedForm> {
     return BlocListener<UnlockedFormCubit, int>(
       listener: (context, page) {
         page == 1 
-          ? _controller.nextPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn)
-          : _controller.previousPage(duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+          ? _controller.nextPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn)
+          : _controller.previousPage(duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
       },
       child: Card(
         child: Row(
@@ -57,7 +62,7 @@ class _UnlockedFormState extends State<UnlockedForm> {
     return BlocBuilder<UnlockedFormCubit, int>(
       builder: (context, page) {
         return IconButton(
-          icon: Icon(Icons.chevron_left),
+          icon: const Icon(Icons.chevron_left),
           iconSize: SizeConfig.getWidth(10),
           color: page == 0 
             ? Theme.of(context).colorScheme.callToActionDisabled
@@ -108,7 +113,7 @@ class _UnlockedFormState extends State<UnlockedForm> {
     return BlocBuilder<UnlockedFormCubit, int>(
       builder: (context, page) {
         return IconButton(
-          icon: Icon(Icons.chevron_right),
+          icon: const Icon(Icons.chevron_right),
           iconSize: SizeConfig.getWidth(10),
           color: page == 1 
             ? Theme.of(context).colorScheme.callToActionDisabled

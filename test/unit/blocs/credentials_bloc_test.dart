@@ -58,7 +58,7 @@ void main() {
     blocTest<CredentialsBloc, CredentialsState>(
       "CredentialsBloc event Init yields CredentialsLoading, FailedToFetchCredentials on Fail",
       build: () {
-        when(() => credentialsRepository.fetch()).thenThrow(ApiException(error: "error"));
+        when(() => credentialsRepository.fetch()).thenThrow(const ApiException(error: "error"));
         return credentialsBloc;
       },
       act: (bloc) => bloc.add(Init()),

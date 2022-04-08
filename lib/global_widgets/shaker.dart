@@ -15,18 +15,19 @@ class Shaker extends StatelessWidget {
     required Widget child, 
     required VoidCallback onAnimationComplete,
     int numberOfShakes = 4,
+    Key? key
     })
     : _control = control,
       _child = child,
       _numberOfShakes = numberOfShakes,
       _onAnimationComplete = onAnimationComplete,
-      _tween = MultiTween<ErrorAnimationProp>() {
+      _tween = MultiTween<ErrorAnimationProp>(), super(key: key) {
         List.generate(
           _numberOfShakes, 
           (_) => _tween
-            ..add(ErrorAnimationProp.offset, Tween<double>(begin: 0, end: 10), Duration(milliseconds: 100))
-            ..add(ErrorAnimationProp.offset, Tween<double>(begin: 10, end: -10), Duration(milliseconds: 100))
-            ..add(ErrorAnimationProp.offset, Tween<double>(begin: -10, end: 0), Duration(milliseconds: 100))
+            ..add(ErrorAnimationProp.offset, Tween<double>(begin: 0, end: 10), const Duration(milliseconds: 100))
+            ..add(ErrorAnimationProp.offset, Tween<double>(begin: 10, end: -10), const Duration(milliseconds: 100))
+            ..add(ErrorAnimationProp.offset, Tween<double>(begin: -10, end: 0), const Duration(milliseconds: 100))
         );
       }
 

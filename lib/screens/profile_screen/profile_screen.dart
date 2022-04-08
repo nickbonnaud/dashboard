@@ -19,12 +19,14 @@ class ProfileScreen extends StatelessWidget {
     required ProfileRepository profileRepository,
     required Profile profile,
     required BusinessBloc businessBloc,
-    required GoogleMapsPlaces places
+    required GoogleMapsPlaces places,
+    Key? key
   })
     : _profileRepository = profileRepository,
       _profile = profile,
       _businessBloc = businessBloc,
-      _places = places;
+      _places = places,
+      super(key: key);
 
   
   @override

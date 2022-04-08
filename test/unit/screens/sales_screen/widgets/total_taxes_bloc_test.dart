@@ -58,11 +58,11 @@ void main() {
       "InitTotalTaxes event on error changes state: [Loading()], [FetchFailed()]",
       build: () {
         _totalTaxes = faker.randomGenerator.integer(500);
-        when(() => transactionRepository.fetchTotalTaxesToday()).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchTotalTaxesToday()).thenThrow(const ApiException(error: "error"));
         return totalTaxesBloc;
       },
       act: (bloc) => bloc.add(InitTotalTaxes()),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
 
     blocTest<TotalTaxesBloc, TotalTaxesState>(
@@ -93,11 +93,11 @@ void main() {
       "DateRangeChanged event on error changes state: [Loading()], [FetchFailed()]",
       build: () {
         _totalTaxes = faker.randomGenerator.integer(500);
-        when(() => transactionRepository.fetchTotalTaxesDateRange(dateRange: any(named: "dateRange"))).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchTotalTaxesDateRange(dateRange: any(named: "dateRange"))).thenThrow(const ApiException(error: "error"));
         return totalTaxesBloc;
       },
       act: (bloc) => bloc.add(DateRangeChanged(dateRange: DateTimeRange(start: DateTime.now(), end: DateTime.now()))),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
   });
 }

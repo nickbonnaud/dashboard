@@ -20,7 +20,7 @@ class EmployeeTipFinderState extends Equatable {
 
   factory EmployeeTipFinderState.initial({@required DateTimeRange? currentDateRange}) {
     return EmployeeTipFinderState(
-      tips: [],
+      tips: const [],
       loading: false,
       errorMessage: '',
       currentDateRange: currentDateRange,

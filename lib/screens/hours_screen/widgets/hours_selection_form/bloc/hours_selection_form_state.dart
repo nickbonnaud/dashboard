@@ -5,7 +5,7 @@ class HoursSelectionFormState extends Equatable {
   final HoursGrid operatingHoursGrid;
   final bool isFinished;
 
-  HoursSelectionFormState({
+  const HoursSelectionFormState({
     required this.operatingHoursGrid, 
     required this.isFinished,
   });

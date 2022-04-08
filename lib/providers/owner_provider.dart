@@ -5,17 +5,17 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 class OwnerProvider extends BaseProvider {
 
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
-    final String url = ApiEndpoints.payFacOwner;
-    return await this.post(url: url, body: body);
+    String url = ApiEndpoints.payFacOwner;
+    return await post(url: url, body: body);
   }
 
   Future<ApiResponse> update({required String identifier, required Map<String, dynamic> body}) async {
-    final String url = '${ApiEndpoints.payFacOwner}/$identifier';
-    return await this.patch(url: url, body: body);
+    String url = '${ApiEndpoints.payFacOwner}/$identifier';
+    return await patch(url: url, body: body);
   }
 
   Future<ApiResponse> remove({required String identifier}) async {
-    final String url = '${ApiEndpoints.payFacOwner}/$identifier';
-    return await this.delete(url: url);
+    String url = '${ApiEndpoints.payFacOwner}/$identifier';
+    return await delete(url: url);
   }
 }

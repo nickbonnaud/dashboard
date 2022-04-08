@@ -10,9 +10,10 @@ class RefundWidget extends StatelessWidget {
   final RefundResource _refundResource;
   final int _index;
 
-  const RefundWidget({required RefundResource refundResource, required int index})
+  const RefundWidget({required RefundResource refundResource, required int index, Key? key})
     : _refundResource = refundResource,
-      _index = index;
+      _index = index,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

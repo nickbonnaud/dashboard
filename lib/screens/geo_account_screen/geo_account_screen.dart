@@ -13,16 +13,18 @@ class GeoAccountScreen extends StatelessWidget {
   final Location _location;
   final bool _isEdit;
 
-  GeoAccountScreen({
+  const GeoAccountScreen({
     required GeoAccountRepository geoAccountRepository,
     required BusinessBloc businessBloc,
     required Location location,
-    required bool isEdit
+    required bool isEdit,
+    Key? key
   })
     : _geoAccountRepository = geoAccountRepository,
       _businessBloc = businessBloc,
       _location = location,
-      _isEdit = isEdit;
+      _isEdit = isEdit,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

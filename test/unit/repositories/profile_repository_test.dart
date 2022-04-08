@@ -19,7 +19,7 @@ void main() {
       _profileRepository = ProfileRepository(profileProvider: ProfileProvider());
       _mockProfileProvider = MockProfileProvider();
       _profileRepositoryWithMock = ProfileRepository(profileProvider: _mockProfileProvider);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
     
     test("Profile Repository can Store profile", () async {
@@ -33,7 +33,7 @@ void main() {
     });
 
     test("Profile Repository throw error on Store profile fail", () async {
-      when(() => _mockProfileProvider.store(body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockProfileProvider.store(body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(
         _profileRepositoryWithMock.store(
           name: faker.company.name(),
@@ -58,7 +58,7 @@ void main() {
 
     test("Profile Repository throw error on Update profile fail", () async {
       final String identifier = faker.guid.guid();
-      when(() => _mockProfileProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockProfileProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(
         _profileRepositoryWithMock.update(
           identifier: identifier,

@@ -8,6 +8,9 @@ import 'package:dashboard/theme/global_colors.dart';
 
 class EmployeeTipsHeader extends StatelessWidget {
 
+  const EmployeeTipsHeader({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DateRangeCubit, DateTimeRange?>(
@@ -25,7 +28,7 @@ class EmployeeTipsHeader extends StatelessWidget {
 
   Widget _dateRangeHeader({required BuildContext context, required DateTimeRange dateRange}) {
     return Row(
-      key: Key("dateRangeHeaderKey"),
+      key: const Key("dateRangeHeaderKey"),
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text5(
@@ -33,7 +36,7 @@ class EmployeeTipsHeader extends StatelessWidget {
           context: context
         ),
         IconButton(
-          key: Key("clearDatesButtonKey"),
+          key: const Key("clearDatesButtonKey"),
           icon: Icon(
             Icons.clear, 
             color: Theme.of(context).colorScheme.danger,

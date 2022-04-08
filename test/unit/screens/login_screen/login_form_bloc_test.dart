@@ -42,16 +42,16 @@ void main() {
     blocTest<LoginFormBloc, LoginFormState>(
       "EmailChanged event changes state: [isEmailValid: false]",
       build: () => loginFormBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(EmailChanged(email: "not@email!s")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const EmailChanged(email: "not@email!s")),
       expect: () => [baseState.update(isEmailValid: false)]
     );
 
     blocTest<LoginFormBloc, LoginFormState>(
       "PasswordChanged event changes state: [isPasswordValid: false]",
       build: () => loginFormBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(PasswordChanged(password: "badpass")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const PasswordChanged(password: "badpass")),
       expect: () => [baseState.update(isPasswordValid: false)]
     );
 
@@ -103,7 +103,7 @@ void main() {
       build: () => loginFormBloc,
       act: (bloc) {
         when(() => authenticationRepository.login(email: any(named: "email"), password: any(named: "password")))
-          ..thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(Submitted(email: faker.internet.email(), password: faker.internet.password()));
       },
       expect: () => [LoginFormState.loading(), LoginFormState.failure(errorMessage: "error")]

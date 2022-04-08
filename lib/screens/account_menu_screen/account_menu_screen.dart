@@ -5,7 +5,10 @@ import 'package:dashboard/theme/global_colors.dart';
 
 class AccountMenuScreen extends StatelessWidget {
   
-  final List<String> accountRoutes = [
+  const AccountMenuScreen({Key? key})
+    : super(key: key);
+  
+  final List<String> accountRoutes = const [
     Routes.editProfile,
     Routes.editPhotos,
     Routes.editBusinessAccount,
@@ -16,7 +19,7 @@ class AccountMenuScreen extends StatelessWidget {
     Routes.editPOS
   ];
 
-  final List<String> routeTitles = [
+  final List<String> routeTitles = const [
     "Profile",
     "Logos",
     "Business Details",

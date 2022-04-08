@@ -26,7 +26,7 @@ void main() {
     setUp(() {
       hoursRepository = MockHoursRepository();
       businessBloc = MockBusinessBloc();
-      hours = Hours(identifier: "identifier", sunday: "9:00 AM - 10:00 PM", monday: "9:00 AM - 10:00 PM", tuesday: "9:00 AM - 2:00 PM || 5:00 PM - 11:00 PM", wednesday: "9:00 AM - 10:00 PM", thursday: "9:00 AM - 10:00 PM", friday: "9:00 AM - 10:00 PM", saturday: "9:00 AM - 10:00 PM", empty: false);
+      hours = const Hours(identifier: "identifier", sunday: "9:00 AM - 10:00 PM", monday: "9:00 AM - 10:00 PM", tuesday: "9:00 AM - 2:00 PM || 5:00 PM - 11:00 PM", wednesday: "9:00 AM - 10:00 PM", thursday: "9:00 AM - 10:00 PM", friday: "9:00 AM - 10:00 PM", saturday: "9:00 AM - 10:00 PM", empty: false);
       editHoursScreenBloc = EditHoursScreenBloc(
         hoursRepository: hoursRepository,
         businessBloc: businessBloc,
@@ -48,8 +48,8 @@ void main() {
     blocTest<EditHoursScreenBloc, EditHoursScreenState>(
       "HoursChanged event changes state of hour modified", 
       build: () => editHoursScreenBloc,
-      act: (bloc) => bloc.add(HoursChanged(day: 0, hours: [Hour(start: TimeOfDay(hour: 6, minute: 30), end: TimeOfDay(hour: 22, minute: 15))].toList())),
-      expect: () => [baseState.update(sunday: [Hour(start: TimeOfDay(hour: 6, minute: 30), end: TimeOfDay(hour: 22, minute: 15))].toList())]
+      act: (bloc) => bloc.add(HoursChanged(day: 0, hours: [const Hour(start: TimeOfDay(hour: 6, minute: 30), end: TimeOfDay(hour: 22, minute: 15))].toList())),
+      expect: () => [baseState.update(sunday: [const Hour(start: TimeOfDay(hour: 6, minute: 30), end: TimeOfDay(hour: 22, minute: 15))].toList())]
     );
 
     blocTest<EditHoursScreenBloc, EditHoursScreenState>(
@@ -59,7 +59,7 @@ void main() {
         when(() => hoursRepository.update(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"))
           .thenAnswer((_) async => MockHours());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
+        bloc.add(const Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
       },
       expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -71,7 +71,7 @@ void main() {
         when(() => hoursRepository.update(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"))
           .thenAnswer((_) async => MockHours());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
+        bloc.add(const Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
       },
       verify: (_) {
         verify(() => hoursRepository.update(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday")).called(1);
@@ -85,7 +85,7 @@ void main() {
         when(() => hoursRepository.update(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"))
           .thenAnswer((_) async => MockHours());
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
+        bloc.add(const Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
       },
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<HoursUpdated>()))).called(1);
@@ -97,9 +97,9 @@ void main() {
       build: () => editHoursScreenBloc,
       act: (bloc) {
         when(() => hoursRepository.update(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         when(() => businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
+        bloc.add(const Updated(identifier: "identifier", sunday: "sunday", monday: "monday", tuesday: "tuesday", wednesday: "wednesday", thursday: "thursday", friday: "friday", saturday: "saturday"));
       },
       expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
@@ -107,14 +107,14 @@ void main() {
     blocTest<EditHoursScreenBloc, EditHoursScreenState>(
       "HourAdded event changes state of hour modified, adds hour", 
       build: () => editHoursScreenBloc,
-      act: (bloc) => bloc.add(HourAdded(hour: Hour(start: TimeOfDay(hour: 5, minute: 0), end: TimeOfDay(hour: 7, minute: 0)), day: 1)),
-      expect: () => [baseState.update(monday: baseState.monday..add(Hour(start: TimeOfDay(hour: 5, minute: 0), end: TimeOfDay(hour: 7, minute: 0))))]
+      act: (bloc) => bloc.add(const HourAdded(hour: Hour(start: TimeOfDay(hour: 5, minute: 0), end: TimeOfDay(hour: 7, minute: 0)), day: 1)),
+      expect: () => [baseState.update(monday: baseState.monday..add(const Hour(start: TimeOfDay(hour: 5, minute: 0), end: TimeOfDay(hour: 7, minute: 0))))]
     );
 
     blocTest<EditHoursScreenBloc, EditHoursScreenState>(
       "HourRemoved event changes state of hour modified, adds hour", 
       build: () => editHoursScreenBloc,
-      act: (bloc) => bloc.add(HourRemoved(day: 2)),
+      act: (bloc) => bloc.add(const HourRemoved(day: 2)),
       expect: () => [baseState.update(tuesday: baseState.tuesday..removeLast())]
     );
 

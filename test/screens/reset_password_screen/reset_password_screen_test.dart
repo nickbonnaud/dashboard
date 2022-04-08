@@ -31,7 +31,7 @@ void main() {
       );
 
       when(() => authenticationRepository.resetPassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), token: any(named: "token")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => true));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => true));
 
       registerFallbackValue(MockRoute());
     });
@@ -56,12 +56,12 @@ void main() {
 
     testWidgets("ResetPasswordScreenBody displays passwordResetForm if token present", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("passwordResetFormKey")), findsOneWidget);
+      expect(find.byKey(const Key("passwordResetFormKey")), findsOneWidget);
     });
 
     testWidgets("ResetPasswordScreenBody creates passwordTextField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("passwordTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("passwordTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("PasswordTextField can receive input", (tester) async {
@@ -69,7 +69,7 @@ void main() {
       String password = "jdbGY#mc8352Ljd7&2!md";
       expect(find.text(password), findsNothing);
 
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
       await tester.pump();
       expect(find.text(password), findsOneWidget);
     });
@@ -79,14 +79,14 @@ void main() {
       String password = "notvalid";
       expect(find.text("min: 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character"), findsNothing);
 
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("min: 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character"), findsOneWidget);
     });
 
     testWidgets("ResetPasswordScreenBody creates passwordConfirmationTextField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("passwordConfirmationTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("passwordConfirmationTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("passwordConfirmationTextField can receive input", (tester) async {
@@ -94,7 +94,7 @@ void main() {
       String password = "jdbGY#mc8352Ljd7&2!md";
       expect(find.text(password), findsNothing);
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
       await tester.pump();
       expect(find.text(password), findsOneWidget);
     });
@@ -104,72 +104,72 @@ void main() {
       String passwordConfirmationTextField = "notValid";
       expect(find.text("Passwords are not matching"), findsNothing);
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), passwordConfirmationTextField);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), passwordConfirmationTextField);
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text("Passwords are not matching"), findsOneWidget);
     });
 
     testWidgets("ResetPasswordScreenBody creates submitButton", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("submitButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("submitButtonKey")), findsOneWidget);
     });
 
     testWidgets("SubmitButton is disabled on empty form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
     testWidgets("SubmitButton is disabled on invalid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       String password = "notvalid";
       
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
     testWidgets("SubmitButton is enabled on valid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       String password = "jdbGY#mc8352Ljd7&2!md";
       
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, true);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
     });
 
     testWidgets("Tapping submitButton shows CircularProgressIndicator", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       String password = "jdbGY#mc8352Ljd7&2!md";
       
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.drag(find.byType(SingleChildScrollView), Offset(0, -500));
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
       await tester.pump();
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
@@ -177,24 +177,24 @@ void main() {
       await screenBuilder.createScreen(tester: tester);
       String password = "jdbGY#mc8352Ljd7&2!md";
       
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.drag(find.byType(SingleChildScrollView), Offset(0, -500));
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
       await tester.pump();
 
       expect(find.text("Password Successfully Changed!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text("Password Successfully Changed!"), findsOneWidget);
 
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
       expect(find.text("Password Successfully Changed!"), findsNothing);
     });
 
@@ -202,49 +202,49 @@ void main() {
       await screenBuilder.createScreen(tester: tester);
       String password = "jdbGY#mc8352Ljd7&2!md";
       
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.drag(find.byType(SingleChildScrollView), Offset(0, -500));
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
       await tester.pump();
 
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
       verify(() => observer.didPush(any(), any()));
     });
 
     testWidgets("Tapping submitButton on error shows error message", (tester) async {
       when(() => authenticationRepository.resetPassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), token: any(named: "token")))
-        .thenThrow(ApiException(error: "An error Occurred!"));
+        .thenThrow(const ApiException(error: "An error Occurred!"));
       
       await screenBuilder.createScreen(tester: tester);
       String password = "jdbGY#mc8352Ljd7&2!md";
       
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.drag(find.byType(SingleChildScrollView), Offset(0, -500));
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -500));
       await tester.pump();
 
       expect(find.text("An error Occurred!"), findsNothing);
       
-      await tester.tap(find.byKey(Key("submitButtonKey")));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("An error Occurred!"), findsOneWidget);
       
-      await tester.pump(Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.text("An error Occurred!"), findsNothing);
     });
   });

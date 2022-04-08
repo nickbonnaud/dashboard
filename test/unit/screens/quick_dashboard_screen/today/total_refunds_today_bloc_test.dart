@@ -56,11 +56,11 @@ void main() {
       "FetchTotalRefundsToday event on error changes state: [Loading()], [FetchFailed(error: exception.error)]",
       build: () {
         _totalRefunds = faker.randomGenerator.integer(500);
-        when(() => refundRepository.fetchTotalRefundsToday()).thenThrow(ApiException(error: "error"));
+        when(() => refundRepository.fetchTotalRefundsToday()).thenThrow(const ApiException(error: "error"));
         return totalRefundsTodayBloc;
       },
       act: (bloc) => bloc.add(FetchTotalRefundsToday()),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
   });
 }

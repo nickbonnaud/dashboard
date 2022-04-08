@@ -8,10 +8,13 @@ import 'package:dashboard/theme/global_colors.dart';
 
 class NetSalesMonth extends StatelessWidget {
 
+  const NetSalesMonth({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text('Net Sales'),
+      title: const Text('Net Sales'),
       trailing: BlocBuilder<NetSalesMonthBloc, NetSalesMonthState>(
         builder: (context, state) {
           if (state is NetSalesInitial || state is Loading) return CircularProgressIndicator(color: Theme.of(context).colorScheme.callToAction);

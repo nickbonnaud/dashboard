@@ -23,13 +23,15 @@ class PhotosScreen extends StatelessWidget {
     required PhotosRepository photosRepository,
     required BusinessBloc businessBloc,
     required Photos photos,
-    required String profileIdentifier
+    required String profileIdentifier,
+    Key? key
   })
     : _photoPickerRepository = photoPickerRepository,
       _photosRepository = photosRepository,
       _businessBloc = businessBloc,
       _photos = photos,
-      _profileIdentifier = profileIdentifier;
+      _profileIdentifier = profileIdentifier,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -67,7 +69,7 @@ class PhotosScreen extends StatelessWidget {
         )
       ],
       child: SingleChildScrollView(
-        key: Key("mainScrollKey"),
+        key: const Key("mainScrollKey"),
         child: PhotosForm(
           photoPickerRepository: _photoPickerRepository,
           photosRepository: _photosRepository,

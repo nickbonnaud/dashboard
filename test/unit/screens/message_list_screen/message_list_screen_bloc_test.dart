@@ -85,7 +85,7 @@ void main() {
       "Init event on error changes state: [loading: true, errorMessage: ""], [loading: false, errorMessage: error]",
       build: () => messageListScreenBloc,
       act: (bloc) {
-        when(() => messageRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => messageRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         bloc.add(Init());
       },
       expect: () {
@@ -148,7 +148,7 @@ void main() {
       },
       act: (bloc) {
         when(() => messageRepository.paginate(url: any(named: "url")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         bloc.add(FetchMore());
       },
       expect: () {
@@ -173,7 +173,7 @@ void main() {
           latestReply: DateTime.now(), 
           createdAt: DateTime.now(), 
           updatedAt: DateTime.now(), 
-          replies: []
+          replies: const []
         );
         _messagesList.add(messageToUpdate);
         _messagesList = _sortMessages();
@@ -209,7 +209,7 @@ void main() {
           latestReply: DateTime.now(), 
           createdAt: DateTime.now(), 
           updatedAt: DateTime.now(), 
-          replies: []
+          replies: const []
         );
         _messagesList.add(messageToUpdate);
         _messagesList = _sortMessages();
@@ -243,7 +243,7 @@ void main() {
           latestReply: DateTime.now(), 
           createdAt: DateTime.now(), 
           updatedAt: DateTime.now(), 
-          replies: []
+          replies: const []
         );
         _messagesList.add(messageToUpdate);
         _messagesList = _sortMessages();

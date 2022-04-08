@@ -41,7 +41,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event changes state: [firstName: first, isFirstNameValid: isFirstNameValid, lastName: lastName, isLastNameValid: isLastNameValid]",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => filterButtonCubit.state).thenReturn(FilterType.customerName);
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);
@@ -55,7 +55,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event does not call TransactionsListBloc.add() if invalid first and last name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => filterButtonCubit.state).thenReturn(FilterType.customerName);
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);
@@ -71,7 +71,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event calls TransactionsListBloc.add() if valid first and invalid last name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => filterButtonCubit.state).thenReturn(FilterType.customerName);
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);
@@ -87,7 +87,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event calls TransactionsListBloc.add() if invalid first and valid last name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => filterButtonCubit.state).thenReturn(FilterType.customerName);
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);
@@ -103,7 +103,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event calls TransactionsListBloc.add() if valid first and valid last name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => filterButtonCubit.state).thenReturn(FilterType.customerName);
         when(() => transactionsListBloc.add(any(that: isA<TransactionsListEvent>()))).thenReturn(null);

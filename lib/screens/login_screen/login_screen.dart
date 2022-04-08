@@ -8,9 +8,14 @@ class LoginScreen extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
   final AuthenticationBloc _authenticationBloc;
 
-  const LoginScreen({required AuthenticationRepository authenticationRepository, required AuthenticationBloc authenticationBloc})
+  const LoginScreen({
+    required AuthenticationRepository authenticationRepository,
+    required AuthenticationBloc authenticationBloc,
+    Key? key
+  })
     : _authenticationRepository = authenticationRepository,
-      _authenticationBloc = authenticationBloc;
+      _authenticationBloc = authenticationBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

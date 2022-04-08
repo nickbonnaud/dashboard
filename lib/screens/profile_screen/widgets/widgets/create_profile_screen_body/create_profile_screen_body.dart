@@ -14,8 +14,9 @@ import '../body_form.dart';
 class CreateProfileScreenBody extends StatelessWidget {
   final ProfileScreenBloc _profileScreenBloc;
 
-  const CreateProfileScreenBody({required ProfileScreenBloc profileScreenBloc})
-    : _profileScreenBloc = profileScreenBloc;
+  const CreateProfileScreenBody({required ProfileScreenBloc profileScreenBloc, Key? key})
+    : _profileScreenBloc = profileScreenBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

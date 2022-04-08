@@ -1,7 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/owner_account.dart';
-import 'package:dashboard/models/business/address.dart' as BusinessAddress;
+import 'package:dashboard/models/business/address.dart' as business_address;
 import 'package:dashboard/repositories/owner_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/owners_screen/bloc/owners_screen_bloc.dart';
@@ -26,9 +26,9 @@ main() {
       ownerRepository = MockOwnerRepository();
       businessBloc = MockBusinessBloc();
       _ownersList = [MockOwnerAccount(), MockOwnerAccount()];
-      _ownersList.forEach((owner) {
+      for (var owner in _ownersList) {
         when(() => owner.identifier).thenReturn(faker.guid.guid());
-      });
+      }
       ownersScreenBloc = OwnersScreenBloc(businessBloc: businessBloc, ownerRepository: ownerRepository, ownerAccounts: _ownersList);
       _baseState = ownersScreenBloc.state;
       registerFallbackValue(OwnerAccountsUpdated(ownerAccounts: _ownersList));
@@ -118,7 +118,7 @@ main() {
       act: (bloc) {
         OwnerAccount ownerToRemove = _ownersList.first;
         _ownersList = _ownersList.where((owner) => owner.identifier != ownerToRemove.identifier).toList();
-        when(() => ownerRepository.remove(identifier: any(named: "identifier"))).thenThrow(ApiException(error: "error"));
+        when(() => ownerRepository.remove(identifier: any(named: "identifier"))).thenThrow(const ApiException(error: "error"));
         bloc.add(OwnerRemoved(owner: ownerToRemove));
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error")]
@@ -139,7 +139,7 @@ main() {
           email: faker.internet.email(),
           primary: true,
           percentOwnership: 25,
-          address: BusinessAddress.Address(
+          address: business_address.Address(
             address: faker.address.streetAddress(),
             addressSecondary: faker.address.buildingNumber(),
             city: faker.address.city(),
@@ -194,7 +194,7 @@ main() {
           email: faker.internet.email(),
           primary: true,
           percentOwnership: 25,
-          address: BusinessAddress.Address(
+          address: business_address.Address(
             address: faker.address.streetAddress(),
             addressSecondary: faker.address.buildingNumber(),
             city: faker.address.city(),
@@ -267,7 +267,7 @@ main() {
           email: faker.internet.email(),
           primary: true,
           percentOwnership: 25,
-          address: BusinessAddress.Address(
+          address: business_address.Address(
             address: faker.address.streetAddress(),
             addressSecondary: faker.address.buildingNumber(),
             city: faker.address.city(),
@@ -324,7 +324,7 @@ main() {
           email: faker.internet.email(),
           primary: true,
           percentOwnership: 25,
-          address: BusinessAddress.Address(
+          address: business_address.Address(
             address: faker.address.streetAddress(),
             addressSecondary: faker.address.buildingNumber(),
             city: faker.address.city(),
@@ -352,7 +352,7 @@ main() {
           city: any(named: "city"), 
           state: any(named: "state"), 
           zip: any(named: "zip")
-        )).thenThrow(ApiException(error: "error"));
+        )).thenThrow(const ApiException(error: "error"));
         when(() => businessBloc.add(any(that: isA<OwnerAccountsUpdated>()))).thenReturn(null);
         bloc.add(PrimaryRemoved(account: _ownersList.firstWhere((owner) => owner.identifier == "fake_identifier")));
       },

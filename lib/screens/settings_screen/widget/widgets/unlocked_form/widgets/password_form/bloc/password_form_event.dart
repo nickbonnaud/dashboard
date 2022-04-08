@@ -38,7 +38,7 @@ class Submitted extends PasswordFormEvent {
   final String passwordConfirmation;
   final String identifier;
 
-  Submitted({required this.password, required this.passwordConfirmation, required this.identifier});
+  const Submitted({required this.password, required this.passwordConfirmation, required this.identifier});
 
   @override
   List<Object> get props => [password, passwordConfirmation, identifier];

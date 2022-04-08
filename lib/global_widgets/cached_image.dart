@@ -5,9 +5,10 @@ class CachedImage extends StatelessWidget {
   final String _url;
   final Size _size;
 
-  CachedImage({required String url, required Size size})
+  const CachedImage({required String url, required Size size, Key? key})
     : _url = url,
-      _size = size;
+      _size = size,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class CachedImage extends StatelessWidget {
         ),
         elevation: 10,
       ),
-      progressIndicatorBuilder: (_, __, ___) => CircularProgressIndicator()
+      progressIndicatorBuilder: (_, __, ___) => const CircularProgressIndicator()
     );
   }
 }

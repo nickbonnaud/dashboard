@@ -7,18 +7,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/transaction_statuses_bloc.dart';
 
 class StatusSearchField extends StatelessWidget {
-  
+
+  const StatusSearchField({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return FormField<int>(
-      key: Key("statusPickerKey"),
+      key: const Key("statusPickerKey"),
       initialValue: null,
       builder: (FormFieldState<int>? formState) {
         return Container(
           color: CupertinoColors.white,
           child: InputDecorator(
             decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+              contentPadding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5)
               )
@@ -41,7 +44,7 @@ class StatusSearchField extends StatelessWidget {
                     ),
                     isDense: true,
                     onChanged: (statusCode) => _selectionChanged(context: context, formState: formState, statusCode: statusCode),
-                    value: formState != null ? formState.value : null,
+                    value: formState?.value,
                     items: state.statuses.map((status) {
                       return DropdownMenuItem(
                         key: Key("${status.code}Key"),

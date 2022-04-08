@@ -11,7 +11,7 @@ class LoginFormState extends Equatable {
 
   bool get isFormValid => isEmailValid && isPasswordValid;
 
-  LoginFormState({
+  const LoginFormState({
     required this.isEmailValid,
     required this.isPasswordValid,
     required this.isSubmitting,
@@ -21,7 +21,7 @@ class LoginFormState extends Equatable {
   });
 
   factory LoginFormState.empty() {
-    return LoginFormState(
+    return const LoginFormState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,
@@ -32,7 +32,7 @@ class LoginFormState extends Equatable {
   }
 
   factory LoginFormState.loading() {
-    return LoginFormState(
+    return const LoginFormState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: true,
@@ -54,7 +54,7 @@ class LoginFormState extends Equatable {
   }
 
   factory LoginFormState.success() {
-    return LoginFormState(
+    return const LoginFormState(
       isEmailValid: true,
       isPasswordValid: true,
       isSubmitting: false,

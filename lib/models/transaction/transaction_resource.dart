@@ -16,7 +16,7 @@ class TransactionResource extends Equatable {
   final List<PurchasedItem> purchasedItems;
   final Issue? issue;
 
-  TransactionResource({
+  const TransactionResource({
     required this.transaction,
     required this.customer,
     this.employee,

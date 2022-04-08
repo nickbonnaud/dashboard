@@ -40,8 +40,8 @@ void main() {
     blocTest<MessageInputBloc, MessageInputState>(
       "MessageChanged event changes state: [isInputValid: false]", 
       build: () => messageInputBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(MessageChanged(message: "  ")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const MessageChanged(message: "  ")),
       expect: () => [_baseState.update(isInputValid: false)]
     );
 
@@ -94,7 +94,7 @@ void main() {
       act: (bloc) {
         String reply = faker.lorem.sentence();
         String identifier = faker.guid.guid();
-        when(() => messageRepository.addReply(messageIdentifier: identifier, replyBody: reply)).thenThrow(ApiException(error: "error"));
+        when(() => messageRepository.addReply(messageIdentifier: identifier, replyBody: reply)).thenThrow(const ApiException(error: "error"));
         bloc.add(Submitted(message: reply, messageIdentifier: identifier));
       },
       expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, errorMessage: "error")]

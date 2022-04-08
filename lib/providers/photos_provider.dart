@@ -6,11 +6,11 @@ class PhotosProvider extends BaseProvider {
 
   Future<ApiResponse> storeLogo({required String identifier, required Map<String, dynamic> body}) async {
     String url = "${ApiEndpoints.photos}/$identifier";
-    return await this.post(url: url, body: body);
+    return await post(url: url, body: body);
   }
 
   Future<ApiResponse> storeBanner({required String identifier, required Map<String, dynamic> body}) async {
     String url = "${ApiEndpoints.photos}/$identifier";
-    return await this.post(url: url, body: body);
+    return await post(url: url, body: body);
   }
 }

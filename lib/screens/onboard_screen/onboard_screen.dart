@@ -8,8 +8,9 @@ import 'widgets/onboard_body.dart';
 class OnboardScreen extends StatelessWidget {
   final Status _accountStatus;
 
-  const OnboardScreen({required Status accountStatus})
-    : _accountStatus = accountStatus;
+  const OnboardScreen({required Status accountStatus, Key? key})
+    : _accountStatus = accountStatus,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class OnboardScreen extends StatelessWidget {
       ),
       body: BlocProvider<OnboardBloc>(
         create: (BuildContext context) => OnboardBloc(accountStatus: _accountStatus),
-        child: OnboardBody(),
+        child: const OnboardBody(),
       ),
     );
   }

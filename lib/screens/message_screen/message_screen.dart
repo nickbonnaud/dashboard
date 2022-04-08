@@ -18,18 +18,20 @@ class MessageScreen extends StatelessWidget {
   const MessageScreen({
     required Message message,
     required MessageListScreenBloc messageListScreenBloc,
-    required MessageRepository messageRepository
+    required MessageRepository messageRepository,
+    Key? key
   })
     : _message = message,
       _messageListScreenBloc = messageListScreenBloc,
-      _messageRepository = messageRepository;
+      _messageRepository = messageRepository,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: BottomModalAppBar(
         context: context,
-        trailingWidgets: [MenuButton()],
+        trailingWidgets: const [MenuButton()],
       ),
       backgroundColor: Theme.of(context).colorScheme.scrollBackground,
       body: BlocProvider<MessageHistoryBloc>(

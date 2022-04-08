@@ -23,6 +23,9 @@ import 'repositories/token_repository.dart';
 
 class App extends StatelessWidget {
 
+  const App({Key? key})
+    : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(

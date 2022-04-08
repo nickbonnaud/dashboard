@@ -6,7 +6,7 @@ class ApiResponse {
   final String error;
   final bool isOK;
 
-  ApiResponse({
+  const ApiResponse({
     required this.body,
     required this.error,
     required this.isOK,

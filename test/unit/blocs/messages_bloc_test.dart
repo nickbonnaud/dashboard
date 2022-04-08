@@ -51,21 +51,21 @@ void main() {
       },
       act: (bloc) => bloc.add(Init()),
       expect: () => [
-        MessagesState(loading: true, hasUnreadMessages: false, errorMessage: ""),
-        MessagesState(loading: false, hasUnreadMessages: true, errorMessage: ""),
+        const MessagesState(loading: true, hasUnreadMessages: false, errorMessage: ""),
+        const MessagesState(loading: false, hasUnreadMessages: true, errorMessage: ""),
       ]
     );
 
     blocTest<MessagesBloc, MessagesState>(
       "MessagesBloc event Init yields [loading=true], [loading=false, errorMessage=message] on error", 
       build: () {
-        when(() => messageRepository.checkUnreadMessages()).thenThrow(ApiException(error: "error"));
+        when(() => messageRepository.checkUnreadMessages()).thenThrow(const ApiException(error: "error"));
         return messagesBloc;
       },
       act: (bloc) => bloc.add(Init()),
       expect: () => [
-        MessagesState(loading: true, hasUnreadMessages: false, errorMessage: ""),
-        MessagesState(loading: false, hasUnreadMessages: false, errorMessage: "error"),
+        const MessagesState(loading: true, hasUnreadMessages: false, errorMessage: ""),
+        const MessagesState(loading: false, hasUnreadMessages: false, errorMessage: "error"),
       ]
     );
   });

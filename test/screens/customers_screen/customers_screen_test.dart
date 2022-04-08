@@ -32,13 +32,13 @@ void main() {
       );
 
       when(() => customerRepository.fetchAll(searchHistoric: any(named: "searchHistoric"), withTransactions: any(named: "withTransactions"), dateRange: any(named: "dateRange")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<CustomerResource>.generate(15, (index) => mockDataGenerator.createCustomerResource()),
           next: "next_url"
         )));
 
       when(() => customerRepository.paginate(url: any(named: "url")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => PaginateDataHolder(
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => PaginateDataHolder(
           data: List<CustomerResource>.generate(15, (index) => mockDataGenerator.createCustomerResource()),
           next: "next_url"
         )));
@@ -48,32 +48,32 @@ void main() {
 
     testWidgets("Customers Screen creates changeDateButton", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("datePickerButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("datePickerButtonKey")), findsOneWidget);
     });
 
     testWidgets("Tapping changeDateButton shows dateRangePicker", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
-      await tester.tap(find.byKey(Key("datePickerButtonKey")));
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
+      await tester.tap(find.byKey(const Key("datePickerButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
     });
 
     testWidgets("Tapping cancel on dateRangePicker hides dateRangePicker", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("datePickerButtonKey")));
+      await tester.tap(find.byKey(const Key("datePickerButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
       await tester.tap(find.byIcon(Icons.close));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
     });
 
     testWidgets("Selecting dates on picker displays hides date picker", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("datePickerButtonKey")));
+      await tester.tap(find.byKey(const Key("datePickerButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.text("1"));
       await tester.pump();
@@ -82,12 +82,12 @@ void main() {
 
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("dateRangePickerKey")), findsNothing);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsNothing);
     });
 
     testWidgets("Selecting dates on picker redos search", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("datePickerButtonKey")));
+      await tester.tap(find.byKey(const Key("datePickerButtonKey")));
       await tester.pump();
 
       await tester.tap(find.text("1"));
@@ -96,10 +96,10 @@ void main() {
       await tester.pumpAndSettle();
 
       await tester.tap(find.text("Set"));
-      await tester.pump(Duration(milliseconds: 400));
+      await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(CustomerWidget), findsNothing);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(CustomerWidget), findsWidgets);
     });
 
@@ -112,63 +112,63 @@ void main() {
 
     testWidgets("Search Display can change to Active Customers", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("filterButtonKey")));
+      await tester.tap(find.byKey(const Key("filterButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("Active Customers"), findsNothing);
-      await tester.tap(find.byKey(Key("historic")));
+      await tester.tap(find.byKey(const Key("historic")));
       await tester.pump();
       expect(find.text("Active Customers"), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Changing to Active Customers redos search", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("filterButtonKey")));
+      await tester.tap(find.byKey(const Key("filterButtonKey")));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(Key("historic")));
+      await tester.tap(find.byKey(const Key("historic")));
       
-      await tester.pump(Duration(milliseconds: 400));
+      await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(CustomerWidget), findsNothing);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(CustomerWidget), findsWidgets);
     });
 
     testWidgets("Search Display can change to Transactions", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("filterButtonKey")));
+      await tester.tap(find.byKey(const Key("filterButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("Without Transactions"), findsNothing);
-      await tester.tap(find.byKey(Key("withTransaction")));
+      await tester.tap(find.byKey(const Key("withTransaction")));
       await tester.pump();
       expect(find.text("Without Transactions"), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Change to Transactions redos search", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("filterButtonKey")));
+      await tester.tap(find.byKey(const Key("filterButtonKey")));
       await tester.pumpAndSettle();
-      await tester.tap(find.byKey(Key("withTransaction")));
+      await tester.tap(find.byKey(const Key("withTransaction")));
       
-      await tester.pump(Duration(milliseconds: 400));
+      await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(CustomerWidget), findsNothing);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(CustomerWidget), findsWidgets);
     });
 
     testWidgets("Date display is empty initially", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       await tester.pump();
-      expect(find.byKey(Key("datesRowKey")), findsNothing);
+      expect(find.byKey(const Key("datesRowKey")), findsNothing);
     });
 
     testWidgets("Selecting dates shows Date Display", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("datePickerButtonKey")));
+      await tester.tap(find.byKey(const Key("datePickerButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.text("1"));
       await tester.pump();
@@ -177,14 +177,14 @@ void main() {
 
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("datesRowKey")), findsOneWidget);
+      expect(find.byKey(const Key("datesRowKey")), findsOneWidget);
     });
 
     testWidgets("Tapping clear dates button removes Date Display", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("datePickerButtonKey")));
+      await tester.tap(find.byKey(const Key("datePickerButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.text("1"));
       await tester.pump();
@@ -194,17 +194,17 @@ void main() {
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
       
-      await tester.tap(find.byKey(Key("clearDatesButtonKey")));
+      await tester.tap(find.byKey(const Key("clearDatesButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("datesRowKey")), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      expect(find.byKey(const Key("datesRowKey")), findsNothing);
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Tapping clear dates redos search", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
-      await tester.tap(find.byKey(Key("datePickerButtonKey")));
+      await tester.tap(find.byKey(const Key("datePickerButtonKey")));
       await tester.pump();
-      expect(find.byKey(Key("dateRangePickerKey")), findsOneWidget);
+      expect(find.byKey(const Key("dateRangePickerKey")), findsOneWidget);
 
       await tester.tap(find.text("1"));
       await tester.pump();
@@ -214,45 +214,45 @@ void main() {
       await tester.tap(find.text("Set"));
       await tester.pumpAndSettle();
       
-      await tester.tap(find.byKey(Key("clearDatesButtonKey")));
-      await tester.pump(Duration(milliseconds: 400));
+      await tester.tap(find.byKey(const Key("clearDatesButtonKey")));
+      await tester.pump(const Duration(milliseconds: 400));
       expect(find.byType(CustomerWidget), findsNothing);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 100));
       expect(find.byType(CustomerWidget), findsWidgets);
     });
 
     testWidgets("Customers List is scrollable", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       await tester.pump();
-      expect(find.byKey(Key("customer-0")), findsOneWidget);
-      await tester.fling(find.byType(CustomScrollView), Offset(0, -200), 3000);
+      expect(find.byKey(const Key("customer-0")), findsOneWidget);
+      await tester.fling(find.byType(CustomScrollView), const Offset(0, -200), 3000);
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("customer-0")), findsNothing);
-      await tester.pump(Duration(milliseconds: 500));
+      expect(find.byKey(const Key("customer-0")), findsNothing);
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Customers List fetches more data when threshold reached", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       await tester.pump();
       verifyNever(() => customerRepository.paginate(url: any(named: "url")));
-      await tester.fling(find.byType(CustomScrollView), Offset(0, -1000), 1000);
-      await tester.pump(Duration(milliseconds: 1000));
+      await tester.fling(find.byType(CustomScrollView), const Offset(0, -1000), 1000);
+      await tester.pump(const Duration(milliseconds: 1000));
       verify(() => customerRepository.paginate(url: any(named: "url"))).called(1);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 500));
     });
 
     testWidgets("Tapping on Customer Widget navigates to Receipt Screen", (tester) async {
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       await tester.pump();
-      await tester.tap(find.byKey(Key("customer-0")));
+      await tester.tap(find.byKey(const Key("customer-0")));
       await tester.pump();
       verify(() => observer.didPush(any(), any()));
     });
 
     testWidgets("Fetching data on error shows error message", (tester) async {
       when(() => customerRepository.fetchAll(searchHistoric: any(named: "searchHistoric"), withTransactions: any(named: "withTransactions"), dateRange: any(named: "dateRange")))
-        .thenThrow(ApiException(error: "error"));
+        .thenThrow(const ApiException(error: "error"));
 
       await mockNetworkImagesFor(() => screenBuilder.createScreen(tester: tester));
       await tester.pump();

@@ -20,11 +20,13 @@ class HoursScreenBody extends StatelessWidget{
   const HoursScreenBody({
     required HoursRepository hoursRepository,
     required BusinessBloc businessBloc,
-    required Hours hours
+    required Hours hours,
+    Key? key
   })
     : _hoursRepository = hoursRepository,
       _businessBloc = businessBloc,
-      _hours = hours;
+      _hours = hours,
+      super(key: key);
       
   @override
   Widget build(BuildContext context) {
@@ -34,7 +36,7 @@ class HoursScreenBody extends StatelessWidget{
         right: SizeConfig.getWidth(1)
       ),
       child: SingleChildScrollView(
-        key: Key("scrollKey"),
+        key: const Key("scrollKey"),
         child: Column(
           children: [
             _title(context: context),

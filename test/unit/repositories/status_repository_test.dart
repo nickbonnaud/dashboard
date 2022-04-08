@@ -26,7 +26,7 @@ void main() {
     });
 
     test("Status Repository throws error on Fetch Transaction Statuses fail", () async {
-      when(() => _mockStatusProvider.fetchTransactionStatuses()).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockStatusProvider.fetchTransactionStatuses()).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _statusRepositoryWithMock.fetchTransactionStatuses(), 

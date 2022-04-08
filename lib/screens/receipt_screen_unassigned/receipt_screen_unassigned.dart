@@ -12,8 +12,9 @@ import 'package:dashboard/theme/global_colors.dart';
 class ReceiptScreenUnassigned extends StatelessWidget {
   final UnassignedTransaction _unassignedTransaction;
 
-  const ReceiptScreenUnassigned({required UnassignedTransaction unassignedTransaction})
-    : _unassignedTransaction = unassignedTransaction;
+  const ReceiptScreenUnassigned({required UnassignedTransaction unassignedTransaction, Key? key})
+    : _unassignedTransaction = unassignedTransaction,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +25,10 @@ class ReceiptScreenUnassigned extends StatelessWidget {
           BottomModalAppBar(
             context: context,
             isSliver: true,
-            trailingWidgets: [],
+            trailingWidgets: const [],
           ),
           SliverPadding(
-            padding: EdgeInsets.only(top: 32, left: 16, right: 16),
+            padding: const EdgeInsets.only(top: 32, left: 16, right: 16),
             sliver: SliverToBoxAdapter(
               child: Column(
                 children: _body(context: context)
@@ -42,7 +43,7 @@ class ReceiptScreenUnassigned extends StatelessWidget {
   List<Widget> _body({required BuildContext context}) {
     return <Widget> [
       Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: Row(
           children: [
             CircleAvatar(
@@ -74,17 +75,17 @@ class ReceiptScreenUnassigned extends StatelessWidget {
       ),
       SizedBox(height: SizeConfig.getHeight(3)),
       ListView.separated(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (_, index) => PurchasedItemWidget(purchasedItem: _unassignedTransaction.transaction.purchasedItems[index]),
         itemCount: _unassignedTransaction.transaction.purchasedItems.length,
-        separatorBuilder: (_, __) => Divider(thickness: 1),
+        separatorBuilder: (_, __) => const Divider(thickness: 1),
       ),
-      Divider(thickness: 1),
+      const Divider(thickness: 1),
       Padding(
-        padding: EdgeInsets.only(left: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, right: 16),
         child: ListView(
-          physics: NeverScrollableScrollPhysics(),
+          physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           children: [
             SizedBox(height: SizeConfig.getHeight(3)),
@@ -102,7 +103,7 @@ class ReceiptScreenUnassigned extends StatelessWidget {
             if (_unassignedTransaction.employee != null)
               SizedBox(height: SizeConfig.getHeight(3)),
             if (_unassignedTransaction.employee != null)
-              Divider(),
+              const Divider(),
             if (_unassignedTransaction.employee != null)
               Center(
                 child: Text4(

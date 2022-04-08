@@ -8,7 +8,7 @@ class Location extends Equatable {
   final double lng;
   final int radius;
 
-  Location({required this.identifier, required this.lat, required this.lng, required this.radius});
+  const Location({required this.identifier, required this.lat, required this.lng, required this.radius});
 
   Location.fromJson({required Map<String, dynamic> json})
     : identifier = json['identifier']!,
@@ -16,7 +16,7 @@ class Location extends Equatable {
       lng = json['lng']!,
       radius = json['radius']!;
 
-  factory Location.empty() => Location(
+  factory Location.empty() => const Location(
     identifier: "",
     lat: 0.0,
     lng: 0.0,

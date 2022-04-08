@@ -10,6 +10,9 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 class DateRangePicker extends StatelessWidget {
 
+  const DateRangePicker({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RefundsListBloc, RefundsListState>(
@@ -49,7 +52,7 @@ class DateRangePicker extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
-        key: Key("dateRangePickerKey"),
+        key: const Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

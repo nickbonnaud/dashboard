@@ -32,8 +32,8 @@ void main() {
     blocTest<RequestResetPasswordScreenBloc, RequestResetPasswordScreenState>(
       'EmailChanged event changes state: [isEmailValid: false]',
       build: () => requestResetPasswordScreenBloc,
-      wait: Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(EmailChanged(email: "notEmail")),
+      wait: const Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const EmailChanged(email: "notEmail")),
       expect: () => [_baseState.update(isEmailValid: false)]
     );
 
@@ -44,7 +44,7 @@ void main() {
           .thenAnswer((_) async => true);
         return requestResetPasswordScreenBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: "email")),
+      act: (bloc) => bloc.add(const Submitted(email: "email")),
       expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -55,7 +55,7 @@ void main() {
           .thenAnswer((_) async => true);
         return requestResetPasswordScreenBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: "email")),
+      act: (bloc) => bloc.add(const Submitted(email: "email")),
       verify: (_) {
         verify(() => authenticationRepository.requestPasswordReset(email: any(named: "email"))).called(1);
       }
@@ -65,10 +65,10 @@ void main() {
       'Submitted event on error changes state: [isSubmitting: true, errorMessage: ""], [isSubmitting: false, isSuccess: false, errorMessage: error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]',
       build: () {
         when(() => authenticationRepository.requestPasswordReset(email: any(named: "email")))
-          .thenThrow(ApiException(error: "error"));
+          .thenThrow(const ApiException(error: "error"));
         return requestResetPasswordScreenBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: "email")),
+      act: (bloc) => bloc.add(const Submitted(email: "email")),
       expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 

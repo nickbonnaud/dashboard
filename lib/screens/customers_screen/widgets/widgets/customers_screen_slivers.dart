@@ -7,6 +7,9 @@ import 'widgets/date_display.dart';
 import 'widgets/search_display.dart';
 
 class CustomersScreenSlivers extends StatefulWidget {
+  
+  const CustomersScreenSlivers({Key? key})
+    : super(key: key);
 
   @override
   State<CustomersScreenSlivers> createState() => _CustomersScreenSliversState();
@@ -36,14 +39,14 @@ class _CustomersScreenSliversState extends State<CustomersScreenSlivers> {
   Widget _searchDisplay() {
     return SliverPadding(
       padding: _padding(),
-      sliver: SearchDisplay(),
+      sliver: const SearchDisplay(),
     );
   }
 
   Widget _dateDisplay() {
     return SliverPadding(
       padding: _padding(),
-      sliver: SliverToBoxAdapter(
+      sliver: const SliverToBoxAdapter(
         child: DateDisplay(),
       ),
     );

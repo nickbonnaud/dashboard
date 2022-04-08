@@ -11,6 +11,9 @@ import 'widgets/name_search_field/name_search_field.dart';
 
 class SearchField extends StatelessWidget {
 
+  const SearchField({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<RefundsListBloc, RefundsListState>(
@@ -37,7 +40,7 @@ class SearchField extends StatelessWidget {
           create: (_) => NameSearchFieldBloc(
             refundsListBloc: BlocProvider.of<RefundsListBloc>(context)
           ),
-          child: NameSearchField(),
+          child: const NameSearchField(),
         );
         break;
       default:

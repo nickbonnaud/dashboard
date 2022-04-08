@@ -7,7 +7,7 @@ class LockedFormState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  LockedFormState({
+  const LockedFormState({
     required this.isPasswordValid,
     required this.isSubmitting,  
     required this.errorMessage, 
@@ -15,7 +15,7 @@ class LockedFormState extends Equatable {
   });
 
   factory LockedFormState.initial() {
-    return LockedFormState(
+    return const LockedFormState(
       isPasswordValid: true,
       isSubmitting: false,
       errorMessage: "",

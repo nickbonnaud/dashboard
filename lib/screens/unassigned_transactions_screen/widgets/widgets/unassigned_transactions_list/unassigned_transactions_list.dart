@@ -8,6 +8,9 @@ import 'bloc/unassigned_transactions_list_bloc.dart';
 
 class UnassignedTransactionsList extends StatefulWidget {
 
+  const UnassignedTransactionsList({Key? key})
+    : super(key: key);
+
   @override
   State<StatefulWidget> createState() => _UnassignedTransactionsListState();
 }
@@ -46,11 +49,11 @@ class _UnassignedTransactionsListState extends State<UnassignedTransactionsList>
 
   Widget _transactions({required UnassignedTransactionsListState state}) {
     return ListView.builder(
-      key: Key("unassignedTransactionsListKey"),
+      key: const Key("unassignedTransactionsListKey"),
       shrinkWrap: true,
       controller: _scrollController,
       itemBuilder: (context, index) => index >= state.transactions.length
-        ? BottomLoader()
+        ? const BottomLoader()
         : UnassignedTransactionWidget(unassignedTransaction: state.transactions[index], index: index),
       itemCount: state.hasReachedEnd
         ? state.transactions.length
@@ -70,7 +73,7 @@ class _UnassignedTransactionsListState extends State<UnassignedTransactionsList>
   }
 
   Widget _loading() {
-    return Center(
+    return const Center(
       child: CircularProgressIndicator(),
     );
   }

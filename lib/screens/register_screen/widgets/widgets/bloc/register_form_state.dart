@@ -12,7 +12,7 @@ class RegisterFormState extends Equatable {
 
   bool get isFormValid => isEmailValid && isPasswordValid && isPasswordConfirmationValid;
 
-  RegisterFormState({
+  const RegisterFormState({
     required this.isEmailValid,
     required this.isPasswordValid,
     required this.isPasswordConfirmationValid,
@@ -23,7 +23,7 @@ class RegisterFormState extends Equatable {
   });
 
   factory RegisterFormState.empty() {
-    return RegisterFormState(
+    return const RegisterFormState(
       isEmailValid: true,
       isPasswordValid: true,
       isPasswordConfirmationValid: true,
@@ -35,7 +35,7 @@ class RegisterFormState extends Equatable {
   }
 
   factory RegisterFormState.loading() {
-    return RegisterFormState(
+    return const RegisterFormState(
       isEmailValid: true,
       isPasswordValid: true,
       isPasswordConfirmationValid: true,
@@ -59,7 +59,7 @@ class RegisterFormState extends Equatable {
   }
 
   factory RegisterFormState.success() {
-    return RegisterFormState(
+    return const RegisterFormState(
       isEmailValid: true,
       isPasswordValid: true,
       isPasswordConfirmationValid: true,

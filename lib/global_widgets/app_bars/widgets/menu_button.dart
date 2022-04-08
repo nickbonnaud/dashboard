@@ -9,11 +9,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 
 class MenuButton extends StatelessWidget {
-  
-  final List<String> options = [
+  final List<String> options = const [
     "Account Settings",
     "Sign Out"
   ];
+
+  const MenuButton({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {

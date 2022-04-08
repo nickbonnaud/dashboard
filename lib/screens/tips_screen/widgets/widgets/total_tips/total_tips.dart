@@ -8,13 +8,16 @@ import 'bloc/total_tips_bloc.dart';
 
 class TotalTips extends StatelessWidget {
 
+  const TotalTips({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Card(
-      key: Key("totalTipsCardKey"),
+      key: const Key("totalTipsCardKey"),
       elevation: 2,
       child: Container(
-        padding: EdgeInsets.all(22),
+        padding: const EdgeInsets.all(22),
         color: Colors.teal,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,7 +35,7 @@ class TotalTips extends StatelessWidget {
             ),
             BlocBuilder<TotalTipsBloc, TotalTipsState>(
               builder: (context, state) {
-                if (state is Loading || state is TotalTipsInitial) return CircularProgressIndicator();
+                if (state is Loading || state is TotalTipsInitial) return const CircularProgressIndicator();
                 if (state is FetchTotalTipsFailed) return _error();
                 
                 return _amount(total: (state as TotalTipsLoaded).totalTips);
@@ -45,7 +48,7 @@ class TotalTips extends StatelessWidget {
   }
 
   Widget _error() {
-    return Flexible(
+    return const Flexible(
       child: FittedBox(
         child: Text(
           "Error Loading!",
@@ -63,7 +66,7 @@ class TotalTips extends StatelessWidget {
       child: FittedBox(
         child: Text(
           Currency.create(cents: total),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 25,
             color: Colors.white
           ),

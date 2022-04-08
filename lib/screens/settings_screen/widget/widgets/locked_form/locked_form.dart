@@ -10,6 +10,9 @@ import 'bloc/locked_form_bloc.dart';
 
 class LockedForm extends StatefulWidget {
 
+  const LockedForm({Key? key})
+    : super(key: key);
+
   @override
   State<LockedForm> createState() => _LockedFormState();
 }
@@ -59,7 +62,7 @@ class _LockedFormState extends State<LockedForm> {
       child: BlocBuilder<LockedFormBloc, LockedFormState>(
         builder: (context, state) {
           return TextFormField(
-            key: Key("unlockPasswordTextFieldKey"),
+            key: const Key("unlockPasswordTextFieldKey"),
             textCapitalization: TextCapitalization.none,
             decoration: InputDecoration(
               labelText: "Current Password",
@@ -120,7 +123,7 @@ class _LockedFormState extends State<LockedForm> {
                 control: state.errorButtonControl,
                 onAnimationComplete: () => _resetForm(),
                 child: ElevatedButton(
-                  key: Key("unlockButtonKey"),
+                  key: const Key("unlockButtonKey"),
                   onPressed: _passwordValid(state: state)
                     ? () => _submitPassword(state: state)
                     : null,
@@ -137,7 +140,7 @@ class _LockedFormState extends State<LockedForm> {
 
   Widget _buttonChild({required LockedFormState state}) {
     return state.isSubmitting
-      ? Padding(padding: EdgeInsets.only(top: 5, bottom: 5), child: CircularProgressIndicator())
+      ? const Padding(padding: EdgeInsets.only(top: 5, bottom: 5), child: CircularProgressIndicator())
       : Text4(text: "Unlock", context: context, color: Theme.of(context).colorScheme.onSecondary);
   }
 
@@ -156,6 +159,6 @@ class _LockedFormState extends State<LockedForm> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _lockedFormBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => _lockedFormBloc.add(Reset()));
   }
 }

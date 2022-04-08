@@ -20,7 +20,7 @@ class NameSearchFieldBloc extends Bloc<NameSearchFieldEvent, NameSearchFieldStat
       super(NameSearchFieldState.initial()) { _eventHandler(); }
   
   void _eventHandler() {
-    on<NameChanged>((event, emit) => _mapNameChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
+    on<NameChanged>((event, emit) => _mapNameChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: const Duration(seconds: 1)));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
@@ -34,13 +34,13 @@ class NameSearchFieldBloc extends Bloc<NameSearchFieldEvent, NameSearchFieldStat
 
     emit(state.update(firstName: event.firstName, isFirstNameValid: isValidFirstName, lastName: event.lastName, isLastNameValid: isValidLastName));
     
-    if (firstNameChanged && (isValidFirstName || event.firstName.length == 0)) {
+    if (firstNameChanged && (isValidFirstName || event.firstName.isEmpty)) {
       final String? lastName = isValidLastName ? event.lastName : null;
       
       if (isValidFirstName || isValidLastName) {
         _updateQuery(firstName: event.firstName, lastName: lastName);
       }
-    } else if (lastNameChanged && (isValidLastName || event.lastName.length ==0)) {
+    } else if (lastNameChanged && (isValidLastName || event.lastName.isEmpty)) {
       final String? firstName = isValidFirstName ? event.firstName : null;
       
       if (isValidFirstName || isValidLastName) {

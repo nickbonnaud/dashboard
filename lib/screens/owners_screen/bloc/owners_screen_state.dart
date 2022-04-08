@@ -9,7 +9,7 @@ class OwnersScreenState extends Equatable {
   final bool isSuccess;
   final String errorMessage;
 
-  OwnersScreenState({
+  const OwnersScreenState({
     required this.owners,
     required this.formVisible,
     required this.editingAccount,
@@ -21,7 +21,7 @@ class OwnersScreenState extends Equatable {
   factory OwnersScreenState.initial({required List<OwnerAccount> owners}) {
     return OwnersScreenState(
       owners: owners,
-      formVisible: owners.length == 0,
+      formVisible: owners.isEmpty,
       editingAccount: null,
       isSubmitting: false,
       isSuccess: false,

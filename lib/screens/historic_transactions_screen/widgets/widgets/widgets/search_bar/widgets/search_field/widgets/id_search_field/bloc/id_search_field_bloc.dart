@@ -19,7 +19,7 @@ class IdSearchFieldBloc extends Bloc<IdSearchFieldEvent, IdSearchFieldState> {
       super(IdSearchFieldState.initial()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<FieldChanged>((event, emit) => _mapFieldChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
+    on<FieldChanged>((event, emit) => _mapFieldChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: const Duration(seconds: 1)));
   }
 
   void _mapFieldChangedToState({required FieldChanged event, required Emitter<IdSearchFieldState> emit}) {

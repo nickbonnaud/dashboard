@@ -8,6 +8,9 @@ import 'package:dashboard/theme/global_colors.dart';
 
 class RecentTransactions extends StatelessWidget {
 
+  const RecentTransactions({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -16,8 +19,8 @@ class RecentTransactions extends StatelessWidget {
         SizedBox(height: SizeConfig.getHeight(2)),
         BlocBuilder<RecentTransactionsBloc, RecentTransactionsState>(
           builder: (context, state) {
-            if (state.errorMessage.length > 0) return _error(context: context, error: state.errorMessage);
-            if (state.transactions.length == 0) return state.loading ? _loading(context: context) : _noTransactions(context: context);
+            if (state.errorMessage.isNotEmpty) return _error(context: context, error: state.errorMessage);
+            if (state.transactions.isEmpty) return state.loading ? _loading(context: context) : _noTransactions(context: context);
 
             return _transactions(state: state);
           }
@@ -47,7 +50,7 @@ class RecentTransactions extends StatelessWidget {
   Widget _transactions({required RecentTransactionsState state}) {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: state.transactions.length,
       itemBuilder: (context, index) => TransactionWidget(index: index, transactionResource: state.transactions[index])
     );

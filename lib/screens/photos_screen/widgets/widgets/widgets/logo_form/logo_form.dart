@@ -12,20 +12,21 @@ import 'bloc/logo_form_bloc.dart';
 class LogoForm extends StatelessWidget {
   final PhotoPickerRepository _photoPickerRepository;
 
-  const LogoForm({required PhotoPickerRepository photoPickerRepository})
-    : _photoPickerRepository = photoPickerRepository;
+  const LogoForm({required PhotoPickerRepository photoPickerRepository, Key? key})
+    : _photoPickerRepository = photoPickerRepository,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      key: Key("logoScrollKey"),
+      key: const Key("logoScrollKey"),
       child: Column(
         children: [
           SizedBox(height: SizeConfig.getHeight(5)),
           _logo(context: context),
           SizedBox(height: SizeConfig.getHeight(5)),
           ElevatedButton(
-            key: Key("logoPickerButtonKey"),
+            key: const Key("logoPickerButtonKey"),
             style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: SizeConfig.getWidth(1), horizontal: SizeConfig.getWidth(4)))),
             onPressed: () =>  _buttonPressed(context: context),
             child: _buttonChild(context: context),
@@ -54,7 +55,7 @@ class LogoForm extends StatelessWidget {
     if (logoFile.path.isEmpty) return Container();
     
     return Material(
-      key: Key("logoFileDisplayKey"),
+      key: const Key("logoFileDisplayKey"),
       child: Container(
         width: SizeConfig.getWidth(10) * 2,
         height: SizeConfig.getWidth(10) * 2,
@@ -67,7 +68,7 @@ class LogoForm extends StatelessWidget {
         ),
       ),
       elevation: 10,
-      shape: CircleBorder(),
+      shape: const CircleBorder(),
     );
   }
 
@@ -80,7 +81,7 @@ class LogoForm extends StatelessWidget {
 
   Widget _placeHolder() {
     return Material(
-      key: Key("logoPlaceHolderKey"),
+      key: const Key("logoPlaceHolderKey"),
       child: CircleAvatar(
         child: Icon(
           Icons.add_business,
@@ -91,13 +92,13 @@ class LogoForm extends StatelessWidget {
         backgroundColor: Colors.black54,
       ),
       elevation: 10,
-      shape: CircleBorder(),
+      shape: const CircleBorder(),
     );
   }
 
   Widget _buttonChild({required BuildContext context}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: Text4(text: 'Select Logo', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }

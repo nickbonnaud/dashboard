@@ -18,18 +18,20 @@ class PhotosForm extends StatelessWidget {
   final String _profileIdentifier;
   final bool _isEdit;
 
-  PhotosForm({
+  const PhotosForm({
     required PhotoPickerRepository photoPickerRepository, 
     required PhotosRepository photosRepository,
     required BusinessBloc businessBloc,
     required String profileIdentifier,
-    required bool isEdit
+    required bool isEdit,
+    Key? key
   })
     : _photoPickerRepository = photoPickerRepository,
       _photosRepository = photosRepository,
       _businessBloc = businessBloc,
       _profileIdentifier = profileIdentifier,
-      _isEdit = isEdit;
+      _isEdit = isEdit,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

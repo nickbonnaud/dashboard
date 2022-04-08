@@ -13,6 +13,9 @@ import 'bloc/name_search_field_bloc.dart';
 
 class NameSearchField extends StatefulWidget {
 
+  const NameSearchField({Key? key})
+    : super(key: key);
+
   @override
   State<NameSearchField> createState() => _NameSearchFieldState();
 }
@@ -86,7 +89,7 @@ class _NameSearchFieldState extends State<NameSearchField> {
     return BlocBuilder<NameSearchFieldBloc, NameSearchFieldState>(
       builder: (context, state) {
         return CupertinoTextField(
-          key: Key("firstNameSearchFieldKey"),
+          key: const Key("firstNameSearchFieldKey"),
           decoration: CupertinoBoxDecoration.validator(isValid: (state.isFirstNameValid || _firstNameController.text.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,
@@ -110,7 +113,7 @@ class _NameSearchFieldState extends State<NameSearchField> {
     return BlocBuilder<NameSearchFieldBloc, NameSearchFieldState>(
       builder: (context, state) {
         return CupertinoTextField(
-          key: Key("lastNameSearchFieldKey"),
+          key: const Key("lastNameSearchFieldKey"),
           decoration: CupertinoBoxDecoration.validator(isValid: (state.isLastNameValid || _lastNameController.text.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,

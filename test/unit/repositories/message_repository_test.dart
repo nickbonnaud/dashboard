@@ -22,7 +22,7 @@ void main() {
       _messageRepository = MessageRepository(messageProvider: MessageProvider());
       _mockMessageProvider = MockMessageProvider();
       _messageRepositoryWithMock = MessageRepository(messageProvider: _mockMessageProvider);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
     
     test("Message Repository can Check Unread Messages", () async {
@@ -31,7 +31,7 @@ void main() {
     });
 
     test("Message Repository throws error on Check Unread Messages fail", () async {
-      when(() => _mockMessageProvider.fetch()).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockMessageProvider.fetch()).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(
         _messageRepositoryWithMock.checkUnreadMessages(), 
         throwsA(isA<ApiException>())
@@ -46,7 +46,7 @@ void main() {
     });
 
     test("Message Repository throws error on Fetch All messages fail", () async {
-      when(() => _mockMessageProvider.fetchPaginated()).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockMessageProvider.fetchPaginated()).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       expect(
         _messageRepositoryWithMock.fetchAll(), 
         throwsA(isA<ApiException>())
@@ -54,15 +54,15 @@ void main() {
     });
 
     test("Message Repository can Paginate", () async {
-      final String url = "http://novapay.ai/api/business/message?page=2";
+      String url = "http://novapay.ai/api/business/message?page=2";
       var messagePaginateData = await _messageRepository.paginate(url: url);
       expect(messagePaginateData, isA<PaginateDataHolder>());
       expect(messagePaginateData.data is List<Message>, true);
     });
 
     test("Message Repository throws error on Paginate fail", () async {
-      final String url = "http://novapay.ai/api/business/message?page=2";
-      when(() => _mockMessageProvider.fetchPaginated(paginateUrl: any(named: 'paginateUrl'))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String url = "http://novapay.ai/api/business/message?page=2";
+      when(() => _mockMessageProvider.fetchPaginated(paginateUrl: any(named: 'paginateUrl'))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       expect(
         _messageRepositoryWithMock.paginate(url: url), 
         throwsA(isA<ApiException>())
@@ -79,7 +79,7 @@ void main() {
     test("Message Repository throws error on Add Message", () async {
       final String title = faker.lorem.sentence();
       final String body = faker.lorem.sentence();
-      when(() => _mockMessageProvider.storeMessage(body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockMessageProvider.storeMessage(body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _messageRepositoryWithMock.addMessage(title: title, messageBody: body), 
@@ -97,7 +97,7 @@ void main() {
     test("Message Repository throws error on Add Reply fail", () async {
       final String identifier = faker.guid.guid();
       final String body = faker.lorem.sentence();
-      when(() => _mockMessageProvider.storeReply(body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockMessageProvider.storeReply(body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _messageRepositoryWithMock.addReply(messageIdentifier: identifier, replyBody: body), 
@@ -113,7 +113,7 @@ void main() {
 
     test("Message Repository throws error on Update Message fail", () async {
       final String identifier = faker.guid.guid();
-      when(() => _mockMessageProvider.updateMessage(messageIdentifier: identifier, body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockMessageProvider.updateMessage(messageIdentifier: identifier, body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _messageRepositoryWithMock.updateMessage(messageIdentifier: identifier), 

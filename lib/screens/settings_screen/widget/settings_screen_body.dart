@@ -20,11 +20,13 @@ class SettingsScreenBody extends StatelessWidget {
   const SettingsScreenBody({
     required AuthenticationRepository authenticationRepository, 
     required BusinessRepository businessRepository,
-    required BusinessBloc businessBloc
+    required BusinessBloc businessBloc,
+    Key? key
   })
     : _authenticationRepository = authenticationRepository,
       _businessRepository = businessRepository,
-      _businessBloc = businessBloc;
+      _businessBloc = businessBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -56,7 +58,7 @@ class SettingsScreenBody extends StatelessWidget {
         authenticationRepository: _authenticationRepository,
         settingsScreenCubit: context.read<SettingsScreenCubit>()
       ),
-      child: LockedForm(),
+      child: const LockedForm(),
     );
   }
 

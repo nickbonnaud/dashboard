@@ -17,8 +17,9 @@ import 'package:dashboard/theme/global_colors.dart';
 class OwnerFormBody extends StatefulWidget {
   final OwnerAccount? _ownerAccount;
 
-  OwnerFormBody({OwnerAccount? ownerAccount})
-    :  _ownerAccount = ownerAccount;
+  const OwnerFormBody({OwnerAccount? ownerAccount, Key? key})
+    : _ownerAccount = ownerAccount,
+      super(key: key);
 
   @override
   State<OwnerFormBody> createState() => _OwnerFormBodyState();
@@ -332,7 +333,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
           control: state.errorButtonControl, 
           onAnimationComplete: () => _resetForm(context: context),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state, context: context) : null,
             child: _buttonChild(state: state, context: context),
           )
@@ -345,7 +346,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return OutlinedButton(
-          key: Key("cancelButtonKey"),
+          key: const Key("cancelButtonKey"),
           onPressed: state.isSubmitting ? null : () => _cancelButtonPressed(),
           child: Text4(text: 'Cancel', context: context, color: state.isSubmitting 
             ? Theme.of(context).colorScheme.callToActionDisabled
@@ -360,7 +361,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("firstNameFieldKey"),
+          key: const Key("firstNameFieldKey"),
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
             labelText: 'First Name',
@@ -392,7 +393,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("lastNameFieldKey"),
+          key: const Key("lastNameFieldKey"),
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
             labelText: 'Last Name',
@@ -424,7 +425,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("titleFieldKey"),
+          key: const Key("titleFieldKey"),
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
             labelText: 'Title i.e. CEO, Owner...',
@@ -456,7 +457,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("emailFieldKey"),
+          key: const Key("emailFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: 'Email',
@@ -488,7 +489,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("dobFieldKey"),
+          key: const Key("dobFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: 'Date of Birth',
@@ -522,7 +523,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("percentOwnershipFieldKey"),
+          key: const Key("percentOwnershipFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             suffixText: '%',
@@ -556,7 +557,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("phoneFieldKey"),
+          key: const Key("phoneFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: 'Phone',
@@ -589,7 +590,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("ssnKey"),
+          key: const Key("ssnKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
             labelText: 'SSN',
@@ -622,7 +623,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return CheckboxListTile(
-          key: Key("primaryCheckBoxKey"),
+          key: const Key("primaryCheckBoxKey"),
           contentPadding: EdgeInsets.only(top: SizeConfig.getHeight(1)),
           secondary: SizedBox(width: SizeConfig.getWidth(4)),
           title: Text(
@@ -635,7 +636,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
                 : Colors.black.withOpacity(0.6)
             ),
           ),
-          subtitle: Text('Signing Agent for Business'),
+          subtitle: const Text('Signing Agent for Business'),
           value: widget._ownerAccount != null
             ? widget._ownerAccount!.primary != state.isPrimary ? state.isPrimary : widget._ownerAccount!.primary 
             : state.isPrimary,
@@ -649,7 +650,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("addressFieldKey"),
+          key: const Key("addressFieldKey"),
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
             labelText: 'Address Line 1',
@@ -681,7 +682,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("addressSecondaryFieldKey"),
+          key: const Key("addressSecondaryFieldKey"),
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
             labelText: 'Address Line 2 (optional)',
@@ -713,7 +714,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("cityFieldKey"),
+          key: const Key("cityFieldKey"),
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
             labelText: 'City',
@@ -745,7 +746,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("stateFieldKey"),
+          key: const Key("stateFieldKey"),
           textCapitalization: TextCapitalization.characters,
           decoration: InputDecoration(
             labelText: 'State',
@@ -778,7 +779,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("zipFieldKey"),
+          key: const Key("zipFieldKey"),
           decoration: InputDecoration(
             labelText: 'Zip',
             labelStyle: TextStyle(
@@ -823,9 +824,9 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   
   Widget _buttonChild({required OwnerFormState state, required BuildContext context}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5), 
+      padding: const EdgeInsets.only(top: 5, bottom: 5), 
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Save', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -836,7 +837,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
         child: Row(
           children: [
             Expanded(child: _cancelButton()),
-            SizedBox(width: 20.0),
+            const SizedBox(width: 20.0),
             Expanded(child: _submitButton())
           ]
         ),
@@ -845,7 +846,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   }
   
   void _resetForm({required BuildContext context}) {
-    Future.delayed(Duration(seconds: 1), () => BlocProvider.of<OwnerFormBloc>(context).add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => BlocProvider.of<OwnerFormBloc>(context).add(Reset()));
   }
 
   bool _buttonEnabled({required OwnerFormState state}) {
@@ -933,7 +934,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   }
 
   void _onPercentOwnershipChanged() {
-    if (_percentOwnershipController.text.length > 0) {
+    if (_percentOwnershipController.text.isNotEmpty) {
       _ownerFormBloc.add(PercentOwnershipChanged(percentOwnership: int.parse(_percentOwnershipController.text)));
     }
   }
@@ -981,17 +982,17 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
       context: context,
       barrierDismissible: false,
       builder: (context) => AlertDialog(
-        key: Key("changePrimaryDialogKey"),
-        title: Text('Account Controller Already Assigned!'),
-        content: Text('Are you sure you want to change the Account Controller?'),
+        key: const Key("changePrimaryDialogKey"),
+        title: const Text('Account Controller Already Assigned!'),
+        content: const Text('Are you sure you want to change the Account Controller?'),
         actions: [
           TextButton(
-            key: Key("cancelDialogButtonKey"),
+            key: const Key("cancelDialogButtonKey"),
             child: Text('Cancel', style: TextStyle(color: Theme.of(context).colorScheme.danger)),
             onPressed: () => Navigator.of(context).pop(false),
           ),
           TextButton(
-            key: Key("confirmDialogButtonKey"),
+            key: const Key("confirmDialogButtonKey"),
             child: Text('Confirm', style: TextStyle(color: Theme.of(context).colorScheme.callToAction)),
             onPressed: () => Navigator.of(context).pop(true),
           )
@@ -1013,7 +1014,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (context, child) => Theme(
-        key: Key("datePickerKey"),
+        key: const Key("datePickerKey"),
         data: ThemeData.light(),
         child: child!,
       )

@@ -41,7 +41,7 @@ void main() {
         'password_confirmation': password
       };
 
-      when (() => _mockAuthenticationProvider.register(body: body)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when (() => _mockAuthenticationProvider.register(body: body)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_authRepositoryWithMock.register(email: email, password: password, passwordConfirmation: password), throwsA(isA<ApiException>()));
     });
 
@@ -72,7 +72,7 @@ void main() {
         "password": password
       };
 
-      when (() => _mockAuthenticationProvider.login(body: body)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when (() => _mockAuthenticationProvider.login(body: body)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_authRepositoryWithMock.login(email: email, password: password), throwsA(isA<ApiException>()));
     });
 
@@ -93,7 +93,7 @@ void main() {
     });
 
     test("Logging out a Business throws error on failure", () async {
-      when (() => _mockAuthenticationProvider.logout()).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when (() => _mockAuthenticationProvider.logout()).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_authRepositoryWithMock.logout(), throwsA(isA<ApiException>()));
     });
 
@@ -117,7 +117,7 @@ void main() {
       final Map<String, dynamic> body = {
         'password': password
       };
-      when (() => _mockAuthenticationProvider.verifyPassword(body: body)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when (() => _mockAuthenticationProvider.verifyPassword(body: body)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_authRepositoryWithMock.verifyPassword(password: password), throwsA(isA<ApiException>()));
     });
 
@@ -132,7 +132,7 @@ void main() {
       final Map<String, dynamic> body = {
         'email': email
       };
-      when(() => _mockAuthenticationProvider.requestPasswordReset(body: body)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockAuthenticationProvider.requestPasswordReset(body: body)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_authRepositoryWithMock.requestPasswordReset(email: email), throwsA(isA<ApiException>()));
     });
 
@@ -153,7 +153,7 @@ void main() {
         'token': token
       };
 
-      when(() => _mockAuthenticationProvider.resetPassword(body: body)).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockAuthenticationProvider.resetPassword(body: body)).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(_authRepositoryWithMock.resetPassword(password: password, passwordConfirmation: password, token: token), throwsA(isA<ApiException>()));
     });
 

@@ -18,12 +18,14 @@ class MessageWidget extends StatelessWidget {
     required int index,
     required Message message,
     required MessageListScreenBloc messageListScreenBloc,
-    required MessageRepository messageRepository
+    required MessageRepository messageRepository,
+    Key? key
   })
     : _index = index,
       _message = message,
       _messageListScreenBloc = messageListScreenBloc,
-      _messageRepository = messageRepository;
+      _messageRepository = messageRepository,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

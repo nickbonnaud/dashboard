@@ -56,10 +56,10 @@ void main() {
       );
 
       when(() => geoAccountRepository.store(lat: any(named: "lat"), lng: any(named: "lng"), radius: any(named: "radius")))
-        .thenAnswer((_) async=> Future.delayed(Duration(milliseconds: 500), () => location));
+        .thenAnswer((_) async=> Future.delayed(const Duration(milliseconds: 500), () => location));
 
       when(() => geoAccountRepository.update(identifier: any(named: "identifier"), lat: any(named: "lat"), lng: any(named: "lng"), radius: any(named: "radius")))
-        .thenAnswer((_) async=> Future.delayed(Duration(milliseconds: 500), () => location));
+        .thenAnswer((_) async=> Future.delayed(const Duration(milliseconds: 500), () => location));
 
       registerFallbackValue(MockRoute());
     });
@@ -95,61 +95,61 @@ void main() {
 
     testWidgets("Geo Account Screen slider can slide", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
-      await tester.drag(find.byKey(Key("titleKey")), Offset(0.0, -500));
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+      await tester.drag(find.byKey(const Key("titleKey")), const Offset(0.0, -500));
       await tester.pump();
-      await tester.drag(find.byType(Slider), Offset(100, 0));
+      await tester.drag(find.byType(Slider), const Offset(100, 0));
       await tester.pump();
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, true);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
     });
 
     testWidgets("Tapping submit button shows CircularProgressIndicator", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      await tester.drag(find.byKey(Key("titleKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("titleKey")), const Offset(0.0, -500));
       await tester.pump();
       
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
     });
 
     testWidgets("Tapping submit button shows toast on success", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       expect(find.text("Location Saved!"), findsNothing);
-      await tester.drag(find.byKey(Key("titleKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("titleKey")), const Offset(0.0, -500));
       await tester.pump();
       
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 2));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text("Location Saved!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 2));
     });
 
     testWidgets("Tapping submit button on success pops nav", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      await tester.drag(find.byKey(Key("titleKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("titleKey")), const Offset(0.0, -500));
       await tester.pump();
       
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 4));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 4));
       verify(() => observer.didPop(any(), any()));
     });
 
     testWidgets("Tapping submit button on error shows error message", (tester) async {
       when(() => geoAccountRepository.store(lat: any(named: "lat"), lng: any(named: "lng"), radius: any(named: "radius")))
-        .thenThrow(ApiException(error: "An Error Occurred!"));
+        .thenThrow(const ApiException(error: "An Error Occurred!"));
       
       await screenBuilderNew.createScreen(tester: tester);
       expect(find.text("An Error Occurred!"), findsNothing);
-      await tester.drag(find.byKey(Key("titleKey")), Offset(0.0, -500));
+      await tester.drag(find.byKey(const Key("titleKey")), const Offset(0.0, -500));
       await tester.pump();
       
-      await tester.tap(find.byKey(Key("submitButtonKey")));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("An Error Occurred!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.text("An Error Occurred!"), findsNothing);
     });
   });

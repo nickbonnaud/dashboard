@@ -28,7 +28,7 @@ class RefundsListState extends Equatable {
 
   factory RefundsListState.initial({required FilterType currentFilter, @required DateTimeRange? currentDateRange}) {
     return RefundsListState(
-      refunds: [],
+      refunds: const [],
       nextUrl: null,
       hasReachedEnd: false,
       loading: false,
@@ -43,14 +43,14 @@ class RefundsListState extends Equatable {
 
   RefundsListState reset({String? currentIdQuery, FullName? currentNameQuery}) {
     return RefundsListState(
-      refunds: [],
+      refunds: const [],
       nextUrl: null,
       hasReachedEnd: false,
       loading: true,
       paginating: false,
       errorMessage: '',
-      currentFilter: this.currentFilter,
-      currentDateRange: this.currentDateRange,
+      currentFilter: currentFilter,
+      currentDateRange: currentDateRange,
       currentIdQuery: currentIdQuery,
       currentNameQuery: currentNameQuery,
     );

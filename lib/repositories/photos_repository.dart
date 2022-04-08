@@ -5,7 +5,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PhotosRepository extends BaseRepository {
-  late PhotosProvider _photosProvider;
+  final PhotosProvider _photosProvider;
 
   PhotosRepository({required PhotosProvider photosProvider})
     : _photosProvider = photosProvider;
@@ -16,7 +16,7 @@ class PhotosRepository extends BaseRepository {
       'is_logo': true
     };
     
-    final Map<String, dynamic> json = await this.send(request: _photosProvider.storeLogo(identifier: profileIdentifier, body: body));
+    Map<String, dynamic> json = await send(request: _photosProvider.storeLogo(identifier: profileIdentifier, body: body));
     return deserialize(json: json);
   }
 
@@ -26,7 +26,7 @@ class PhotosRepository extends BaseRepository {
       'is_logo': false
     };
     
-    final Map<String, dynamic> json = await this.send(request: _photosProvider.storeBanner(identifier: profileIdentifier, body: body));
+    Map<String, dynamic> json = await send(request: _photosProvider.storeBanner(identifier: profileIdentifier, body: body));
     return deserialize(json: json);
   }
 

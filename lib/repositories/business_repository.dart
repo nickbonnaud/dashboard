@@ -14,26 +14,26 @@ class BusinessRepository extends BaseRepository {
       _tokenRepository = tokenRepository;
   
   Future<Business> fetch() async {
-    final Map<String, dynamic> json = await this.send(request: _businessProvider.fetch());
+    Map<String, dynamic> json = await send(request: _businessProvider.fetch());
     return deserialize(json: json);
   }
 
   Future<String> updateEmail({required String email, required String identifier}) async {
-    final Map<String, dynamic> body = {
+    Map<String, dynamic> body = {
       'email': email
     };
     
-    final Map<String, dynamic> json = await this.send(request: _businessProvider.update(body: body, identifier: identifier));
+    Map<String, dynamic> json = await send(request: _businessProvider.update(body: body, identifier: identifier));
     return json['email'];
   }
 
   Future<bool> updatePassword({required String password, required String passwordConfirmation, required String identifier}) async {
-    final Map<String, dynamic> body = {
+    Map<String, dynamic> body = {
       'password': password,
       'password_confirmation': passwordConfirmation
     };
 
-    await this.send(request: _businessProvider.update(body: body, identifier: identifier));
+    await send(request: _businessProvider.update(body: body, identifier: identifier));
     return true;
   }
 

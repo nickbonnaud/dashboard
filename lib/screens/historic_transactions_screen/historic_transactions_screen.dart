@@ -10,8 +10,9 @@ import 'widgets/historic_transactions_screen_body.dart';
 class HistoricTransactionsScreen extends StatefulWidget {
   final TransactionRepository _transactionRepository;
 
-  const HistoricTransactionsScreen({required TransactionRepository transactionRepository})
-    : _transactionRepository = transactionRepository;
+  const HistoricTransactionsScreen({required TransactionRepository transactionRepository, Key? key})
+    : _transactionRepository = transactionRepository,
+      super(key: key);
 
   @override
   State<HistoricTransactionsScreen> createState() => _HistoricTransactionsScreenState();

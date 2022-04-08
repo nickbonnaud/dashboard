@@ -25,7 +25,7 @@ class BusinessAccountScreenState extends Equatable {
     isZipValid &&
     isEinValid;
 
-  BusinessAccountScreenState({
+  const BusinessAccountScreenState({
     required this.entityType,
     required this.isNameValid,
     required this.isAddressValid,

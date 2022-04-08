@@ -45,7 +45,7 @@ void main() {
         .thenReturn(null);
 
       when(() => messageRepository.addReply(messageIdentifier: any(named: "messageIdentifier"), replyBody: any(named: "replyBody")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createReply()));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createReply()));
     });
 
     testWidgets("MessageScreen creates BottomModalAppBar", (tester) async {
@@ -65,17 +65,17 @@ void main() {
 
     testWidgets("ListView is scrollable", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("bubble-1")), findsOneWidget);
-      await tester.fling(find.byType(ListView), Offset(0, 200), 3000);
+      expect(find.byKey(const Key("bubble-1")), findsOneWidget);
+      await tester.fling(find.byType(ListView), const Offset(0, 200), 3000);
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("bubble-1")), findsNothing);
+      expect(find.byKey(const Key("bubble-1")), findsNothing);
     });
 
     testWidgets("Message History creates initial Message", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.fling(find.byType(ListView), Offset(0, 1500), 3000);
+      await tester.fling(find.byType(ListView), const Offset(0, 1500), 3000);
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("initialMessage")), findsOneWidget);
+      expect(find.byKey(const Key("initialMessage")), findsOneWidget);
     });
 
     testWidgets("Message History creates MessageBubbles", (tester) async {
@@ -105,13 +105,13 @@ void main() {
 
     testWidgets("MessageInput creates submit button", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("submitButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("submitButtonKey")), findsOneWidget);
     });
 
     testWidgets("Submit button is disabled if MessageInput is empty", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       verifyNever(() => messageRepository.addReply(messageIdentifier: any(named: "messageIdentifier"), replyBody: any(named: "replyBody")));
     });
 
@@ -119,11 +119,11 @@ void main() {
       await screenBuilder.createScreen(tester: tester);
       expect(find.byType(CircularProgressIndicator), findsNothing);
       await tester.enterText(find.byType(CupertinoTextField), faker.lorem.sentence());
-      await tester.pump(Duration(milliseconds: 400));
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
@@ -131,9 +131,9 @@ void main() {
       await screenBuilder.createScreen(tester: tester);
       expect(find.byType(CircularProgressIndicator), findsNothing);
       await tester.enterText(find.byType(CupertinoTextField), faker.lorem.sentence());
-      await tester.pump(Duration(milliseconds: 400));
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       verify(() => messageRepository.addReply(messageIdentifier: any(named: "messageIdentifier"), replyBody: any(named: "replyBody"))).called(1);
     });
 
@@ -141,14 +141,14 @@ void main() {
       String body = faker.lorem.sentence();
       
       when(() => messageRepository.addReply(messageIdentifier: any(named: "messageIdentifier"), replyBody: any(named: "replyBody")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createReply(body: body)));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createReply(body: body)));
       
       await screenBuilder.createScreen(tester: tester);
       expect(find.text(body), findsNothing);
       await tester.enterText(find.byType(CupertinoTextField), body);
-      await tester.pump(Duration(milliseconds: 400));
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.text(body), findsOneWidget);
     });
 
@@ -156,16 +156,16 @@ void main() {
       String body = faker.lorem.sentence();
       
       when(() => messageRepository.addReply(messageIdentifier: any(named: "messageIdentifier"), replyBody: any(named: "replyBody")))
-        .thenThrow(ApiException(error: "An Error Occurred!"));
+        .thenThrow(const ApiException(error: "An Error Occurred!"));
       
       await screenBuilder.createScreen(tester: tester);
       expect(find.text("An Error Occurred!"), findsNothing);
       await tester.enterText(find.byType(CupertinoTextField), body);
-      await tester.pump(Duration(milliseconds: 400));
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pump(const Duration(milliseconds: 400));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       expect(find.text("An Error Occurred!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.text("An Error Occurred!"), findsNothing);
     });
   });

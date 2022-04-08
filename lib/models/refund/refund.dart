@@ -9,7 +9,7 @@ class Refund extends Equatable {
   final String status;
   final DateTime createdAt;
 
-  Refund({required this.identifier, required this.total, required this.status, required this.createdAt});
+  const Refund({required this.identifier, required this.total, required this.status, required this.createdAt});
 
   Refund.fromJson({required Map<String, dynamic> json})
     : identifier = json['identifier']!,

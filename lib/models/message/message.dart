@@ -68,15 +68,15 @@ class Message extends Equatable {
     List<Reply>? replies
   }) {
     return Message(
-      identifier: this.identifier,
-      title: this.title,
-      body: this.body,
-      fromBusiness: this.fromBusiness,
+      identifier: identifier,
+      title: title,
+      body: body,
+      fromBusiness: fromBusiness,
       read: read ?? this.read,
       unreadReply: unreadReply ?? this.unreadReply,
       latestReply: latestReply ?? this.latestReply,
-      createdAt: this.createdAt,
-      updatedAt: this.updatedAt,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
       replies: replies ?? this.replies
     );
   }

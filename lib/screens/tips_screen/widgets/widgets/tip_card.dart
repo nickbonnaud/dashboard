@@ -6,8 +6,9 @@ import 'package:flutter/material.dart';
 class TipCard extends StatelessWidget {
   final EmployeeTip _employeeTip;
 
-  const TipCard({required EmployeeTip employeeTip})
-    : _employeeTip = employeeTip;
+  const TipCard({required EmployeeTip employeeTip, Key? key})
+    : _employeeTip = employeeTip,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

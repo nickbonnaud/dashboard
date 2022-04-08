@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/bank_account.dart';
 import 'package:dashboard/models/business/business_account.dart';
-import 'package:dashboard/models/business/location.dart' as Business;
+import 'package:dashboard/models/business/location.dart' as business;
 import 'package:dashboard/models/business/profile.dart';
 import 'package:dashboard/repositories/profile_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
@@ -21,7 +21,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
   final BusinessBloc _businessBloc;
   final GoogleMapsPlaces _places;
 
-  final Duration _debounceTime = Duration(milliseconds: 300);
+  final Duration _debounceTime = const Duration(milliseconds: 300);
 
   ProfileScreenBloc({
     required ProfileRepository profileRepository, 
@@ -34,7 +34,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
       super(ProfileScreenState.empty()) { _eventHandler(); }
 
   void _eventHandler() {
-    on<PlaceQueryChanged>((event, emit) async => await _mapPlaceQueryChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: Duration(seconds: 1)));
+    on<PlaceQueryChanged>((event, emit) async => await _mapPlaceQueryChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: const Duration(seconds: 1)));
     on<PredictionSelected>((event, emit) async => await _mapPredictionSelectedToState(event: event, emit: emit));
     on<NameChanged>((event, emit) => _mapNameChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<WebsiteChanged>((event, emit) => _mapWebsiteChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
@@ -132,7 +132,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
   void _updateBusinessBloc({required Profile profile}) {
     if (state.selectedPrediction != null && state.selectedPrediction!.geometry != null) {
       _businessBloc.add(ProfileUpdated(profile: profile));
-      _businessBloc.add(LocationUpdated(location: Business.Location(
+      _businessBloc.add(LocationUpdated(location: business.Location(
           identifier: "", 
           lat: state.selectedPrediction!.geometry!.location.lat, 
           lng: state.selectedPrediction!.geometry!.location.lng, 

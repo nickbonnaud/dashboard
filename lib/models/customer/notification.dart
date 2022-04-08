@@ -17,7 +17,7 @@ class Notification extends Equatable {
   final int numberTimesFixBillSent;
   final DateTime updatedAt;
 
-  Notification({
+  const Notification({
     required this.last,
     required this.exitSent,
     this.timeExitSent,

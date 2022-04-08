@@ -18,7 +18,7 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
   final BusinessAccountRepository _accountRepository;
   final BusinessBloc _businessBloc;
 
-  final Duration _debounceTime = Duration(milliseconds: 300);
+  final Duration _debounceTime = const Duration(milliseconds: 300);
   
   BusinessAccountScreenBloc({required BusinessAccountRepository accountRepository, required BusinessBloc businessBloc, required BusinessAccount businessAccount}) 
     : _accountRepository = accountRepository,

@@ -19,23 +19,23 @@ void main() {
       _geoAccountRepository = GeoAccountRepository(geoAccountProvider: GeoAccountProvider());
       _mockGeoAccountProvider = MockGeoAccountProvider();
       _geoAccountRepositoryWithMock = GeoAccountRepository(geoAccountProvider: _mockGeoAccountProvider);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
     
     test("Geo Account Repository can Store a geo account", () async {
-      final double lat = 35.910259;
-      final double lng = -79.055473;
-      final int radius = 50;
+      double lat = 35.910259;
+      double lng = -79.055473;
+      int radius = 50;
 
       var location = await _geoAccountRepository.store(lat: lat, lng: lng, radius: radius);
       expect(location, isA<Location>());
     });
 
     test("Geo Account Repository throws error on Store geo account fail", () async {
-      final double lat = 35.910259;
-      final double lng = -79.055473;
-      final int radius = 50;
-      when(() => _mockGeoAccountProvider.store(body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      double lat = 35.910259;
+      double lng = -79.055473;
+      int radius = 50;
+      when(() => _mockGeoAccountProvider.store(body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _geoAccountRepositoryWithMock.store(lat: lat, lng: lng, radius: radius), 
@@ -44,21 +44,21 @@ void main() {
     });
 
     test("Geo Account Repository can Update Geo Account", () async {
-      final String identifier = faker.guid.guid();
-      final double lat = 35.910259;
-      final double lng = -79.055473;
-      final int radius = 25;
+      String identifier = faker.guid.guid();
+      double lat = 35.910259;
+      double lng = -79.055473;
+      int radius = 25;
 
       var location = await _geoAccountRepository.update(identifier: identifier, lat: lat, lng: lng, radius: radius);
       expect(location, isA<Location>());
     });
 
     test("Geo Account Repository throws error on Update geo account fail", () async {
-      final String identifier = faker.guid.guid();
-      final double lat = 35.910259;
-      final double lng = -79.055473;
-      final int radius = 25;
-      when(() => _mockGeoAccountProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      String identifier = faker.guid.guid();
+      double lat = 35.910259;
+      double lng = -79.055473;
+      int radius = 25;
+      when(() => _mockGeoAccountProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _geoAccountRepositoryWithMock.update(identifier: identifier, lat: lat, lng: lng, radius: radius), 

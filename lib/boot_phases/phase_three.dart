@@ -15,8 +15,9 @@ class PhaseThree extends StatelessWidget {
   final CredentialsRepository _credentialsRepository = CredentialsRepository(credentialsProvider: CredentialsProvider());
   final MessageRepository _messageRepository = MessageRepository(messageProvider: MessageProvider());
   
-  PhaseThree({MaterialApp? testApp})
-    : _testApp = testApp;
+  PhaseThree({MaterialApp? testApp, Key? key})
+    : _testApp = testApp,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

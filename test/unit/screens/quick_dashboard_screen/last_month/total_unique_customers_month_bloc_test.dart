@@ -55,11 +55,11 @@ void main() {
     blocTest<TotalUniqueCustomersMonthBloc, TotalUniqueCustomersMonthState>(
       "FetchTotalUniqueCustomersMonth event on error changes state: [Loading()], [FetchTotalUniqueCustomersFailed()]",
       build: () {
-        when(() => transactionRepository.fetchTotalUniqueCustomersMonth()).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchTotalUniqueCustomersMonth()).thenThrow(const ApiException(error: "error"));
         return totalUniqueCustomersMonthBloc;
       },
       act: (bloc) => bloc.add(FetchTotalUniqueCustomersMonth()),
-      expect: () => [Loading(), FetchTotalUniqueCustomersFailed(error: "error")]
+      expect: () => [Loading(), const FetchTotalUniqueCustomersFailed(error: "error")]
     );
   });
 }

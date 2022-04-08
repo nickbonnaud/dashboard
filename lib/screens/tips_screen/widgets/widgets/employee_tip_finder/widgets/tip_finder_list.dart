@@ -9,7 +9,10 @@ import 'package:dashboard/theme/global_colors.dart';
 import '../../tip_card.dart';
 
 class TipFinderList extends StatelessWidget {
-  
+
+  const TipFinderList({Key? key})
+    : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -45,7 +48,7 @@ class TipFinderList extends StatelessWidget {
 
     return state.currentFirstName.isNotEmpty || state.currentLastName.isNotEmpty
       ? _noTipsFound(context: context)
-      : Container(key: Key("emptyTipFinderListKey"));
+      : Container(key: const Key("emptyTipFinderListKey"));
   }
 
   Widget _loading({required BuildContext context}) {
@@ -62,9 +65,9 @@ class TipFinderList extends StatelessWidget {
 
   Widget _tipsList({required EmployeeTipFinderState state}) {
     return ListView.builder(
-      key: Key("employeeTipsListKey"),
+      key: const Key("employeeTipsListKey"),
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (context, index) => TipCard(employeeTip: state.tips[index]),
       itemCount: state.tips.length, 
     );

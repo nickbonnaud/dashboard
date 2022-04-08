@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 class CupertinoBoxDecoration {
 
-  static Border _kDefaultRoundedBorder = Border.all(
-    color: CupertinoDynamicColor.withBrightness(
+  static final Border _kDefaultRoundedBorder = Border.all(
+    color: const CupertinoDynamicColor.withBrightness(
       color: Color(0x33000000),
       darkColor: Color(0x33FFFFFF),
     ),
@@ -14,7 +14,7 @@ class CupertinoBoxDecoration {
   
   static BoxDecoration validator({required bool isValid, double borderRadius = 5.0}) {
     final BoxDecoration defaultDecoration = BoxDecoration(
-      color: CupertinoDynamicColor.withBrightness(
+      color: const CupertinoDynamicColor.withBrightness(
         color: CupertinoColors.white,
         darkColor: CupertinoColors.black,
       ),
@@ -26,7 +26,7 @@ class CupertinoBoxDecoration {
       ? defaultDecoration
       : defaultDecoration.copyWith(
           border: Border.all(
-            color: CupertinoDynamicColor.withBrightness(
+            color: const CupertinoDynamicColor.withBrightness(
               color: Colors.red,
               darkColor: Colors.red,
             ),

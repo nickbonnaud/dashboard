@@ -19,18 +19,18 @@ void main() {
       _hoursRepository = HoursRepository(hoursProvider: HoursProvider());
       _mockHoursProvider = MockHoursProvider();
       _hoursRepositoryWithMock = HoursRepository(hoursProvider: _mockHoursProvider);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
     
     test("Hours Repository can Store businesses hours", () async {
-      final String hour = "9:00 AM - 10:00 PM";
+      String hour = "9:00 AM - 10:00 PM";
       var hours = await _hoursRepository.store(sunday: hour, monday: hour, tuesday: hour, wednesday: hour, thursday: hour, friday: hour, saturday: hour);
       expect(hours, isA<Hours>());
     });
 
     test("Hours Repository throws error on Store business hours fail", () async {
-      final String hour = "9:00 AM - 10:00 PM";
-      when(() => _mockHoursProvider.store(body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      String hour = "9:00 AM - 10:00 PM";
+      when(() => _mockHoursProvider.store(body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _hoursRepositoryWithMock.store(sunday: hour, monday: hour, tuesday: hour, wednesday: hour, thursday: hour, friday: hour, saturday: hour), 
@@ -39,16 +39,16 @@ void main() {
     });
 
     test("Hours Repository can Update Business Hours", () async {
-      final String hour = "8:00 AM - 10:00 PM";
-      final String identifier = faker.guid.guid();
+      String hour = "8:00 AM - 10:00 PM";
+      String identifier = faker.guid.guid();
       var hours = await _hoursRepository.update(identifier: identifier, sunday: hour, monday: hour, tuesday: hour, wednesday: hour, thursday: hour, friday: hour, saturday: hour);
       expect(hours, isA<Hours>());
     });
 
     test("Hours Repository throws error on Update business hours fail", () async {
-      final String hour = "8:00 AM - 10:00 PM";
-      final String identifier = faker.guid.guid();
-      when(() => _mockHoursProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      String hour = "8:00 AM - 10:00 PM";
+      String identifier = faker.guid.guid();
+      when(() => _mockHoursProvider.update(identifier: identifier, body: any(named: "body"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _hoursRepositoryWithMock.update(identifier: identifier, sunday: hour, monday: hour, tuesday: hour, wednesday: hour, thursday: hour, friday: hour, saturday: hour), 

@@ -10,7 +10,7 @@ class CustomersListState extends Equatable {
   final String errorMessage;
   final DateTimeRange? currentDateRange;
 
-  CustomersListState({
+  const CustomersListState({
     required this.customers,
     this.nextUrl,
     required this.hasReachedEnd,
@@ -22,7 +22,7 @@ class CustomersListState extends Equatable {
 
   factory CustomersListState.initial({@required DateTimeRange? currentDateRange}) {
     return CustomersListState(
-      customers: [],
+      customers: const [],
       hasReachedEnd: false,
       loading: false,
       paginating: false,
@@ -35,7 +35,7 @@ class CustomersListState extends Equatable {
     return CustomersListState(
       loading: true,
       paginating: false,
-      customers: [],
+      customers: const [],
       nextUrl: null,
       hasReachedEnd: false,
       errorMessage: '',

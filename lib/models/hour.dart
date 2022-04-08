@@ -6,7 +6,7 @@ class Hour extends Equatable {
   final TimeOfDay start;
   final TimeOfDay end;
 
-  Hour({required this.start, required this.end});
+  const Hour({required this.start, required this.end});
 
   Hour update({TimeOfDay? start, TimeOfDay? end}) {
     return Hour(

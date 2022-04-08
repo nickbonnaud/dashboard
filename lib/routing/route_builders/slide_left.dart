@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SlideLeft extends PageRouteBuilder {
-  static final Offset _begin = Offset(1, 0);
-  static final Offset _end = Offset.zero;
+  static const Offset _begin = Offset(1, 0);
+  static const Offset _end = Offset.zero;
 
   SlideLeft({required Widget screen, required String name, Duration? transitionDuration})
     : super(
@@ -23,7 +23,7 @@ class SlideLeft extends PageRouteBuilder {
           ).animate(animation),
           child: child,
         ),
-        transitionDuration: transitionDuration ?? Duration(milliseconds: 800),
+        transitionDuration: transitionDuration ?? const Duration(milliseconds: 800),
         settings: RouteSettings(name: name)
       );
 }

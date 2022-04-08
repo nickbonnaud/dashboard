@@ -63,63 +63,63 @@ void main() {
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "EntityTypeSelected event changes state: entityType: corp",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(EntityTypeSelected(entityType: EntityType.corporation)),
+      act: (bloc) => bloc.add(const EntityTypeSelected(entityType: EntityType.corporation)),
       expect: () => [_baseState.update(entityType: EntityType.corporation)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "NameChanged event changes state: isNameValid: false",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(NameChanged(name: "a")),
-      wait: Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const NameChanged(name: "a")),
+      wait: const Duration(milliseconds: 300),
       expect: () => [_baseState.update(isNameValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "AddressChanged event changes state: isAddressValid: false",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(AddressChanged(address: "a")),
-      wait: Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const AddressChanged(address: "a")),
+      wait: const Duration(milliseconds: 300),
       expect: () => [_baseState.update(isAddressValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "AddressSecondaryChanged event changes state: isAddressSecondaryValid: false",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(AddressSecondaryChanged(addressSecondary: "a")),
-      wait: Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const AddressSecondaryChanged(addressSecondary: "a")),
+      wait: const Duration(milliseconds: 300),
       expect: () => [_baseState.update(isAddressSecondaryValid: false)]
     );
     
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "CityChanged event changes state: isCityValidValid: false",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(CityChanged(city: "f")),
-      wait: Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const CityChanged(city: "f")),
+      wait: const Duration(milliseconds: 300),
       expect: () => [_baseState.update(isCityValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "StateChanged event changes state: isStateValid: false",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(StateChanged(state: "y")),
-      wait: Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const StateChanged(state: "y")),
+      wait: const Duration(milliseconds: 300),
       expect: () => [_baseState.update(isStateValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "ZipChanged event changes state: isZipValid: false",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(ZipChanged(zip: "e")),
-      wait: Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const ZipChanged(zip: "e")),
+      wait: const Duration(milliseconds: 300),
       expect: () => [_baseState.update(isZipValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "EinChanged event changes state: isEinValid: false",
       build: () => _businessAccountScreenBloc,
-      act: (bloc) => bloc.add(EinChanged(ein: "m")),
-      wait: Duration(milliseconds: 300),
+      act: (bloc) => bloc.add(const EinChanged(ein: "m")),
+      wait: const Duration(milliseconds: 300),
       expect: () => [_baseState.update(isEinValid: false)]
     );
 
@@ -137,7 +137,7 @@ void main() {
           entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
           ein: "ein"
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(Submitted(
+        bloc.add(const Submitted(
           name: 'name', 
           address: 'address',
           addressSecondary: 'addressSecondary',
@@ -165,7 +165,7 @@ void main() {
           entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
           ein: "ein"
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(Submitted(
+        bloc.add(const Submitted(
           name: 'name', 
           address: 'address',
           addressSecondary: 'addressSecondary',
@@ -205,7 +205,7 @@ void main() {
           ein: "ein"
         )).thenAnswer((_) async => MockBusinessAccount());
         when(() => _businessBloc.add(any(that: isA<BusinessAccountUpdated>()))).thenReturn(null);
-        bloc.add(Submitted(
+        bloc.add(const Submitted(
           name: 'name', 
           address: 'address',
           addressSecondary: 'addressSecondary',
@@ -234,8 +234,8 @@ void main() {
           zip: 'zip',
           entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
           ein: "ein"
-        )).thenThrow(ApiException(error: "error"));
-        bloc.add(Submitted(
+        )).thenThrow(const ApiException(error: "error"));
+        bloc.add(const Submitted(
           name: 'name', 
           address: 'address',
           addressSecondary: 'addressSecondary',
@@ -264,7 +264,7 @@ void main() {
           entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
           ein: "ein"
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(Updated(
+        bloc.add(const Updated(
           id: "identifier",
           name: 'name', 
           address: 'address',
@@ -294,7 +294,7 @@ void main() {
           entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
           ein: "ein"
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(Updated(
+        bloc.add(const Updated(
           id: "identifier",
           name: 'name', 
           address: 'address',
@@ -337,7 +337,7 @@ void main() {
           ein: "ein"
         )).thenAnswer((_) async => MockBusinessAccount());
         when(() => _businessBloc.add(any(that: isA<BusinessAccountUpdated>()))).thenReturn(null);
-        bloc.add(Updated(
+        bloc.add(const Updated(
           id: "identifier",
           name: 'name', 
           address: 'address',
@@ -368,8 +368,8 @@ void main() {
           zip: 'zip',
           entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
           ein: "ein"
-        )).thenThrow(ApiException(error: "error"));
-        bloc.add(Updated(
+        )).thenThrow(const ApiException(error: "error"));
+        bloc.add(const Updated(
           id: "identifier",
           name: 'name', 
           address: 'address',

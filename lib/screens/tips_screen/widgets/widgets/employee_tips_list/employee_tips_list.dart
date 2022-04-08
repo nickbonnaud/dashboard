@@ -10,6 +10,9 @@ import 'bloc/employee_tips_list_bloc.dart';
 
 class EmployeeTipsList extends StatefulWidget {
 
+  const EmployeeTipsList({Key? key})
+    : super(key: key);
+
   @override
   State<EmployeeTipsList> createState() => _EmployeeTipsListState();
 }
@@ -72,11 +75,11 @@ class _EmployeeTipsListState extends State<EmployeeTipsList> {
 
   Widget _tipsList({required EmployeeTipsListState state}) {
     return ListView.builder(
-      key: Key("tipsListKey"),
+      key: const Key("tipsListKey"),
       shrinkWrap: true,
       controller: _scrollController,
       itemBuilder: (context, index) => index >= state.tips.length
-        ? BottomLoader()
+        ? const BottomLoader()
         : TipCard(employeeTip: state.tips[index]),
       itemCount: state.hasReachedEnd
         ? state.tips.length

@@ -32,7 +32,7 @@ void main() {
 
       expect(find.text("${customerResource.customer.firstName} ${customerResource.customer.lastName}"), findsOneWidget);
       expect(find.text(DateFormatter.toStringDateTime(date: customerResource.transaction!.updatedAt)), findsOneWidget);
-      expect(find.text("${customerResource.transaction!.status.name.capitalizeFirstEach}"), findsOneWidget);
+      expect(find.text(customerResource.transaction!.status.name.capitalizeFirstEach), findsOneWidget);
       expect(find.byType(PurchasedItemWidget), findsWidgets);
       expect(find.text(Currency.create(cents: customerResource.transaction!.netSales)), findsOneWidget);
       expect(find.text(Currency.create(cents: customerResource.transaction!.tax)), findsOneWidget);

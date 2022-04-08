@@ -21,7 +21,7 @@ void main() {
     });
 
     test("Successful get request returns ApiResponse", () async {
-      dioAdapter..onGet("$path/", (request) => request.reply(200, {'data': {"type": 'get', 'success': true}}));
+      dioAdapter.onGet("$path/", (request) => request.reply(200, {'data': {"type": 'get', 'success': true}}));
       dio.httpClientAdapter = dioAdapter;
       dio.interceptors.add(ApiInterceptors());
       baseProvider = BaseProvider(dio: dio);
@@ -43,7 +43,7 @@ void main() {
         type: DioErrorType.response
       );
       
-      dioAdapter..onGet("$path/", (request) => request.throws(400, dioError));
+      dioAdapter.onGet("$path/", (request) => request.throws(400, dioError));
       dio.httpClientAdapter = dioAdapter;
       dio.interceptors.add(ApiInterceptors());
       baseProvider = BaseProvider(dio: dio);
@@ -55,7 +55,7 @@ void main() {
     });
 
     test("Successful getPaginated request returns PaginatedApiResponse", () async {
-      dioAdapter..onGet("$path/", (request) => request.reply(200, {'data': [{"type": 'get', 'success': true}], "links": {'next': "next-url"}}));
+      dioAdapter.onGet("$path/", (request) => request.reply(200, {'data': [{"type": 'get', 'success': true}], "links": {'next': "next-url"}}));
       dio.httpClientAdapter = dioAdapter;
       dio.interceptors.add(ApiInterceptors());
       baseProvider = BaseProvider(dio: dio);
@@ -77,7 +77,7 @@ void main() {
         type: DioErrorType.response
       );
       
-      dioAdapter..onGet("$path/", (request) => request.throws(400, dioError));
+      dioAdapter.onGet("$path/", (request) => request.throws(400, dioError));
       
       dio.httpClientAdapter = dioAdapter;
       dio.interceptors.add(ApiInterceptors());
@@ -90,7 +90,7 @@ void main() {
     });
 
     test("Successful post request returns ApiResponse", () async {
-      dioAdapter..onPost(
+      dioAdapter.onPost(
         "$path/", 
         (request) => request.reply(200, {'data': {"type": 'get', 'success': true}}),
         data: {}
@@ -116,7 +116,7 @@ void main() {
         type: DioErrorType.response
       );
       
-      dioAdapter..onPost(
+      dioAdapter.onPost(
         "$path/", 
         (request) => request.throws(400, dioError),
         data: {}
@@ -132,7 +132,7 @@ void main() {
     });
 
     test("Successful patch request returns ApiResponse", () async {
-      dioAdapter..onPatch(
+      dioAdapter.onPatch(
         "$path/", 
         (request) => request.reply(200, {'data': {"type": 'get', 'success': true}}),
         data: {}
@@ -158,7 +158,7 @@ void main() {
         type: DioErrorType.response
       );
       
-      dioAdapter..onPatch(
+      dioAdapter.onPatch(
         "$path/", 
         (request) => request.throws(400, dioError),
         data: {}
@@ -174,7 +174,7 @@ void main() {
     });
 
     test("Successful delete request returns ApiResponse", () async {
-      dioAdapter..onDelete(
+      dioAdapter.onDelete(
         "$path/", 
         (request) => request.reply(200, {'data': {"type": 'get', 'success': true}}),
       );
@@ -199,7 +199,7 @@ void main() {
         type: DioErrorType.response
       );
       
-      dioAdapter..onDelete(
+      dioAdapter.onDelete(
         "$path/", 
         (request) => request.throws(400, dioError),
       );

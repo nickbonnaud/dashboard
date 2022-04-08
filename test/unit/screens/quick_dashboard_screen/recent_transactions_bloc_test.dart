@@ -59,7 +59,7 @@ void main() {
     blocTest<RecentTransactionsBloc, RecentTransactionsState>(
       "InitRecentTransactions event on error changes state: [loading: true], [loading: false, errorMessage: error]",
       build: () {
-        when(() => transactionRepository.fetchAll()).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchAll()).thenThrow(const ApiException(error: "error"));
         return recentTransactionsBloc;
       },
       act: (bloc) => bloc.add(InitRecentTransactions()),

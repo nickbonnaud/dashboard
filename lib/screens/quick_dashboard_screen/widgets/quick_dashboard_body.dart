@@ -11,8 +11,9 @@ class QuickDashboardBody extends StatelessWidget {
   final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
   final bool _takesTips;
 
-  QuickDashboardBody({required bool takesTips})
-    : _takesTips = takesTips;
+  QuickDashboardBody({required bool takesTips, Key? key})
+    : _takesTips = takesTips,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class QuickDashboardBody extends StatelessWidget {
                 rowFit: FlexFit.tight,
                 child: _recentDataRowColumn(context: context)
               ),
-              ResponsiveRowColumnItem(
+              const ResponsiveRowColumnItem(
                 rowFlex: 1,
                 rowFit: FlexFit.tight,
                 child: LastMonth()
@@ -49,7 +50,7 @@ class QuickDashboardBody extends StatelessWidget {
       children: [
         Today(takesTips: _takesTips),
         SizedBox(height: SizeConfig.getHeight(3)),
-        RecentTransactions()
+        const RecentTransactions()
       ],
     );
   }

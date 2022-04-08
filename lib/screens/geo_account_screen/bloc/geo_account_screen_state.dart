@@ -12,7 +12,7 @@ class GeoAccountScreenState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  GeoAccountScreenState({
+  const GeoAccountScreenState({
     required this.initialLocation,
     required this.currentLocation,
     required this.initialRadius,
@@ -68,9 +68,9 @@ class GeoAccountScreenState extends Equatable {
     CustomAnimationControl? errorButtonControl
   }) {
     return GeoAccountScreenState(
-      initialLocation: this.initialLocation,
+      initialLocation: initialLocation,
       currentLocation: currentLocation ?? this.currentLocation,
-      initialRadius: this.initialRadius,
+      initialRadius: initialRadius,
       radius: radius ?? this.radius,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,

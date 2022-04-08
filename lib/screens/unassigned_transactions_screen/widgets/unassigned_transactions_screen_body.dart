@@ -17,10 +17,12 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
 
   const UnassignedTransactionsScreenBody({
     required UnassignedTransactionRepository unassignedTransactionRepository,
-    required PosAccount posAccount
+    required PosAccount posAccount,
+    Key? key
   })
     : _unassignedTransactionRepository = unassignedTransactionRepository,
-      _posAccount = posAccount;
+      _posAccount = posAccount,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +55,7 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
                 dateRangeCubit: BlocProvider.of<DateRangeCubit>(context),
                 unassignedTransactionRepository: _unassignedTransactionRepository
               )..add(Init()),
-              child: UnassignedTransactionsList(),
+              child: const UnassignedTransactionsList(),
             )
           )
         ],
@@ -66,9 +68,9 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
       bottom: SizeConfig.getHeight(5),
       right: SizeConfig.getHeight(4),
       child: FloatingActionButton(
-        key: Key("dateRangePickerButtonKey"),
+        key: const Key("dateRangePickerButtonKey"),
         backgroundColor: Theme.of(context).colorScheme.callToAction,
-        child: Icon(Icons.date_range),
+        child: const Icon(Icons.date_range),
         onPressed: () => _showDateRangePicker(context: context),
       )
     );
@@ -92,7 +94,7 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
       fieldStartLabelText: "Start Date",
       fieldEndLabelText: "End Date",
       builder: (context, child) => Theme(
-        key: Key("dateRangePickerKey"),
+        key: const Key("dateRangePickerKey"),
         data: ThemeData.light(),
         child: Column(
           children: [

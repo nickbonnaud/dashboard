@@ -41,7 +41,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch All fail", () async {
-      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _transactionRepositoryWithMock.fetchAll(), 
@@ -50,7 +50,7 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Code", () async {
-      final int code = 200;
+      int code = 200;
       var transactionData = await _transactionRepository.fetchByCode(code: code);
       expect(transactionData, isA<PaginateDataHolder>());
       expect(transactionData.data is List<TransactionResource>, true);
@@ -58,9 +58,9 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Code, queries: dateRange", () async {
-      final int code = 200;
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      int code = 200;
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       
       var transactionData = await _transactionRepository.fetchByCode(code: code, dateRange: dateRange);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -69,8 +69,8 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch By Code fail", () async {
-      final int code = 200;
-      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      int code = 200;
+      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _transactionRepositoryWithMock.fetchByCode(code: code), 
@@ -79,7 +79,7 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Customer ID", () async {
-      final String customerId = faker.guid.guid();
+      String customerId = faker.guid.guid();
       var transactionData = await _transactionRepository.fetchByCustomerId(customerId: customerId);
       expect(transactionData, isA<PaginateDataHolder>());
       expect(transactionData.data is List<TransactionResource>, true);
@@ -87,9 +87,9 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Customer ID, queries: dateRange", () async {
-      final String customerId = faker.guid.guid();
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      String customerId = faker.guid.guid();
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
 
       var transactionData = await _transactionRepository.fetchByCustomerId(customerId: customerId, dateRange: dateRange);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -98,8 +98,8 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch By Customer ID fail", () async {
-      final String customerId = faker.guid.guid();
-      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String customerId = faker.guid.guid();
+      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _transactionRepositoryWithMock.fetchByCustomerId(customerId: customerId), 
@@ -108,8 +108,8 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Customer Name, queries: firstName, lastName", () async {
-      final String firstName = faker.person.firstName();
-      final String lastName = faker.person.lastName();
+      String firstName = faker.person.firstName();
+      String lastName = faker.person.lastName();
 
       var transactionData = await _transactionRepository.fetchByCustomerName(firstName: firstName, lastName: lastName);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -118,7 +118,7 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Customer Name, queries: firstName", () async {
-      final String firstName = faker.person.firstName();
+      String firstName = faker.person.firstName();
 
       var transactionData = await _transactionRepository.fetchByCustomerName(firstName: firstName);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -127,7 +127,7 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Customer Name, queries: lastName", () async {
-      final String lastName = faker.person.lastName();
+      String lastName = faker.person.lastName();
 
       var transactionData = await _transactionRepository.fetchByCustomerName(lastName: lastName);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -136,10 +136,10 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Customer Name, queries: firstName, lastName, dateRange", () async {
-      final String firstName = faker.person.firstName();
-      final String lastName = faker.person.lastName();
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      String firstName = faker.person.firstName();
+      String lastName = faker.person.lastName();
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
 
       var transactionData = await _transactionRepository.fetchByCustomerName(firstName: firstName, lastName: lastName, dateRange: dateRange);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -148,9 +148,9 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch By Customer Name fail", () async {
-      final String firstName = faker.person.firstName();
-      final String lastName = faker.person.lastName();
-      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String firstName = faker.person.firstName();
+      String lastName = faker.person.lastName();
+      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _transactionRepositoryWithMock.fetchByCustomerName(firstName: firstName, lastName: lastName), 
@@ -159,8 +159,8 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Employee Name, queries: firstName, lastName", () async {
-      final String firstName = faker.person.firstName();
-      final String lastName = faker.person.lastName();
+      String firstName = faker.person.firstName();
+      String lastName = faker.person.lastName();
 
       var transactionData = await _transactionRepository.fetchByEmployeeName(firstName: firstName, lastName: lastName);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -169,7 +169,7 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Employee Name, queries: firstName", () async {
-      final String firstName = faker.person.firstName();
+      String firstName = faker.person.firstName();
 
       var transactionData = await _transactionRepository.fetchByEmployeeName(firstName: firstName);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -178,7 +178,7 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Employee Name, queries: lastName", () async {
-      final String lastName = faker.person.lastName();
+      String lastName = faker.person.lastName();
 
       var transactionData = await _transactionRepository.fetchByEmployeeName(lastName: lastName);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -187,10 +187,10 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Employee Name, queries: firstName, lastName, dateRange", () async {
-      final String firstName = faker.person.firstName();
-      final String lastName = faker.person.lastName();
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      String firstName = faker.person.firstName();
+      String lastName = faker.person.lastName();
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
 
       var transactionData = await _transactionRepository.fetchByEmployeeName(firstName: firstName, lastName: lastName, dateRange: dateRange);
       expect(transactionData, isA<PaginateDataHolder>());
@@ -199,9 +199,9 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch By Employee Name fail", () async {
-      final String firstName = faker.person.firstName();
-      final String lastName = faker.person.lastName();
-      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String firstName = faker.person.firstName();
+      String lastName = faker.person.lastName();
+      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _transactionRepositoryWithMock.fetchByEmployeeName(firstName: firstName, lastName: lastName), 
@@ -210,7 +210,7 @@ void main() {
     });
 
     test("Transaction Repository can Fetch By Transaction ID", () async {
-      final String transactionId = faker.guid.guid();
+      String transactionId = faker.guid.guid();
       var transactionData = await _transactionRepository.fetchByTransactionId(transactionId: transactionId);
       expect(transactionData, isA<PaginateDataHolder>());
       expect(transactionData.data is List<TransactionResource>, true);
@@ -218,8 +218,8 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch By Transaction ID fail", () async {
-      final String transactionId = faker.guid.guid();
-      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String transactionId = faker.guid.guid();
+      when(() => _mockTransactionProvider.fetchPaginated(query: any(named: "query"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _transactionRepositoryWithMock.fetchByTransactionId(transactionId: transactionId), 
@@ -228,7 +228,7 @@ void main() {
     });
 
     test("Transaction Repository can Paginate", () async {
-      final String url = "http://novapay.ai/api/business/transactions?page=2";
+      String url = "http://novapay.ai/api/business/transactions?page=2";
       var transactionData = await _transactionRepository.paginate(url: url);
       expect(transactionData, isA<PaginateDataHolder>());
       expect(transactionData.data is List<TransactionResource>, true);
@@ -236,8 +236,8 @@ void main() {
     });
 
     test("Transaction Repository throws error on Paginate fail", () async {
-      final String url = "http://novapay.ai/api/business/transactions?page=2";
-      when(() => _mockTransactionProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
+      String url = "http://novapay.ai/api/business/transactions?page=2";
+      when(() => _mockTransactionProvider.fetchPaginated(paginateUrl: any(named: "paginateUrl"))).thenAnswer((_) async => const PaginatedApiResponse(body: [], isOK: false, error: "error", next: null));
       
       expect(
         _transactionRepositoryWithMock.paginate(url: url), 
@@ -251,7 +251,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Net Sales Today fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchNetSalesToday(), 
@@ -265,7 +265,7 @@ void main() {
     });
     
     test("Transaction Repository throws error on Fetch Total Sales Today fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalSalesToday(), 
@@ -279,7 +279,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Total Taxes Today fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalTaxesToday(), 
@@ -293,7 +293,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Net Sales Month Today fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchNetSalesMonth(), 
@@ -307,7 +307,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Total Taxes Month fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalTaxesMonth(), 
@@ -321,7 +321,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Total Tips Month fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalTipsMonth(), 
@@ -330,16 +330,16 @@ void main() {
     });
 
     test("Transaction Repository can Fetch Net Sales Date Range", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var transactionData = await _transactionRepository.fetchNetSalesDateRange(dateRange: dateRange);
       expect(transactionData, isA<int>());
     });
 
     test("Transaction Repository throws error on Fetch Net Sales Date Range fail", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchNetSalesDateRange(dateRange: dateRange), 
@@ -348,16 +348,16 @@ void main() {
     });
 
     test("Transaction Repository can Fetch Total Sales Date Range", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var transactionData = await _transactionRepository.fetchTotalSalesDateRange(dateRange: dateRange);
       expect(transactionData, isA<int>());
     });
 
     test("Transaction Repository throw error on Fetch Total Sales Date Range fail", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalSalesDateRange(dateRange: dateRange), 
@@ -366,16 +366,16 @@ void main() {
     });
 
     test("Transaction Repository can Fetch Total Tips Date Range", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var transactionData = await _transactionRepository.fetchTotalTipsDateRange(dateRange: dateRange);
       expect(transactionData, isA<int>());
     });
 
     test("Transaction Repository throws error on Fetch Total Tips Date Range fail", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalTipsDateRange(dateRange: dateRange), 
@@ -384,16 +384,16 @@ void main() {
     });
 
     test("Transaction Repository can Fetch Total Taxes Date Range", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
       var transactionData = await _transactionRepository.fetchTotalTaxesDateRange(dateRange: dateRange);
       expect(transactionData, isA<int>());
     });
 
     test("Transaction Repository throws error on Fetch Total Taxes Date Range fail", () async {
-      final DateTime now = DateTime.now();
-      final DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      DateTime now = DateTime.now();
+      DateTimeRange dateRange = DateTimeRange(start: DateTime(now.year, now.month, now.day - 7), end: now);
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalTaxesDateRange(dateRange: dateRange), 
@@ -408,7 +408,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Total Sales Month fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalSalesMonth(), 
@@ -422,7 +422,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Total Unique Customers Month fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalUniqueCustomersMonth(), 
@@ -436,7 +436,7 @@ void main() {
     });
 
     test("Transaction Repository throws error on Fetch Total Transactions Month fail", () async {
-      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockTransactionProvider.fetch(query: any(named: "query"))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _transactionRepositoryWithMock.fetchTotalTransactionsMonth(), 

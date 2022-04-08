@@ -13,9 +13,14 @@ class HoursConfirmationForm extends StatelessWidget {
   final HoursRepository _hoursRepository;
   final BusinessBloc _businessBloc;
 
-  const HoursConfirmationForm({required HoursRepository hoursRepository, required BusinessBloc businessBloc})
+  const HoursConfirmationForm({
+    required HoursRepository hoursRepository,
+    required BusinessBloc businessBloc,
+    Key? key
+  })
     : _hoursRepository = hoursRepository,
-      _businessBloc = businessBloc;
+      _businessBloc = businessBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -28,7 +33,7 @@ class HoursConfirmationForm extends StatelessWidget {
         hoursGrid: hoursGrid,
         hoursList: hoursGrid.hoursList(earliestStart: BlocProvider.of<HoursScreenBloc>(context).state.earliestStart!)
       ),
-      child: HoursConfirmationFormBody(),
+      child: const HoursConfirmationFormBody(),
     );
   }
 }

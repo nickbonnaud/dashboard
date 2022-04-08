@@ -21,7 +21,7 @@ class Transaction extends Equatable {
   final List<PurchasedItem> purchasedItems;
   final List<Refund> refunds;
 
-  Transaction({
+  const Transaction({
     required this.identifier,
     required this.tax,
     required this.tip,

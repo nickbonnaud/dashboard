@@ -12,9 +12,10 @@ class OwnerForm extends StatelessWidget {
   final OwnerRepository _ownerRepository;
   final OwnerAccount? _ownerAccount;
 
-  const OwnerForm({required OwnerRepository ownerRepository, OwnerAccount? ownerAccount})
+  const OwnerForm({required OwnerRepository ownerRepository, OwnerAccount? ownerAccount, Key? key})
     : _ownerRepository = ownerRepository,
-      _ownerAccount = ownerAccount;
+      _ownerAccount = ownerAccount,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {

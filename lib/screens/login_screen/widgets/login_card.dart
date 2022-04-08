@@ -12,16 +12,21 @@ class LoginCard extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
   final AuthenticationBloc _authenticationBloc;
 
-  const LoginCard({required AuthenticationRepository authenticationRepository, required AuthenticationBloc authenticationBloc})
+  const LoginCard({
+    required AuthenticationRepository authenticationRepository,
+    required AuthenticationBloc authenticationBloc,
+    Key? key
+  })
     : _authenticationRepository = authenticationRepository,
-      _authenticationBloc = authenticationBloc;
+      _authenticationBloc = authenticationBloc,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 2.0,
       child: Container(
-        padding: EdgeInsets.all(42),
+        padding: const EdgeInsets.all(42),
         width: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
           ? MediaQuery.of(context).size.width
           : MediaQuery.of(context).size.width / 2.5,
@@ -33,7 +38,7 @@ class LoginCard extends StatelessWidget {
             authenticationRepository: _authenticationRepository, 
             authenticationBloc: _authenticationBloc
           ),
-          child: LoginForm(),
+          child: const LoginForm(),
         )
       ),
     );

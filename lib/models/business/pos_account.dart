@@ -21,7 +21,7 @@ class PosAccount extends Equatable {
   final bool allowsOpenTickets;
   final Status connectionStatus;
 
-  PosAccount({
+  const PosAccount({
     required this.identifier,
     required this.type,
     required this.takesTips,
@@ -29,7 +29,7 @@ class PosAccount extends Equatable {
     required this.connectionStatus
   });
 
-  String get typeToString => this.type.toString().split(".").last.capitalizeFirstEach;
+  String get typeToString => type.toString().split(".").last.capitalizeFirstEach;
 
   PosAccount.fromJson({required Map<String, dynamic> json})
     : identifier = json['identifier']!,
@@ -38,7 +38,7 @@ class PosAccount extends Equatable {
       allowsOpenTickets = json['allows_open_tickets']!,
       connectionStatus = Status.fromJson(json: json['status']!);
 
-  factory PosAccount.empty() => PosAccount(
+  factory PosAccount.empty() => const PosAccount(
     identifier: "",
     type: PosType.unknown,
     takesTips: false,

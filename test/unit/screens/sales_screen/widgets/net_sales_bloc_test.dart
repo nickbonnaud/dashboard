@@ -58,11 +58,11 @@ void main() {
       "InitNetSales event on error changes state: [Loading()], [FetchFailed()]",
       build: () {
         _netSales = faker.randomGenerator.integer(500);
-        when(() => transactionRepository.fetchNetSalesToday()).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchNetSalesToday()).thenThrow(const ApiException(error: "error"));
         return netSalesBloc;
       },
       act: (bloc) => bloc.add(InitNetSales()),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
 
     blocTest<NetSalesBloc, NetSalesState>(
@@ -93,11 +93,11 @@ void main() {
       "DateRangeChanged event on error changes state: [Loading()], [FetchFailed()]",
       build: () {
         _netSales = faker.randomGenerator.integer(500);
-        when(() => transactionRepository.fetchNetSalesDateRange(dateRange: any(named: "dateRange"))).thenThrow(ApiException(error: "error"));
+        when(() => transactionRepository.fetchNetSalesDateRange(dateRange: any(named: "dateRange"))).thenThrow(const ApiException(error: "error"));
         return netSalesBloc;
       },
       act: (bloc) => bloc.add(DateRangeChanged(dateRange: DateTimeRange(start: DateTime.now(), end: DateTime.now()))),
-      expect: () => [Loading(), FetchFailed(error: "error")]
+      expect: () => [Loading(), const FetchFailed(error: "error")]
     );
   });
 }

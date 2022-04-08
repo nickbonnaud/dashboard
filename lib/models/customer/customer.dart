@@ -10,7 +10,7 @@ class Customer extends Equatable {
   final String lastName;
   final Photo photo;
 
-  Customer({
+  const Customer({
     required this.identifier, 
     required this.email, 
     required this.firstName, 

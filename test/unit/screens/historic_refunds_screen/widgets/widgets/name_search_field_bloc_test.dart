@@ -36,7 +36,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event changes state: [firstName, isFirstNameValid, lastName, isLastNameValid]",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => refundsListBloc.add(any(that: isA<RefundsListEvent>()))).thenReturn(null);
         _firstName = "A";
@@ -49,7 +49,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event changes state: [firstName: invalidFirst, lastName: validLast, isFirstNameValid: false, isLastNameValid: true]",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => refundsListBloc.add(any(that: isA<RefundsListEvent>()))).thenReturn(null);
         _firstName = "A";
@@ -62,7 +62,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event does not call RefundsListBloc.add() if invalid first and last name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => refundsListBloc.add(any(that: isA<RefundsListEvent>()))).thenReturn(null);
         _firstName = "A";
@@ -77,7 +77,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event calls RefundsListBloc.add() if valid first name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => refundsListBloc.add(any(that: isA<RefundsListEvent>()))).thenReturn(null);
         _firstName = "Andrew";
@@ -92,7 +92,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event calls RefundsListBloc.add() if valid last name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => refundsListBloc.add(any(that: isA<RefundsListEvent>()))).thenReturn(null);
         _firstName = "A";
@@ -107,7 +107,7 @@ void main() {
     blocTest<NameSearchFieldBloc, NameSearchFieldState>(
       "NameChanged event calls RefundsListBloc.add() if valid first and last name",
       build: () => nameSearchFieldBloc,
-      wait: Duration(seconds: 1),
+      wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => refundsListBloc.add(any(that: isA<RefundsListEvent>()))).thenReturn(null);
         _firstName = "Andrew";

@@ -16,15 +16,17 @@ class OwnersScreen extends StatelessWidget {
   const OwnersScreen({
     required OwnerRepository ownerRepository,
     required BusinessBloc businessBloc,
-    required List<OwnerAccount> ownerAccounts
+    required List<OwnerAccount> ownerAccounts,
+    Key? key
   })
     : _ownerRepository = ownerRepository,
       _businessBloc = businessBloc,
-      _ownerAccounts = ownerAccounts;
+      _ownerAccounts = ownerAccounts,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return _ownerAccounts.length == 0
+    return _ownerAccounts.isEmpty
       ? Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(

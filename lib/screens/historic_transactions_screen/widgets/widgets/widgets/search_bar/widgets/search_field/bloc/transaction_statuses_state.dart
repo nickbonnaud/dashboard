@@ -6,7 +6,7 @@ class TransactionStatusesState extends Equatable {
   final bool loading;
   final bool fetchFailed;
   
-  TransactionStatusesState({
+  const TransactionStatusesState({
     required this.statuses,
     required this.loading,
     required this.fetchFailed

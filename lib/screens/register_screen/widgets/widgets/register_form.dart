@@ -9,6 +9,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/register_form_bloc.dart';
 
 class RegisterForm extends StatefulWidget {
+  
+  const RegisterForm({Key? key})
+    : super(key: key);
+
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
@@ -98,7 +102,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return BlocBuilder<RegisterFormBloc, RegisterFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("emailTextFieldKey"),
+          key: const Key("emailTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Email',
             labelStyle: TextStyle(
@@ -133,7 +137,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return BlocBuilder<RegisterFormBloc, RegisterFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("passwordTextFieldKey"),
+          key: const Key("passwordTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Password',
             labelStyle: TextStyle(
@@ -168,7 +172,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return BlocBuilder<RegisterFormBloc, RegisterFormState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("passwordConfirmationTextFieldKey"),
+          key: const Key("passwordConfirmationTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Confirm Password',
             labelStyle: TextStyle(
@@ -220,7 +224,7 @@ class _RegisterFormState extends State<RegisterForm> {
           control: state.errorButtonControl,
           onAnimationComplete: () => _resetForm(),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
             child: _buttonChild(state: state),
           )
@@ -234,7 +238,7 @@ class _RegisterFormState extends State<RegisterForm> {
       child: BlocBuilder<RegisterFormBloc, RegisterFormState>(
         builder: (context, state) {
           return TextButton(
-            key: Key("goToLoginButtonKey"),
+            key: const Key("goToLoginButtonKey"),
             child: Text(
               "Already have an account?",
               style: TextStyle(
@@ -256,9 +260,9 @@ class _RegisterFormState extends State<RegisterForm> {
 
   Widget _buttonChild({required RegisterFormState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Register', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -268,7 +272,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       _registerFormBloc.add(Reset());
     });
   }

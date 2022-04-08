@@ -8,6 +8,9 @@ import 'widgets/transactions_list.dart';
 
 
 class HistoricTransactionsSlivers extends StatefulWidget {
+
+  const HistoricTransactionsSlivers({Key? key})
+    : super(key: key);
   
   @override
   State<HistoricTransactionsSlivers> createState() => _HistoricTransactionsSliversState();
@@ -37,7 +40,7 @@ class _HistoricTransactionsSliversState extends State<HistoricTransactionsSliver
   Widget _searchDisplay() {
     return SliverPadding(
       padding: _padding(),
-      sliver: SliverToBoxAdapter(
+      sliver: const SliverToBoxAdapter(
         child: SearchDisplay(),
       ),
     );

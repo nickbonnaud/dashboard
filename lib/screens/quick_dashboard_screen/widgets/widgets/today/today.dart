@@ -13,14 +13,15 @@ class Today extends StatelessWidget {
   final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
   final bool _takesTips;
 
-  Today({required bool takesTips})
-    : _takesTips = takesTips;
+  Today({required bool takesTips, Key? key})
+    : _takesTips = takesTips,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: Column(
           children: [
             BoldText5(text: 'Today', context: context),
@@ -41,13 +42,14 @@ class Today extends StatelessWidget {
       columnMainAxisSize: MainAxisSize.min,
       columnSpacing: SizeConfig.getHeight(2),
       rowSpacing: SizeConfig.getWidth(1),
+      // ignore: prefer_const_literals_to_create_immutables
       children: [
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: NetSalesToday()
         ),
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: TotalRefundsToday(),
@@ -59,7 +61,7 @@ class Today extends StatelessWidget {
   Widget _bottomToday({required BuildContext context}) {
     return _takesTips
       ? _takesTipsBottom(context: context)
-      : TotalSalesToday();
+      : const TotalSalesToday();
   }
 
   Widget _takesTipsBottom({required BuildContext context}) {
@@ -70,13 +72,14 @@ class Today extends StatelessWidget {
       columnMainAxisSize: MainAxisSize.min,
       columnSpacing: SizeConfig.getHeight(2),
       rowSpacing: SizeConfig.getWidth(1),
+      // ignore: prefer_const_literals_to_create_immutables
       children: [
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: TotalTipsToday()
         ),
-        ResponsiveRowColumnItem(
+        const ResponsiveRowColumnItem(
           rowFlex: 1,
           rowFit: FlexFit.tight,
           child: TotalSalesToday(),

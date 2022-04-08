@@ -14,9 +14,14 @@ class EditProfileScreenBody extends StatelessWidget {
   final Profile _profile;
   final ProfileScreenBloc _profileScreenBloc;
 
-  const EditProfileScreenBody({required Profile profile, required ProfileScreenBloc profileScreenBloc})
+  const EditProfileScreenBody({
+    required Profile profile,
+    required ProfileScreenBloc profileScreenBloc,
+    Key? key
+  })
     : _profile = profile,
-      _profileScreenBloc = profileScreenBloc;
+      _profileScreenBloc = profileScreenBloc,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {

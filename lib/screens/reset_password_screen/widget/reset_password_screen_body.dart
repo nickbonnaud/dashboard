@@ -13,8 +13,9 @@ import '../bloc/reset_password_screen_bloc.dart';
 class ResetPasswordScreenBody extends StatefulWidget {
   final String? _token;
 
-  const ResetPasswordScreenBody({required String? token})
-    : _token = token;
+  const ResetPasswordScreenBody({required String? token, Key? key})
+    : _token = token,
+      super(key: key);
   
   @override
   State<ResetPasswordScreenBody> createState() => _ResetPasswordScreenBodyState();
@@ -78,7 +79,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
 
   Widget _passwordResetForm() {
     return Form(
-      key: Key("passwordResetFormKey"),
+      key: const Key("passwordResetFormKey"),
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -109,7 +110,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
     return BlocBuilder<ResetPasswordScreenBloc, ResetPasswordScreenState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("passwordTextFieldKey"),
+          key: const Key("passwordTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Password',
             labelStyle: TextStyle(
@@ -144,7 +145,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
     return BlocBuilder<ResetPasswordScreenBloc, ResetPasswordScreenState>(
       builder: (context, state) {
         return TextFormField(
-          key: Key("passwordConfirmationTextFieldKey"),
+          key: const Key("passwordConfirmationTextFieldKey"),
           decoration: InputDecoration(
             labelText: 'Confirm Password',
             labelStyle: TextStyle(
@@ -198,7 +199,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
           control: state.errorButtonControl,
           onAnimationComplete: () =>  _resetForm(),
           child: ElevatedButton(
-            key: Key("submitButtonKey"),
+            key: const Key("submitButtonKey"),
             onPressed: _buttonEnabled(state: state) ? () => _submitButtonPressed(state: state) : null,
             child: _buttonChild(state: state),
           )
@@ -209,9 +210,9 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
 
   Widget _buttonChild({required ResetPasswordScreenState state}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: state.isSubmitting
-        ? CircularProgressIndicator()
+        ? const CircularProgressIndicator()
         : Text4(text: 'Change', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }
@@ -221,7 +222,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
   }
   
   void _resetForm() {
-    Future.delayed(Duration(seconds: 1), () => _resetPasswordScreenBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => _resetPasswordScreenBloc.add(Reset()));
   }
 
   void _submitButtonPressed({required ResetPasswordScreenState state}) {

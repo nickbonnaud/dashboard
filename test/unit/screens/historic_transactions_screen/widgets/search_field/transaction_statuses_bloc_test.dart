@@ -67,7 +67,7 @@ void main() {
       build: () => transactionStatusesBloc,
       act: (bloc) {
         _statusList = _generateStatuses();
-        when(() => statusRepository.fetchTransactionStatuses()).thenThrow(ApiException(error: "error"));
+        when(() => statusRepository.fetchTransactionStatuses()).thenThrow(const ApiException(error: "error"));
         bloc.add(InitStatuses());
       },
       expect: () => [baseState.update(loading: true), baseState.update(loading: false, fetchFailed: true)]

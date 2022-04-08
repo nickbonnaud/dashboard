@@ -11,8 +11,9 @@ import '../../cubit/date_range_cubit.dart';
 class UnassignedTransactionsHeader extends StatelessWidget {
   final PosAccount _posAccount;
 
-  const UnassignedTransactionsHeader({required PosAccount posAccount})
-    : _posAccount = posAccount;
+  const UnassignedTransactionsHeader({required PosAccount posAccount, Key? key})
+    : _posAccount = posAccount,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +32,8 @@ class UnassignedTransactionsHeader extends StatelessWidget {
       children: [
         Text3(text: "Unmatched Bills", context: context),
         IconButton(
-          key: Key("showInfoButtonKey"),
-          icon: Icon(Icons.info),
+          key: const Key("showInfoButtonKey"),
+          icon: const Icon(Icons.info),
           onPressed: () => _showInfoDialog(context: context),
           color: Theme.of(context).colorScheme.info,
         )
@@ -42,7 +43,7 @@ class UnassignedTransactionsHeader extends StatelessWidget {
 
   Widget _dateRangeHeader({required BuildContext context, required DateTimeRange dateRange}) {
     return Row(
-      key: Key("dateRangeHeader"),
+      key: const Key("dateRangeHeader"),
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text5(
@@ -50,7 +51,7 @@ class UnassignedTransactionsHeader extends StatelessWidget {
           context: context
         ),
         IconButton(
-          key: Key("clearDatesButtonKey"),
+          key: const Key("clearDatesButtonKey"),
           icon: Icon(
             Icons.clear, 
             color: Theme.of(context).colorScheme.danger,
@@ -66,22 +67,22 @@ class UnassignedTransactionsHeader extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        key: Key("infoDialogKey"),
-        title: Text("What are Unmatched Bills?"),
+        key: const Key("infoDialogKey"),
+        title: const Text("What are Unmatched Bills?"),
         content: SingleChildScrollView(
           child: ListBody(
             children: [
-              Text("These are open or unpaid transactions not currently assigned to a Nova customer."),
-              Text("The Nova Smart Pay Algorithm may still assign it to a Nova customer."),
+              const Text("These are open or unpaid transactions not currently assigned to a Nova customer."),
+              const Text("The Nova Smart Pay Algorithm may still assign it to a Nova customer."),
               Text("Or, as a business you can manually assign the bill to a customer in ${_posAccount.typeToString}."),
-              Text("Conversely, a Nova customer can also claim an unpaid bill."),
+              const Text("Conversely, a Nova customer can also claim an unpaid bill."),
             ]
           ),
         ),
         actions: [
           Center(
             child: ElevatedButton(
-              key: Key("dismissInfoDialogKey"),
+              key: const Key("dismissInfoDialogKey"),
               child: Text(
                 "Close",
                 style: TextStyle(

@@ -53,13 +53,13 @@ void main() {
       );
 
       when(() => authenticationRepository.verifyPassword(password: any(named: "password")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => true));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => true));
 
       when(() => businessRepository.updateEmail(email: any(named: "email"), identifier: any(named: "identifier")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => faker.internet.email()));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => faker.internet.email()));
 
       when(() => businessRepository.updatePassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), identifier: any(named: "identifier")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => true));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => true));
 
       registerFallbackValue(MockBusinessEvent());
       
@@ -81,7 +81,7 @@ void main() {
 
     testWidgets("Locked Form creates unlockPasswordField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("unlockPasswordTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("unlockPasswordTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("Unlock Password Field can receive input", (tester) async {
@@ -90,7 +90,7 @@ void main() {
       String password = "hcfJgfhFDH@#3469*bnN";
       expect(find.text(password), findsNothing);
 
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), password);
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), password);
       await tester.pump();
 
       expect(find.text(password), findsOneWidget);
@@ -102,72 +102,72 @@ void main() {
       String password = "notvalid";
       expect(find.text("Invalid Password"), findsNothing);
 
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text("Invalid Password"), findsOneWidget);
     });
 
     testWidgets("Locked Form creates unlockButton", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(find.byKey(Key("unlockButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("unlockButtonKey")), findsOneWidget);
     });
 
     testWidgets("Unlock Button is disabled on empty form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("unlockButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("unlockButtonKey"))).enabled, false);
     });
 
     testWidgets("Unlock Button is disabled on invalid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "notvalid");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "notvalid");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("unlockButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("unlockButtonKey"))).enabled, false);
     });
 
     testWidgets("Unlock Button is enabled on valid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("unlockButtonKey"))).enabled, true);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("unlockButtonKey"))).enabled, true);
     });
 
     testWidgets("Tapping unlockButton displays CircularProgressIndicator", (tester) async {
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
 
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
     testWidgets("Tapping unlockButton on error shows errorMessage", (tester) async {
       when(() => authenticationRepository.verifyPassword(password: any(named: "password")))
-        .thenThrow(ApiException(error: "An Error Happened!"));
+        .thenThrow(const ApiException(error: "An Error Happened!"));
       
       await screenBuilder.createScreen(tester: tester);
 
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text("An Error Happened!"), findsNothing);
       
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
       await tester.pumpAndSettle();
       expect(find.text("An Error Happened!"), findsOneWidget);
       
-      await tester.pump(Duration(seconds: 3));
+      await tester.pump(const Duration(seconds: 3));
       expect(find.byType(CircularProgressIndicator), findsNothing);
     });
 
@@ -176,38 +176,38 @@ void main() {
 
       expect(find.byType(UnlockedForm), findsNothing);
       
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       
       expect(find.byType(UnlockedForm), findsOneWidget);
     });
 
     testWidgets("Email Form creates emailField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
 
-      expect(find.byKey(Key("emailTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("emailTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("Email Field can receive input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
 
       String email = faker.internet.email();
       expect(find.text(email), findsNothing);
 
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
       await tester.pump();
 
       expect(find.text(email), findsOneWidget);
@@ -215,165 +215,165 @@ void main() {
 
     testWidgets("Email Field displays error on invalid input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
 
       String email = 'bademail';
       expect(find.text("Invalid Email"), findsNothing);
 
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
+      await tester.pump(const Duration(milliseconds: 300));
 
       expect(find.text("Invalid Email"), findsOneWidget);
     });
 
     testWidgets("Email Form creates emailSubmitButton", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
 
-      expect(find.byKey(Key("emailSubmitButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("emailSubmitButtonKey")), findsOneWidget);
     });
 
     testWidgets("Email Submit Button is disabled on empty form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("emailSubmitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("emailSubmitButtonKey"))).enabled, false);
     });
 
     testWidgets("Email Submit Button is disabled on invalid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       String email = 'bademail';
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
+      await tester.pump(const Duration(milliseconds: 500));
 
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("emailSubmitButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("emailSubmitButtonKey"))).enabled, false);
     });
 
     testWidgets("Email Submit Button is enabled on valid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       String email = faker.internet.email();
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
+      await tester.pump(const Duration(milliseconds: 500));
 
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("emailSubmitButtonKey"))).enabled, true);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("emailSubmitButtonKey"))).enabled, true);
     });
 
     testWidgets("Tapping emailSubmitButton displays CircularProgressIndicator", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       String email = faker.internet.email();
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
 
-      await tester.tap(find.byKey(Key("emailSubmitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("emailSubmitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsNothing);
 
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
     });
 
     testWidgets("Tapping emailSubmitButton on success shows toast", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       String email = faker.internet.email();
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text("Email Updated!"), findsNothing);
 
-      await tester.tap(find.byKey(Key("emailSubmitButtonKey")));
-      await tester.pump(Duration(seconds: 1));
+      await tester.tap(find.byKey(const Key("emailSubmitButtonKey")));
+      await tester.pump(const Duration(seconds: 1));
       expect(find.text("Email Updated!"), findsOneWidget);
 
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
       expect(find.text("Email Updated!"), findsNothing);
     });
 
     testWidgets("Tapping emailSubmitButton on success pops nav", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       String email = faker.internet.email();
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.tap(find.byKey(Key("emailSubmitButtonKey")));
-      await tester.pump(Duration(seconds: 5));
+      await tester.tap(find.byKey(const Key("emailSubmitButtonKey")));
+      await tester.pump(const Duration(seconds: 5));
 
       verify(() => observer.didPop(any(), any())).called(1);
     });
 
     testWidgets("Tapping emailSubmitButton on error displays error message", (tester) async {
       when(() => businessRepository.updateEmail(email: any(named: "email"), identifier: any(named: "identifier")))
-        .thenThrow(ApiException(error: "Warning error!"));
+        .thenThrow(const ApiException(error: "Warning error!"));
       
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       String email = faker.internet.email();
-      await tester.enterText(find.byKey(Key("emailTextFieldKey")), email);
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("emailTextFieldKey")), email);
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text("Warning error!"), findsNothing);
 
-      await tester.tap(find.byKey(Key("emailSubmitButtonKey")));
+      await tester.tap(find.byKey(const Key("emailSubmitButtonKey")));
       await tester.pumpAndSettle();
 
       expect(find.text("Warning error!"), findsOneWidget);
 
-      await tester.pump(Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 5));
       expect(find.text("Warning error!"), findsNothing);
     });
 
     testWidgets("Unlocked Form displays EmailForm initially", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(EmailForm), findsOneWidget);
       expect(find.byType(PasswordForm), findsNothing);
@@ -381,10 +381,10 @@ void main() {
 
     testWidgets("Unlocked displays left and right chevrons", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byIcon(Icons.chevron_left), findsOneWidget);
       expect(find.byIcon(Icons.chevron_right), findsOneWidget);
@@ -392,16 +392,16 @@ void main() {
 
     testWidgets("Tapping on right chevron hides EmailForm and shows PasswordForm", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(EmailForm), findsOneWidget);
       expect(find.byType(PasswordForm), findsNothing);
       
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       expect(find.byType(EmailForm), findsNothing);
       expect(find.byType(PasswordForm), findsOneWidget);
@@ -409,19 +409,19 @@ void main() {
 
     testWidgets("Tapping on left chevron hides PasswordForm and shows EmailForm", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       expect(find.byType(EmailForm), findsNothing);
       expect(find.byType(PasswordForm), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.chevron_left));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       expect(find.byType(EmailForm), findsOneWidget);
       expect(find.byType(PasswordForm), findsNothing);
@@ -429,258 +429,258 @@ void main() {
 
     testWidgets("Password Form creates passwordField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(find.byKey(Key("passwordTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("passwordTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("Password Field can receive input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       String password = "ndfbdGJKG12!@kld*nnHFS";
       expect(find.text(password), findsNothing);
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
       await tester.pump();
       expect(find.text(password), findsOneWidget);
     });
 
     testWidgets("Password Field displays error on invalid input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       String password = "n";
       expect(find.text("Invalid Password"), findsNothing);
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid Password"), findsOneWidget);
     });
 
     testWidgets("Password Form creates passwordConfirmationField", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(find.byKey(Key("passwordConfirmationTextFieldKey")), findsOneWidget);
+      expect(find.byKey(const Key("passwordConfirmationTextFieldKey")), findsOneWidget);
     });
 
     testWidgets("Password Confirmation Field can receive input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       String password = "ndfbdGJKG12!@kld*nnHFS";
       expect(find.text(password), findsNothing);
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
       await tester.pump();
       expect(find.text(password), findsOneWidget);
     });
 
     testWidgets("Password Confirmation Field displays error on invalid input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       String password = "n";
       expect(find.text("Confirmation does not match"), findsNothing);
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), password);
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), password);
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Confirmation does not match"), findsOneWidget);
     });
 
     testWidgets("Password Form creates submitPasswordButton", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(find.byKey(Key("submitPasswordButtonKey")), findsOneWidget);
+      expect(find.byKey(const Key("submitPasswordButtonKey")), findsOneWidget);
     });
 
     testWidgets("Submit Password Button is disabled on empty form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitPasswordButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitPasswordButtonKey"))).enabled, false);
     });
 
     testWidgets("Submit Password Button is disabled on invalid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), "hssss");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), "hssss");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "ts");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "ts");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitPasswordButtonKey"))).enabled, false);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitPasswordButtonKey"))).enabled, false);
     });
 
     testWidgets("Submit Password Button is enabled on valid form", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitPasswordButtonKey"))).enabled, true);
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitPasswordButtonKey"))).enabled, true);
     });
 
     testWidgets("Tapping submitButton on valid form displays CircularProgressIndicator", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.byType(CircularProgressIndicator), findsNothing);
       
-      await tester.tap(find.byKey(Key("submitPasswordButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("submitPasswordButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsNothing);
 
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
     });
 
     testWidgets("Tapping submitButton on success displays toast", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text("Password Changed!"), findsNothing);
       
-      await tester.tap(find.byKey(Key("submitPasswordButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("submitPasswordButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
 
       expect(find.text("Password Changed!"), findsOneWidget);
 
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
       expect(find.text("Password Changed!"), findsNothing);
     });
 
     testWidgets("Tapping submitButton on success pops nav", (tester) async {
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
       
-      await tester.tap(find.byKey(Key("submitPasswordButtonKey")));
+      await tester.tap(find.byKey(const Key("submitPasswordButtonKey")));
 
-      await tester.pump(Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 5));
       verify(() => observer.didPop(any(), any())).called(1);
     });
 
     testWidgets("Tapping submitButton on error displays errorMessage", (tester) async {
       when(() => businessRepository.updatePassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), identifier: any(named: "identifier")))
-        .thenThrow(ApiException(error: "An Error Happened!"));
+        .thenThrow(const ApiException(error: "An Error Happened!"));
       
       await screenBuilder.createScreen(tester: tester);
-      await tester.enterText(find.byKey(Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.tap(find.byKey(Key("unlockButtonKey")));
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("unlockPasswordTextFieldKey")), "hcfJgfhFDH@#3469*bnN");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(const Key("unlockButtonKey")));
+      await tester.pump(const Duration(milliseconds: 500));
       await tester.tap(find.byIcon(Icons.chevron_right));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      await tester.enterText(find.byKey(Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "");
-      await tester.pump(Duration(milliseconds: 500));
-      await tester.enterText(find.byKey(Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
-      await tester.pump(Duration(milliseconds: 500));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "");
+      await tester.pump(const Duration(milliseconds: 500));
+      await tester.enterText(find.byKey(const Key("passwordConfirmationTextFieldKey")), "jcdbdsHJSG!@#219872HHHDVDcds");
+      await tester.pump(const Duration(milliseconds: 500));
       
       expect(find.text("An Error Happened!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitPasswordButtonKey")));
+      await tester.tap(find.byKey(const Key("submitPasswordButtonKey")));
       await tester.pumpAndSettle();
 
       expect(find.text("An Error Happened!"), findsOneWidget);
 
-      await tester.pump(Duration(seconds: 5));
+      await tester.pump(const Duration(seconds: 5));
       expect(find.text("An Error Happened!"), findsNothing);
     });
   });

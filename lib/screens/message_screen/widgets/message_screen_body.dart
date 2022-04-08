@@ -14,14 +14,15 @@ import 'widgets/message_input/message_input.dart';
 class MessageScreenBody extends StatelessWidget {
   final MessageRepository _messageRepository;
 
-  const MessageScreenBody({required MessageRepository messageRepository})
-    : _messageRepository = messageRepository;
+  const MessageScreenBody({required MessageRepository messageRepository, Key? key})
+    : _messageRepository = messageRepository,
+      super(key: key);
   
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
-        ? EdgeInsets.symmetric(horizontal: 0, vertical: 0)
+        ? const EdgeInsets.symmetric(horizontal: 0, vertical: 0)
         : EdgeInsets.symmetric(horizontal: SizeConfig.getWidth(10), vertical: SizeConfig.getHeight(2)),
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -38,7 +39,7 @@ class MessageScreenBody extends StatelessWidget {
                     messageRepository: _messageRepository,
                     messageHistoryBloc: BlocProvider.of<MessageHistoryBloc>(context)
                   ),
-                  child: MessageInput(),
+                  child: const MessageInput(),
                 )
               ],
             ),

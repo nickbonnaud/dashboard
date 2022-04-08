@@ -80,7 +80,7 @@ void main() {
         .thenAnswer((_) async => null);
       
       when(() => photosRepository.storeLogo(file: any(named: "file"), profileIdentifier: any(named: "profileIdentifier")))
-        .thenAnswer((_) async => Future.delayed(Duration(milliseconds: 500), () => mockDataGenerator.createBusinessPhotos()));
+        .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createBusinessPhotos()));
 
       when(() => businessBloc.add(any(that: isA<PhotosUpdated>()))).thenReturn(null);
     });
@@ -105,55 +105,55 @@ void main() {
     testWidgets("inital page of PhotosFormBody = 0", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
-      expect(tester.widget<PageView>(find.byKey(Key("pageViewKey"))).controller.page, 0);
+      expect(tester.widget<PageView>(find.byKey(const Key("pageViewKey"))).controller.page, 0);
     });
 
     testWidgets("PhotosFormBody creates leftChevron", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("leftChevronKey")), findsOneWidget);
+      expect(find.byKey(const Key("leftChevronKey")), findsOneWidget);
     });
 
     testWidgets("LeftChevron is disabled initially", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
-      expect(tester.widget<IconButton>(find.byKey(Key("leftChevronKey"))).onPressed, null);
+      expect(tester.widget<IconButton>(find.byKey(const Key("leftChevronKey"))).onPressed, null);
     });
 
     testWidgets("PhotosFormBody creates rightChevron", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
-      expect(find.byKey(Key("rightChevronKey")), findsOneWidget);
+      expect(find.byKey(const Key("rightChevronKey")), findsOneWidget);
     });
 
     testWidgets("RightChevron is enabled initially", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
-      expect(tester.widget<IconButton>(find.byKey(Key("rightChevronKey"))).onPressed, isA<Function>());
+      expect(tester.widget<IconButton>(find.byKey(const Key("rightChevronKey"))).onPressed, isA<Function>());
     });
 
     testWidgets("Tapping rightChevron when page = 0 changes page to page = 1", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
-      expect(tester.widget<PageView>(find.byKey(Key("pageViewKey"))).controller.page, 0);
-      await tester.tap(find.byKey(Key("rightChevronKey")));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
-      expect(tester.widget<PageView>(find.byKey(Key("pageViewKey"))).controller.page, 1);
+      expect(tester.widget<PageView>(find.byKey(const Key("pageViewKey"))).controller.page, 0);
+      await tester.tap(find.byKey(const Key("rightChevronKey")));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
+      expect(tester.widget<PageView>(find.byKey(const Key("pageViewKey"))).controller.page, 1);
     });
 
     testWidgets("Tapping leftChevron when page = 1 changes page to page = 0", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(Key("rightChevronKey")));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.tap(find.byKey(const Key("rightChevronKey")));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(tester.widget<PageView>(find.byKey(Key("pageViewKey"))).controller.page, 1);
+      expect(tester.widget<PageView>(find.byKey(const Key("pageViewKey"))).controller.page, 1);
 
-      await tester.tap(find.byKey(Key("leftChevronKey")));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.tap(find.byKey(const Key("leftChevronKey")));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(tester.widget<PageView>(find.byKey(Key("pageViewKey"))).controller.page, 0);
+      expect(tester.widget<PageView>(find.byKey(const Key("pageViewKey"))).controller.page, 0);
     });
 
     testWidgets("Page = 0 shows LogoForm", (tester) async {
@@ -168,8 +168,8 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(Key("rightChevronKey")));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.tap(find.byKey(const Key("rightChevronKey")));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
       expect(find.byType(LogoForm), findsNothing);
       expect(find.byType(BannerForm), findsOneWidget);
@@ -179,7 +179,7 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(Key("logoPlaceHolderKey")), findsOneWidget);
+      expect(find.byKey(const Key("logoPlaceHolderKey")), findsOneWidget);
     });
 
     testWidgets("Edit LogoForm creates initialLogo", (tester) async {
@@ -193,7 +193,7 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(Key("logoPickerButtonKey")));
+      await tester.tap(find.byKey(const Key("logoPickerButtonKey")));
       await tester.pump();
       verify(() => photoPickerRepository.choosePhoto()).called(1);
     });
@@ -202,19 +202,19 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderNew.createScreen(tester: tester, shouldPump: false));
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(Key("rightChevronKey")));
-      await tester.pumpAndSettle(Duration(milliseconds: 300));
+      await tester.tap(find.byKey(const Key("rightChevronKey")));
+      await tester.pumpAndSettle(const Duration(milliseconds: 300));
 
-      expect(find.byKey(Key("bannerPlaceHolderKey")), findsOneWidget);
+      expect(find.byKey(const Key("bannerPlaceHolderKey")), findsOneWidget);
     });
 
     testWidgets("Edit BannerForm creates initialBanner", (tester) async {
       await mockNetworkImagesFor(() => screenBuilderEdit.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
 
-      await tester.tap(find.byKey(Key("rightChevronKey")));
+      await tester.tap(find.byKey(const Key("rightChevronKey")));
       await tester.pump();
-      await tester.pump(Duration(milliseconds: 300));
+      await tester.pump(const Duration(milliseconds: 300));
       expect(find.byType(CachedImage), findsOneWidget);
     });
 
@@ -222,12 +222,12 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderEdit.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
 
-      await tester.tap(find.byKey(Key("rightChevronKey")));
+      await tester.tap(find.byKey(const Key("rightChevronKey")));
       await tester.pump();
-      await tester.pump(Duration(milliseconds: 300));
-      await tester.drag(find.byKey(Key("mainScrollKey")), Offset(0, -500));
+      await tester.pump(const Duration(milliseconds: 300));
+      await tester.drag(find.byKey(const Key("mainScrollKey")), const Offset(0, -500));
       await tester.pump();
-      await tester.tap(find.byKey(Key("bannerPickerButtonKey")));
+      await tester.tap(find.byKey(const Key("bannerPickerButtonKey")));
       await tester.pump();
       verify(() => photoPickerRepository.choosePhoto()).called(1);
     });
@@ -236,8 +236,8 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderEdit.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
 
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, false);
-      await tester.pump(Duration(milliseconds: 1));
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+      await tester.pump(const Duration(milliseconds: 1));
     });
 
     testWidgets("SubmitButton is enabled if filePicked", (tester) async {
@@ -250,10 +250,10 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderEdit.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
 
-      await tester.tap(find.byKey(Key("logoPickerButtonKey")));
+      await tester.tap(find.byKey(const Key("logoPickerButtonKey")));
       await tester.pump();
-      expect(tester.widget<ElevatedButton>(find.byKey(Key("submitButtonKey"))).enabled, true);
-      await tester.pump(Duration(milliseconds: 1));
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
+      await tester.pump(const Duration(milliseconds: 1));
     });
 
     testWidgets("Tapping Submit button displays CircularProgressIndicator", (tester) async {
@@ -266,14 +266,14 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderEdit.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
 
-      await tester.tap(find.byKey(Key("logoPickerButtonKey")));
+      await tester.tap(find.byKey(const Key("logoPickerButtonKey")));
       await tester.pump();
       
       expect(find.byType(CircularProgressIndicator), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(milliseconds: 250));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(milliseconds: 250));
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
-      await tester.pump(Duration(seconds: 4));
+      await tester.pump(const Duration(seconds: 4));
     });
 
     testWidgets("Tapping Submit displays toast on success", (tester) async {
@@ -286,14 +286,14 @@ void main() {
       await mockNetworkImagesFor(() => screenBuilderEdit.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
 
-      await tester.tap(find.byKey(Key("logoPickerButtonKey")));
+      await tester.tap(find.byKey(const Key("logoPickerButtonKey")));
       await tester.pump();
       
       expect(find.text("Photos Saved!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
-      await tester.pump(Duration(seconds: 2));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
+      await tester.pump(const Duration(seconds: 2));
       expect(find.text("Photos Saved!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 2));
     });
 
     testWidgets("Tapping Submit displays error on fail", (tester) async {
@@ -304,20 +304,20 @@ void main() {
         .thenAnswer((_) async => pickedFile);
 
       when(() => photosRepository.storeLogo(file: any(named: "file"), profileIdentifier: any(named: "profileIdentifier")))
-        .thenThrow(ApiException(error: "An error occurred!"));
+        .thenThrow(const ApiException(error: "An error occurred!"));
         
       await mockNetworkImagesFor(() => screenBuilderEdit.createScreen(tester: tester, shouldPump: false));
       await tester.pump();
 
-      await tester.tap(find.byKey(Key("logoPickerButtonKey")));
+      await tester.tap(find.byKey(const Key("logoPickerButtonKey")));
       await tester.pump();
       
       expect(find.text("An error occurred!"), findsNothing);
-      await tester.tap(find.byKey(Key("submitButtonKey")));
+      await tester.tap(find.byKey(const Key("submitButtonKey")));
       await tester.pump();
       expect(find.text("An error occurred!"), findsOneWidget);
-      await tester.pump(Duration(seconds: 2));
-      await tester.pump(Duration(seconds: 1));
+      await tester.pump(const Duration(seconds: 2));
+      await tester.pump(const Duration(seconds: 1));
       expect(find.text("An error occurred!"), findsNothing);
     });
   });

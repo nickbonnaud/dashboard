@@ -36,16 +36,16 @@ void main() {
     blocTest<NameFieldBloc, NameFieldState>(
       "NameChanged event changes state when invalid first & last: [firstName: firstName, isFirstNameValid: false, lastName: lastName, isLastNameValid: false]",
       build: () => nameFieldBloc,
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "f", lastName: "l")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "f", lastName: "l")),
       expect: () => [_baseState.update(firstName: "f", isFirstNameValid: false, lastName: "l", isLastNameValid: false)]
     );
 
     blocTest<NameFieldBloc, NameFieldState>(
       "NameChanged event does not call employeeTipFinderBloc.add() state when invalid first & last: [firstName: firstName, isFirstNameValid: false, lastName: lastName, isLastNameValid: false]",
       build: () => nameFieldBloc,
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "f", lastName: "l")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "f", lastName: "l")),
       verify: (_) {
         verifyNever(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>())));
       }
@@ -57,8 +57,8 @@ void main() {
         when(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).thenReturn(null);
         return nameFieldBloc;
       },
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "first", lastName: "l")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "first", lastName: "l")),
       expect: () => [_baseState.update(firstName: "first", isFirstNameValid: true, lastName: "l", isLastNameValid: false)]
     );
 
@@ -68,8 +68,8 @@ void main() {
         when(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).thenReturn(null);
         return nameFieldBloc;
       },
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "first", lastName: "l")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "first", lastName: "l")),
       verify: (_) {
         verify(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).called(1);
       }
@@ -81,8 +81,8 @@ void main() {
         when(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).thenReturn(null);
         return nameFieldBloc;
       },
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "s", lastName: "last")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "s", lastName: "last")),
       expect: () => [_baseState.update(firstName: "s", isFirstNameValid: false, lastName: "last", isLastNameValid: true)]
     );
 
@@ -92,8 +92,8 @@ void main() {
         when(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).thenReturn(null);
         return nameFieldBloc;
       },
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "s", lastName: "last")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "s", lastName: "last")),
       verify: (_) {
         verify(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).called(1);
       }
@@ -105,8 +105,8 @@ void main() {
         when(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).thenReturn(null);
         return nameFieldBloc;
       },
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "first", lastName: "last")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "first", lastName: "last")),
       expect: () => [_baseState.update(firstName: "first", isFirstNameValid: true, lastName: "last", isLastNameValid: true)]
     );
 
@@ -116,8 +116,8 @@ void main() {
         when(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).thenReturn(null);
         return nameFieldBloc;
       },
-      wait: Duration(seconds: 1),
-      act: (bloc) => bloc.add(NameChanged(firstName: "first", lastName: "last")),
+      wait: const Duration(seconds: 1),
+      act: (bloc) => bloc.add(const NameChanged(firstName: "first", lastName: "last")),
       verify: (_) {
         verify(() => employeeTipFinderBloc.add(any(that: isA<EmployeeTipFinderEvent>()))).called(1);
       }

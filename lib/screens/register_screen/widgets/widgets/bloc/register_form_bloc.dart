@@ -16,7 +16,7 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
   final AuthenticationRepository _authenticationRepository;
   final AuthenticationBloc _authenticationBloc;
 
-  final Duration _debounceTime = Duration(milliseconds: 300);
+  final Duration _debounceTime = const Duration(milliseconds: 300);
 
   RegisterFormBloc({required AuthenticationRepository authenticationRepository, required AuthenticationBloc authenticationBloc})
     : _authenticationRepository = authenticationRepository,

@@ -9,7 +9,7 @@ class UnassignedTransactionsListState extends Equatable {
   final String errorMessage;
   final DateTimeRange? currentDateRange;
 
-  UnassignedTransactionsListState({
+  const UnassignedTransactionsListState({
     required this.transactions,
     this.nextUrl,
     required this.hasReachedEnd,
@@ -21,7 +21,7 @@ class UnassignedTransactionsListState extends Equatable {
 
   factory UnassignedTransactionsListState.initial({@required DateTimeRange? currentDateRange}) {
     return UnassignedTransactionsListState(
-      transactions: [],
+      transactions: const [],
       nextUrl: null,
       hasReachedEnd: false,
       loading: false,

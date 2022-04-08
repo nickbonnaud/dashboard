@@ -5,9 +5,10 @@ class CachedAvatar extends StatelessWidget {
   final String _url;
   final double _size;
 
-  CachedAvatar({required String url, required double size})
+  const CachedAvatar({required String url, required double size, Key? key})
     : _url = url,
-      _size = size;
+      _size = size,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +27,9 @@ class CachedAvatar extends StatelessWidget {
           ),
         ),
         elevation: 10,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
       ),
-      progressIndicatorBuilder: (_, __, ___) => CircularProgressIndicator()
+      progressIndicatorBuilder: (_, __, ___) => const CircularProgressIndicator()
     );
   }
 }

@@ -12,20 +12,21 @@ import 'bloc/banner_form_bloc.dart';
 class BannerForm extends StatelessWidget {
   final PhotoPickerRepository _photoPickerRepository;
 
-  const BannerForm({required PhotoPickerRepository photoPickerRepository})
-    : _photoPickerRepository = photoPickerRepository;
+  const BannerForm({required PhotoPickerRepository photoPickerRepository, Key? key})
+    : _photoPickerRepository = photoPickerRepository,
+      super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      key: Key("bannerScrollKey"),
+      key: const Key("bannerScrollKey"),
       child: Column(
         children: [
           SizedBox(height: SizeConfig.getHeight(5)),
           _banner(context: context),
           SizedBox(height: SizeConfig.getHeight(5)),
           ElevatedButton(
-            key: Key("bannerPickerButtonKey"),
+            key: const Key("bannerPickerButtonKey"),
             style: ButtonStyle(padding: MaterialStateProperty.all(EdgeInsets.symmetric(vertical: SizeConfig.getWidth(1), horizontal: SizeConfig.getWidth(4)))),
             onPressed: () => _buttonPressed(context: context),
             child: _buttonChild(context: context),
@@ -66,7 +67,7 @@ class BannerForm extends StatelessWidget {
         ),
       ),
       elevation: 10,
-      shape: ContinuousRectangleBorder(),
+      shape: const ContinuousRectangleBorder(),
     );
   }
 
@@ -79,7 +80,7 @@ class BannerForm extends StatelessWidget {
 
   Widget _placeHolder() {
     return Material(
-      key: Key("bannerPlaceHolderKey"),
+      key: const Key("bannerPlaceHolderKey"),
       child: Container(
         color: Colors.black54,
         width: SizeConfig.getWidth(30),
@@ -95,7 +96,7 @@ class BannerForm extends StatelessWidget {
 
   Widget _buttonChild({required BuildContext context}) {
     return Padding(
-      padding: EdgeInsets.only(top: 5, bottom: 5),
+      padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: Text4(text: 'Select Banner', context: context, color: Theme.of(context).colorScheme.onSecondary)
     );
   }

@@ -26,7 +26,7 @@ void main() {
     });
 
     test("Credentials Repository throws error on Fetch credentials fail", () async {
-      when(() => _mockCredentialsProvider.fetch()).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockCredentialsProvider.fetch()).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
       expect(
         _credentialsRepositoryWithMock.fetch(), 
         throwsA(isA<ApiException>())

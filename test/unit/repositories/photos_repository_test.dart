@@ -20,7 +20,7 @@ void main() {
       _photosRepository = PhotosRepository(photosProvider: PhotosProvider());
       _mockPhotosProvider = MockPhotosProvider();
       _photosRepositoryWithMock = PhotosRepository(photosProvider: _mockPhotosProvider);
-      registerFallbackValue(Map());
+      registerFallbackValue({});
     });
     
     test("Photos Repository can Store logo", () async {
@@ -34,7 +34,7 @@ void main() {
     test("Photos Repository throws error on Store logo fail", () async {
       final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
-      when(() => _mockPhotosProvider.storeLogo(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockPhotosProvider.storeLogo(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _photosRepositoryWithMock.storeLogo(file: file, profileIdentifier: identifier), 
@@ -53,7 +53,7 @@ void main() {
     test("Photos Repository throws error on Store banner fail", () async {
       final XFile file = XFile("fake_path");
       final String identifier = faker.guid.guid();
-      when(() => _mockPhotosProvider.storeBanner(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => ApiResponse(body: {}, error: "error", isOK: false));
+      when(() => _mockPhotosProvider.storeBanner(identifier: identifier, body: any(named: 'body'))).thenAnswer((_) async => const ApiResponse(body: {}, error: "error", isOK: false));
 
       expect(
         _photosRepositoryWithMock.storeBanner(file: file, profileIdentifier: identifier), 
