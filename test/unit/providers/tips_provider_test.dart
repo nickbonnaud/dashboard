@@ -7,7 +7,7 @@ void main() {
     late TipsProvider tipsProvider;
 
     setUp(() {
-      tipsProvider = TipsProvider();
+      tipsProvider = const TipsProvider();
     });
 
     test("FetchPaginated tips returns PaginatedApiResponse", () async {

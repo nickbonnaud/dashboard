@@ -31,7 +31,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     : _profileRepository = profileRepository,
       _businessBloc = businessBloc,
       _places = places,
-      super(ProfileScreenState.empty()) { _eventHandler(); }
+      super(ProfileScreenState.empty(profile: businessBloc.business.profile)) { _eventHandler(); }
 
   void _eventHandler() {
     on<PlaceQueryChanged>((event, emit) async => await _mapPlaceQueryChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: const Duration(seconds: 1)));
@@ -71,19 +71,19 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
   }
   
   void _mapNameChangedToState({required NameChanged event, required Emitter<ProfileScreenState> emit}) {
-    emit(state.update(isNameValid: Validators.isValidBusinessName(name: event.name)));
+    emit(state.update(name: event.name, isNameValid: Validators.isValidBusinessName(name: event.name)));
   }
 
   void _mapWebsiteChangedToState({required WebsiteChanged event, required Emitter<ProfileScreenState> emit}) {
-    emit(state.update(isWebsiteValid: Validators.isValidUrl(url: _setWebsite(originalWebsite: event.website))));
+    emit(state.update(website: event.website, isWebsiteValid: Validators.isValidUrl(url: _setWebsite(originalWebsite: event.website))));
   }
 
   void _mapPhoneChangedToState({required PhoneChanged event, required Emitter<ProfileScreenState> emit}) {
-    emit(state.update(isPhoneValid: Validators.isValidPhone(phone: event.phone)));
+    emit(state.update(phone: event.phone, isPhoneValid: Validators.isValidPhone(phone: event.phone)));
   }
 
   void _mapDescriptionChangedToState({required DescriptionChanged event, required Emitter<ProfileScreenState> emit}) {
-    emit(state.update(isDescriptionValid: Validators.isValidBusinessDescription(description: event.description)));
+    emit(state.update(description: event.description, isDescriptionValid: Validators.isValidBusinessDescription(description: event.description)));
   }
 
   Future<void> _mapSubmittedToState({required Submitted event, required Emitter<ProfileScreenState> emit}) async {
@@ -91,10 +91,10 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
 
     try {
       Profile profile = await _profileRepository.store(
-        name: event.name,
-        website: event.website,
-        description: event.description,
-        phone: event.phone,
+        name: state.name,
+        website: state.website,
+        description: state.description,
+        phone: state.phone,
       );
       _updateBusinessBloc(profile: profile);
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
@@ -108,11 +108,11 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
 
     try {
       Profile profile = await _profileRepository.update(
-        name: event.name,
-        website: event.website,
-        description: event.description,
-        phone: event.phone,
-        identifier: event.id
+        name: state.name,
+        website: state.website,
+        description: state.description,
+        phone: state.phone,
+        identifier: _businessBloc.business.profile.identifier
       );
       _updateBusinessBloc(profile: profile);
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));

@@ -7,7 +7,7 @@ void main() {
     late ProfileProvider profileProvider;
 
     setUp(() {
-      profileProvider = ProfileProvider();
+      profileProvider = const ProfileProvider();
     });
 
     test("Storing a profile returns ApiResponse", () async {

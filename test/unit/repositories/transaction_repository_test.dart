@@ -19,7 +19,7 @@ void main() {
     late TransactionRepository _transactionRepositoryWithMock;
 
     setUp(() {
-      _transactionRepository = TransactionRepository(transactionProvider: TransactionProvider());
+      _transactionRepository = const TransactionRepository(transactionProvider: TransactionProvider());
       _mockTransactionProvider = MockTransactionProvider();
       _transactionRepositoryWithMock = TransactionRepository(transactionProvider: _mockTransactionProvider);
     });

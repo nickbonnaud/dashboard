@@ -12,10 +12,10 @@ import '../boot.dart';
 
 class PhaseThree extends StatelessWidget {
   final MaterialApp? _testApp;
-  final CredentialsRepository _credentialsRepository = CredentialsRepository(credentialsProvider: CredentialsProvider());
-  final MessageRepository _messageRepository = MessageRepository(messageProvider: MessageProvider());
+  final CredentialsRepository _credentialsRepository = const CredentialsRepository(credentialsProvider: CredentialsProvider());
+  final MessageRepository _messageRepository = const MessageRepository(messageProvider: MessageProvider());
   
-  PhaseThree({MaterialApp? testApp, Key? key})
+  const PhaseThree({MaterialApp? testApp, Key? key})
     : _testApp = testApp,
       super(key: key);
   

@@ -1,4 +1,4 @@
-import 'package:dashboard/models/status.dart';
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/screens/onboard_screen/bloc/onboard_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +6,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'widgets/onboard_body.dart';
 
 class OnboardScreen extends StatelessWidget {
-  final Status _accountStatus;
 
-  const OnboardScreen({required Status accountStatus, Key? key})
-    : _accountStatus = accountStatus,
-      super(key: key);
+  const OnboardScreen({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,9 @@ class OnboardScreen extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.secondary
       ),
       body: BlocProvider<OnboardBloc>(
-        create: (BuildContext context) => OnboardBloc(accountStatus: _accountStatus),
+        create: (BuildContext context) => OnboardBloc(
+          accountStatus: BlocProvider.of<BusinessBloc>(context).business.accounts.accountStatus
+        ),
         child: const OnboardBody(),
       ),
     );

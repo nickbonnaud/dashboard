@@ -19,9 +19,9 @@ void main() {
 
     setUp(() {
       _mockAuthenticationProvider = MockAuthenticationProvider();
-      _authRepository = AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider());
-      _authRepositoryWithMock = AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: _mockAuthenticationProvider);
-      _tokenRepository = TokenRepository();
+      _authRepository = const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider());
+      _authRepositoryWithMock = AuthenticationRepository(tokenRepository: const TokenRepository(), authenticationProvider: _mockAuthenticationProvider);
+      _tokenRepository = const TokenRepository();
     });
     
     test("Registering a Business return Business Model on Success", () async {

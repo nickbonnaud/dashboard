@@ -11,11 +11,9 @@ import 'package:dashboard/theme/global_colors.dart';
 import 'bloc/password_form_bloc.dart';
 
 class PasswordForm extends StatefulWidget {
-  final BusinessBloc _businessBloc;
 
-  const PasswordForm({required BusinessBloc businessBloc, Key? key})
-    : _businessBloc = businessBloc,
-      super(key: key);
+  const PasswordForm({Key? key})
+    : super(key: key);
 
   @override
   State<PasswordForm> createState() => _PasswordFormState();
@@ -222,7 +220,7 @@ class _PasswordFormState extends State<PasswordForm> {
       _passwordFormBloc.add(Submitted(
         password: _passwordController.text,
         passwordConfirmation: _passwordConfirmationController.text,
-        identifier: widget._businessBloc.business.identifier
+        identifier: BlocProvider.of<BusinessBloc>(context).business.identifier
       ));
     }
   }

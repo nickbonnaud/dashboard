@@ -51,8 +51,7 @@ void main() {
           refundRepository: refundRepository,
           tipsRepository: tipsRepository,
           unassignedTransactionRepository: unassignedTransactionRepository,
-          customerRepository: customerRepository,
-          posAccount: mockDataGenerator.createPosAccount()
+          customerRepository: customerRepository
         ), 
         observer: observer
       );

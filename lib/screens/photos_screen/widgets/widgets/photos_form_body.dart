@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/repositories/photo_picker_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
@@ -16,18 +17,22 @@ import 'widgets/logo_form/logo_form.dart';
 
 class PhotosFormBody extends StatefulWidget {
   final PhotoPickerRepository _photoPickerRepository;
-  final String _profileIdentifier;
   final bool _isEdit;
 
-  const PhotosFormBody({
+  const PhotosFormBody.edit({
     required PhotoPickerRepository photoPickerRepository, 
-    required String profileIdentifier,
-    required bool isEdit,
     Key? key
   })
     : _photoPickerRepository = photoPickerRepository,
-      _profileIdentifier = profileIdentifier,
-      _isEdit = isEdit,
+      _isEdit = true,
+      super(key: key);
+
+  const PhotosFormBody.new({
+    required PhotoPickerRepository photoPickerRepository, 
+    Key? key
+  })
+    : _photoPickerRepository = photoPickerRepository,
+      _isEdit = false,
       super(key: key);
 
   @override
@@ -193,7 +198,7 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
 
   void _submitButtonPressed({required PhotosFormState state}) {
     if (_buttonEnabled(state: state)) {
-      BlocProvider.of<PhotosFormBloc>(context).add(Submitted(identifier: widget._profileIdentifier));
+      BlocProvider.of<PhotosFormBloc>(context).add(Submitted(identifier: BlocProvider.of<BusinessBloc>(context).business.profile.identifier));
     }
   }
 

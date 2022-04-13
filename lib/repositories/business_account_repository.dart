@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class BusinessAccountRepository extends BaseRepository {
   final BusinessAccountProvider _accountProvider;
 
-  BusinessAccountRepository({required BusinessAccountProvider accountProvider})
+  const BusinessAccountRepository({required BusinessAccountProvider accountProvider})
     : _accountProvider = accountProvider;
 
   Future<BusinessAccount> store({

@@ -1,13 +1,12 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/models/business/profile.dart';
 import 'package:dashboard/repositories/profile_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/profile_screen/profile_screen.dart';
 import 'package:dashboard/screens/profile_screen/widgets/widgets/body_form.dart';
 import 'package:dashboard/screens/profile_screen/widgets/widgets/create_profile_screen_body/create_profile_screen_body.dart';
-import 'package:dashboard/screens/profile_screen/widgets/widgets/edit_profile_screen_body.dart';
 import 'package:dashboard/screens/profile_screen/widgets/widgets/create_profile_screen_body/widgets/place_form.dart';
+import 'package:dashboard/screens/profile_screen/widgets/widgets/edit_profile_screen_body.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -18,7 +17,6 @@ import '../../helpers/mock_data_generator.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockProfileRepository extends Mock implements ProfileRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
 class MockGoogleMapsPlaces extends Mock implements GoogleMapsPlaces {}
 
 void main() {
@@ -26,9 +24,7 @@ void main() {
     late MockDataGenerator mockDataGenerator;
     late NavigatorObserver observer;
     late ProfileRepository profileRepository;
-    late BusinessBloc businessBloc;
     late GoogleMapsPlaces places;
-    late Profile profile;
     late ScreenBuilder screenBuilderNew;
     late ScreenBuilder screenBuilderEdit;
 
@@ -36,18 +32,17 @@ void main() {
       mockDataGenerator = MockDataGenerator();
       observer = MockNavigatorObserver();
       profileRepository = MockProfileRepository();
-      businessBloc = MockBusinessBloc();
       places = MockGoogleMapsPlaces();
-      profile = mockDataGenerator.createProfile();
 
       screenBuilderNew = ScreenBuilder(
-        child: ProfileScreen(profileRepository: profileRepository, profile: Profile.empty(), businessBloc: businessBloc, places: places),
+        child: ProfileScreen(profileRepository: profileRepository, places: places),
         observer: observer
       );
       
       screenBuilderEdit = ScreenBuilder(
-        child: ProfileScreen(profileRepository: profileRepository, profile: profile, businessBloc: businessBloc, places: places),
-        observer: observer
+        child: ProfileScreen(profileRepository: profileRepository, places: places),
+        observer: observer,
+        business: mockDataGenerator.createBusiness()
       );
 
       when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types")))
@@ -82,8 +77,6 @@ void main() {
 
       registerFallbackValue(ProfileUpdated(profile: mockDataGenerator.createProfile()));
       registerFallbackValue(MockRoute());
-
-      when(() => businessBloc.add(any(that: isA<ProfileUpdated>()))).thenReturn(null);
     });
 
     testWidgets("New Profile Screen creates AppBar", (tester) async {
@@ -186,6 +179,7 @@ void main() {
     });
 
     testWidgets("Edit Profile Screen creates DefaultAppBar", (tester) async {
+      
       await screenBuilderEdit.createScreen(tester: tester);
       expect(find.byType(DefaultAppBar), findsOneWidget);
     });

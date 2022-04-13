@@ -2,8 +2,8 @@ import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
 import 'package:dashboard/global_widgets/cached_avatar.dart';
 import 'package:dashboard/global_widgets/cached_image.dart';
+import 'package:dashboard/models/business/business.dart';
 import 'package:dashboard/models/business/photos.dart';
-import 'package:dashboard/models/photo.dart';
 import 'package:dashboard/repositories/photo_picker_repository.dart';
 import 'package:dashboard/repositories/photos_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
@@ -11,7 +11,6 @@ import 'package:dashboard/screens/photos_screen/photos_screen.dart';
 import 'package:dashboard/screens/photos_screen/widgets/widgets/photos_form_body.dart';
 import 'package:dashboard/screens/photos_screen/widgets/widgets/widgets/banner_form/banner_form.dart';
 import 'package:dashboard/screens/photos_screen/widgets/widgets/widgets/logo_form/logo_form.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,7 +22,6 @@ import '../../helpers/screen_builder.dart';
 
 class MockPhotoPickerRepository extends Mock implements PhotoPickerRepository {}
 class MockPhotosRepository extends Mock implements PhotosRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
 class MockXFile extends Mock implements XFile {}
 
 void main() {
@@ -32,9 +30,7 @@ void main() {
     late NavigatorObserver observer;
     late PhotoPickerRepository photoPickerRepository;
     late PhotosRepository photosRepository;
-    late BusinessBloc businessBloc;
     late Photos photos;
-    late String profileIdentifier;
 
     late ScreenBuilder screenBuilderNew;
     late ScreenBuilder screenBuilderEdit;
@@ -44,20 +40,12 @@ void main() {
       observer = NavigatorObserver();
       photoPickerRepository = MockPhotoPickerRepository();
       photosRepository = MockPhotosRepository();
-      businessBloc = MockBusinessBloc();
       photos = mockDataGenerator.createBusinessPhotos();
-      profileIdentifier = faker.guid.guid();
       
       screenBuilderNew = ScreenBuilder(
         child: PhotosScreen(
           photoPickerRepository: photoPickerRepository,
           photosRepository: photosRepository,
-          businessBloc: businessBloc,
-          photos: Photos(
-            logo: Photo.empty(), 
-            banner: Photo.empty()
-          ),
-          profileIdentifier: profileIdentifier
         ),
         observer: observer
       );
@@ -66,10 +54,16 @@ void main() {
         child: PhotosScreen(
           photoPickerRepository: photoPickerRepository,
           photosRepository: photosRepository,
-          businessBloc: businessBloc,
+        ),
+        business: Business(
+          identifier: 'identifier',
+          email: 'email',
+          profile: mockDataGenerator.createProfile(),
           photos: photos,
-          profileIdentifier: profileIdentifier
-        ), 
+          accounts: mockDataGenerator.createAccounts(),
+          location: mockDataGenerator.createLocation(),
+          posAccount: mockDataGenerator.createPosAccount()
+        ),
         observer: observer
       );
 
@@ -81,8 +75,6 @@ void main() {
       
       when(() => photosRepository.storeLogo(file: any(named: "file"), profileIdentifier: any(named: "profileIdentifier")))
         .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createBusinessPhotos()));
-
-      when(() => businessBloc.add(any(that: isA<PhotosUpdated>()))).thenReturn(null);
     });
 
     testWidgets("New Photos Screen creates AppBar", (tester) async {

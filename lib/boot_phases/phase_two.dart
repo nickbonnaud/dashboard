@@ -10,9 +10,9 @@ import 'phase_three.dart';
 
 class PhaseTwo extends StatelessWidget {
   final MaterialApp? _testApp;
-  final AuthenticationRepository _authenticationRepository = AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider());
+  final AuthenticationRepository _authenticationRepository = const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider());
 
-  PhaseTwo({MaterialApp? testApp, Key? key})
+  const PhaseTwo({MaterialApp? testApp, Key? key})
     : _testApp = testApp,
       super(key: key);
   

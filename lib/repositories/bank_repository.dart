@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class BankRepository extends BaseRepository {
   final BankProvider _bankProvider;
 
-  BankRepository({required BankProvider bankProvider})
+  const BankRepository({required BankProvider bankProvider})
     : _bankProvider = bankProvider;
 
   Future<BankAccount> store({

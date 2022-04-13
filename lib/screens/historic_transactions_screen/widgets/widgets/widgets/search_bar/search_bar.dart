@@ -10,9 +10,9 @@ import 'widgets/search_field/bloc/transaction_statuses_bloc.dart';
 import 'widgets/search_field/search_field.dart';
 
 class SearchBar extends StatelessWidget {
-  final StatusRepository _statusRepository = StatusRepository(statusProvider: StatusProvider());
+  final StatusRepository _statusRepository = const StatusRepository(statusProvider: StatusProvider());
 
-  SearchBar({Key? key})
+  const SearchBar({Key? key})
     : super(key: key);
   
   @override

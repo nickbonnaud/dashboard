@@ -1,3 +1,4 @@
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/models/business/bank_account.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
@@ -14,17 +15,17 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class BankScreenBody extends StatefulWidget {
-  final BankAccount _bankAccount;
 
-  const BankScreenBody({required BankAccount bankAccount, Key? key})
-    : _bankAccount = bankAccount,
-      super(key: key);
+  const BankScreenBody({Key? key})
+    : super(key: key);
   
   @override
   State<BankScreenBody> createState() => _BankScreenBodyState();
 }
 
 class _BankScreenBodyState extends State<BankScreenBody> {
+  late final BankAccount _bankAccount;
+  
   final FocusNode _firstNameFocus = FocusNode();
   final FocusNode _lastNameFocus = FocusNode();
   final FocusNode _routingNumberFocus = FocusNode();
@@ -35,7 +36,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   final FocusNode _stateFocus = FocusNode();
   final FocusNode _zipFocus = FocusNode();
 
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
   late MaskTextInputFormatter _routingNumberFormatter;
   late MaskTextInputFormatter _accountNumberFormatter;
@@ -68,19 +69,20 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   void initState() {
     super.initState();
     _bankScreenBloc = BlocProvider.of<BankScreenBloc>(context);
+    _bankAccount = BlocProvider.of<BusinessBloc>(context).business.accounts.bankAccount;
 
-    _routingNumberFormatter = InputFormatters.routingNumber(initial: widget._bankAccount.routingNumber);
-    _accountNumberFormatter = InputFormatters.accountNumber(initial: widget._bankAccount.accountNumber);
-    _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: widget._bankAccount.address.zip);
-    _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: widget._bankAccount.address.state        );
+    _routingNumberFormatter = InputFormatters.routingNumber(initial: _bankAccount.routingNumber);
+    _accountNumberFormatter = InputFormatters.accountNumber(initial: _bankAccount.accountNumber);
+    _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: _bankAccount.address.zip);
+    _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: _bankAccount.address.state);
 
-    _firstNameController = TextEditingController(text: widget._bankAccount.firstName);
-    _lastNameController = TextEditingController(text: widget._bankAccount.lastName);
+    _firstNameController = TextEditingController(text: _bankAccount.firstName);
+    _lastNameController = TextEditingController(text: _bankAccount.lastName);
     _routingNumberController = TextEditingController(text: _routingNumberFormatter.getMaskedText());
     _accountNumberController = TextEditingController(text: _accountNumberFormatter.getMaskedText());
-    _addressController = TextEditingController(text: widget._bankAccount.address.address);
-    _addressSecondaryController = TextEditingController(text: widget._bankAccount.address.addressSecondary);
-    _cityController = TextEditingController(text: widget._bankAccount.address.city);
+    _addressController = TextEditingController(text: _bankAccount.address.address);
+    _addressSecondaryController = TextEditingController(text: _bankAccount.address.addressSecondary);
+    _cityController = TextEditingController(text: _bankAccount.address.city);
     _stateController = TextEditingController(text: _stateFormatter.getMaskedText());
     _zipController = TextEditingController(text: _zipFormatter.getMaskedText());
 
@@ -623,18 +625,18 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   }
 
   bool _fieldsChanged({required BankScreenState state}) {
-    if (widget._bankAccount.identifier.isEmpty) return true;
+    if (_bankAccount.identifier.isEmpty) return true;
     
-    return widget._bankAccount.accountType != state.accountType ||
-      widget._bankAccount.firstName != _firstNameController.text ||
-      widget._bankAccount.lastName != _lastNameController.text ||
-      widget._bankAccount.routingNumber != _routingNumberFormatter.getMaskedText() ||
-      widget._bankAccount.accountNumber != _accountNumberFormatter.getMaskedText() ||
-      widget._bankAccount.address.address != _addressController.text ||
-      widget._bankAccount.address.addressSecondary != _addressSecondaryController.text ||
-      widget._bankAccount.address.city != _cityController.text ||
-      widget._bankAccount.address.state != _stateFormatter.getMaskedText() ||
-      widget._bankAccount.address.zip != _zipFormatter.getMaskedText();
+    return _bankAccount.accountType != state.accountType ||
+      _bankAccount.firstName != _firstNameController.text ||
+      _bankAccount.lastName != _lastNameController.text ||
+      _bankAccount.routingNumber != _routingNumberFormatter.getMaskedText() ||
+      _bankAccount.accountNumber != _accountNumberFormatter.getMaskedText() ||
+      _bankAccount.address.address != _addressController.text ||
+      _bankAccount.address.addressSecondary != _addressSecondaryController.text ||
+      _bankAccount.address.city != _cityController.text ||
+      _bankAccount.address.state != _stateFormatter.getMaskedText() ||
+      _bankAccount.address.zip != _zipFormatter.getMaskedText();
   }
 
   void _onFirstNameChanged() {
@@ -679,7 +681,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   void _submitButtonPressed({required BankScreenState state}) {
     if (_buttonEnabled(state: state)) {
-      widget._bankAccount.identifier.isEmpty
+      _bankAccount.identifier.isEmpty
         ? _bankScreenBloc.add(Submitted(
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,
@@ -693,7 +695,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
             zip: _zipController.text,
           ))
         : _bankScreenBloc.add(Updated(
-            identifier: widget._bankAccount.identifier,
+            identifier: _bankAccount.identifier,
             firstName: _firstNameController.text,
             lastName: _lastNameController.text,
             routingNumber: _routingNumberController.text,

@@ -17,7 +17,7 @@ void main() {
     late PhotosRepository _photosRepositoryWithMock;
 
     setUp(() {
-      _photosRepository = PhotosRepository(photosProvider: PhotosProvider());
+      _photosRepository = const PhotosRepository(photosProvider: PhotosProvider());
       _mockPhotosProvider = MockPhotosProvider();
       _photosRepositoryWithMock = PhotosRepository(photosProvider: _mockPhotosProvider);
       registerFallbackValue({});

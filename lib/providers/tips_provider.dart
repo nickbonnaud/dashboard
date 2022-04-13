@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class TipsProvider extends BaseProvider {
   
+  const TipsProvider();
+  
   Future<PaginatedApiResponse> fetchPaginated({String? query, String? paginateUrl}) async {
     String url = paginateUrl ?? '${ApiEndpoints.tips}$query';
     return await getPaginated(url: url);

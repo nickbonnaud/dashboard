@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class BusinessProvider extends BaseProvider {
 
+  const BusinessProvider();
+  
   Future<ApiResponse> fetch() async {
     String url = ApiEndpoints.refreshSelf;
     return await get(url: url);

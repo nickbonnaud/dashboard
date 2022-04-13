@@ -40,7 +40,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   final FocusNode _stateFocus = FocusNode();
   final FocusNode _zipFocus = FocusNode();
 
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
   final MaskTextInputFormatter _phoneFormatter = InputFormatters.phone();
   final MaskTextInputFormatter _dateFormatter = InputFormatters.date();

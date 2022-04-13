@@ -5,6 +5,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class RefundProvider extends BaseProvider {
 
+  const RefundProvider();
+  
   Future<ApiResponse> fetch({required String query}) async {
     String url = '${ApiEndpoints.refunds}$query';
     return await get(url: url);

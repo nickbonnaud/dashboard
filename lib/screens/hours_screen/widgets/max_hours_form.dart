@@ -1,3 +1,4 @@
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/hours.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
@@ -9,11 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class MaxHoursForm extends StatefulWidget {
-  final Hours _hours;
 
-  const MaxHoursForm({required Hours hours, Key? key})
-    : _hours = hours,
-      super(key: key);
+  const MaxHoursForm({Key? key})
+    : super(key: key);
       
 
   @override
@@ -24,14 +23,17 @@ class _MaxHoursFormState extends State<MaxHoursForm> {
   final FocusNode _openingTimeFocus = FocusNode();
   final FocusNode _closingTimeFocus = FocusNode();
 
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
+  late Hours _hours;
+  
   late TextEditingController _openingTimeController;
   late TextEditingController _closingTimeController;
   
   @override
   void initState() {
     super.initState();
+    _hours = BlocProvider.of<BusinessBloc>(context).business.profile.hours;
     _openingTimeController = TextEditingController(text: _getEarliestOpening());
     _closingTimeController = TextEditingController(text: _getLatestClosing());
   }
@@ -151,15 +153,15 @@ class _MaxHoursFormState extends State<MaxHoursForm> {
   }
 
   String _getEarliestOpening() {
-    return widget._hours.empty
+    return _hours.empty
       ? ""
-      : widget._hours.earliest;
+      : _hours.earliest;
   }
 
   String _getLatestClosing() {
-    return widget._hours.empty
+    return _hours.empty
       ? ""
-      : widget._hours.latest;
+      : _hours.latest;
   }
 
   Future<TimeOfDay?> _onFieldTapped({required bool isOpening}) {

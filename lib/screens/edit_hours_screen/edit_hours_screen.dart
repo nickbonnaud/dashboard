@@ -1,6 +1,5 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/models/business/hours.dart';
 import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,18 +9,12 @@ import 'widgets/edit_hours_screen_body.dart';
 
 class EditHoursScreen extends StatelessWidget {
   final HoursRepository _hoursRepository;
-  final BusinessBloc _businessBloc;
-  final Hours _hours;
 
   const EditHoursScreen({
     required HoursRepository hoursRepository,
-    required BusinessBloc businessBloc,
-    required Hours hours,
     Key? key
   })
     : _hoursRepository = hoursRepository,
-      _businessBloc = businessBloc,
-      _hours = hours,
       super(key: key);
   
   @override
@@ -37,10 +30,10 @@ class EditHoursScreen extends StatelessWidget {
     return BlocProvider<EditHoursScreenBloc>(
       create: (context) => EditHoursScreenBloc(
         hoursRepository: _hoursRepository,
-        businessBloc: _businessBloc,
-        hours: _hours
+        businessBloc: BlocProvider.of<BusinessBloc>(context),
+        hours: BlocProvider.of<BusinessBloc>(context).business.profile.hours
       ),
-      child: EditHoursScreenBody(hours: _hours),
+      child: EditHoursScreenBody(hours: BlocProvider.of<BusinessBloc>(context).business.profile.hours),
     );
   }
 }

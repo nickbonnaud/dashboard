@@ -8,7 +8,7 @@ void main() {
     late TransactionProvider transactionProvider;
 
     setUp(() {
-      transactionProvider = TransactionProvider();
+      transactionProvider = const TransactionProvider();
     });
 
     test("Fetching transaction sums returns ApiResponse", () async {

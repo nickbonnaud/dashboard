@@ -11,7 +11,7 @@ class AuthenticationRepository extends BaseRepository {
   final TokenRepository _tokenRepository;
   final AuthenticationProvider _authenticationProvider;
 
-  AuthenticationRepository({required AuthenticationProvider authenticationProvider, required TokenRepository tokenRepository})
+  const AuthenticationRepository({required AuthenticationProvider authenticationProvider, required TokenRepository tokenRepository})
     : _tokenRepository = tokenRepository,
       _authenticationProvider = authenticationProvider;
 

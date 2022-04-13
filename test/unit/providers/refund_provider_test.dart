@@ -8,7 +8,7 @@ void main() {
     late RefundProvider refundProvider;
 
     setUp(() {
-      refundProvider = RefundProvider();
+      refundProvider = const RefundProvider();
     });
 
     test("Fetching sum refunds return ApiResponse", () async {

@@ -50,9 +50,8 @@ class App extends StatelessWidget {
     if (state is Authenticated) {
       return _buildAuthenticatedScreen();
     } else {
-      return LoginScreen(
+      return const LoginScreen(
         authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
-        authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
       );
     }
   }
@@ -65,14 +64,13 @@ class App extends StatelessWidget {
       builder: (context, state) {
         if (state is BusinessLoaded) {
           return state.business.accounts.accountStatus.code < 120
-            ? OnboardScreen(accountStatus: state.business.accounts.accountStatus)
-            : HomeScreen(
+            ? const OnboardScreen()
+            : const HomeScreen(
               transactionRepository: TransactionRepository(transactionProvider: TransactionProvider()),
               refundRepository: RefundRepository(refundProvider: RefundProvider()),
               tipsRepository: TipsRepository(tipsProvider: TipsProvider()),
               unassignedTransactionRepository: UnassignedTransactionRepository(unassignedTransactionProvider: UnassignedTransactionProvider()),
               customerRepository: CustomerRepository(customerProvider: CustomerProvider()),
-              posAccount: state.business.posAccount
             );
         }
         return Container();

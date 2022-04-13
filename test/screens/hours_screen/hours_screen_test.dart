@@ -1,5 +1,3 @@
-import 'package:dashboard/blocs/business/business_bloc.dart';
-import 'package:dashboard/models/business/hours.dart';
 import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/hours_screen/hours_screen.dart';
@@ -15,28 +13,21 @@ import '../../helpers/mock_data_generator.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockHoursRepository extends Mock implements HoursRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
 
 void main() {
   group("Hours Screen Tests", () {
     late MockDataGenerator mockDataGenerator;
     late NavigatorObserver observer;
     late HoursRepository hoursRepository;
-    late BusinessBloc businessBloc;
     late ScreenBuilder screenBuilder;
 
     setUp(() {
       mockDataGenerator = MockDataGenerator();
       observer = MockNavigatorObserver();
       hoursRepository = MockHoursRepository();
-      businessBloc = MockBusinessBloc();
 
       screenBuilder = ScreenBuilder(
-        child: HoursScreen(
-          hoursRepository: hoursRepository, 
-          businessBloc: businessBloc, 
-          hours: Hours.empty()
-        ), 
+        child: HoursScreen(hoursRepository: hoursRepository), 
         observer: observer
       );
 

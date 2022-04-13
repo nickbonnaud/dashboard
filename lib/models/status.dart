@@ -15,7 +15,7 @@ class Status extends Equatable {
   factory Status.unknown() => const Status(name: "Unknown", code: 0);
 
   @override
-  List<Object?> get props => [name, code];
+  List<Object> get props => [name, code];
   
   @override
   String toString() => 'Status { name: $name, code: $code }';

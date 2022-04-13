@@ -4,5 +4,5 @@ import 'package:flutter/material.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(PhaseOne());
+  runApp(const PhaseOne());
 }

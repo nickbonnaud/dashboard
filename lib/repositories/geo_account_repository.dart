@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class GeoAccountRepository extends BaseRepository {
   final GeoAccountProvider _geoAccountProvider;
 
-  GeoAccountRepository({required GeoAccountProvider geoAccountProvider})
+  const GeoAccountRepository({required GeoAccountProvider geoAccountProvider})
     : _geoAccountProvider = geoAccountProvider;
   
   Future<Location> store({required double lat, required double lng, required int radius}) async {

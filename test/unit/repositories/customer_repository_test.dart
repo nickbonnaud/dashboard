@@ -17,7 +17,7 @@ void main() {
     late CustomerRepository _customerRepositoryWithMock;
 
     setUp(() {
-      _customerRepository = CustomerRepository(customerProvider: CustomerProvider());
+      _customerRepository = const CustomerRepository(customerProvider: CustomerProvider());
       _mockCustomerProvider = MockCustomerProvider();
       _customerRepositoryWithMock = CustomerRepository(customerProvider: _mockCustomerProvider);
     });

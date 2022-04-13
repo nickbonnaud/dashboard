@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class UnassignedTransactionRepository extends BaseRepository {
   final UnassignedTransactionProvider _unassignedTransactionProvider;
 
-  UnassignedTransactionRepository({required UnassignedTransactionProvider unassignedTransactionProvider})
+  const UnassignedTransactionRepository({required UnassignedTransactionProvider unassignedTransactionProvider})
     : _unassignedTransactionProvider = unassignedTransactionProvider;
   
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {

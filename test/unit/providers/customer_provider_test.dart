@@ -7,7 +7,7 @@ void main() {
     late CustomerProvider customerProvider;
 
     setUp(() {
-      customerProvider = CustomerProvider();
+      customerProvider = const CustomerProvider();
     });
 
     test("Fetching customers returns PaginatedApiResponse no url", () async {

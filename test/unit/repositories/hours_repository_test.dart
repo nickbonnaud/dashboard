@@ -16,7 +16,7 @@ void main() {
     late HoursRepository _hoursRepositoryWithMock;
 
     setUp(() {
-      _hoursRepository = HoursRepository(hoursProvider: HoursProvider());
+      _hoursRepository = const HoursRepository(hoursProvider: HoursProvider());
       _mockHoursProvider = MockHoursProvider();
       _hoursRepositoryWithMock = HoursRepository(hoursProvider: _mockHoursProvider);
       registerFallbackValue({});

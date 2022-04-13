@@ -9,15 +9,12 @@ import 'widgets/register_form.dart';
 
 class RegisterCard extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
-  final AuthenticationBloc _authenticationBloc;
 
   const RegisterCard({
     required AuthenticationRepository authenticationRepository,
-    required AuthenticationBloc authenticationBloc,
     Key? key
   })
     : _authenticationRepository = authenticationRepository,
-      _authenticationBloc = authenticationBloc,
       super(key: key);
 
   @override
@@ -35,7 +32,7 @@ class RegisterCard extends StatelessWidget {
         child: BlocProvider<RegisterFormBloc>(
           create: (BuildContext context) => RegisterFormBloc(
             authenticationRepository: _authenticationRepository, 
-            authenticationBloc: _authenticationBloc
+            authenticationBloc: BlocProvider.of<AuthenticationBloc>(context)
           ),
           child: const RegisterForm(),
         ) 

@@ -1,6 +1,4 @@
 import 'package:dashboard/app.dart';
-import 'package:dashboard/blocs/authentication/authentication_bloc.dart';
-import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/providers/authentication_provider.dart';
 import 'package:dashboard/providers/bank_provider.dart';
 import 'package:dashboard/providers/business_account_provider.dart';
@@ -40,13 +38,14 @@ import 'package:dashboard/screens/register_screen/register_screen.dart';
 import 'package:dashboard/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:dashboard/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_webservice/places.dart';
 
 import '../dev_keys.dart';
 
 
 class AppRouter {
+
+  const AppRouter();
 
   Route goTo({required BuildContext context, required RouteSettings settings}) {
     final RouteData _routeData = RouteData.init(settings: settings);
@@ -57,30 +56,24 @@ class AppRouter {
         route = _createRoute(screen: const App(), name: _routeData.route);
         break;
       case Routes.login:
-        route = _createRoute(screen: LoginScreen(
+        route = _createRoute(screen: const LoginScreen(
           authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
-          authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
         ),
         name: _routeData.route);
         break;
       case Routes.register:
-        route = _createRoute(screen: RegisterScreen(
+        route = _createRoute(screen: const RegisterScreen(
           authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
-          authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
         ), name: _routeData.route);
         break;
       case Routes.onboard:
-        route = _createRoute(screen: OnboardScreen(
-          accountStatus: BlocProvider.of<BusinessBloc>(context).business.accounts.accountStatus,
-        ),
+        route = _createRoute(screen: const OnboardScreen(),
         name: _routeData.route);
         break;
       case Routes.onboardProfile:
       case Routes.editProfile:
         route = _createRoute(screen: ProfileScreen(
-          profileRepository: ProfileRepository(profileProvider: ProfileProvider()),
-          profile: BlocProvider.of<BusinessBloc>(context).business.profile,
-          businessBloc: BlocProvider.of<BusinessBloc>(context),
+          profileRepository: const ProfileRepository(profileProvider: ProfileProvider()),
           places: GoogleMapsPlaces(
             apiKey: DevKeys.googleKey,
             baseUrl: 'https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api'
@@ -90,85 +83,69 @@ class AppRouter {
         break;
       case Routes.onboardLocation:
       case Routes.editLocation:
-        route = _createRoute(screen: GeoAccountScreen(
-          geoAccountRepository: GeoAccountRepository(geoAccountProvider: GeoAccountProvider()),
-          businessBloc: BlocProvider.of<BusinessBloc>(context),
-          location: BlocProvider.of<BusinessBloc>(context).business.location,
-          isEdit: _routeData.route == Routes.editLocation
-        ),
+        route = _createRoute(
+          screen: _routeData.route == Routes.editLocation
+            ? const GeoAccountScreen.edit(geoAccountRepository: GeoAccountRepository(geoAccountProvider: GeoAccountProvider()))
+            : const GeoAccountScreen.new(geoAccountRepository: GeoAccountRepository(geoAccountProvider: GeoAccountProvider())),
         name: _routeData.route);
         break;
       case Routes.onboardBusinessAccount:
       case Routes.editBusinessAccount:
         route = _createRoute(
-          screen: BusinessAccountScreen(
-            businessAccount: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount,
+          screen: const BusinessAccountScreen(
             accountRepository: BusinessAccountRepository(accountProvider: BusinessAccountProvider()),
-            businessBloc: BlocProvider.of<BusinessBloc>(context),
           ),
           name: _routeData.route);
         break;
       case Routes.onboardOwners:
       case Routes.editOwners:
-        route = _createRoute(screen: OwnersScreen(
+        route = _createRoute(screen: const OwnersScreen(
           ownerRepository: OwnerRepository(ownerProvider: OwnerProvider()),
-          businessBloc: BlocProvider.of<BusinessBloc>(context),
-          ownerAccounts: BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts,
         ),
         name: _routeData.route);
         break;
       case Routes.onboardPhotos:
       case Routes.editPhotos:
-        route = _createRoute(screen: PhotosScreen(
+        route = _createRoute(screen: const PhotosScreen(
           photoPickerRepository: PhotoPickerRepository(),
           photosRepository: PhotosRepository(photosProvider: PhotosProvider()),
-          businessBloc: BlocProvider.of<BusinessBloc>(context),
-          photos: BlocProvider.of<BusinessBloc>(context).business.photos,
-          profileIdentifier: BlocProvider.of<BusinessBloc>(context).business.profile.identifier,
         ),
         name: _routeData.route);
         break;
       case Routes.onboardBank:
       case Routes.editBank:
         route = _createRoute(
-          screen: BankScreen(
-            bankAccount: BlocProvider.of<BusinessBloc>(context).business.accounts.bankAccount,
+          screen: const BankScreen(
             bankRepository: BankRepository(bankProvider: BankProvider()),
-            businessBloc: BlocProvider.of<BusinessBloc>(context),
           ),
           name: _routeData.route
         );
         break;
       case Routes.onboardHours:
-        route = _createRoute(screen: HoursScreen(
+        route = _createRoute(screen: const HoursScreen(
           hoursRepository: HoursRepository(hoursProvider: HoursProvider()),
-          businessBloc: BlocProvider.of<BusinessBloc>(context),
-          hours: BlocProvider.of<BusinessBloc>(context).business.profile.hours,
         ),
         name: _routeData.route);
         break;
       case Routes.editHours:
-        route = _createRoute(screen: EditHoursScreen(
-          hoursRepository:  HoursRepository(hoursProvider: HoursProvider()),
-          businessBloc: BlocProvider.of<BusinessBloc>(context),
-          hours: BlocProvider.of<BusinessBloc>(context).business.profile.hours,
+        route = _createRoute(screen: const EditHoursScreen(
+          hoursRepository: HoursRepository(hoursProvider: HoursProvider()),
         ), 
         name: _routeData.route);
         break;
       case Routes.settings:
-        route = _createRoute(screen: SettingsScreen(
+        route = _createRoute(screen: const SettingsScreen(
           authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
-          businessBloc: BlocProvider.of<BusinessBloc>(context),
           businessRepository: BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository()),
         ),
         name: _routeData.route);
         break;
       case Routes.messages:
-        route = _createRoute(screen: MessageListScreen(messageRepository: MessageRepository(messageProvider: MessageProvider()),), name: _routeData.route);
+        route = _createRoute(screen: const MessageListScreen(messageRepository: MessageRepository(messageProvider: MessageProvider()),), name: _routeData.route);
         break;
       case Routes.resetPassword:
         route = _createRoute(screen: ResetPasswordScreen(
-          authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
+          authenticationRepository: const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
           token: _routeData['token']
         ), 
         name: _routeData.route);

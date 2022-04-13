@@ -1,6 +1,8 @@
-import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
+import 'package:dashboard/models/business/accounts.dart';
+import 'package:dashboard/models/business/business.dart';
 import 'package:dashboard/models/business/owner_account.dart';
+import 'package:dashboard/models/status.dart';
 import 'package:dashboard/repositories/owner_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/owners_screen/owners_screen.dart';
@@ -14,14 +16,12 @@ import '../../helpers/mock_data_generator.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockOwnerRepository extends Mock implements OwnerRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
 
 void main() {
   group("Owners Screen Tests", () {
     late MockDataGenerator mockDataGenerator;
     late NavigatorObserver observer;
     late OwnerRepository ownerRepository;
-    late BusinessBloc businessBloc;
     late List<OwnerAccount> ownerAccounts;
     late ScreenBuilder screenBuilderNew;
     late ScreenBuilder screenBuilderEdit;
@@ -31,15 +31,30 @@ void main() {
       mockDataGenerator = MockDataGenerator();
       observer = MockNavigatorObserver();
       ownerRepository = MockOwnerRepository();
-      businessBloc = MockBusinessBloc();
       ownerAccounts = List.generate(3, (index) => mockDataGenerator.createOwner(index: index));
+
       screenBuilderNew = ScreenBuilder(
-        child: OwnersScreen(ownerRepository: ownerRepository, businessBloc: businessBloc, ownerAccounts: const []),
+        child: OwnersScreen(ownerRepository: ownerRepository),
         observer: observer
       );
+
       screenBuilderEdit = ScreenBuilder(
-        child: OwnersScreen(ownerRepository: ownerRepository, businessBloc: businessBloc, ownerAccounts: ownerAccounts),
-        observer: observer
+        child: OwnersScreen(ownerRepository: ownerRepository),
+        observer: observer,
+        business: Business(
+          identifier: 'identifier',
+          email: 'email',
+          profile: mockDataGenerator.createProfile(),
+          photos: mockDataGenerator.createBusinessPhotos(),
+          accounts: Accounts(
+            businessAccount: mockDataGenerator.createBusinessAccount(),
+            ownerAccounts: ownerAccounts,
+            bankAccount: mockDataGenerator.createBankAccount(),
+            accountStatus: const Status(name: 'name', code: 100)
+          ),
+          location: mockDataGenerator.createLocation(),
+          posAccount: mockDataGenerator.createPosAccount()
+        )
       );
 
       when(() => ownerRepository.remove(identifier: any(named: "identifier")))

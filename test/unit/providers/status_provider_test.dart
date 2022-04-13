@@ -8,7 +8,7 @@ void main() {
     late StatusProvider statusProvider;
 
     setUp(() {
-      statusProvider = StatusProvider();
+      statusProvider = const StatusProvider();
     });
 
     test("FetchTransactionStatuses returns PaginatedApiResponse", () async {

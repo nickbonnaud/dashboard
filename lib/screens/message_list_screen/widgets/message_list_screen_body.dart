@@ -85,7 +85,6 @@ class _MessageListScreenBodyState extends State<MessageListScreenBody> {
             : MessageWidget(
                 index: index,
                 message: state.messages[index],
-                messageListScreenBloc: BlocProvider.of<MessageListScreenBloc>(context),
                 messageRepository: widget._messageRepository,
               ),
           childCount: state.hasReachedEnd

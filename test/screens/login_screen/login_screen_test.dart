@@ -12,22 +12,19 @@ import 'package:mocktail/mocktail.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
-class MockAuthenticationBloc extends Mock implements AuthenticationBloc {}
 class MockBusiness extends Mock implements Business {}
 
 void main() {
   group("Login Screen Tests", () {
     late AuthenticationRepository authenticationRepository;
-    late AuthenticationBloc authenticationBloc;
     late NavigatorObserver observer;
     late ScreenBuilder screenBuilder;
     
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
-      authenticationBloc = MockAuthenticationBloc();
       observer = MockNavigatorObserver();
       screenBuilder = ScreenBuilder(
-        child: LoginScreen(authenticationRepository: authenticationRepository, authenticationBloc: authenticationBloc),
+        child: LoginScreen(authenticationRepository: authenticationRepository),
         observer: observer
       );
 
@@ -35,9 +32,6 @@ void main() {
 
       when(() => authenticationRepository.login(email: any(named: "email"), password: any(named: "password")))
         .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => MockBusiness()));
-
-      when(() => authenticationBloc.add(any(that: isA<AuthenticationEvent>())))
-        .thenReturn(null);
 
       registerFallbackValue(MockRoute());
     });

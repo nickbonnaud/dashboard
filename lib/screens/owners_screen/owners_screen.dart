@@ -1,6 +1,5 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/models/business/owner_account.dart';
 import 'package:dashboard/repositories/owner_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,23 +9,17 @@ import 'widgets/owners_screen_body.dart';
 
 class OwnersScreen extends StatelessWidget {
   final OwnerRepository _ownerRepository;
-  final BusinessBloc _businessBloc;
-  final List<OwnerAccount> _ownerAccounts;
 
   const OwnersScreen({
     required OwnerRepository ownerRepository,
-    required BusinessBloc businessBloc,
-    required List<OwnerAccount> ownerAccounts,
     Key? key
   })
     : _ownerRepository = ownerRepository,
-      _businessBloc = businessBloc,
-      _ownerAccounts = ownerAccounts,
       super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return _ownerAccounts.isEmpty
+    return BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts.isEmpty
       ? Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
@@ -45,13 +38,13 @@ class OwnersScreen extends StatelessWidget {
   Widget _ownersScreenBody({required BuildContext context}) {
     return BlocProvider<OwnersScreenBloc>(
       create: (context) => OwnersScreenBloc(
-        businessBloc: _businessBloc,
+        businessBloc: BlocProvider.of<BusinessBloc>(context),
         ownerRepository: _ownerRepository,
-        ownerAccounts: _ownerAccounts
+        ownerAccounts: BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts
       ),
       child: OwnersScreenBody(
         ownerRepository: _ownerRepository,
-        initialOwners: _ownerAccounts
+        initialOwners: BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts
       ),
     );
   }

@@ -7,7 +7,7 @@ void main() {
     late GeoAccountProvider geoAccountProvider;
 
     setUp(() {
-      geoAccountProvider = GeoAccountProvider();
+      geoAccountProvider = const GeoAccountProvider();
     });
 
     test("Storing geo account returns Api Response", () async {

@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 class PhotosRepository extends BaseRepository {
   final PhotosProvider _photosProvider;
 
-  PhotosRepository({required PhotosProvider photosProvider})
+  const PhotosRepository({required PhotosProvider photosProvider})
     : _photosProvider = photosProvider;
 
   Future<Photos> storeLogo({required XFile file, required String profileIdentifier}) async {

@@ -4,6 +4,12 @@ part of 'profile_screen_bloc.dart';
 class ProfileScreenState extends Equatable {
   final PlaceDetails? selectedPrediction;
   final List<Prediction> predictions;
+
+  final String name;
+  final String website;
+  final String description;
+  final String phone;
+
   final bool isNameValid;
   final bool isWebsiteValid;
   final bool isDescriptionValid;
@@ -13,11 +19,21 @@ class ProfileScreenState extends Equatable {
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  bool get isFormValid => isNameValid && isWebsiteValid && isDescriptionValid && isPhoneValid;
+  bool get isFormValid => 
+    isNameValid && name.isNotEmpty && 
+    isWebsiteValid && website.isNotEmpty && 
+    isDescriptionValid && description.isNotEmpty && 
+    isPhoneValid && phone.isNotEmpty;
 
   const ProfileScreenState({
     this.selectedPrediction,
     required this.predictions,
+
+    required this.name,
+    required this.website,
+    required this.description,
+    required this.phone,
+
     required this.isNameValid,
     required this.isWebsiteValid,
     required this.isDescriptionValid,
@@ -28,10 +44,16 @@ class ProfileScreenState extends Equatable {
     required this.errorButtonControl,
   });
 
-  factory ProfileScreenState.empty() {
-    return const ProfileScreenState(
+  factory ProfileScreenState.empty({required Profile profile}) {
+    return ProfileScreenState(
       selectedPrediction: null,
-      predictions: [],
+      predictions: const [],
+
+      name: profile.name,
+      website: profile.website,
+      description: profile.description,
+      phone: profile.phone,
+
       isNameValid: true,
       isWebsiteValid: true,
       isDescriptionValid: true,
@@ -46,6 +68,12 @@ class ProfileScreenState extends Equatable {
   ProfileScreenState update({
     PlaceDetails? selectedPrediction,
     List<Prediction>? predictions,
+
+    String? name,
+    String? website,
+    String? description,
+    String? phone,
+
     bool? isNameValid,
     bool? isWebsiteValid,
     bool? isDescriptionValid,
@@ -58,6 +86,12 @@ class ProfileScreenState extends Equatable {
     return ProfileScreenState(
       selectedPrediction: selectedPrediction ?? this.selectedPrediction,
       predictions: predictions ?? this.predictions,
+
+      name: name ?? this.name,
+      website: website ?? this.website,
+      description: description ?? this.description,
+      phone: phone ?? this.phone,
+
       isNameValid: isNameValid ?? this.isNameValid,
       isWebsiteValid: isWebsiteValid ?? this.isWebsiteValid,
       isDescriptionValid: isDescriptionValid ?? this.isDescriptionValid,
@@ -73,6 +107,12 @@ class ProfileScreenState extends Equatable {
   List<Object?> get props => [
     selectedPrediction,
     predictions,
+
+    name,
+    website,
+    description,
+    phone,
+
     isNameValid,
     isWebsiteValid,
     isDescriptionValid,
@@ -88,6 +128,12 @@ class ProfileScreenState extends Equatable {
     return '''ProfileScreenState {
       selectedPrediction: $selectedPrediction,
       predictions: $predictions,
+
+      name: $name,
+      website: $website,
+      description: $description,
+      phone: $phone,
+
       isNameValid: $isNameValid,
       isWebsiteValid: $isWebsiteValid,
       isDescriptionValid: $isDescriptionValid,

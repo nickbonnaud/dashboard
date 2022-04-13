@@ -11,7 +11,7 @@ class ToastMessage {
   final ToastGravity _gravity;
   final double? _fontSize;
 
-  ToastMessage({
+  const ToastMessage({
     required BuildContext context,
     required String message,
     required Color color,

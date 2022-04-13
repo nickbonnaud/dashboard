@@ -19,7 +19,7 @@ void main() {
     late TipsRepository _tipRepositoryWithMock;
 
     setUp(() {
-      _tipRepository = TipsRepository(tipsProvider: TipsProvider());
+      _tipRepository = const TipsRepository(tipsProvider: TipsProvider());
       _mockTipsProvider = MockTipsProvider();
       _tipRepositoryWithMock = TipsRepository(tipsProvider: _mockTipsProvider);
     });

@@ -1,4 +1,3 @@
-import 'package:dashboard/models/status.dart';
 import 'package:dashboard/screens/onboard_screen/onboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -19,8 +18,9 @@ void main() {
 
     void _setScreenBuilder({required int code}) {
       screenBuilder = ScreenBuilder(
-        child: OnboardScreen(accountStatus: Status(name: "status", code: code)), 
-        observer: observer
+        child: const OnboardScreen(), 
+        observer: observer,
+        accountStatus: code
       );
     }
 

@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class ProfileProvider extends BaseProvider {
 
+  const ProfileProvider();
+  
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
     String url = ApiEndpoints.profile;
     return await post(url: url, body: body);

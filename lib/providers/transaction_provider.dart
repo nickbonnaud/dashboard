@@ -5,6 +5,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class TransactionProvider extends BaseProvider {
   
+  const TransactionProvider();
+  
   Future<ApiResponse> fetch({required String query}) async {
     String url = '${ApiEndpoints.transactions}$query';
     return await get(url: url);

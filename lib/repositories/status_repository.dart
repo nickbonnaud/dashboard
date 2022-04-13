@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class StatusRepository extends BaseRepository {
   final StatusProvider _statusProvider;
 
-  StatusRepository({required StatusProvider statusProvider})
+  const StatusRepository({required StatusProvider statusProvider})
     : _statusProvider = statusProvider;
 
   Future<List<Status>> fetchTransactionStatuses() async {

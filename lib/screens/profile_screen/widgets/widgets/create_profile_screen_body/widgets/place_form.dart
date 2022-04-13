@@ -8,11 +8,9 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:dashboard/theme/global_colors.dart';
 
 class PlaceForm extends StatefulWidget {
-  final ProfileScreenBloc _profileFormBloc;
 
-  const PlaceForm({required ProfileScreenBloc profileScreenBloc, Key? key})
-    : _profileFormBloc = profileScreenBloc,
-      super(key: key);
+  const PlaceForm({Key? key})
+    : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PlaceFormState();
@@ -109,10 +107,10 @@ class _PlaceFormState extends State<PlaceForm> {
   }
 
   void _onPredictionSelected({required Prediction prediction}) {
-    widget._profileFormBloc.add(PredictionSelected(prediction: prediction));
+    BlocProvider.of<ProfileScreenBloc>(context).add(PredictionSelected(prediction: prediction));
   }
 
   void _onPlaceQueryChanged() {
-    widget._profileFormBloc.add(PlaceQueryChanged(query: _placeQueryController.text));
+    BlocProvider.of<ProfileScreenBloc>(context).add(PlaceQueryChanged(query: _placeQueryController.text));
   }
 }

@@ -5,6 +5,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class MessageProvider extends BaseProvider {
 
+  const MessageProvider();
+  
   Future<ApiResponse> fetch() async {
     String url = "${ApiEndpoints.message}?unread=true";
     return await get(url: url);

@@ -1,4 +1,4 @@
-import 'package:dashboard/models/business/pos_account.dart';
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/resources/helpers/date_formatter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
@@ -9,11 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../cubit/date_range_cubit.dart';
 
 class UnassignedTransactionsHeader extends StatelessWidget {
-  final PosAccount _posAccount;
 
-  const UnassignedTransactionsHeader({required PosAccount posAccount, Key? key})
-    : _posAccount = posAccount,
-      super(key: key);
+  const UnassignedTransactionsHeader({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +72,7 @@ class UnassignedTransactionsHeader extends StatelessWidget {
             children: [
               const Text("These are open or unpaid transactions not currently assigned to a Nova customer."),
               const Text("The Nova Smart Pay Algorithm may still assign it to a Nova customer."),
-              Text("Or, as a business you can manually assign the bill to a customer in ${_posAccount.typeToString}."),
+              Text("Or, as a business you can manually assign the bill to a customer in ${BlocProvider.of<BusinessBloc>(context).business.posAccount.typeToString}."),
               const Text("Conversely, a Nova customer can also claim an unpaid bill."),
             ]
           ),

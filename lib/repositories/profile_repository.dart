@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class ProfileRepository extends BaseRepository {
   final ProfileProvider _profileProvider;
 
-  ProfileRepository({required ProfileProvider profileProvider})
+  const ProfileRepository({required ProfileProvider profileProvider})
     : _profileProvider = profileProvider;
 
   Future<Profile> store({

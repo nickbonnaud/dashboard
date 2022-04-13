@@ -1,7 +1,10 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
+import 'package:dashboard/models/business/accounts.dart';
 import 'package:dashboard/models/business/address.dart';
+import 'package:dashboard/models/business/business.dart';
 import 'package:dashboard/models/business/business_account.dart';
+import 'package:dashboard/models/status.dart';
 import 'package:dashboard/repositories/business_account_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/business_account_screen/business_account_screen.dart';
@@ -9,27 +12,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../helpers/mock_data_generator.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockBusinessAccountRepository extends Mock implements BusinessAccountRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
-class MockBusinessAccount extends Mock implements BusinessAccount {}
 
 void main() {
   
-  BusinessAccount _createAccount({bool isNew = false}) {
-    return BusinessAccount(
-      identifier: isNew ? "" : "identifier",
-      businessName: "Acme Inc.",
-      address: const Address(
-        address: "123 Main",
-        addressSecondary: "F33",
-        city: "City",
-        state: "NC",
-        zip: "74925"
-      ), 
-      entityType: EntityType.llc,
-      ein: "12-3456789"
+  Business _createAccount({bool isNew = false}) {
+    MockDataGenerator mockDataGenerator = MockDataGenerator();
+    return Business(
+      identifier: 'identifier',
+      email: 'email',
+      profile: mockDataGenerator.createProfile(),
+      photos: mockDataGenerator.createBusinessPhotos(),
+      accounts: Accounts(
+        businessAccount: BusinessAccount(
+          identifier: isNew ? "" : "identifier",
+          businessName: "Acme Inc.",
+          address: const Address(
+            address: "123 Main",
+            addressSecondary: "F33",
+            city: "City",
+            state: "NC",
+            zip: "74925"
+          ), 
+          entityType: EntityType.llc,
+          ein: "12-3456789"
+        ),
+        ownerAccounts: const [],
+        bankAccount: mockDataGenerator.createBankAccount(),
+        accountStatus: const Status(name: 'name', code: 100)
+      ),
+      location: mockDataGenerator.createLocation(),
+      posAccount: mockDataGenerator.createPosAccount()
     );
   }
   
@@ -39,37 +55,31 @@ void main() {
     late ScreenBuilder screenBuilderEdit;
     late NavigatorObserver observer;
     late BusinessAccountRepository accountRepository;
-    late BusinessBloc businessBloc;
 
     setUpAll(() {
       observer = MockNavigatorObserver();
       accountRepository = MockBusinessAccountRepository();
-      businessBloc = MockBusinessBloc();
 
       screenBuilderNew = ScreenBuilder(
         child: BusinessAccountScreen(
-          businessAccount: BusinessAccount.empty(), 
           accountRepository: accountRepository, 
-          businessBloc: businessBloc
         ), 
         observer: observer
       );
 
       screenBuilderNewFilled = ScreenBuilder(
         child: BusinessAccountScreen(
-          businessAccount: _createAccount(isNew: true), 
           accountRepository: accountRepository, 
-          businessBloc: businessBloc
-        ), 
+        ),
+        business: _createAccount(isNew: true),
         observer: observer
       );
 
       screenBuilderEdit = ScreenBuilder(
         child: BusinessAccountScreen(
-          businessAccount: _createAccount(), 
           accountRepository: accountRepository, 
-          businessBloc: businessBloc
-        ), 
+        ),
+        business: _createAccount(),
         observer: observer
       );
 
@@ -83,7 +93,7 @@ void main() {
         entityType: any(named: "entityType"), 
         identifier: any(named: "identifier"), 
         ein: any(named: "ein")
-      )).thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => MockBusinessAccount()));
+      )).thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => MockDataGenerator().createBusinessAccount()));
 
       when(() => accountRepository.store(
         name: any(named: "name"),
@@ -96,11 +106,8 @@ void main() {
         ein: any(named: "ein")
       )).thenThrow(const ApiException(error: "An error occurred!"));
 
-      registerFallbackValue(BusinessAccountUpdated(businessAccount: MockBusinessAccount()));
+      registerFallbackValue(BusinessAccountUpdated(businessAccount: MockDataGenerator().createBusinessAccount()));
       registerFallbackValue(MockRoute());
-
-      when(() => businessBloc.add(any(that: isA<BusinessEvent>())))
-        .thenReturn(null);
     });
 
     testWidgets("New BusinessAccount creates AppBar", (tester) async {

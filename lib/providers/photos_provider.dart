@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class PhotosProvider extends BaseProvider {
 
+  const PhotosProvider();
+  
   Future<ApiResponse> storeLogo({required String identifier, required Map<String, dynamic> body}) async {
     String url = "${ApiEndpoints.photos}/$identifier";
     return await post(url: url, body: body);

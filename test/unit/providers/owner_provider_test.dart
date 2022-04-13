@@ -7,7 +7,7 @@ void main() {
     late OwnerProvider ownerProvider;
 
     setUp(() {
-      ownerProvider = OwnerProvider();
+      ownerProvider = const OwnerProvider();
     });
 
     test("Storing owner returns ApiResponse", () async {

@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class BusinessAccountProvider extends BaseProvider {
 
+  const BusinessAccountProvider();
+  
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
     String url = ApiEndpoints.payFacBusiness;
     return await post(url: url, body: body);

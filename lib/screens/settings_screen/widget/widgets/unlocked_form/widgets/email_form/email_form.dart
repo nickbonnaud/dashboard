@@ -11,13 +11,9 @@ import 'package:dashboard/theme/global_colors.dart';
 import 'bloc/email_form_bloc.dart';
 
 class EmailForm extends StatefulWidget {
-  final String _email;
-  final BusinessBloc _businessBloc;
 
-  const EmailForm({required String email, required BusinessBloc businessBloc, Key? key})
-    : _email = email,
-      _businessBloc = businessBloc,
-      super(key: key);
+  const EmailForm({Key? key})
+    : super(key: key);
   
   @override
   State<StatefulWidget> createState() => _EmailFormState();
@@ -33,7 +29,7 @@ class _EmailFormState extends State<EmailForm> {
   void initState() {
     super.initState();
     _emailFormBloc = BlocProvider.of<EmailFormBloc>(context);
-    _controller = TextEditingController(text: widget._email);
+    _controller = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.email);
     _controller.addListener(_onEmailChanged);
   }
   
@@ -153,7 +149,7 @@ class _EmailFormState extends State<EmailForm> {
 
   bool _emailValid({required EmailFormState state}) {
     return state.isEmailValid &&
-      widget._email != _controller.text &&
+      BlocProvider.of<BusinessBloc>(context).business.email != _controller.text &&
       _controller.text.isNotEmpty && 
       !state.isSubmitting;
   }
@@ -166,7 +162,7 @@ class _EmailFormState extends State<EmailForm> {
     if (_emailValid(state: state)) {
       _emailFormBloc.add(Submitted(
         email: _controller.text,
-        identifier: widget._businessBloc.business.identifier
+        identifier: BlocProvider.of<BusinessBloc>(context).business.identifier
       ));
     }
   }

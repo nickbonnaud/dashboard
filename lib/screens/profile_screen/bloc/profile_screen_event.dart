@@ -79,68 +79,8 @@ class PhoneChanged extends ProfileScreenEvent {
   String toString() => 'PhoneChanged { phone: $phone }';
 }
 
-class Submitted extends ProfileScreenEvent {
-  final String name;
-  final String website;
-  final String description;
-  final String phone;
+class Submitted extends ProfileScreenEvent {}
 
-  const Submitted({
-    required this.name,
-    required this.website,
-    required this.description,
-    required this.phone
-  });
-
-  @override
-  List<Object> get props => [
-    name,
-    website,
-    description,
-    phone
-  ];
-
-  @override
-  String toString() => '''Submitted {
-    name: $name,
-    website: $website,
-    description: $description,
-    phone: $phone
-  }''';
-}
-
-class Updated extends ProfileScreenEvent {
-  final String name;
-  final String website;
-  final String description;
-  final String phone;
-  final String id;
-
-  const Updated({
-    required this.name,
-    required this.website,
-    required this.description,
-    required this.phone,
-    required this.id
-  });
-
-  @override
-  List<Object> get props => [
-    name,
-    website,
-    description,
-    phone,
-    id
-  ];
-
-  @override
-  String toString() => '''Updated {
-    name: $name,
-    website: $website,
-    description: $description,
-    phone: $phone,
-    id: $id
-  }''';
-}
+class Updated extends ProfileScreenEvent {}
 
 class Reset extends ProfileScreenEvent {}

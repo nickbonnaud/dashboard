@@ -9,7 +9,7 @@ class BusinessRepository extends BaseRepository {
   final BusinessProvider _businessProvider;
   final TokenRepository _tokenRepository;
 
-  BusinessRepository({required BusinessProvider businessProvider, required TokenRepository tokenRepository})
+  const BusinessRepository({required BusinessProvider businessProvider, required TokenRepository tokenRepository})
     : _businessProvider = businessProvider,
       _tokenRepository = tokenRepository;
   

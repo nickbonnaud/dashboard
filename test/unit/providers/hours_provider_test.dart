@@ -7,7 +7,7 @@ void main() {
     late HoursProvider hoursProvider;
 
     setUp(() {
-      hoursProvider = HoursProvider();
+      hoursProvider = const HoursProvider();
     });
 
     test("Storing Hours returns ApiResponse", () async {

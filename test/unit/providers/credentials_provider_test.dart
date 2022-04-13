@@ -7,7 +7,7 @@ void main() {
     late CredentialsProvider credentialsProvider;
 
     setUp(() {
-      credentialsProvider = CredentialsProvider();
+      credentialsProvider = const CredentialsProvider();
     });
 
     test("Fetching Credentials returns ApiResponse", () async {

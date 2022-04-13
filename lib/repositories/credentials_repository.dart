@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class CredentialsRepository extends BaseRepository {
   final CredentialsProvider _credentialsProvider;
 
-  CredentialsRepository({required CredentialsProvider credentialsProvider})
+  const CredentialsRepository({required CredentialsProvider credentialsProvider})
     : _credentialsProvider = credentialsProvider;
   
   Future<Credentials> fetch() async {

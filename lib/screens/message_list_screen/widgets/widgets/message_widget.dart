@@ -4,26 +4,24 @@ import 'package:dashboard/resources/helpers/date_formatter.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/screens/message_list_screen/bloc/message_list_screen_bloc.dart';
-import 'package:dashboard/screens/message_screen/message_screen.dart';
+import 'package:dashboard/screens/message_list_screen/widgets/widgets/widgets/message_screen.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessageWidget extends StatelessWidget {
   final int _index;
   final Message _message;
-  final MessageListScreenBloc _messageListScreenBloc;
   final MessageRepository _messageRepository;
 
   const MessageWidget({
     required int index,
     required Message message,
-    required MessageListScreenBloc messageListScreenBloc,
     required MessageRepository messageRepository,
     Key? key
   })
     : _index = index,
       _message = message,
-      _messageListScreenBloc = messageListScreenBloc,
       _messageRepository = messageRepository,
       super(key: key);
 
@@ -60,12 +58,15 @@ class MessageWidget extends StatelessWidget {
   }
 
   void _showMessageScreen({required BuildContext context}) {
+    final MessageListScreenBloc messageListScreenBloc = BlocProvider.of<MessageListScreenBloc>(context);
     Navigator.of(context).push(MaterialPageRoute<MessageScreen>(
       fullscreenDialog: true,
-      builder: (context) => MessageScreen(
-        message: _message,
-        messageListScreenBloc: _messageListScreenBloc,
-        messageRepository: _messageRepository,
+      builder: (context) => BlocProvider.value(
+        value: messageListScreenBloc,
+        child: MessageScreen(
+          message: _message,
+          messageRepository: _messageRepository,
+        ),
       )
     ));
   }

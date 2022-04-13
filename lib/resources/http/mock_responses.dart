@@ -143,19 +143,19 @@ class MockResponses {
         'business': {
           'identifier': 'fake_identifier',
           'email': options.data['email'],
-          'profile': null,
-          'photos': null,
+          'profile': generateProfile(),
+          'photos': generatePhotos(),
           'accounts': {
-            'business_account': null,
-            'owner_accounts': [],
-            'bank_account': null,
+            'business_account': generateBusinessAccount(),
+            'owner_accounts': [generateOwnerAccount()],
+            'bank_account': generateBankAccount(),
             'account_status': {
-              'name': 'Profile Account Incomplete',
-              'code': 100
+              'name': 'complete',
+              'code': 200
             }
           },
-          'location': null,
-          'pos_account': null
+          'location': generateLocation(),
+          'pos_account': generatePosAccount()
         }
       }
     };
@@ -1249,7 +1249,7 @@ class MockResponses {
     return {
       'identifier': _createIdentifier(),
       'name': faker.company.name(),
-      'website': "www.${faker.lorem.word()}.com",
+      'website': "${faker.lorem.word()}.com",
       'description': faker.lorem.sentences(5).join(),
       'phone': '7896523645',
       'hours': generateHours()

@@ -1,6 +1,5 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/models/business/business.dart';
 import 'package:dashboard/repositories/authentication_repository.dart';
 import 'package:dashboard/repositories/business_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
@@ -17,36 +16,24 @@ import 'package:mocktail/mocktail.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockAuthenticationRepository extends Mock implements AuthenticationRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
 class MockBusinessRepository extends Mock implements BusinessRepository {}
-class MockBusiness extends Mock implements Business {}
 class MockBusinessEvent extends Mock implements BusinessEvent {}
 
 void main() {
   group("Settings Screen Tests", () {
     late AuthenticationRepository authenticationRepository;
-    late BusinessBloc businessBloc;
     late BusinessRepository businessRepository;
     late NavigatorObserver observer;
     late ScreenBuilder screenBuilder;
 
-    late Business business;
-
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
-      businessBloc = MockBusinessBloc();
       businessRepository = MockBusinessRepository();
       observer = MockNavigatorObserver();
-
-      business = MockBusiness();
-      when(() => business.email).thenReturn(faker.internet.email());
-      when(() => business.identifier).thenReturn(faker.guid.guid());
-      when(() => businessBloc.business).thenReturn(business);
 
       screenBuilder = ScreenBuilder(
         child: SettingsScreen(
           authenticationRepository: authenticationRepository,
-          businessBloc: businessBloc,
           businessRepository: businessRepository,
         ),
         observer: observer
@@ -62,9 +49,6 @@ void main() {
         .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () => true));
 
       registerFallbackValue(MockBusinessEvent());
-      
-      when(() => businessBloc.add(any(that: isA<BusinessEvent>())))
-        .thenReturn(null);
 
       registerFallbackValue(MockRoute());
     });

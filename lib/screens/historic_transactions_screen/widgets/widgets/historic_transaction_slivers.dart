@@ -49,7 +49,7 @@ class _HistoricTransactionsSliversState extends State<HistoricTransactionsSliver
   Widget _searchBar() {
     return SliverPadding(
       padding: _padding(),
-      sliver: SearchBar(),
+      sliver: const SearchBar(),
     );
   }
 

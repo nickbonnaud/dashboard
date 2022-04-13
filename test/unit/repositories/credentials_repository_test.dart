@@ -15,7 +15,7 @@ void main() {
     late CredentialsRepository _credentialsRepositoryWithMock;
 
     setUp(() {
-      _credentialsRepository = CredentialsRepository(credentialsProvider: CredentialsProvider());
+      _credentialsRepository = const CredentialsRepository(credentialsProvider: CredentialsProvider());
       _mockCredentialsProvider = MockCredentialsProvider();
       _credentialsRepositoryWithMock = CredentialsRepository(credentialsProvider: _mockCredentialsProvider);
     });

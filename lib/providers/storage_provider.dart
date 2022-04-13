@@ -1,17 +1,18 @@
-import 'package:universal_html/html.dart' show window, Storage;
+import 'package:universal_html/html.dart' show window;
 
 class StorageProvider {
-  final Storage _localStorage = window.localStorage;
+
+  const StorageProvider();
   
   String? read({required String key}) {
-    return _localStorage.containsKey(key) ? _localStorage[key]! : null;
+    return window.localStorage.containsKey(key) ? window.localStorage[key]! : null;
   }
 
   void write({required String key, required String value}) {
-    _localStorage[key] = value;
+    window.localStorage[key] = value;
   }
 
   void delete({required String key}) {
-    _localStorage.remove(key);
+    window.localStorage.remove(key);
   }
 }

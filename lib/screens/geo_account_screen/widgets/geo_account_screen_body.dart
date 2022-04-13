@@ -1,5 +1,5 @@
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/shaker.dart';
-import 'package:dashboard/models/business/location.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/resources/helpers/toast_message.dart';
@@ -12,12 +12,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class GeoAccountScreenBody extends StatelessWidget {
-  final Location _location;
   final bool _isEdit;
 
-  const GeoAccountScreenBody({required Location location, required bool isEdit, Key? key})
-    : _location = location,
-      _isEdit = isEdit,
+  const GeoAccountScreenBody({required bool isEdit, Key? key})
+    : _isEdit = isEdit,
       super(key: key);
   
   @override
@@ -185,7 +183,7 @@ class GeoAccountScreenBody extends StatelessWidget {
   void _submitButtonPressed({required BuildContext context, required GeoAccountScreenState state}) {
     if (_buttonEnabled(state: state)) {
       _isEdit 
-        ? BlocProvider.of<GeoAccountScreenBloc>(context).add(Updated(identifier: _location.identifier))
+        ? BlocProvider.of<GeoAccountScreenBloc>(context).add(Updated(identifier: BlocProvider.of<BusinessBloc>(context).business.location.identifier))
         : BlocProvider.of<GeoAccountScreenBloc>(context).add(Submitted());
     }
   }

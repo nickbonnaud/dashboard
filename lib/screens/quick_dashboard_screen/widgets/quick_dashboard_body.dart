@@ -8,12 +8,10 @@ import 'widgets/recent_transactions/recent_transactions.dart';
 import 'widgets/today/today.dart';
 
 class QuickDashboardBody extends StatelessWidget {
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
-  final bool _takesTips;
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
-  QuickDashboardBody({required bool takesTips, Key? key})
-    : _takesTips = takesTips,
-      super(key: key);
+  const QuickDashboardBody({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +46,7 @@ class QuickDashboardBody extends StatelessWidget {
   Widget _recentDataRowColumn({required BuildContext context}) {
     return Column(
       children: [
-        Today(takesTips: _takesTips),
+        const Today(),
         SizedBox(height: SizeConfig.getHeight(3)),
         const RecentTransactions()
       ],

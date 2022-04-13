@@ -1,7 +1,12 @@
+import 'package:dashboard/models/business/accounts.dart';
 import 'package:dashboard/models/business/address.dart' as business_address;
+import 'package:dashboard/models/business/bank_account.dart';
+import 'package:dashboard/models/business/business.dart';
+import 'package:dashboard/models/business/business_account.dart';
 import 'package:dashboard/models/business/employee.dart';
 import 'package:dashboard/models/business/employee_tip.dart';
 import 'package:dashboard/models/business/hours.dart';
+import 'package:dashboard/models/business/location.dart';
 import 'package:dashboard/models/business/owner_account.dart';
 import 'package:dashboard/models/business/photos.dart';
 import 'package:dashboard/models/business/pos_account.dart';
@@ -232,13 +237,17 @@ class MockDataGenerator {
       email: faker.internet.email(),
       primary: index == 0,
       percentOwnership: 10, 
-      address: business_address.Address(
-        address: faker.address.streetAddress(),
-        addressSecondary: faker.address.buildingNumber(),
-        city: faker.address.city(),
-        state: 'NC',
-        zip: faker.address.zipCode()
-      )
+      address: createAddress()
+    );
+  }
+
+  business_address.Address createAddress() {
+  return business_address.Address(
+      address: faker.address.streetAddress(),
+      addressSecondary: faker.address.buildingNumber(),
+      city: faker.address.city(),
+      state: 'NC',
+      zip: faker.address.zipCode()
     );
   }
 
@@ -283,6 +292,57 @@ class MockDataGenerator {
       takesTips: true,
       allowsOpenTickets: true, 
       connectionStatus: const Status(name: "connected", code: 200)
+    );
+  }
+  
+  BusinessAccount createBusinessAccount() {
+    return BusinessAccount(
+      identifier: faker.guid.guid(),
+      businessName: faker.company.name(),
+      address: createAddress(),
+      entityType: EntityType.corporation
+    );
+  }
+  
+  BankAccount createBankAccount() {
+    return BankAccount(
+      identifier: faker.guid.guid(),
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      routingNumber: 'XXXXX2731',
+      accountNumber: 'XXXXX4278',
+      accountType: AccountType.checking,
+      address: createAddress()
+    );
+  }
+  
+  Accounts createAccounts() {
+    return Accounts(
+      businessAccount: createBusinessAccount(),
+      ownerAccounts: const [],
+      bankAccount: createBankAccount(),
+      accountStatus: const Status(name: 'name', code: 100)
+    );
+  }
+
+  Location createLocation() {
+    return Location(
+      identifier: faker.guid.guid(),
+      lat: 35.927560,
+      lng: -79.035534,
+      radius: 50
+    );
+  }
+  
+  Business createBusiness() {
+    return Business(
+      identifier: faker.guid.guid(),
+      email: faker.internet.email(),
+      profile: createProfile(),
+      photos: createBusinessPhotos(),
+      accounts: createAccounts(),
+      location: createLocation(),
+      posAccount: createPosAccount()
     );
   }
 }

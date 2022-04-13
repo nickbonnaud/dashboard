@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class HoursProvider extends BaseProvider {
 
+  const HoursProvider();
+
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
     String url = ApiEndpoints.hours;
     return await post(url: url, body: body);

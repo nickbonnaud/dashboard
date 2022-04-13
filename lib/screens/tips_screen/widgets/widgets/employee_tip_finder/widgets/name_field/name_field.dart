@@ -24,7 +24,7 @@ class _NameFieldState extends State<NameField> {
   final FocusNode _firstNameFocus = FocusNode();
   final FocusNode _lastNameFocus = FocusNode();
 
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;

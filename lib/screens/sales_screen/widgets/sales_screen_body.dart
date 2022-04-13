@@ -18,11 +18,10 @@ import 'widgets/total_tips/bloc/total_tips_bloc.dart';
 import 'widgets/total_tips/total_tips.dart';
 
 class SalesScreenBody extends StatelessWidget {
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
-
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
   final TransactionRepository _transactionRepository;
 
-  SalesScreenBody({required TransactionRepository transactionRepository, Key? key})
+  const SalesScreenBody({required TransactionRepository transactionRepository, Key? key})
     : _transactionRepository = transactionRepository,
       super(key: key);
   

@@ -14,23 +14,14 @@ import 'widgets/widgets/logo_form/bloc/logo_form_bloc.dart';
 class PhotosForm extends StatelessWidget {
   final PhotoPickerRepository _photoPickerRepository;
   final PhotosRepository _photosRepository;
-  final BusinessBloc _businessBloc;
-  final String _profileIdentifier;
-  final bool _isEdit;
 
   const PhotosForm({
     required PhotoPickerRepository photoPickerRepository, 
     required PhotosRepository photosRepository,
-    required BusinessBloc businessBloc,
-    required String profileIdentifier,
-    required bool isEdit,
     Key? key
   })
     : _photoPickerRepository = photoPickerRepository,
       _photosRepository = photosRepository,
-      _businessBloc = businessBloc,
-      _profileIdentifier = profileIdentifier,
-      _isEdit = isEdit,
       super(key: key);
   
   @override
@@ -40,13 +31,19 @@ class PhotosForm extends StatelessWidget {
         photosRepository: _photosRepository,
         logoFormBloc: BlocProvider.of<LogoFormBloc>(context),
         bannerFormBloc: BlocProvider.of<BannerFormBloc>(context),
-        businessBloc: _businessBloc
+        businessBloc: BlocProvider.of<BusinessBloc>(context)
       ),
-      child: PhotosFormBody(
-        photoPickerRepository: _photoPickerRepository, 
-        profileIdentifier: _profileIdentifier,
-        isEdit: _isEdit,
-      ),
+      child: _isEdit(context: context)
+        ? PhotosFormBody.edit(
+            photoPickerRepository: _photoPickerRepository, 
+          )
+        : PhotosFormBody.new(
+            photoPickerRepository: _photoPickerRepository, 
+          )
     );
+  }
+
+  bool _isEdit({required BuildContext context}) {
+    return BlocProvider.of<BusinessBloc>(context).business.photos.logo.name.isNotEmpty && BlocProvider.of<BusinessBloc>(context).business.photos.banner.name.isNotEmpty;
   }
 }

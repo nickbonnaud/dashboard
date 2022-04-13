@@ -24,17 +24,14 @@ import 'widgets/quick_dashboard_body.dart';
 class QuickDashboardScreen extends StatefulWidget {
   final TransactionRepository _transactionRepository;
   final RefundRepository _refundRepository;
-  final bool _takesTip;
 
   const QuickDashboardScreen({
     required TransactionRepository transactionRepository,
     required RefundRepository refundRepository,
-    required bool takesTips,
     Key? key
   })
     : _transactionRepository = transactionRepository,
       _refundRepository = refundRepository,
-      _takesTip = takesTips,
       super(key: key);
   
   @override
@@ -118,7 +115,7 @@ class _QuickDashboardScreenState extends State<QuickDashboardScreen> with Automa
                 ..add(InitRecentTransactions())
             )
           ],
-          child: QuickDashboardBody(takesTips: widget._takesTip)
+          child: const QuickDashboardBody()
           )
       ),
     );

@@ -1,4 +1,3 @@
-import 'package:dashboard/models/business/pos_account.dart';
 import 'package:dashboard/repositories/customer_repository.dart';
 import 'package:dashboard/repositories/refund_repository.dart';
 import 'package:dashboard/repositories/tips_repository.dart';
@@ -16,7 +15,6 @@ class HomeScreen extends StatelessWidget {
   final TipsRepository _tipsRepository;
   final UnassignedTransactionRepository _unassignedTransactionRepository;
   final CustomerRepository _customerRepository;
-  final PosAccount _posAccount;
 
   const HomeScreen({
     required TransactionRepository transactionRepository,
@@ -24,7 +22,6 @@ class HomeScreen extends StatelessWidget {
     required TipsRepository tipsRepository,
     required UnassignedTransactionRepository unassignedTransactionRepository,
     required CustomerRepository customerRepository,
-    required PosAccount posAccount,
     Key? key
   })
     : _transactionRepository = transactionRepository,
@@ -32,7 +29,6 @@ class HomeScreen extends StatelessWidget {
       _tipsRepository = tipsRepository,
       _unassignedTransactionRepository = unassignedTransactionRepository,
       _customerRepository = customerRepository,
-      _posAccount = posAccount,
       super(key: key);
 
   @override
@@ -44,8 +40,7 @@ class HomeScreen extends StatelessWidget {
         refundRepository: _refundRepository,
         tipsRepository: _tipsRepository,
         unassignedTransactionRepository: _unassignedTransactionRepository,
-        customerRepository: _customerRepository,
-        posAccount: _posAccount
+        customerRepository: _customerRepository
       ),
     );
   }

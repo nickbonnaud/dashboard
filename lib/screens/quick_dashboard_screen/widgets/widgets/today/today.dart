@@ -1,7 +1,9 @@
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/resources/helpers/responsive_layout_helper.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_row_column.dart';
 
 import 'widgets/net_sales_today.dart';
@@ -10,12 +12,10 @@ import 'widgets/total_sales_today.dart';
 import 'widgets/total_tips_today.dart';
 
 class Today extends StatelessWidget {
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
-  final bool _takesTips;
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
-  Today({required bool takesTips, Key? key})
-    : _takesTips = takesTips,
-      super(key: key);
+  const Today({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +59,7 @@ class Today extends StatelessWidget {
   }
 
   Widget _bottomToday({required BuildContext context}) {
-    return _takesTips
+    return BlocProvider.of<BusinessBloc>(context).business.posAccount.takesTips
       ? _takesTipsBottom(context: context)
       : const TotalSalesToday();
   }

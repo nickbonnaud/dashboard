@@ -7,7 +7,7 @@ void main() {
     late BankProvider bankProvider;
 
     setUp(() {
-      bankProvider = BankProvider();
+      bankProvider = const BankProvider();
     });
 
     test("Storing bank data returns ApiResponse", () async {

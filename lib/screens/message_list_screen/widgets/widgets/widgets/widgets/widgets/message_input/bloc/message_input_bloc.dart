@@ -3,7 +3,7 @@ import 'package:dashboard/models/message/reply.dart';
 import 'package:dashboard/repositories/message_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/resources/helpers/debouncer.dart';
-import 'package:dashboard/screens/message_screen/bloc/message_history_bloc.dart';
+import 'package:dashboard/screens/message_list_screen/widgets/widgets/widgets/bloc/message_history_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 

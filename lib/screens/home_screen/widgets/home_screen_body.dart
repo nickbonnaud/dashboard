@@ -1,5 +1,4 @@
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/models/business/pos_account.dart';
 import 'package:dashboard/repositories/customer_repository.dart';
 import 'package:dashboard/repositories/refund_repository.dart';
 import 'package:dashboard/repositories/tips_repository.dart';
@@ -30,7 +29,6 @@ class HomeScreenBody extends StatefulWidget {
   final TipsRepository _tipsRepository;
   final UnassignedTransactionRepository _unassignedTransactionRepository;
   final CustomerRepository _customerRepository;
-  final PosAccount _posAccount;
 
   const HomeScreenBody({
     required TransactionRepository transactionRepository,
@@ -38,7 +36,6 @@ class HomeScreenBody extends StatefulWidget {
     required TipsRepository tipsRepository,
     required UnassignedTransactionRepository unassignedTransactionRepository,
     required CustomerRepository customerRepository,
-    required PosAccount posAccount,
     Key? key
   })
     : _transactionRepository = transactionRepository,
@@ -46,7 +43,6 @@ class HomeScreenBody extends StatefulWidget {
       _tipsRepository = tipsRepository,
       _unassignedTransactionRepository = unassignedTransactionRepository,
       _customerRepository = customerRepository,
-      _posAccount = posAccount,
       super(key: key);
 
   @override
@@ -66,7 +62,6 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
         child: QuickDashboardScreen(
           transactionRepository: widget._transactionRepository,
           refundRepository: widget._refundRepository,
-          takesTips: widget._posAccount.takesTips,
         ), 
         title: "Home", 
         icon: Icons.home
@@ -103,7 +98,6 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
       AppTab(
         child: UnassignedTransactionsScreen(
           unassignedTransactionRepository: widget._unassignedTransactionRepository,
-          posAccount: widget._posAccount,
         ),
         title: "Unmatched Bills",
         icon: Icons.person_search

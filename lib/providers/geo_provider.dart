@@ -1,25 +1,31 @@
 import 'package:location/location.dart';
 
 class GeoProvider {
-  final Location _location = Location();
+
+  const GeoProvider();
 
   Future<LocationData> getLocation() async {
-    return await _location.getLocation();
+    Location location = Location();
+    return await location.getLocation();
   }
 
   Future<bool> enabled() async {
-    return await _location.serviceEnabled();
+    Location location = Location();
+    return await location.serviceEnabled();
   }
 
   Future<bool> requestService() async {
-    return await _location.requestService();
+    Location location = Location();
+    return await location.requestService();
   }
 
   Future<PermissionStatus> permissionStatus() async {
-    return await _location.hasPermission();
+    Location location = Location();
+    return await location.hasPermission();
   }
 
   Future<PermissionStatus> requestPermission() async {
-    return await _location.requestPermission();
+    Location location = Location();
+    return await location.requestPermission();
   }
 }

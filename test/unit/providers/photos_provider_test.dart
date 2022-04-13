@@ -7,7 +7,7 @@ void main() {
     late PhotosProvider photosProvider;
 
     setUp(() {
-      photosProvider = PhotosProvider();
+      photosProvider = const PhotosProvider();
     });
 
     test("Storing a logo returns ApiResponse", () async {

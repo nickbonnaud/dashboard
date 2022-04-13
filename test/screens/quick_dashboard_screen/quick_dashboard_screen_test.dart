@@ -34,8 +34,9 @@ void main() {
       transactionRepository = MockTransactionRepository();
       refundRepository = MockRefundRepository();
       screenBuilder = ScreenBuilder(
-        child: QuickDashboardScreen(transactionRepository: transactionRepository, refundRepository: refundRepository, takesTips: true),
-        observer: MockNavigatorObserver()
+        child: QuickDashboardScreen(transactionRepository: transactionRepository, refundRepository: refundRepository),
+        observer: MockNavigatorObserver(),
+        business: mockDataGenerator.createBusiness()
       );
 
       when(() => transactionRepository.fetchNetSalesToday())

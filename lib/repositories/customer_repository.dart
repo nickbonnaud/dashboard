@@ -8,7 +8,7 @@ import 'base_repository.dart';
 class CustomerRepository extends BaseRepository{
   final CustomerProvider _customerProvider;
 
-  CustomerRepository({required CustomerProvider customerProvider})
+  const CustomerRepository({required CustomerProvider customerProvider})
     : _customerProvider = customerProvider;
   
   Future<PaginateDataHolder> fetchAll({required bool searchHistoric, required bool withTransactions, DateTimeRange? dateRange}) async {

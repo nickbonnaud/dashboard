@@ -7,7 +7,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class MessageRepository extends BaseRepository {
   final MessageProvider _messageProvider;
 
-  MessageRepository({required MessageProvider messageProvider})
+  const MessageRepository({required MessageProvider messageProvider})
     : _messageProvider = messageProvider;
   
   Future<bool> checkUnreadMessages() async {

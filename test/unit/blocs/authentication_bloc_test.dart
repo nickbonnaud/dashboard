@@ -19,7 +19,12 @@ void main() {
 
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
-      authenticationBloc = AuthenticationBloc(authenticationRepository: authenticationRepository, businessBloc: BusinessBloc(businessRepository: BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository())));
+      authenticationBloc = AuthenticationBloc(
+        authenticationRepository: authenticationRepository,
+        businessBloc: BusinessBloc(
+          businessRepository: const BusinessRepository(businessProvider: BusinessProvider(),
+          tokenRepository: TokenRepository())
+        ));
     });
 
     tearDown(() {

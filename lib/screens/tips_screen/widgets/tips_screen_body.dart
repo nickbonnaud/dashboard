@@ -19,12 +19,12 @@ import 'widgets/total_tips/bloc/total_tips_bloc.dart';
 import 'widgets/total_tips/total_tips.dart';
 
 class TipsScreenBody extends StatelessWidget {
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
   final TipsRepository _tipsRepository;
   final TransactionRepository _transactionRepository;
 
-  TipsScreenBody({
+  const TipsScreenBody({
     required TipsRepository tipsRepository,
     required TransactionRepository transactionRepository,
     Key? key

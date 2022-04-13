@@ -1,3 +1,4 @@
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/models/business/profile.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
@@ -13,12 +14,10 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class BodyForm extends StatefulWidget {
-  final Profile _profile;
-  final ProfileScreenBloc _profileScreenBloc;
+  final Profile? _profile;
 
-  const BodyForm({required Profile profile, required ProfileScreenBloc profileScreenBloc, Key? key})
+  const BodyForm({Profile? profile, Key? key})
     : _profile = profile,
-      _profileScreenBloc = profileScreenBloc,
       super(key: key);
 
   @override
@@ -31,35 +30,13 @@ class _BodyFormState extends State<BodyForm> {
   final FocusNode _descriptionFocus = FocusNode();
   final FocusNode _phoneFocus = FocusNode();
 
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
-
-  late TextEditingController _nameController;
-  late TextEditingController _websiteController;
-  late TextEditingController _phoneController;
-  late TextEditingController _descriptionController;
-
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
   late MaskTextInputFormatter _phoneFormatter;
-  
-  bool get _isPopulated => 
-    _nameController.text.isNotEmpty &&
-    _websiteController.text.isNotEmpty &&
-    _descriptionController.text.isNotEmpty &&
-    _phoneController.text.isNotEmpty;
 
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget._profile.name);
-    _websiteController = TextEditingController(text: _scrubWebsite(website: widget._profile.website));
-    _descriptionController = TextEditingController(text: widget._profile.description);
-    
-    _phoneFormatter = InputFormatters.phone(initial: widget._profile.phone);
-    _phoneController = TextEditingController(text: _phoneFormatter.getMaskedText());
-    
-    _nameController.addListener(_onNameChanged);
-    _websiteController.addListener(_onWebsiteChanged);
-    _descriptionController.addListener(_onDescriptionChanged);
-    _phoneController.addListener(_onPhoneChanged);
+    _phoneFormatter = InputFormatters.phone(initial: _setProfile().phone);
   }
 
   @override
@@ -121,16 +98,9 @@ class _BodyFormState extends State<BodyForm> {
 
   @override
   void dispose() {
-    _nameController.dispose();
     _nameFocus.dispose();
-
-    _websiteController.dispose();
     _websiteFocus.dispose();
-
-    _descriptionController.dispose();
     _descriptionFocus.dispose();
-
-    _phoneController.dispose();
     _phoneFocus.dispose();
 
     super.dispose();
@@ -151,12 +121,13 @@ class _BodyFormState extends State<BodyForm> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _nameController,
+      onChanged: (name) => _onNameChanged(name: name),
+      initialValue: _setProfile().name,
       focusNode: _nameFocus,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       autocorrect: false,
-      validator: (_) => !state.isNameValid && _nameController.text.isNotEmpty
+      validator: (_) => !state.isNameValid && state.name.isNotEmpty
         ? 'Invalid Business Name'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -183,12 +154,13 @@ class _BodyFormState extends State<BodyForm> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _websiteController,
+      onChanged: (website) => _onWebsiteChanged(website: website),
+      initialValue: _scrubWebsite(website: _setProfile().website),
       focusNode: _websiteFocus,
       keyboardType: TextInputType.url,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _nameFocus.unfocus(),
-      validator: (_) => !state.isWebsiteValid && _websiteController.text.isNotEmpty
+      validator: (_) => !state.isWebsiteValid && state.website.isNotEmpty
         ? 'Invalid Website url'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -210,12 +182,13 @@ class _BodyFormState extends State<BodyForm> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context) 
       ),
-      controller: _phoneController,
+      onChanged: (_) => _onPhoneChanged(),
+      initialValue: _phoneFormatter.getMaskedText(),
       focusNode: _phoneFocus,
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _nameFocus.unfocus(),
-      validator: (_) => !state.isPhoneValid && _phoneController.text.isNotEmpty
+      validator: (_) => !state.isPhoneValid && state.phone.isNotEmpty
         ? 'Invalid Phone Number'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -240,12 +213,13 @@ class _BodyFormState extends State<BodyForm> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context) 
       ),
-      controller: _descriptionController,
+      onChanged: (description) => _onDescriptionChanged(description: description),
+      initialValue: _setProfile().description,
       focusNode: _descriptionFocus,
       keyboardType: TextInputType.multiline,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _nameFocus.unfocus(),
-      validator: (_) => !state.isDescriptionValid && _descriptionController.text.isNotEmpty
+      validator: (_) => !state.isDescriptionValid && state.description.isNotEmpty
         ? 'Description must be longer'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -275,43 +249,34 @@ class _BodyFormState extends State<BodyForm> {
     );
   }
 
+  Profile _setProfile() {
+    return widget._profile ?? BlocProvider.of<BusinessBloc>(context).business.profile;
+  }
+
   void _submitButtonPressed({required ProfileScreenState state}) {
     if (_buttonEnabled(state: state)) {
-      widget._profile.identifier.isEmpty
-        ? widget._profileScreenBloc.add(Submitted(
-            name: _nameController.text,
-            website: _websiteController.text,
-            description: _descriptionController.text,
-            phone: _phoneController.text,
-          ))
-        : widget._profileScreenBloc.add(Updated(
-            name: _nameController.text,
-            website: _websiteController.text,
-            description: _descriptionController.text,
-            phone: _phoneController.text,
-            id: widget._profile.identifier
-          ));
+      BlocProvider.of<BusinessBloc>(context).business.profile.identifier.isEmpty
+        ? BlocProvider.of<ProfileScreenBloc>(context).add(Submitted())
+        : BlocProvider.of<ProfileScreenBloc>(context).add(Updated());
     }
   }
 
   void _resetForm() {
-    Future.delayed(const Duration(seconds: 1), () => widget._profileScreenBloc.add(Reset()));
+    Future.delayed(const Duration(seconds: 1), () => BlocProvider.of<ProfileScreenBloc>(context).add(Reset()));
   }
 
   bool _buttonEnabled({required ProfileScreenState state}) {
-    _nameController.text.isNotEmpty &&
-    _websiteController.text.isNotEmpty &&
-    _descriptionController.text.isNotEmpty &&
-    _phoneController.text.isNotEmpty;
-    return state.isFormValid && _isPopulated && !state.isSubmitting && _fieldsChanged();
+    return state.isFormValid && !state.isSubmitting && _fieldsChanged(state: state);
   }
 
-  bool _fieldsChanged() {
-    if (widget._profile.identifier.isEmpty) return true;
-    return widget._profile.name != _nameController.text ||
-      widget._profile.website != "www.${_websiteController.text}" ||
-      widget._profile.phone != _phoneFormatter.getUnmaskedText() ||
-      widget._profile.description != _descriptionController.text;
+  bool _fieldsChanged({required ProfileScreenState state}) {
+    Profile profile = BlocProvider.of<BusinessBloc>(context).business.profile;
+    
+    if (profile.identifier.isEmpty) return true;
+    return profile.name != state.name ||
+      profile.website != state.website ||
+      profile.phone != _phoneFormatter.getUnmaskedText() ||
+      profile.description != state.description;
   }
 
   Widget _buttonChild({required ProfileScreenState state}) {
@@ -329,19 +294,19 @@ class _BodyFormState extends State<BodyForm> {
       : website;
   }
 
-  void _onNameChanged() {
-    widget._profileScreenBloc.add(NameChanged(name: _nameController.text));
+  void _onNameChanged({required String name}) {
+    BlocProvider.of<ProfileScreenBloc>(context).add(NameChanged(name: name));
   }
 
-  void _onWebsiteChanged() {
-    widget._profileScreenBloc.add(WebsiteChanged(website: _websiteController.text));
-  }
-
-  void _onDescriptionChanged() {
-    widget._profileScreenBloc.add(DescriptionChanged(description: _descriptionController.text));
+  void _onWebsiteChanged({required String website}) {
+    BlocProvider.of<ProfileScreenBloc>(context).add(WebsiteChanged(website: website));
   }
 
   void _onPhoneChanged() {
-    widget._profileScreenBloc.add(PhoneChanged(phone: _phoneFormatter.getUnmaskedText()));
+    BlocProvider.of<ProfileScreenBloc>(context).add(PhoneChanged(phone: _phoneFormatter.getUnmaskedText()));
+  }
+
+  void _onDescriptionChanged({required String description}) {
+    BlocProvider.of<ProfileScreenBloc>(context).add(DescriptionChanged(description: description));
   }
 }

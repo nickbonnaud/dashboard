@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class OwnerRepository extends BaseRepository {
   final OwnerProvider _ownerProvider;
 
-  OwnerRepository({required OwnerProvider ownerProvider})
+  const OwnerRepository({required OwnerProvider ownerProvider})
     : _ownerProvider = ownerProvider;
   
   Future<OwnerAccount> store({

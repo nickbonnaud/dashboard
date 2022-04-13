@@ -34,7 +34,7 @@ void main() {
       observer = MockNavigatorObserver();
 
       screenBuilder = ScreenBuilder(
-        child: UnassignedTransactionsScreen(unassignedTransactionRepository: unassignedTransactionRepository, posAccount: posAccount),
+        child: UnassignedTransactionsScreen(unassignedTransactionRepository: unassignedTransactionRepository),
         observer: observer
       );
 

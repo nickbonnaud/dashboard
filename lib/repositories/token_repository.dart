@@ -5,8 +5,9 @@ import 'package:dashboard/providers/storage_provider.dart';
 
 class TokenRepository {
   static const String tokenKey = 'token';
+  final StorageProvider _tokenProvider = const StorageProvider();
 
-  final StorageProvider _tokenProvider = StorageProvider();
+  const TokenRepository();
 
   void saveToken({required Token token}) {
     _tokenProvider.write(key: tokenKey, value: jsonEncode(token.toJson()));

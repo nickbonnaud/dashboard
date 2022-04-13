@@ -5,25 +5,23 @@ enum ErrorAnimationProp { offset }
 
 class Shaker extends StatelessWidget {
   final Widget _child;
-  final int _numberOfShakes;
-  final MultiTween<ErrorAnimationProp> _tween;
   final CustomAnimationControl _control;
   final VoidCallback _onAnimationComplete;
+
+  final MultiTween<ErrorAnimationProp> _tween;
 
   Shaker({
     required CustomAnimationControl control,
     required Widget child, 
     required VoidCallback onAnimationComplete,
-    int numberOfShakes = 4,
     Key? key
     })
     : _control = control,
       _child = child,
-      _numberOfShakes = numberOfShakes,
       _onAnimationComplete = onAnimationComplete,
       _tween = MultiTween<ErrorAnimationProp>(), super(key: key) {
         List.generate(
-          _numberOfShakes, 
+          4, 
           (_) => _tween
             ..add(ErrorAnimationProp.offset, Tween<double>(begin: 0, end: 10), const Duration(milliseconds: 100))
             ..add(ErrorAnimationProp.offset, Tween<double>(begin: 10, end: -10), const Duration(milliseconds: 100))

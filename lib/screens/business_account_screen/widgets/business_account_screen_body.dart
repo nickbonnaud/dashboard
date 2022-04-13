@@ -1,3 +1,4 @@
+import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/models/business/business_account.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
@@ -14,11 +15,9 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class BusinessAccountScreenBody extends StatefulWidget {
-  final BusinessAccount _businessAccount;
   
-  const BusinessAccountScreenBody({required BusinessAccount businessAccount, Key? key})
-    : _businessAccount = businessAccount,
-      super(key: key);
+  const BusinessAccountScreenBody({Key? key})
+    : super(key: key);
   
   @override
   State<BusinessAccountScreenBody> createState() => _BusinessAccountScreenBodyState();
@@ -33,7 +32,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   final FocusNode _zipFocus = FocusNode();
   final FocusNode _einFocus = FocusNode();
 
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
   late MaskTextInputFormatter _zipFormatter;
   late MaskTextInputFormatter _einFormatter;
@@ -55,14 +54,14 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
     super.initState();
     _accountFormBloc = BlocProvider.of<BusinessAccountScreenBloc>(context);
     
-    _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: widget._businessAccount.address.zip);
-    _einFormatter = InputFormatters.ein(initial: widget._businessAccount.ein ?? "");
-    _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: widget._businessAccount.address.state);
+    _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.zip);
+    _einFormatter = InputFormatters.ein(initial: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.ein ?? "");
+    _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.state);
     
-    _nameController = TextEditingController(text: widget._businessAccount.businessName);
-    _addressController = TextEditingController(text: widget._businessAccount.address.address);
-    _addressSecondaryController = TextEditingController(text: widget._businessAccount.address.addressSecondary);
-    _cityController = TextEditingController(text: widget._businessAccount.address.city);
+    _nameController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.businessName);
+    _addressController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.address);
+    _addressSecondaryController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.addressSecondary);
+    _cityController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.city);
     _zipController = TextEditingController(text: _zipFormatter.getMaskedText());
     _einController = TextEditingController(text: _einFormatter.getMaskedText());
     _stateController = TextEditingController(text: _stateFormatter.getMaskedText());
@@ -554,7 +553,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
 
   void _submitButtonPressed({required BusinessAccountScreenState state}) {
     if (_buttonEnabled(state: state)) {
-      widget._businessAccount.identifier.isEmpty
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier.isEmpty
         ? _accountFormBloc.add(Submitted(
             entityType: state.entityType,
             name: _nameController.text,
@@ -574,22 +573,22 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
             state: _stateFormatter.getMaskedText(),
             zip: _zipFormatter.getMaskedText(),
             ein: _einFormatter.getMaskedText(),
-            id: widget._businessAccount.identifier
+            id: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier
           ));
     }
   }
 
   bool _fieldsChanged({required BusinessAccountScreenState state}) {
-    if (widget._businessAccount.identifier.isEmpty) return true;
+    if (BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier.isEmpty) return true;
     
-    return widget._businessAccount.entityType != state.entityType ||
-      widget._businessAccount.businessName != _nameController.text ||
-      widget._businessAccount.address.address != _addressController.text ||
-      widget._businessAccount.address.addressSecondary != _addressSecondaryController.text ||
-      widget._businessAccount.address.city != _cityController.text ||
-      widget._businessAccount.address.state != _stateFormatter.getMaskedText() ||
-      widget._businessAccount.address.zip != _zipFormatter.getMaskedText() ||
-      widget._businessAccount.ein != _einFormatter.getMaskedText();
+    return BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.entityType != state.entityType ||
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.businessName != _nameController.text ||
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.address != _addressController.text ||
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.addressSecondary != _addressSecondaryController.text ||
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.city != _cityController.text ||
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.state != _stateFormatter.getMaskedText() ||
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.zip != _zipFormatter.getMaskedText() ||
+      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.ein != _einFormatter.getMaskedText();
   }
 
   void _showSuccess({required BuildContext context}) {    

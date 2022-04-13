@@ -1,4 +1,3 @@
-import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/repositories/authentication_repository.dart';
 import 'package:dashboard/repositories/business_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
@@ -15,17 +14,14 @@ import 'widgets/unlocked_form/unlocked_form.dart';
 class SettingsScreenBody extends StatelessWidget {
   final AuthenticationRepository _authenticationRepository;
   final BusinessRepository _businessRepository;
-  final BusinessBloc _businessBloc;
 
   const SettingsScreenBody({
     required AuthenticationRepository authenticationRepository, 
     required BusinessRepository businessRepository,
-    required BusinessBloc businessBloc,
     Key? key
   })
     : _authenticationRepository = authenticationRepository,
       _businessRepository = businessRepository,
-      _businessBloc = businessBloc,
       super(key: key);
   
   @override
@@ -65,7 +61,7 @@ class SettingsScreenBody extends StatelessWidget {
   Widget _unlockedForm() {
     return BlocProvider<UnlockedFormCubit>(
       create: (_) => UnlockedFormCubit(),
-      child: UnlockedForm(businessRepository: _businessRepository, businessBloc: _businessBloc),
+      child: UnlockedForm(businessRepository: _businessRepository),
     );
   }
 }

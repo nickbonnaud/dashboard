@@ -12,11 +12,9 @@ import 'widgets/place_form.dart';
 import '../body_form.dart';
 
 class CreateProfileScreenBody extends StatelessWidget {
-  final ProfileScreenBloc _profileScreenBloc;
 
-  const CreateProfileScreenBody({required ProfileScreenBloc profileScreenBloc, Key? key})
-    : _profileScreenBloc = profileScreenBloc,
-      super(key: key);
+  const CreateProfileScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -64,7 +62,7 @@ class CreateProfileScreenBody extends StatelessWidget {
 
   _formBody({required ProfileScreenState state}) {
     if (state.selectedPrediction == null) {
-      return PlaceForm(profileScreenBloc: _profileScreenBloc);
+      return const PlaceForm();
     }
     final Profile profile = Profile(
       name: state.selectedPrediction!.name,
@@ -75,7 +73,7 @@ class CreateProfileScreenBody extends StatelessWidget {
       hours: Hours.empty(),
       identifier: ""
     );
-    return BodyForm(profile: profile, profileScreenBloc: _profileScreenBloc);
+    return BodyForm(profile: profile);
   }
 
   void _showSuccess({required BuildContext context}) {   

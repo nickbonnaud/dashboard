@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class TipsRepository extends BaseRepository {
   final TipsProvider _tipsProvider;
 
-  TipsRepository({required TipsProvider tipsProvider})
+  const TipsRepository({required TipsProvider tipsProvider})
     : _tipsProvider = tipsProvider;
 
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {

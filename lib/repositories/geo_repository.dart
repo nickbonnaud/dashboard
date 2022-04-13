@@ -2,7 +2,9 @@ import 'package:dashboard/providers/geo_provider.dart';
 import 'package:location/location.dart';
 
 class GeoRepository {
-  final GeoProvider _geoProvider = GeoProvider();
+  final GeoProvider _geoProvider = const GeoProvider();
+
+  const GeoRepository();
 
   Future<LocationData> getLocation() async {
     return await _geoProvider.getLocation();

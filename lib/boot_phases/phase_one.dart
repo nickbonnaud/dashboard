@@ -11,10 +11,10 @@ import 'phase_two.dart';
 
 class PhaseOne extends StatelessWidget {
   final MaterialApp? _testApp;
-  final BusinessRepository _businessRepository = BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository());
-  final GeoRepository _geoRepository = GeoRepository();
+  final BusinessRepository _businessRepository = const BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository());
+  final GeoRepository _geoRepository = const GeoRepository();
 
-  PhaseOne({MaterialApp? testApp, Key? key})
+  const PhaseOne({MaterialApp? testApp, Key? key})
     : _testApp = testApp,
       super(key: key);
 

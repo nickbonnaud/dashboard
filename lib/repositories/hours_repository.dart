@@ -6,7 +6,7 @@ import 'package:dashboard/repositories/base_repository.dart';
 class HoursRepository extends BaseRepository {
   final HoursProvider _hoursProvider;
 
-  HoursRepository({required HoursProvider hoursProvider})
+  const HoursRepository({required HoursProvider hoursProvider})
     : _hoursProvider = hoursProvider;
   
   Future<Hours> store({

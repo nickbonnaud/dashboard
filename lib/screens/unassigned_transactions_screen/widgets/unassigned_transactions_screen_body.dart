@@ -1,4 +1,3 @@
-import 'package:dashboard/models/business/pos_account.dart';
 import 'package:dashboard/repositories/unassigned_transaction_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/theme/global_colors.dart';
@@ -13,15 +12,12 @@ import 'widgets/unassigned_transactions_list/unassigned_transactions_list.dart';
 
 class UnassignedTransactionsScreenBody extends StatelessWidget {
   final UnassignedTransactionRepository _unassignedTransactionRepository;
-  final PosAccount _posAccount;
 
   const UnassignedTransactionsScreenBody({
     required UnassignedTransactionRepository unassignedTransactionRepository,
-    required PosAccount posAccount,
     Key? key
   })
     : _unassignedTransactionRepository = unassignedTransactionRepository,
-      _posAccount = posAccount,
       super(key: key);
 
   @override
@@ -47,7 +43,7 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(height: SizeConfig.getHeight(5)),
-          UnassignedTransactionsHeader(posAccount: _posAccount),
+          const UnassignedTransactionsHeader(),
           SizedBox(height: SizeConfig.getHeight(2)),
           Expanded(
             child: BlocProvider<UnassignedTransactionsListBloc>(

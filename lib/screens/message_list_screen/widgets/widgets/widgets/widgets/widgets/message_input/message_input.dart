@@ -1,13 +1,13 @@
 import 'package:dashboard/resources/helpers/cupertino_box_decoration.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/toast_message.dart';
-import 'package:dashboard/screens/message_screen/bloc/message_history_bloc.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:dashboard/theme/main_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../bloc/message_history_bloc.dart';
 import 'bloc/message_input_bloc.dart';
 
 class MessageInput extends StatefulWidget {

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class TransactionRepository extends BaseRepository {
   final TransactionProvider _transactionProvider;
 
-  TransactionRepository({required TransactionProvider transactionProvider})
+  const TransactionRepository({required TransactionProvider transactionProvider})
     : _transactionProvider = transactionProvider;
 
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {

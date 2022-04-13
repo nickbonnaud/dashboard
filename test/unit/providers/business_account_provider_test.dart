@@ -7,7 +7,7 @@ void main() {
     late BusinessAccountProvider businessAccountProvider;
 
     setUp(() {
-      businessAccountProvider = BusinessAccountProvider();
+      businessAccountProvider = const BusinessAccountProvider();
     });
 
     test("Storing BusinessAccount data returns ApiResponse", () async {

@@ -10,9 +10,9 @@ import 'routing/app_router.dart';
 
 class Boot extends StatelessWidget {
   final MaterialApp? _testApp;
-  final AppRouter _router = AppRouter();
+  final AppRouter _router = const AppRouter();
 
-  Boot({MaterialApp? testApp, Key? key})
+  const Boot({MaterialApp? testApp, Key? key})
     : _testApp = testApp,
       super(key: key);
   
@@ -31,7 +31,7 @@ class Boot extends StatelessWidget {
       title: '${Constants.appName} Dashboard',
       onGenerateRoute: (settings) => _router.goTo(context: context, settings: settings),
       builder: (context, widget) {
-        SizeConfig().init(context);
+        const SizeConfig().init(context);
         return ResponsiveWrapper.builder(
           ClampingScrollWrapper.builder(context, widget!),
           defaultScale: true,

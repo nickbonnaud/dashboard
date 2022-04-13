@@ -1,13 +1,13 @@
 import 'package:dashboard/models/message/message.dart';
 import 'package:dashboard/resources/helpers/date_formatter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
-import 'package:dashboard/screens/message_screen/bloc/message_history_bloc.dart';
-import 'package:dashboard/screens/message_screen/widgets/widgets/message_history/helpers/text_sizer.dart';
+import 'package:dashboard/screens/message_list_screen/widgets/widgets/widgets/bloc/message_history_bloc.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
+import 'helpers/text_sizer.dart';
 import 'widgets/message_bubble.dart';
 
 

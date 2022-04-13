@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class OwnerProvider extends BaseProvider {
 
+  const OwnerProvider();
+  
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
     String url = ApiEndpoints.payFacOwner;
     return await post(url: url, body: body);

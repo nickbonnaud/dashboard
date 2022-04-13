@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class RefundRepository extends BaseRepository {
   final RefundProvider _refundProvider;
 
-  RefundRepository({required RefundProvider refundProvider})
+  const RefundRepository({required RefundProvider refundProvider})
     : _refundProvider = refundProvider;
 
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {

@@ -1,65 +1,49 @@
-import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/models/business/location.dart';
 import 'package:dashboard/repositories/geo_account_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/geo_account_screen/geo_account_screen.dart';
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../helpers/mock_data_generator.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockGeoAccountRepository extends Mock implements GeoAccountRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
 
 void main() {
   group("Geo Account Screen Tests", () {
+    late MockDataGenerator mockDataGenerator;
     late NavigatorObserver observer;
     late GeoAccountRepository geoAccountRepository;
-    late BusinessBloc businessBloc;
-    late Location location;
     late ScreenBuilder screenBuilderNew;
     late ScreenBuilder screenBuilderEdit;
 
     setUpAll(() {
+      mockDataGenerator = MockDataGenerator();
       observer = MockNavigatorObserver();
       geoAccountRepository = MockGeoAccountRepository();
-      businessBloc = MockBusinessBloc();
-      location = Location(
-        identifier: faker.guid.guid(),
-        lat: 35.9132,
-        lng: 79.0558,
-        radius: 50
-      );
 
       screenBuilderNew = ScreenBuilder(
-        child: GeoAccountScreen(
+        child: GeoAccountScreen.new(
           geoAccountRepository: geoAccountRepository,
-          businessBloc: businessBloc,
-          location: location,
-          isEdit: false,
         ), 
         observer: observer
       );
 
       screenBuilderEdit = ScreenBuilder(
-        child: GeoAccountScreen(
+        child: GeoAccountScreen.edit(
           geoAccountRepository: geoAccountRepository,
-          businessBloc: businessBloc,
-          location: location,
-          isEdit: true,
         ), 
         observer: observer
       );
 
       when(() => geoAccountRepository.store(lat: any(named: "lat"), lng: any(named: "lng"), radius: any(named: "radius")))
-        .thenAnswer((_) async=> Future.delayed(const Duration(milliseconds: 500), () => location));
+        .thenAnswer((_) async=> Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createLocation()));
 
       when(() => geoAccountRepository.update(identifier: any(named: "identifier"), lat: any(named: "lat"), lng: any(named: "lng"), radius: any(named: "radius")))
-        .thenAnswer((_) async=> Future.delayed(const Duration(milliseconds: 500), () => location));
+        .thenAnswer((_) async=> Future.delayed(const Duration(milliseconds: 500), () => mockDataGenerator.createLocation()));
 
       registerFallbackValue(MockRoute());
     });

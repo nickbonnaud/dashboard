@@ -2,7 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dashboard/models/message/message.dart';
 import 'package:dashboard/models/message/reply.dart';
 import 'package:dashboard/screens/message_list_screen/bloc/message_list_screen_bloc.dart';
-import 'package:dashboard/screens/message_screen/bloc/message_history_bloc.dart';
+import 'package:dashboard/screens/message_list_screen/widgets/widgets/widgets/bloc/message_history_bloc.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

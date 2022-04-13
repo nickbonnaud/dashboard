@@ -1,5 +1,3 @@
-import 'package:dashboard/blocs/business/business_bloc.dart';
-import 'package:dashboard/models/business/hours.dart';
 import 'package:dashboard/models/hour.dart';
 import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
@@ -14,18 +12,12 @@ import 'max_hours_form.dart';
 
 class HoursScreenBody extends StatelessWidget{
   final HoursRepository _hoursRepository;
-  final BusinessBloc _businessBloc;
-  final Hours _hours;
 
   const HoursScreenBody({
     required HoursRepository hoursRepository,
-    required BusinessBloc businessBloc,
-    required Hours hours,
     Key? key
   })
     : _hoursRepository = hoursRepository,
-      _businessBloc = businessBloc,
-      _hours = hours,
       super(key: key);
       
   @override
@@ -62,13 +54,12 @@ class HoursScreenBody extends StatelessWidget{
   Widget _body({required BuildContext context}) {
     return BlocBuilder<HoursScreenBloc, HoursScreenState>(
       builder: (context, state) {
-        if (state.earliestStart == null || state.latestEnd == null) return MaxHoursForm(hours: _hours);
+        if (state.earliestStart == null || state.latestEnd == null) return const MaxHoursForm();
         
         return BlocProvider<HoursSelectionFormBloc>(
           create: (_) => HoursSelectionFormBloc(operatingHoursRange: Hour(start: state.earliestStart!, end: state.latestEnd!)),
           child: HoursSelectionForm(
             hoursRepository: _hoursRepository,
-            businessBloc: _businessBloc
           ),
         );
       }

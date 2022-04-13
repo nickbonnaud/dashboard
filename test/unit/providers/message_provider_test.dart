@@ -10,7 +10,7 @@ void main() {
     late MessageProvider messageProvider;
 
     setUp(() {
-      messageProvider = MessageProvider();
+      messageProvider = const MessageProvider();
     });
 
     test("Checking for unread returns ApiResponse", () async {

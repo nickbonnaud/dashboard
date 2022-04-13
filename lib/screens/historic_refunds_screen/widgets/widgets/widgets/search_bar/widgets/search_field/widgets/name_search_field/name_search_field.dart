@@ -26,7 +26,7 @@ class _NameSearchFieldState extends State<NameSearchField> {
   final FocusNode _firstNameFocus = FocusNode();
   final FocusNode _lastNameFocus = FocusNode();
 
-  final ResponsiveLayoutHelper _layoutHelper = ResponsiveLayoutHelper();
+  final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
   late NameSearchFieldBloc _nameSearchFieldBloc;
 

@@ -1,10 +1,11 @@
 import 'package:dashboard/models/message/reply.dart';
 import 'package:dashboard/resources/helpers/date_formatter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
-import 'package:dashboard/screens/message_screen/widgets/widgets/message_history/helpers/text_sizer.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+
+import '../helpers/text_sizer.dart';
 
 class MessageBubble extends StatelessWidget {
   final int _index;

@@ -4,6 +4,8 @@ import 'package:dashboard/resources/http/api_endpoints.dart';
 
 class GeoAccountProvider extends BaseProvider {
   
+  const GeoAccountProvider();
+  
   Future<ApiResponse> store({required Map<String, dynamic> body}) async {
     String url = ApiEndpoints.geoLocation;
     return await post(url: url, body: body);

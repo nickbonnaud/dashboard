@@ -257,7 +257,7 @@ class _LoginFormState extends State<LoginForm> {
   void _goToResetScreen() {
     Navigator.of(context).push(MaterialPageRoute<RequestResetPasswordScreen>(
       fullscreenDialog: true,
-      builder: (_) => RequestResetPasswordScreen(
+      builder: (_) => const RequestResetPasswordScreen(
         authenticationRepository: AuthenticationRepository(authenticationProvider: AuthenticationProvider(), tokenRepository: TokenRepository()),
       )
     ));

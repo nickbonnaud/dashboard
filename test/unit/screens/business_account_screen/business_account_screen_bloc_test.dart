@@ -35,7 +35,7 @@ void main() {
         accountRepository: _businessAccountRepository,
         businessAccount: _businessAccount,
         businessBloc: BusinessBloc(
-          businessRepository: BusinessRepository(
+          businessRepository: const BusinessRepository(
             businessProvider: BusinessProvider(), 
             tokenRepository: TokenRepository()
           )

@@ -12,17 +12,14 @@ import 'widgets/message_screen_body.dart';
 
 class MessageScreen extends StatelessWidget {
   final Message _message;
-  final MessageListScreenBloc _messageListScreenBloc;
   final MessageRepository _messageRepository;
 
   const MessageScreen({
     required Message message,
-    required MessageListScreenBloc messageListScreenBloc,
     required MessageRepository messageRepository,
     Key? key
   })
     : _message = message,
-      _messageListScreenBloc = messageListScreenBloc,
       _messageRepository = messageRepository,
       super(key: key);
 
@@ -35,8 +32,8 @@ class MessageScreen extends StatelessWidget {
       ),
       backgroundColor: Theme.of(context).colorScheme.scrollBackground,
       body: BlocProvider<MessageHistoryBloc>(
-        create: (_) => MessageHistoryBloc(
-          messageListScreenBloc: _messageListScreenBloc,
+        create: (context) => MessageHistoryBloc(
+          messageListScreenBloc: BlocProvider.of<MessageListScreenBloc>(context),
           message: _message
         )..add(MarkAsRead()),
         child: MessageScreenBody(messageRepository: _messageRepository,)

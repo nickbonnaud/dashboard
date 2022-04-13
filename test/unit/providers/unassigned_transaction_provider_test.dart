@@ -7,7 +7,7 @@ void main() {
     late UnassignedTransactionProvider unassignedTransactionProvider;
 
     setUp(() {
-      unassignedTransactionProvider = UnassignedTransactionProvider();
+      unassignedTransactionProvider = const UnassignedTransactionProvider();
     });
 
     test("Fetching unassigned transactions returns PaginatedApiResponse", () async {

@@ -13,13 +13,13 @@ class MockBusinessProvider extends Mock implements BusinessProvider {}
 void main() {
   
   group("Business Repository Tests", () {
-    final TokenRepository _tokenRepository = TokenRepository();
+    const TokenRepository _tokenRepository = TokenRepository();
     late BusinessRepository _businessRepository;
     late BusinessProvider _mockBusinessProvider;
     late BusinessRepository _businessRepositoryWithMock;
 
     setUp(() {
-      _businessRepository = BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: _tokenRepository);
+      _businessRepository = const BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: _tokenRepository);
       _mockBusinessProvider = MockBusinessProvider();
       _businessRepositoryWithMock = BusinessRepository(businessProvider: _mockBusinessProvider, tokenRepository: _tokenRepository);
       registerFallbackValue({});

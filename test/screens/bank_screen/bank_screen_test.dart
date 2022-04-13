@@ -1,7 +1,10 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
+import 'package:dashboard/models/business/accounts.dart';
 import 'package:dashboard/models/business/address.dart' as business_address;
 import 'package:dashboard/models/business/bank_account.dart';
+import 'package:dashboard/models/business/business.dart';
+import 'package:dashboard/models/status.dart';
 import 'package:dashboard/repositories/bank_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/bank_screen/bank_screen.dart';
@@ -10,31 +13,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../helpers/mock_data_generator.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockBankRepository extends Mock implements BankRepository {}
-class MockBusinessBloc extends Mock implements BusinessBloc {}
 class MockBankAccount extends Mock implements BankAccount {}
 
 void main() {
-  
-  BankAccount _createBankAccount() {
-    return const BankAccount(
-      identifier: "identifier",
-      firstName: "firstName",
-      lastName: "lastName",
-      routingNumber: "123456789",
-      accountNumber: "1234567890",
-      accountType: AccountType.checking,
-      address: business_address.Address(
-        address: "123 Main",
-        addressSecondary: "F33",
-        city: "City",
-        state: "NC",
-        zip: "74925"
-      )
-    );
-  }
   
   group("Bank Screen Tests", () {
     late ScreenBuilder screenBuilderNew;
@@ -42,52 +27,55 @@ void main() {
     late ScreenBuilder screenBuilderNewFilled;
     late NavigatorObserver observer;
     late BankRepository bankRepository;
-    late BusinessBloc businessBloc;
 
     setUpAll(() {
       observer = MockNavigatorObserver();
       bankRepository = MockBankRepository();
-      businessBloc = MockBusinessBloc();
 
+      MockDataGenerator mockDataGenerator = MockDataGenerator();
+      
       screenBuilderNew = ScreenBuilder(
-        child: BankScreen(
-          bankAccount: BankAccount.empty(),
-          bankRepository: bankRepository,
-          businessBloc: businessBloc
-        ),
+        child: BankScreen(bankRepository: bankRepository),
         observer: observer
       );
 
       screenBuilderNewFilled = ScreenBuilder(
-        child: BankScreen(
-          bankAccount: const BankAccount(
-            identifier: "",
-            firstName: "firstName",
-            lastName: "lastName",
-            routingNumber: "123456789",
-            accountNumber: "1234567890",
-            accountType: AccountType.checking,
-            address: business_address.Address(
-              address: "123 Main",
-              addressSecondary: "F33",
-              city: "City",
-              state: "NC",
-              zip: "74925"
-            )
+        child: BankScreen(bankRepository: bankRepository),
+        business: Business(
+          identifier: 'identifier',
+          email: 'email',
+          profile: mockDataGenerator.createProfile(),
+          photos: mockDataGenerator.createBusinessPhotos(),
+          accounts: Accounts(
+            businessAccount: mockDataGenerator.createBusinessAccount(),
+            ownerAccounts: const [],
+            bankAccount: const BankAccount(
+              identifier: "",
+              firstName: "firstName",
+              lastName: "lastName",
+              routingNumber: "123456789",
+              accountNumber: "1234567890",
+              accountType: AccountType.checking,
+              address: business_address.Address(
+                address: "123 Main",
+                addressSecondary: "F33",
+                city: "City",
+                state: "NC",
+                zip: "74925"
+              )
+            ),
+            accountStatus: const Status(name: 'name', code: 100)
           ),
-          bankRepository: bankRepository,
-          businessBloc: businessBloc
+          location: mockDataGenerator.createLocation(),
+          posAccount: mockDataGenerator.createPosAccount()
         ),
         observer: observer
       );
 
       screenBuilderEdit = ScreenBuilder(
-        child: BankScreen(
-          bankAccount: _createBankAccount(),
-          bankRepository: bankRepository, 
-          businessBloc: businessBloc
-        ),
-        observer: observer
+        child: BankScreen(bankRepository: bankRepository),
+        observer: observer,
+        business: mockDataGenerator.createBusiness()
       );
 
       
@@ -121,8 +109,6 @@ void main() {
       registerFallbackValue(BankAccountUpdated(bankAccount: MockBankAccount()));
       registerFallbackValue(MockRoute());
       
-      when(() => businessBloc.add(any(that: isA<BusinessEvent>())))
-        .thenReturn(null);
     });
     
     testWidgets("New BankAccount creates AppBar", (tester) async {
