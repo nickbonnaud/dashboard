@@ -6,6 +6,7 @@ import 'package:dashboard/screens/login_screen/login_screen.dart';
 import 'package:dashboard/screens/login_screen/widgets/login_card.dart';
 import 'package:dashboard/screens/login_screen/widgets/widgets/login_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -24,7 +25,10 @@ void main() {
       authenticationRepository = MockAuthenticationRepository();
       observer = MockNavigatorObserver();
       screenBuilder = ScreenBuilder(
-        child: LoginScreen(authenticationRepository: authenticationRepository),
+        child: RepositoryProvider(
+          create: (context) => authenticationRepository,
+          child: const LoginScreen(),
+        ),
         observer: observer
       );
 

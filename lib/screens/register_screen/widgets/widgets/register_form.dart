@@ -2,6 +2,7 @@ import 'package:dashboard/global_widgets/shaker.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
+import 'package:dashboard/routing/routes.dart';
 import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +45,7 @@ class _RegisterFormState extends State<RegisterForm> {
     return BlocListener<RegisterFormBloc, RegisterFormState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          Navigator.of(context).pushReplacementNamed('/main');
+          Navigator.of(context).pushReplacementNamed(Routes.app);
         }
       },
       child: Form(

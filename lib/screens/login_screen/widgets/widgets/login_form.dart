@@ -5,6 +5,7 @@ import 'package:dashboard/repositories/token_repository.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
+import 'package:dashboard/routing/routes.dart';
 import 'package:dashboard/screens/request_reset_password_screen/request_reset_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +45,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginFormBloc, LoginFormState>(
       listener: (context, state) {
         if (state.isSuccess) {
-          Navigator.of(context).pushReplacementNamed('/main');
+          Navigator.of(context).pushReplacementNamed(Routes.app);
         }
       },
       child: Form(

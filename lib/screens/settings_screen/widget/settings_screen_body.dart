@@ -1,5 +1,4 @@
 import 'package:dashboard/repositories/authentication_repository.dart';
-import 'package:dashboard/repositories/business_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/screens/settings_screen/cubit/settings_screen_cubit.dart';
 import 'package:flutter/material.dart';
@@ -12,17 +11,9 @@ import 'widgets/unlocked_form/cubit/unlocked_form_cubit.dart';
 import 'widgets/unlocked_form/unlocked_form.dart';
 
 class SettingsScreenBody extends StatelessWidget {
-  final AuthenticationRepository _authenticationRepository;
-  final BusinessRepository _businessRepository;
 
-  const SettingsScreenBody({
-    required AuthenticationRepository authenticationRepository, 
-    required BusinessRepository businessRepository,
-    Key? key
-  })
-    : _authenticationRepository = authenticationRepository,
-      _businessRepository = businessRepository,
-      super(key: key);
+  const SettingsScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -51,7 +42,7 @@ class SettingsScreenBody extends StatelessWidget {
   Widget _lockedForm({required BuildContext context}) {
     return BlocProvider<LockedFormBloc>(
       create: (context) => LockedFormBloc(
-        authenticationRepository: _authenticationRepository,
+        authenticationRepository: RepositoryProvider.of<AuthenticationRepository>(context),
         settingsScreenCubit: context.read<SettingsScreenCubit>()
       ),
       child: const LockedForm(),
@@ -61,7 +52,7 @@ class SettingsScreenBody extends StatelessWidget {
   Widget _unlockedForm() {
     return BlocProvider<UnlockedFormCubit>(
       create: (_) => UnlockedFormCubit(),
-      child: UnlockedForm(businessRepository: _businessRepository),
+      child: const UnlockedForm(),
     );
   }
 }

@@ -38,6 +38,7 @@ import 'package:dashboard/screens/register_screen/register_screen.dart';
 import 'package:dashboard/screens/reset_password_screen/reset_password_screen.dart';
 import 'package:dashboard/screens/settings_screen/settings_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_webservice/places.dart';
 
 import '../dev_keys.dart';
@@ -56,9 +57,11 @@ class AppRouter {
         route = _createRoute(screen: const App(), name: _routeData.route);
         break;
       case Routes.login:
-        route = _createRoute(screen: const LoginScreen(
-          authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
-        ),
+        route = _createRoute(
+          screen: RepositoryProvider(
+            create: (context) => const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
+            child: const LoginScreen(),
+          ),
         name: _routeData.route);
         break;
       case Routes.register:
@@ -134,10 +137,18 @@ class AppRouter {
         name: _routeData.route);
         break;
       case Routes.settings:
-        route = _createRoute(screen: const SettingsScreen(
-          authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
-          businessRepository: BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository()),
-        ),
+        route = _createRoute(
+          screen: MultiRepositoryProvider(
+            providers: [
+              RepositoryProvider(
+                create: (context) => const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider())
+              ),
+              RepositoryProvider(
+                create: (context) => const BusinessRepository(businessProvider: BusinessProvider(), tokenRepository: TokenRepository())
+              )
+            ],
+            child: const SettingsScreen()
+          ),
         name: _routeData.route);
         break;
       case Routes.messages:

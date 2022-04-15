@@ -12,14 +12,9 @@ import 'widgets/password_form/bloc/password_form_bloc.dart';
 import 'widgets/password_form/password_form.dart';
 
 class UnlockedForm extends StatefulWidget {
-  final BusinessRepository _businessRepository;
 
-  const UnlockedForm({
-    required BusinessRepository businessRepository,
-    Key? key
-  })
-    : _businessRepository = businessRepository,
-      super(key: key);
+  const UnlockedForm({Key? key})
+    : super(key: key);
 
   @override
     State<UnlockedForm> createState() => _UnlockedFormState();
@@ -87,7 +82,7 @@ class _UnlockedFormState extends State<UnlockedForm> {
   Widget _emailForm() {
     return BlocProvider<EmailFormBloc>(
       create: (context) => EmailFormBloc(
-        businessRepository: widget._businessRepository,
+        businessRepository: RepositoryProvider.of<BusinessRepository>(context),
         businessBloc: BlocProvider.of<BusinessBloc>(context)
       ),
       child: const EmailForm(),
@@ -97,7 +92,7 @@ class _UnlockedFormState extends State<UnlockedForm> {
   Widget _passwordForm() {
     return BlocProvider<PasswordFormBloc>(
       create: (context) => PasswordFormBloc(
-        businessRepository: widget._businessRepository
+        businessRepository: RepositoryProvider.of<BusinessRepository>(context)
       ),
       child: const PasswordForm(),
     );

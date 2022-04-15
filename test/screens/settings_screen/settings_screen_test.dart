@@ -10,6 +10,7 @@ import 'package:dashboard/screens/settings_screen/widget/widgets/unlocked_form/w
 import 'package:dashboard/screens/settings_screen/widget/widgets/unlocked_form/widgets/password_form/password_form.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -32,9 +33,16 @@ void main() {
       observer = MockNavigatorObserver();
 
       screenBuilder = ScreenBuilder(
-        child: SettingsScreen(
-          authenticationRepository: authenticationRepository,
-          businessRepository: businessRepository,
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (context) => authenticationRepository
+            ),
+            RepositoryProvider(
+              create: (context) => businessRepository
+            )
+          ],
+          child: const SettingsScreen()
         ),
         observer: observer
       );

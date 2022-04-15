@@ -50,8 +50,9 @@ class App extends StatelessWidget {
     if (state is Authenticated) {
       return _buildAuthenticatedScreen();
     } else {
-      return const LoginScreen(
-        authenticationRepository: AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
+      return RepositoryProvider(
+        create: (context) => const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
+        child: const LoginScreen(),
       );
     }
   }
