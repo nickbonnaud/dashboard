@@ -48,7 +48,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
               SizedBox(height: SizeConfig.getHeight(10)),
               _emailTextField(),
               _errorMessage(),
-              SizedBox(height: SizeConfig.getHeight(15)),
+              SizedBox(height: SizeConfig.getHeight(10)),
               Row(
                 children: [
                   SizedBox(width: SizeConfig.getWidth(1)),

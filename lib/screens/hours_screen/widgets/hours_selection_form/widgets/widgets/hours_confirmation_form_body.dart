@@ -270,6 +270,6 @@ class HoursConfirmationFormBody extends StatelessWidget {
       context: context,
       message: "Hours Saved!",
       color: Theme.of(context).colorScheme.success
-    ).showToast().then((_) => Navigator.of(context).pop());
+    ).showToast().then((_) => Navigator.of(context).pop(true));
   }
 }

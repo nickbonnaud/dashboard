@@ -62,7 +62,7 @@ class MainTheme {
         thumbColor: Theme.of(context).colorScheme.callToAction,
       ),
       colorScheme: ColorScheme(
-        primary: _primary, 
+        primary: const Color(0xFF016fb9), 
         primaryContainer: _primaryVariant,
         onPrimary: _constrastPrimary,
 

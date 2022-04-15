@@ -36,7 +36,6 @@ class BankScreen extends StatelessWidget {
       create: (context) => BankScreenBloc(
         bankRepository: _bankRepository,
         businessBloc: BlocProvider.of<BusinessBloc>(context),
-        bankAccount: BlocProvider.of<BusinessBloc>(context).business.accounts.bankAccount
       ),
       child: const BankScreenBody(),
     );

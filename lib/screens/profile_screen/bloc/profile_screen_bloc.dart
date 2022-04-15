@@ -66,7 +66,13 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     if (event.prediction.placeId != null) {
       emit(state.update(isSubmitting: true, predictions: []));
       final PlacesDetailsResponse response = await _places.getDetailsByPlaceId(event.prediction.placeId!);
-      emit(state.update(isSubmitting: false, selectedPrediction: response.result)); 
+      emit(state.update(
+        isSubmitting: false,
+        selectedPrediction: response.result,
+        name: response.result.name,
+        website: response.result.website ?? "",
+        phone: response.result.formattedPhoneNumber ?? ""
+      )); 
     }
   }
   

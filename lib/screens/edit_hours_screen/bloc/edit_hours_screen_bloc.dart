@@ -81,25 +81,25 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
   void _mapHourAddedToState({required HourAdded event, required Emitter<EditHoursScreenState> emit}) {
     switch (event.day) {
       case 0:
-        emit(state.update(sunday: state.sunday..add(event.hour)));
+        emit(state.update(sunday: List.of(state.sunday)..add(event.hour)));
         break;
       case 1:
-        emit(state.update(monday: state.monday..add(event.hour)));
+        emit(state.update(monday: List.of(state.monday)..add(event.hour)));
         break;
       case 2:
-        emit(state.update(tuesday: state.tuesday..add(event.hour)));
+        emit(state.update(tuesday: List.of(state.tuesday)..add(event.hour)));
         break;
       case 3:
-        emit(state.update(wednesday: state.wednesday..add(event.hour)));
+        emit(state.update(wednesday: List.of(state.wednesday)..add(event.hour)));
         break;
       case 4:
-        emit(state.update(thursday: state.thursday..add(event.hour)));
+        emit(state.update(thursday: List.of(state.thursday)..add(event.hour)));
         break;
       case 5:
-        emit(state.update(friday: state.friday..add(event.hour)));
+        emit(state.update(friday: List.of(state.friday)..add(event.hour)));
         break;
       case 6:
-        emit(state.update(saturday: state.saturday..add(event.hour)));
+        emit(state.update(saturday: List.of(state.saturday)..add(event.hour)));
         break;
     }
   }
@@ -107,25 +107,25 @@ class EditHoursScreenBloc extends Bloc<EditHoursScreenEvent, EditHoursScreenStat
   void _mapHourRemovedToState({required HourRemoved event, required Emitter<EditHoursScreenState> emit}) {
     switch (event.day) {
       case 0:
-        emit(state.update(sunday: state.sunday..removeLast()));
+        emit(state.update(sunday: List.of(state.sunday..removeLast())));
         break;
       case 1:
-        emit(state.update(monday: state.monday..removeLast()));
+        emit(state.update(monday: List.of(state.monday..removeLast())));
         break;
       case 2:
-        emit(state.update(tuesday: state.tuesday..removeLast()));
+        emit(state.update(tuesday: List.of(state.tuesday..removeLast())));
         break;
       case 3:
-        emit(state.update(wednesday: state.wednesday..removeLast()));
+        emit(state.update(wednesday: List.of(state.wednesday..removeLast())));
         break;
       case 4:
-        emit(state.update(thursday: state.thursday..removeLast()));
+        emit(state.update(thursday: List.of(state.thursday..removeLast())));
         break;
       case 5:
-        emit(state.update(friday: state.friday..removeLast()));
+        emit(state.update(friday: List.of(state.friday..removeLast())));
         break;
       case 6:
-        emit(state.update(saturday: state.saturday..removeLast()));
+        emit(state.update(saturday: List.of(state.saturday..removeLast())));
         break;
     }
   }

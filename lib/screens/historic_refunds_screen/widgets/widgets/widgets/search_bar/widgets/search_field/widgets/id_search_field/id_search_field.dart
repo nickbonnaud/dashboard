@@ -79,7 +79,7 @@ class _IdSearchFieldState extends State<IdSearchField> {
   }
 
   void _onInputChanged() {
-    BlocProvider.of<IdSearchFieldBloc>(context).add(FieldChanged(id: _controller.text));
+    BlocProvider.of<IdSearchFieldBloc>(context).add(FieldChanged(id: _formatter.getMaskedText()));
   }
 
   void _clearField() {

@@ -19,10 +19,10 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
 
   final Duration _debounceTime = const Duration(milliseconds: 300);
   
-  BankScreenBloc({required BankRepository bankRepository, required BusinessBloc businessBloc, required BankAccount bankAccount})
+  BankScreenBloc({required BankRepository bankRepository, required BusinessBloc businessBloc})
     : _bankRepository = bankRepository,
       _businessBloc = businessBloc,
-      super(BankScreenState.empty(accountType: bankAccount.accountType)) {
+      super(BankScreenState.empty(bankAccount: businessBloc.business.accounts.bankAccount)) {
         _eventHandler();
   }
 
@@ -37,26 +37,26 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
     on<StateChanged>((event, emit) => _mapStateChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<ZipChanged>((event, emit) => _mapZipChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<AccountTypeSelected>((event, emit) => _mapAccountTypeSelectedToState(event: event, emit: emit));
-    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
-    on<Updated>((event, emit) async => await _mapUpdatedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(emit: emit));
+    on<Updated>((event, emit) async => await _mapUpdatedToState(emit: emit));
     on<ChangeAccountTypeSelected>((event, emit) => _mapChangeAccountTypeSelectedToState(emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
   void _mapFirstNameChangedToState({required FirstNameChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isFirstNameValid: Validators.isValidFirstName(name: event.firstName)));
+    emit(state.update(firstName: event.firstName, isFirstNameValid: Validators.isValidFirstName(name: event.firstName)));
   }
 
   void _mapLastNameChangedToState({required LastNameChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isLastNameValid: Validators.isValidLastName(name: event.lastName)));
+    emit(state.update(lastName: event.lastName, isLastNameValid: Validators.isValidLastName(name: event.lastName)));
   }
 
   void _mapRoutingNumberChangedToState({required RoutingNumberChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isRoutingNumberValid: Validators.isValidRoutingNumber(routingNumber: event.routingNumber)));
+    emit(state.update(routingNumber: event.routingNumber, isRoutingNumberValid: Validators.isValidRoutingNumber(routingNumber: event.routingNumber)));
   }
 
   void _mapAccountNumberChangedToState({required AccountNumberChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isAccountNumberValid: Validators.isValidAccountNumber(accountNumber: event.accountNumber)));
+    emit(state.update(accountNumber: event.accountNumber, isAccountNumberValid: Validators.isValidAccountNumber(accountNumber: event.accountNumber)));
   }
 
   void _mapAccountTypeSelectedToState({required AccountTypeSelected event, required Emitter<BankScreenState> emit}) {
@@ -64,40 +64,40 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
   }
 
   void _mapAddressChangedToState({required AddressChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isAddressValid: Validators.isValidAddress(address: event.address)));
+    emit(state.update(address: event.address, isAddressValid: Validators.isValidAddress(address: event.address)));
   }
 
   void _mapAddressSecondaryChangedToState({required AddressSecondaryChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isAddressSecondaryValid: Validators.isValidAddressSecondary(address: event.addressSecondary)));
+    emit(state.update(addressSecondary: event.addressSecondary, isAddressSecondaryValid: Validators.isValidAddressSecondary(address: event.addressSecondary)));
   }
 
   void _mapCityChangedToState({required CityChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isCityValid: Validators.isValidCity(city: event.city)));
+    emit(state.update(city: event.city, isCityValid: Validators.isValidCity(city: event.city)));
   }
 
   void _mapStateChangedToState({required StateChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isStateValid: Constants.states.contains(event.state.toUpperCase())));
+    emit(state.update(state: event.state, isStateValid: Constants.states.contains(event.state.toUpperCase())));
   }
 
   void _mapZipChangedToState({required ZipChanged event, required Emitter<BankScreenState> emit}) {
-    emit(state.update(isZipValid: Validators.isValidZip(zip: event.zip)));
+    emit(state.update(zip: event.zip, isZipValid: Validators.isValidZip(zip: event.zip)));
   }
 
-  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<BankScreenState> emit}) async {
+  Future<void> _mapSubmittedToState({required Emitter<BankScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
       final BankAccount account = await _bankRepository.store(
-        firstName: event.firstName,
-        lastName: event.lastName,
-        routingNumber: event.routingNumber,
-        accountNumber: event.accountNumber,
-        accountType: BankAccount.accountTypeToString(accountType: event.accountType),
-        address: event.address,
-        addressSecondary: event.addressSecondary,
-        city: event.city,
-        state: event.state,
-        zip: event.zip
+        firstName: state.firstName,
+        lastName: state.lastName,
+        routingNumber: state.routingNumber,
+        accountNumber: state.accountNumber,
+        accountType: BankAccount.accountTypeToString(accountType: state.accountType),
+        address: state.address,
+        addressSecondary: state.addressSecondary,
+        city: state.city,
+        state: state.state,
+        zip: state.zip
       );
       _updateBusinessBloc(bankAccount: account);
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
@@ -106,21 +106,21 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
     }
   }
 
-  Future<void> _mapUpdatedToState({required Updated event, required Emitter<BankScreenState> emit}) async {
+  Future<void> _mapUpdatedToState({required Emitter<BankScreenState> emit}) async {
     emit(state.update(isSubmitting: true));
     try {
       final BankAccount account = await _bankRepository.update(
-        identifier: event.identifier,
-        firstName: event.firstName,
-        lastName: event.lastName,
-        routingNumber: event.routingNumber,
-        accountNumber: event.accountNumber,
-        accountType: BankAccount.accountTypeToString(accountType: event.accountType),
-        address: event.address,
-        addressSecondary: event.addressSecondary,
-        city: event.city,
-        state: event.state,
-        zip: event.zip
+        identifier: _businessBloc.business.accounts.bankAccount.identifier,
+        firstName: state.firstName,
+        lastName: state.lastName,
+        routingNumber: state.routingNumber,
+        accountNumber: state.accountNumber,
+        accountType: BankAccount.accountTypeToString(accountType: state.accountType),
+        address: state.address,
+        addressSecondary: state.addressSecondary,
+        city: state.city,
+        state: state.state,
+        zip: state.zip
       );
       _updateBusinessBloc(bankAccount: account);
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));

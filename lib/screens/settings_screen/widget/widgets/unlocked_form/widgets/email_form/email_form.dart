@@ -22,15 +22,12 @@ class EmailForm extends StatefulWidget {
 class _EmailFormState extends State<EmailForm> {
   final FocusNode _focusNode = FocusNode();
 
-  late TextEditingController _controller;
   late EmailFormBloc _emailFormBloc;
   
   @override
   void initState() {
     super.initState();
     _emailFormBloc = BlocProvider.of<EmailFormBloc>(context);
-    _controller = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.email);
-    _controller.addListener(_onEmailChanged);
   }
   
   @override
@@ -57,7 +54,6 @@ class _EmailFormState extends State<EmailForm> {
 
   @override
   void dispose() {
-    _controller.dispose();
     _focusNode.dispose();
     _emailFormBloc.close();
     super.dispose();
@@ -80,7 +76,8 @@ class _EmailFormState extends State<EmailForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _controller,
+          initialValue: BlocProvider.of<BusinessBloc>(context).business.email,
+          onChanged: (email) => _onEmailChanged(email: email),
           focusNode: _focusNode,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.done,
@@ -89,7 +86,7 @@ class _EmailFormState extends State<EmailForm> {
             _focusNode.unfocus();
             _submitEmail(state: state);
           },
-          validator: (_) => !state.isEmailValid && _controller.text.isNotEmpty
+          validator: (_) => !state.isEmailValid && state.email.isNotEmpty
             ? "Invalid Email"
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -149,21 +146,18 @@ class _EmailFormState extends State<EmailForm> {
 
   bool _emailValid({required EmailFormState state}) {
     return state.isEmailValid &&
-      BlocProvider.of<BusinessBloc>(context).business.email != _controller.text &&
-      _controller.text.isNotEmpty && 
+      state.email.isNotEmpty && 
+      BlocProvider.of<BusinessBloc>(context).business.email != state.email &&
       !state.isSubmitting;
   }
   
-  void _onEmailChanged() {
-    _emailFormBloc.add(EmailChanged(email: _controller.text));
+  void _onEmailChanged({required String email}) {
+    _emailFormBloc.add(EmailChanged(email: email));
   }
   
   void _submitEmail({required EmailFormState state}) {
     if (_emailValid(state: state)) {
-      _emailFormBloc.add(Submitted(
-        email: _controller.text,
-        identifier: BlocProvider.of<BusinessBloc>(context).business.identifier
-      ));
+      _emailFormBloc.add(Submitted());
     }
   }
 

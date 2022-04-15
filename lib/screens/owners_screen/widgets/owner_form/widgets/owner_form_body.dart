@@ -42,79 +42,33 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
 
   final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
-  final MaskTextInputFormatter _phoneFormatter = InputFormatters.phone();
-  final MaskTextInputFormatter _dateFormatter = InputFormatters.date();
-  final MaskTextInputFormatter _ssnFormatter = InputFormatters.ssn();
-  final MaskTextInputFormatter _percentOwnershipFormatter = InputFormatters.setLengthDigits(numberDigits: 3);
-  final MaskTextInputFormatter _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2);
-  final MaskTextInputFormatter _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5);
-
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _titleController;
-  late TextEditingController _phoneController;
-  late TextEditingController _emailController;
-  late TextEditingController _percentOwnershipController;
   late TextEditingController _dobController;
-  late TextEditingController _ssnController;
-  late TextEditingController _addressController;
-  late TextEditingController _addressSecondaryController;
-  late TextEditingController _cityController;
-  late TextEditingController _stateController;
-  late TextEditingController _zipController;
+  
+  late MaskTextInputFormatter _phoneFormatter;
+  late MaskTextInputFormatter _percentOwnershipFormatter;
+  late MaskTextInputFormatter _ssnFormatter;
+  late MaskTextInputFormatter _stateFormatter;
+  late MaskTextInputFormatter _zipFormatter;
 
   late OwnerFormBloc _ownerFormBloc;
-
- bool get _isFormPopulated => 
-   _addressController.text.isNotEmpty &&
-   _cityController.text.isNotEmpty &&
-   _stateController.text.isNotEmpty &&
-   _zipController.text.isNotEmpty &&
-   _firstNameController.text.isNotEmpty &&
-   _lastNameController.text.isNotEmpty &&
-   _titleController.text.isNotEmpty &&
-   _phoneController.text.isNotEmpty &&
-   _emailController.text.isNotEmpty &&
-   _percentOwnershipController.text.isNotEmpty &&
-   _dobController.text.isNotEmpty &&
-   _ssnController.text.isNotEmpty;
  
  @override
   void initState() {
     super.initState();
     _ownerFormBloc = BlocProvider.of<OwnerFormBloc>(context);
-
-    _firstNameController = TextEditingController(text: widget._ownerAccount?.firstName ?? "");
-    _lastNameController = TextEditingController(text: widget._ownerAccount?.lastName ?? "");
-    _titleController = TextEditingController(text: widget._ownerAccount?.title ?? "");
-    _phoneController = TextEditingController(text: widget._ownerAccount?.phone ?? "");
-    _emailController = TextEditingController(text: widget._ownerAccount?.email ?? "");
-    _percentOwnershipController = TextEditingController(text: widget._ownerAccount?.percentOwnership == null ? "" : widget._ownerAccount?.percentOwnership.toString());
+    
+    _phoneFormatter = InputFormatters.phone(initial: widget._ownerAccount?.phone ?? "");
+    _percentOwnershipFormatter = InputFormatters.setLengthDigits(numberDigits: 3, initial: widget._ownerAccount?.percentOwnership == null ? "" : widget._ownerAccount?.percentOwnership.toString());
+    
     _dobController = TextEditingController(text: widget._ownerAccount?.dob ?? "");
-    _ssnController = TextEditingController(text: widget._ownerAccount?.ssn ?? "");
-    _addressController = TextEditingController(text: widget._ownerAccount?.address.address ?? "");
-    _addressSecondaryController = TextEditingController(text: widget._ownerAccount?.address.addressSecondary ?? "");
-    _cityController = TextEditingController(text: widget._ownerAccount?.address.city ?? "");
-    _stateController = TextEditingController(text: widget._ownerAccount?.address.state ?? "");
-    _zipController = TextEditingController(text: widget._ownerAccount?.address.zip ?? "");
+    
+    _ssnFormatter = InputFormatters.ssn(initial: widget._ownerAccount?.ssn ?? "");
+    _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: widget._ownerAccount?.address.state ?? "");
+    _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: widget._ownerAccount?.address.zip ?? "");
 
     if (widget._ownerAccount != null) {
       _ownerFormBloc.add(PrimaryChanged(isPrimary: widget._ownerAccount!.primary));
     }
-
-    _firstNameController.addListener(_onFirstNameChanged);
-    _lastNameController.addListener(_onLastNameChanged);
-    _titleController.addListener(_onTitleChanged);
-    _phoneController.addListener(_onPhoneChanged);
-    _emailController.addListener(_onEmailChanged);
-    _percentOwnershipController.addListener(_onPercentOwnershipChanged);
-    _dobController.addListener(_onDobChanged);
-    _ssnController.addListener(_onSsnChanged);
-    _addressController.addListener(_onAddressChanged);
-    _addressSecondaryController.addListener(_onAddressSecondaryChanged);
-    _cityController.addListener(_onCityChanged);
-    _stateController.addListener(_onStateChanged);
-    _zipController.addListener(_onZipChanged);
   }
  
  @override
@@ -271,43 +225,18 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   
   @override
   void dispose() {
-    _firstNameController.dispose();
     _firstNameFocus.dispose();
-
-    _lastNameController.dispose();
     _lastNameFocus.dispose();
-
-    _titleController.dispose();
     _titleFocus.dispose();
-
-    _phoneController.dispose();
     _phoneFocus.dispose();
-
-    _emailController.dispose();
     _emailFocus.dispose();
-
-    _percentOwnershipController.dispose();
     _percentOwnershipFocus.dispose();
-
-    _dobController.dispose();
     _dobFocus.dispose();
-
-    _ssnController.dispose();
     _ssnFocus.dispose();
-
-    _addressController.dispose();
     _addressFocus.dispose();
-
-    _addressSecondaryController.dispose();
     _addressSecondaryFocus.dispose();
-
-    _cityController.dispose();
     _cityFocus.dispose();
-
-    _stateController.dispose();
     _stateFocus.dispose();
-
-    _zipController.dispose();
     _zipFocus.dispose();
 
     _ownerFormBloc.close();
@@ -374,12 +303,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _firstNameController,
+          initialValue: widget._ownerAccount?.firstName ?? "",
+          onChanged: (firstName) => _onFirstNameChanged(firstName: firstName),
           focusNode: _firstNameFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _firstNameFocus.unfocus(),
-          validator: (_) => !state.isFirstNameValid && _firstNameController.text.isNotEmpty
+          validator: (_) => !state.isFirstNameValid && state.firstName.isNotEmpty
             ? 'Invalid First Name'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -406,12 +336,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _lastNameController,
+          initialValue: widget._ownerAccount?.lastName ?? "",
+          onChanged: (lastName) => _onLastNameChanged(lastName: lastName),
           focusNode: _lastNameFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _lastNameFocus.unfocus(),
-          validator: (_) => !state.isLastNameValid && _lastNameController.text.isNotEmpty
+          validator: (_) => !state.isLastNameValid && state.lastName.isNotEmpty
             ? 'Invalid Last Name'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -438,12 +369,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _titleController,
+          initialValue: widget._ownerAccount?.title ?? "",
+          onChanged: (title) => _onTitleChanged(title: title),
           focusNode: _titleFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _titleFocus.unfocus(),
-          validator: (_) => !state.isTitleValid && _titleController.text.isNotEmpty
+          validator: (_) => !state.isTitleValid && state.title.isNotEmpty
             ? 'Invalid Title'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -470,12 +402,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _emailController,
+          initialValue: widget._ownerAccount?.email ?? "",
+          onChanged: (email) => _onEmailChanged(email: email),
           focusNode: _emailFocus,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _emailFocus.unfocus(),
-          validator: (_) => !state.isEmailValid && _emailController.text.isNotEmpty
+          validator: (_) => !state.isEmailValid && state.email.isNotEmpty
             ? 'Invalid Email'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -489,6 +422,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     return BlocBuilder<OwnerFormBloc, OwnerFormState>(
       builder: (context, state) {
         return TextFormField(
+          readOnly: true,
           key: const Key("dobFieldKey"),
           textCapitalization: TextCapitalization.none,
           decoration: InputDecoration(
@@ -507,12 +441,11 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _dobFocus.unfocus(),
-          validator: (_) => !state.isDobValid && _dobController.text.isNotEmpty
+          validator: (_) => !state.isDobValid && state.dob.isNotEmpty
             ? 'Invalid Date of Birth'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           autocorrect: false,
-          inputFormatters: [_dateFormatter],
           onTap: () => _onDobTap(state: state),
         );
       }
@@ -537,12 +470,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _percentOwnershipController,
+          initialValue: _percentOwnershipFormatter.getMaskedText(),
+          onChanged: (_) => _onPercentOwnershipChanged(),
           focusNode: _percentOwnershipFocus,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _percentOwnershipFocus.unfocus(),
-          validator: (_) => !state.isPercentOwnershipValid && _percentOwnershipController.text.isNotEmpty
+          validator: (_) => !state.isPercentOwnershipValid && state.percentOwnership.isNotEmpty
             ? 'Ownership by ALL owners must be less than 100%'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -570,12 +504,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _phoneController,
+          initialValue: _phoneFormatter.getMaskedText(),
+          onChanged: (_) => _onPhoneChanged(),
           focusNode: _phoneFocus,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _phoneFocus.unfocus(),
-          validator: (_) => !state.isPhoneValid && _phoneController.text.isNotEmpty
+          validator: (_) => !state.isPhoneValid && state.phone.isNotEmpty
             ? 'Invalid Phone Number'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -603,12 +538,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _ssnController,
+          initialValue: _ssnFormatter.getMaskedText(),
+          onChanged: (_) => _onSsnChanged(),
           focusNode: _ssnFocus,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _ssnFocus.unfocus(),
-          validator: (_) => !state.isSsnValid && _ssnController.text.isNotEmpty
+          validator: (_) => !state.isSsnValid && state.ssn.isNotEmpty
             ? 'Invalid SSN'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -663,12 +599,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _addressController,
+          initialValue: widget._ownerAccount?.address.address ?? "",
+          onChanged: (address) => _onAddressChanged(address: address),
           focusNode: _addressFocus,
           keyboardType: TextInputType.streetAddress,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _addressFocus.unfocus(),
-          validator: (_) => !state.isAddressValid && _addressController.text.isNotEmpty
+          validator: (_) => !state.isAddressValid && state.address.isNotEmpty
             ? 'Invalid Address'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -695,12 +632,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _addressSecondaryController,
+          initialValue: widget._ownerAccount?.address.addressSecondary ?? "",
+          onChanged: (addressSecondary) => _onAddressSecondaryChanged(addressSecondary: addressSecondary),
           focusNode: _addressSecondaryFocus,
           keyboardType: TextInputType.streetAddress,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _addressSecondaryFocus.unfocus(),
-          validator: (_) => !state.isAddressSecondaryValid && _addressSecondaryController.text.isNotEmpty
+          validator: (_) => !state.isAddressSecondaryValid && state.addressSecondary.isNotEmpty
             ? 'Invalid Address'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -727,12 +665,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _cityController,
+          initialValue: widget._ownerAccount?.address.city ?? "",
+          onChanged: (city) => _onCityChanged(city: city),
           focusNode: _cityFocus,
           keyboardType: TextInputType.name,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _cityFocus.unfocus(),
-          validator: (_) => !state.isCityValid && _cityController.text.isNotEmpty
+          validator: (_) => !state.isCityValid && state.city.isNotEmpty
             ? 'Invalid City'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -759,12 +698,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _stateController,
+          initialValue: _stateFormatter.getMaskedText(),
+          onChanged: (_) => _onStateChanged(),
           focusNode: _stateFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _stateFocus.unfocus(),
-          validator: (_) => !state.isStateValid && _stateController.text.isNotEmpty
+          validator: (_) => !state.isStateValid && state.state.isNotEmpty
             ? 'Invalid State'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -791,12 +731,13 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _zipController,
+          initialValue: _zipFormatter.getMaskedText(),
+          onChanged: (_) => _onZipChanged(),
           focusNode: _zipFocus,
           keyboardType: TextInputType.phone,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) => _zipFocus.unfocus(),
-          validator: (_) => !state.isZipValid && _zipController.text.isNotEmpty
+          validator: (_) => !state.isZipValid && state.zip.isNotEmpty
             ? 'Invalid Zip'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -850,68 +791,57 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   }
 
   bool _buttonEnabled({required OwnerFormState state}) {
-    return state.isFormValid && _isFormPopulated && !state.isSubmitting;
+    return state.isFormValid && !state.isSubmitting && _fieldsChanged(state: state);
+  }
+
+  bool _fieldsChanged({required OwnerFormState state}) {
+    if (widget._ownerAccount == null) return true;
+    OwnerAccount ownerAccount = widget._ownerAccount!;
+
+    return ownerAccount.primary != state.isPrimary ||
+      ownerAccount.firstName != state.firstName ||
+      ownerAccount.lastName != state.lastName ||
+      ownerAccount.title != state.title ||
+      ownerAccount.phone != state.phone ||
+      ownerAccount.email != state.email ||
+      ownerAccount.percentOwnership.toString() != state.percentOwnership ||
+      ownerAccount.dob != state.dob ||
+      ownerAccount.ssn != state.ssn ||
+      ownerAccount.address.address != state.address ||
+      ownerAccount.address.addressSecondary != state.addressSecondary ||
+      ownerAccount.address.city != state.city ||
+      ownerAccount.address.state != state.state ||
+      ownerAccount.address.zip != state.zip;
   }
 
   void _submitButtonPressed({required OwnerFormState state, required BuildContext context}) {
     if (_buttonEnabled(state: state)) {
       if (widget._ownerAccount != null) {
-        BlocProvider.of<OwnerFormBloc>(context).add(Updated(
-          identifier: widget._ownerAccount!.identifier,
-          firstName: _firstNameController.text, 
-          lastName: _lastNameController.text,
-          title: _titleController.text, 
-          phone: _phoneController.text, 
-          email: _emailController.text, 
-          primary: state.isPrimary, 
-          percentOwnership: _percentOwnershipController.text, 
-          dob: _dobController.text, 
-          ssn: _ssnController.text, 
-          address: _addressController.text, 
-          addressSecondary: _addressSecondaryController.text, 
-          city: _cityController.text, 
-          state: _stateController.text, 
-          zip: _zipController.text
-        ));
+        BlocProvider.of<OwnerFormBloc>(context).add(Updated());
       } else {
-        BlocProvider.of<OwnerFormBloc>(context).add(Submitted(
-          firstName: _firstNameController.text, 
-          lastName: _lastNameController.text,
-          title: _titleController.text, 
-          phone: _phoneController.text, 
-          email: _emailController.text, 
-          primary: state.isPrimary, 
-          percentOwnership: _percentOwnershipController.text, 
-          dob: _dobController.text, 
-          ssn: _ssnController.text, 
-          address: _addressController.text, 
-          addressSecondary: _addressSecondaryController.text, 
-          city: _cityController.text, 
-          state: _stateController.text, 
-          zip: _zipController.text
-        ));
+        BlocProvider.of<OwnerFormBloc>(context).add(Submitted());
       }
     }
   }
 
-  void _onFirstNameChanged() {
-    _ownerFormBloc.add(FirstNameChanged(firstName: _firstNameController.text));
+  void _onFirstNameChanged({required String firstName}) {
+    _ownerFormBloc.add(FirstNameChanged(firstName: firstName));
   }
 
-  void _onLastNameChanged() {
-    _ownerFormBloc.add(LastNameChanged(lastName: _lastNameController.text));
+  void _onLastNameChanged({required String lastName}) {
+    _ownerFormBloc.add(LastNameChanged(lastName: lastName));
   }
 
-  void _onTitleChanged() {
-    _ownerFormBloc.add(TitleChanged(title: _titleController.text));
+  void _onTitleChanged({required String title}) {
+    _ownerFormBloc.add(TitleChanged(title: title));
   }
 
   void _onPhoneChanged() {
     _ownerFormBloc.add(PhoneChanged(phone: _phoneFormatter.getUnmaskedText()));
   }
 
-  void _onEmailChanged() {
-    _ownerFormBloc.add(EmailChanged(email: _emailController.text));
+  void _onEmailChanged({required String email}) {
+    _ownerFormBloc.add(EmailChanged(email: email));
   }
 
   void _onPrimaryChanged({@required bool? isPrimary}) async {
@@ -934,38 +864,33 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   }
 
   void _onPercentOwnershipChanged() {
-    if (_percentOwnershipController.text.isNotEmpty) {
-      _ownerFormBloc.add(PercentOwnershipChanged(percentOwnership: int.parse(_percentOwnershipController.text)));
+    if (_percentOwnershipFormatter.getMaskedText().isNotEmpty) {
+      _ownerFormBloc.add(PercentOwnershipChanged(percentOwnership: int.parse(_percentOwnershipFormatter.getMaskedText())));
     }
-  }
-
-  void _onDobChanged() {
-    final String dob = _dateFormatter.getMaskedText() == "" ? _dobController.text : _dateFormatter.getMaskedText();
-    _ownerFormBloc.add(DobChanged(dob: dob));
   }
 
   void _onSsnChanged() {
     _ownerFormBloc.add(SsnChanged(ssn: _ssnFormatter.getUnmaskedText()));
   }
 
-  void _onAddressChanged() {
-    _ownerFormBloc.add(AddressChanged(address: _addressController.text));
+  void _onAddressChanged({required String address}) {
+    _ownerFormBloc.add(AddressChanged(address: address));
   }
 
-  void _onAddressSecondaryChanged() {
-    _ownerFormBloc.add(AddressSecondaryChanged(addressSecondary: _addressSecondaryController.text));
+  void _onAddressSecondaryChanged({required String addressSecondary}) {
+    _ownerFormBloc.add(AddressSecondaryChanged(addressSecondary: addressSecondary));
   }
 
-  void _onCityChanged() {
-    _ownerFormBloc.add(CityChanged(city: _cityController.text));
+  void _onCityChanged({required String city}) {
+    _ownerFormBloc.add(CityChanged(city: city));
   }
 
   void _onStateChanged() {
-    _ownerFormBloc.add(StateChanged(state: _stateController.text));
+    _ownerFormBloc.add(StateChanged(state: _stateFormatter.getMaskedText()));
   }
 
   void _onZipChanged() {
-    _ownerFormBloc.add(ZipChanged(zip: _zipFormatter.getUnmaskedText()));
+    _ownerFormBloc.add(ZipChanged(zip: _zipFormatter.getMaskedText()));
   }
 
   OwnerAccount? _previouslyAssignedPrimary() {
@@ -1010,7 +935,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
       errorInvalidText: "Invalid Date",
       fieldLabelText: "DOB",
       context: context,
-      initialDate: state.isDobValid &&  _dobController.text != "" ? DateFormat.yMd().parse(_dobController.text) : DateTime.now(),
+      initialDate: state.isDobValid &&  state.dob != "" ? DateFormat.yMd().parse(state.dob) : DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (context, child) => Theme(
@@ -1021,6 +946,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
     ).then((dob) {
       if (dob != null) {
         _dobController.text = DateFormat.yMd().format(dob);
+        _ownerFormBloc.add(DobChanged(dob: _dobController.text));
       }
     });
   }

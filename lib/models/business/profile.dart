@@ -41,7 +41,7 @@ class Profile extends Equatable {
       name: "", 
       website: "", 
       description: "", 
-      phone: "phone", 
+      phone: "", 
       googlePlaceId: "googlePlaceId", 
       hours: Hours.empty()
     );

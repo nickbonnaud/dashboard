@@ -118,7 +118,7 @@ void main() {
         Prediction selectedPrediction = MockPrediction();
         when(() => selectedPrediction.placeId).thenReturn(faker.guid.guid());
         when(() => places.getDetailsByPlaceId(any(that: isA<String>()))).thenAnswer((_) async {
-          _selectedPrediction = PlaceDetails(adrAddress: "adrAddress", name: "name", placeId: "placeId", utcOffset: 1);
+          _selectedPrediction = PlaceDetails(adrAddress: "adrAddress", name: "fake name", website: 'fake.com', formattedPhoneNumber: "(111) 222-3333", placeId: "placeId", utcOffset: 1);
           return PlacesDetailsResponse(
             htmlAttributions: [],
             result: _selectedPrediction,
@@ -127,7 +127,10 @@ void main() {
         });
         bloc.add(PredictionSelected(prediction: selectedPrediction));
       },
-      expect: () => [_baseState.update(isSubmitting: true, predictions: []), _baseState.update(isSubmitting: false, selectedPrediction: _selectedPrediction)]
+      expect: () => [
+        _baseState.update(isSubmitting: true, predictions: []),
+        _baseState.update(isSubmitting: false, selectedPrediction: _selectedPrediction, name: _selectedPrediction.name, website: _selectedPrediction.website, phone: _selectedPrediction.formattedPhoneNumber)
+      ]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(

@@ -2,6 +2,8 @@ part of 'email_form_bloc.dart';
 
 @immutable
 class EmailFormState extends Equatable {
+  final String email;
+
   final bool isEmailValid;
   final bool isSubmitting;
   final bool isSuccess;
@@ -9,6 +11,8 @@ class EmailFormState extends Equatable {
   final CustomAnimationControl errorButtonControl;
   
   const EmailFormState({
+    required this.email,
+
     required this.isEmailValid,
     required this.isSubmitting,
     required this.isSuccess,
@@ -16,8 +20,10 @@ class EmailFormState extends Equatable {
     required this.errorButtonControl
   });
 
-  factory EmailFormState.initial() {
-    return const EmailFormState(
+  factory EmailFormState.initial({required String email}) {
+    return EmailFormState(
+      email: email,
+
       isEmailValid: true,
       isSubmitting: false,
       isSuccess: false,
@@ -27,6 +33,8 @@ class EmailFormState extends Equatable {
   }
 
   EmailFormState update({
+    String? email,
+
     bool? isEmailValid,
     bool? isSubmitting,
     bool? isSuccess,
@@ -34,6 +42,8 @@ class EmailFormState extends Equatable {
     CustomAnimationControl? errorButtonControl
   }) {
     return EmailFormState(
+      email: email ?? this.email,
+
       isEmailValid: isEmailValid ?? this.isEmailValid,
       isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
@@ -44,6 +54,8 @@ class EmailFormState extends Equatable {
 
   @override
   List<Object?> get props => [
+    email,
+
     isEmailValid,
     isSubmitting,
     isSuccess,
@@ -53,6 +65,8 @@ class EmailFormState extends Equatable {
   
   @override
   String toString() => '''UnlockedFormState {
+    email: $email,
+    
     isEmailValid: $isEmailValid,
     isSubmitting: $isSubmitting,
     isSuccess: $isSuccess,

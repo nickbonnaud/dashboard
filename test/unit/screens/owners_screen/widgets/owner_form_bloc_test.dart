@@ -8,23 +8,31 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_animations/simple_animations.dart';
 
+import '../../../../helpers/mock_data_generator.dart';
+
 class MockOwnerRepository extends Mock implements OwnerRepository {}
 class MockOwnersScreenBloc extends Mock implements OwnersScreenBloc {}
 class MockOwnerAccount extends Mock implements OwnerAccount {}
 
 void main() {
   group("Owner Form Bloc Tests", () {
+    late MockDataGenerator mockDataGenerator;
     late OwnerRepository ownerRepository;
     late OwnersScreenBloc ownersScreenBloc;
     late OwnerFormBloc ownerFormBloc;
+    late OwnerFormBloc ownerFormBlocEdit;
 
     late OwnerFormState _baseState;
+    late OwnerFormState _baseStateEdit;
 
     setUp(() {
+      mockDataGenerator = MockDataGenerator();
       ownerRepository = MockOwnerRepository();
       ownersScreenBloc = MockOwnersScreenBloc();
       ownerFormBloc = OwnerFormBloc(ownerRepository: ownerRepository, ownersScreenBloc: ownersScreenBloc);
+      ownerFormBlocEdit = OwnerFormBloc(ownerRepository: ownerRepository, ownersScreenBloc: ownersScreenBloc, ownerAccount: mockDataGenerator.createOwner(index: 0));
       _baseState = ownerFormBloc.state;
+      _baseStateEdit = ownerFormBlocEdit.state;
       registerFallbackValue(OwnerAdded(owner: MockOwnerAccount()));
       registerFallbackValue(OwnerUpdated(owner: MockOwnerAccount()));
     });
@@ -42,7 +50,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const FirstNameChanged(firstName: "a")),
-      expect: () => [_baseState.update(isFirstNameValid: false)]
+      expect: () => [_baseState.update(firstName: 'a', isFirstNameValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -50,7 +58,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const LastNameChanged(lastName: "a")),
-      expect: () => [_baseState.update(isLastNameValid: false)]
+      expect: () => [_baseState.update(lastName: 'a', isLastNameValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -58,7 +66,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const TitleChanged(title: "s")),
-      expect: () => [_baseState.update(isTitleValid: false)]
+      expect: () => [_baseState.update(title: 's', isTitleValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -66,7 +74,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const PhoneChanged(phone: "fh36ka*^%dd3")),
-      expect: () => [_baseState.update(isPhoneValid: false)]
+      expect: () => [_baseState.update(phone: "fh36ka*^%dd3", isPhoneValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -74,7 +82,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const EmailChanged(email: "email?^)23ds")),
-      expect: () => [_baseState.update(isEmailValid: false)]
+      expect: () => [_baseState.update(email: "email?^)23ds", isEmailValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -89,7 +97,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const PercentOwnershipChanged(percentOwnership: 200)),
-      expect: () => [_baseState.update(isPercentOwnershipValid: false)]
+      expect: () => [_baseState.update(percentOwnership: '200', isPercentOwnershipValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -97,7 +105,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const DobChanged(dob: "&2mv/22/198y")),
-      expect: () => [_baseState.update(isDobValid: false)]
+      expect: () => [_baseState.update(dob: "&2mv/22/198y", isDobValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -105,7 +113,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const SsnChanged(ssn: "*hh-u8-od%s")),
-      expect: () => [_baseState.update(isSsnValid: false)]
+      expect: () => [_baseState.update(ssn: "*hh-u8-od%s", isSsnValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -113,7 +121,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const AddressChanged(address: "!")),
-      expect: () => [_baseState.update(isAddressValid: false)]
+      expect: () => [_baseState.update(address: "!", isAddressValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -121,7 +129,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const AddressSecondaryChanged(addressSecondary: "&")),
-      expect: () => [_baseState.update(isAddressSecondaryValid: false)]
+      expect: () => [_baseState.update(addressSecondary: "&", isAddressSecondaryValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -129,7 +137,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const CityChanged(city: "&h")),
-      expect: () => [_baseState.update(isCityValid: false)]
+      expect: () => [_baseState.update(city: "&h", isCityValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -137,7 +145,7 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const StateChanged(state: "O*")),
-      expect: () => [_baseState.update(isStateValid: false)]
+      expect: () => [_baseState.update(state: "O*", isStateValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
@@ -145,17 +153,21 @@ void main() {
       build: () => ownerFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const ZipChanged(zip: "8hd3h*")),
-      expect: () => [_baseState.update(isZipValid: false)]
+      expect: () => [_baseState.update(zip: "8hd3h*", isZipValid: false)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Submitted event changes state: [isSubmitting: true], [isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP]",
       build: () => ownerFormBloc,
+      seed: () {
+        _baseState = OwnerFormState.empty(ownerAccount: mockDataGenerator.createOwner(index: 0));
+        return _baseState;
+      },
       act: (bloc) {
         when(() => ownerRepository.store(firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenAnswer((_) async => MockOwnerAccount());
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Submitted(firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Submitted());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -163,11 +175,15 @@ void main() {
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Submitted event calls ownerRepository.store()",
       build: () => ownerFormBloc,
+      seed: () {
+        _baseState = OwnerFormState.empty(ownerAccount: mockDataGenerator.createOwner(index: 0));
+        return _baseState;
+      },
       act: (bloc) {
         when(() => ownerRepository.store(firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenAnswer((_) async => MockOwnerAccount());
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Submitted(firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => ownerRepository.store(firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
@@ -178,11 +194,15 @@ void main() {
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Submitted event calls ownersScreenBloc.add()",
       build: () => ownerFormBloc,
+      seed: () {
+        _baseState = OwnerFormState.empty(ownerAccount: mockDataGenerator.createOwner(index: 0));
+        return _baseState;
+      },
       act: (bloc) {
         when(() => ownerRepository.store(firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenAnswer((_) async => MockOwnerAccount());
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Submitted(firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).called(1);
@@ -192,35 +212,39 @@ void main() {
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Submitted event on error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]",
       build: () => ownerFormBloc,
+      seed: () {
+        _baseState = OwnerFormState.empty(ownerAccount: mockDataGenerator.createOwner(index: 0));
+        return _baseState;
+      },
       act: (bloc) {
         when(() => ownerRepository.store(firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenThrow(const ApiException(error: "error"));
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Submitted(firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Submitted());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Updated event changes state: [isSubmitting: true], [isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.STOP]",
-      build: () => ownerFormBloc,
+      build: () => ownerFormBlocEdit,
       act: (bloc) {
         when(() => ownerRepository.update(identifier: any(named: "identifier"), firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenAnswer((_) async => MockOwnerAccount());
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Updated(identifier: "identifier", firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Updated());
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
+      expect: () => [_baseStateEdit.update(isSubmitting: true), _baseStateEdit.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Updated event calls ownerRepository.update()",
-      build: () => ownerFormBloc,
+      build: () => ownerFormBlocEdit,
       act: (bloc) {
         when(() => ownerRepository.update(identifier: any(named: "identifier"), firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenAnswer((_) async => MockOwnerAccount());
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Updated(identifier: "identifier", firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Updated());
       },
       verify: (_) {
         verify(() => ownerRepository.update(identifier: any(named: "identifier"), firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip"))).called(1);
@@ -229,12 +253,12 @@ void main() {
 
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Updated event calls ownersScreenBloc.add()",
-      build: () => ownerFormBloc,
+      build: () => ownerFormBlocEdit,
       act: (bloc) {
         when(() => ownerRepository.update(identifier: any(named: "identifier"), firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenAnswer((_) async => MockOwnerAccount());
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Updated(identifier: "identifier", firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Updated());
       },
       verify: (_) {
         verify(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).called(1);
@@ -243,14 +267,14 @@ void main() {
 
     blocTest<OwnerFormBloc, OwnerFormState>(
       "Updated event on error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.PLAY_FROM_START]",
-      build: () => ownerFormBloc,
+      build: () => ownerFormBlocEdit,
       act: (bloc) {
         when(() => ownerRepository.update(identifier: any(named: "identifier"), firstName: any(named: "firstName"), lastName: any(named: "lastName"), title: any(named: "title"), phone: any(named: "phone"), email: any(named: "email"), primary: any(named: "primary"), percentOwnership: any(named: "percentOwnership"), dob: any(named: "dob"), ssn: any(named: "ssn"), address: any(named: "address"), addressSecondary: any(named: "addressSecondary"), city: any(named: "city"), state: any(named: "state"), zip: any(named: "zip")))
           .thenThrow(const ApiException(error: "error"));
         when(() => ownersScreenBloc.add(any(that: isA<OwnersScreenEvent>()))).thenReturn(null);
-        bloc.add(const Updated(identifier: "identifier", firstName: "firstName", lastName: "lastName", title: "title", phone: "phone", email: "email", primary: false, percentOwnership: "25", dob: "dob", ssn: "ssn", address: "address", addressSecondary: "addressSecondary", city: "city", state: "state", zip: "zip"));
+        bloc.add(Updated());
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
+      expect: () => [_baseStateEdit.update(isSubmitting: true), _baseStateEdit.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<OwnerFormBloc, OwnerFormState>(

@@ -71,7 +71,7 @@ class SearchDisplay extends StatelessWidget {
               icon: Icon(
                 Icons.clear, 
                 color: Theme.of(context).colorScheme.danger,
-                size: SizeConfig.getWidth(3),
+                size: SizeConfig.getWidth(2),
               ), 
               onPressed: () => context.read<DateRangeCubit>().dateRangeChanged(dateRange: null)
             )

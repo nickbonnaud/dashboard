@@ -207,19 +207,19 @@ void main() {
       await tester.tap(find.byType(ListTile).first);
       await tester.pump(const Duration(milliseconds: 500));
       
-      expect(tester.widget<TextFormField>(find.byKey(const Key("nameFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(const Key("websiteFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(const Key("phoneTextFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(const Key("descriptionTextKey"))).controller!.text.isNotEmpty, false);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("nameFieldKey"))).initialValue!.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("websiteFieldKey"))).initialValue!.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("phoneTextFieldKey"))).initialValue!.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("descriptionTextKey"))).initialValue!.isNotEmpty, false);
     });
 
     testWidgets("Edit Profile fills in all textfields", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       
-      expect(tester.widget<TextFormField>(find.byKey(const Key("nameFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(const Key("websiteFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(const Key("phoneTextFieldKey"))).controller!.text.isNotEmpty, true);
-      expect(tester.widget<TextFormField>(find.byKey(const Key("descriptionTextKey"))).controller!.text.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("nameFieldKey"))).initialValue!.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("websiteFieldKey"))).initialValue!.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("phoneTextFieldKey"))).initialValue!.isNotEmpty, true);
+      expect(tester.widget<TextFormField>(find.byKey(const Key("descriptionTextKey"))).initialValue!.isNotEmpty, true);
     });
 
     testWidgets("NameTextField can receive text input", (tester) async {

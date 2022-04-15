@@ -18,12 +18,20 @@ class InputFormatters {
     );
   }
 
-  static MaskTextInputFormatter date() {
-    return MaskTextInputFormatter(mask: '##/##/####', filter: { "#": RegExp(r'[0-9]') });
+  static MaskTextInputFormatter date({String? initial}) {
+    return MaskTextInputFormatter(
+      mask: '##/##/####',
+      filter: { "#": RegExp(r'[0-9]') },
+      initialText: initial
+    );
   }
 
-  static MaskTextInputFormatter ssn() {
-    return MaskTextInputFormatter(mask: '###-##-####', filter: { "#": RegExp(r'[0-9]') });
+  static MaskTextInputFormatter ssn({String? initial}) {
+    return MaskTextInputFormatter(
+      mask: '###-##-####',
+      filter: { "#": RegExp(r'[0-9xX]') },
+      initialText: initial
+    );
   }
 
   static MaskTextInputFormatter uuid() {

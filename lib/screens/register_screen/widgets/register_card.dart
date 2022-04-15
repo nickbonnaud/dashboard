@@ -28,7 +28,7 @@ class RegisterCard extends StatelessWidget {
           : MediaQuery.of(context).size.width / 2.5,
         height: ResponsiveWrapper.of(context).isSmallerThan(TABLET)
           ? MediaQuery.of(context).size.height
-          : MediaQuery.of(context).size.height / 1.5,
+          : MediaQuery.of(context).size.height / 1.45,
         child: BlocProvider<RegisterFormBloc>(
           create: (BuildContext context) => RegisterFormBloc(
             authenticationRepository: _authenticationRepository, 

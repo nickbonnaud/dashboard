@@ -19,21 +19,16 @@ class BusinessAccountScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    return BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier.isEmpty
-      ? Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: AppBar(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: _businessAccountScreenBody(),
+      appBar: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier.isEmpty
+        ? AppBar(
             leading: Container(),
             backgroundColor: Theme.of(context).colorScheme.secondary
-          ),
-          body: _businessAccountScreenBody(),
-        )
-      : Scaffold(
-          appBar: DefaultAppBar(context: context),
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: _businessAccountScreenBody(),
-      );
+          )
+        : DefaultAppBar(context: context)
+    );
   }
 
   Widget _businessAccountScreenBody() {

@@ -23,7 +23,7 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
   BusinessAccountScreenBloc({required BusinessAccountRepository accountRepository, required BusinessBloc businessBloc, required BusinessAccount businessAccount}) 
     : _accountRepository = accountRepository,
       _businessBloc = businessBloc,
-      super(BusinessAccountScreenState.empty(entityType: businessAccount.entityType)) {
+      super(BusinessAccountScreenState.empty(businessAccount: businessBloc.business.accounts.businessAccount)) {
         _eventHandler();
   }
 
@@ -47,31 +47,31 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
   }
   
   void _mapNameChangedToState({required NameChanged event, required Emitter<BusinessAccountScreenState> emit}) {
-    emit(state.update(isNameValid: Validators.isValidBusinessName(name: event.name)));
+    emit(state.update(name: event.name, isNameValid: Validators.isValidBusinessName(name: event.name)));
   }
 
   void _mapAddressChangedToState({required AddressChanged event, required Emitter<BusinessAccountScreenState> emit}) {
-    emit(state.update(isAddressValid: Validators.isValidAddress(address: event.address)));
+    emit(state.update(address: event.address, isAddressValid: Validators.isValidAddress(address: event.address)));
   }
 
   void _mapAddressSecondaryChangedToState({required AddressSecondaryChanged event, required Emitter<BusinessAccountScreenState> emit}) {
-    emit(state.update(isAddressSecondaryValid: Validators.isValidAddressSecondary(address: event.addressSecondary)));
+    emit(state.update(addressSecondary: event.addressSecondary, isAddressSecondaryValid: Validators.isValidAddressSecondary(address: event.addressSecondary)));
   }
 
   void _mapCityChangedToState({required CityChanged event, required Emitter<BusinessAccountScreenState> emit}) {
-    emit(state.update(isCityValid: Validators.isValidCity(city: event.city)));
+    emit(state.update(city: event.city, isCityValid: Validators.isValidCity(city: event.city)));
   }
 
   void _mapStateChangedToState({required StateChanged event, required Emitter<BusinessAccountScreenState> emit}) {
-    emit(state.update(isStateValid: Constants.states.contains(event.state.toUpperCase())));
+    emit(state.update(state:event.state, isStateValid: Constants.states.contains(event.state.toUpperCase())));
   }
 
   void _mapZipChangedToState({required ZipChanged event, required Emitter<BusinessAccountScreenState> emit}) {
-    emit(state.update(isZipValid: Validators.isValidZip(zip: event.zip)));
+    emit(state.update(zip: event.zip, isZipValid: Validators.isValidZip(zip: event.zip)));
   }
 
   void _mapEinChangedToState({required EinChanged event, required Emitter<BusinessAccountScreenState> emit}) {
-    emit(state.update(isEinValid: Validators.isValidEin(ein: event.ein)));
+    emit(state.update(ein: event.ein, isEinValid: Validators.isValidEin(ein: event.ein)));
   }
 
   Future<void> _mapSubmittedToState({required Submitted event, required Emitter<BusinessAccountScreenState> emit}) async {
@@ -79,14 +79,14 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
     
     try {
       final BusinessAccount account = await _accountRepository.store(
-        name: event.name, 
-        address: event.address,
-        addressSecondary: event.addressSecondary,
-        city: event.city,
-        state: event.state.toUpperCase(),
-        zip: event.zip,
-        entityType: BusinessAccount.entityTypeToString(entityType: event.entityType),
-        ein: event.ein
+        name: state.name, 
+        address: state.address,
+        addressSecondary: state.addressSecondary,
+        city: state.city,
+        state: state.state.toUpperCase(),
+        zip: state.zip,
+        entityType: BusinessAccount.entityTypeToString(entityType: state.entityType),
+        ein: state.ein
       );
       _updateBusinessBloc(account: account);
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));
@@ -100,15 +100,15 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
 
     try {
       BusinessAccount account = await _accountRepository.update(
-        name: event.name, 
-        address: event.address,
-        addressSecondary: event.addressSecondary,
-        city: event.city,
-        state: event.state.toUpperCase(),
-        zip: event.zip,
-        entityType: BusinessAccount.entityTypeToString(entityType: event.entityType),
-        ein: event.ein,
-        identifier: event.id
+        name: state.name, 
+        address: state.address,
+        addressSecondary: state.addressSecondary,
+        city: state.city,
+        state: state.state.toUpperCase(),
+        zip: state.zip,
+        entityType: BusinessAccount.entityTypeToString(entityType: state.entityType),
+        ein: state.ein,
+        identifier: _businessBloc.business.accounts.businessAccount.identifier
       );
       _updateBusinessBloc(account: account);
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));

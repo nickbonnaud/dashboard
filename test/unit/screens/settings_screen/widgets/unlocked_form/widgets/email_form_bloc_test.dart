@@ -8,6 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_animations/simple_animations.dart';
 
+import '../../../../../../helpers/mock_data_generator.dart';
+
 class MockBusinessRepository extends Mock implements BusinessRepository {}
 class MockBusinessBloc extends Mock implements BusinessBloc {}
 class MockBusiness extends Mock implements Business {}
@@ -16,6 +18,7 @@ class MockEmailUpdated extends Mock implements EmailUpdated {}
 void main() {
   group("Email Form Bloc Tests", () {
     late BusinessRepository businessRepository;
+    late Business business;
     late BusinessBloc businessBloc;
     late EmailFormBloc emailFormBloc;
 
@@ -23,7 +26,9 @@ void main() {
 
     setUp(() {
       businessRepository = MockBusinessRepository();
+      business = MockDataGenerator().createBusiness();
       businessBloc = MockBusinessBloc();
+      when(() => businessBloc.business).thenReturn(business);
       emailFormBloc = EmailFormBloc(businessRepository: businessRepository, businessBloc: businessBloc);
 
       _baseState = emailFormBloc.state;
@@ -36,7 +41,7 @@ void main() {
     });
 
     test("Initial state of EmailFormBloc is EmailFormState.initial()", () {
-      expect(emailFormBloc.state, EmailFormState.initial());
+      expect(emailFormBloc.state, EmailFormState.initial(email: business.email));
     });
 
     blocTest<EmailFormBloc, EmailFormState>(
@@ -44,7 +49,7 @@ void main() {
       build: () => emailFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const EmailChanged(email: "notEmail")),
-      expect: () => [_baseState.update(isEmailValid: false)]
+      expect: () => [_baseState.update(email: "notEmail", isEmailValid: false)]
     );
 
     blocTest<EmailFormBloc, EmailFormState>(
@@ -55,7 +60,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<EmailUpdated>()))).thenReturn(null);
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -67,7 +72,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<EmailUpdated>()))).thenReturn(null);
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(Submitted()),
       verify: (_) {
         verify(() => businessRepository.updateEmail(email: any(named: "email"), identifier: any(named: "identifier"))).called(1);
       }
@@ -81,7 +86,7 @@ void main() {
         when(() => businessBloc.add(any(that: isA<EmailUpdated>()))).thenReturn(null);
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(Submitted()),
       verify: (_) {
         verify(() => businessBloc.add(any(that: isA<EmailUpdated>()))).called(1);
       }
@@ -94,7 +99,7 @@ void main() {
           .thenThrow(const ApiException(error: "error"));
         return emailFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(email: "email", identifier: "identifier")),
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 

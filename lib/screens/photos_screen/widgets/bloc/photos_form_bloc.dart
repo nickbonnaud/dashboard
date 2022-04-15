@@ -117,6 +117,6 @@ class PhotosFormBloc extends Bloc<PhotosFormEvent, PhotosFormState> {
   }
 
   Future<Photos> _storeBanner({required String identifier}) async {
-    return await _photosRepository.storeBanner(file: state.logoFile!, profileIdentifier: identifier);
+    return await _photosRepository.storeBanner(file: state.bannerFile!, profileIdentifier: identifier);
   }
 }

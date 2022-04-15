@@ -362,6 +362,10 @@ void main() {
       await screenBuilderEdit.createScreen(tester: tester);
       await tester.tap(find.byKey(const Key("editOwnerButton-0")));
       await tester.pump();
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+      await tester.enterText(find.byKey(const Key("zipFieldKey")), "36517");
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
       await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -1000));
       await tester.pump();
       await tester.tap(find.byKey(const Key("submitButtonKey")));
@@ -375,6 +379,8 @@ void main() {
       await tester.tap(find.byKey(const Key("editOwnerButton-0")));
       await tester.pump();
       expect(find.byType(OwnerForm), findsOneWidget);
+      await tester.enterText(find.byKey(const Key("firstNameFieldKey")), "fake");
+      await tester.pump(const Duration(milliseconds: 300));
       await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -1000));
       await tester.pump();
       await tester.tap(find.byKey(const Key("submitButtonKey")));
@@ -390,6 +396,8 @@ void main() {
       await tester.tap(find.byKey(const Key("editOwnerButton-0")));
       await tester.pump();
       expect(find.text("An Error Happened!"), findsNothing);
+      await tester.enterText(find.byKey(const Key("lastNameFieldKey")), "fake");
+      await tester.pump(const Duration(milliseconds: 300));
       await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -1000));
       await tester.pump();
       await tester.tap(find.byKey(const Key("submitButtonKey")));

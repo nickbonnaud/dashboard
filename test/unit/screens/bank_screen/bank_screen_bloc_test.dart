@@ -1,15 +1,15 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/bank_account.dart';
-import 'package:dashboard/providers/business_provider.dart';
+import 'package:dashboard/models/business/business.dart';
 import 'package:dashboard/repositories/bank_repository.dart';
-import 'package:dashboard/repositories/business_repository.dart';
-import 'package:dashboard/repositories/token_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/bank_screen/bloc/bank_screen_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_animations/simple_animations.dart';
+
+import '../../../helpers/mock_data_generator.dart';
 
 class MockBankRepository extends Mock implements BankRepository {}
 class MockBankAccount extends Mock implements BankAccount {}
@@ -21,42 +21,33 @@ void main() {
     late BankRepository _bankRepository;
     late BankAccount _bankAccount;
     late BankScreenBloc _bankScreenBloc;
-    late BankScreenBloc _bankScreenBlocWithMockBusinessBloc;
     late BusinessBloc _businessBloc;
 
     late BankScreenState _baseState;
 
     setUp(() {
+      Business business = MockDataGenerator().createBusiness();
+      _bankAccount = business.accounts.bankAccount;
+
       _bankRepository = MockBankRepository();
       _businessBloc = MockBusinessBloc();
-      _bankAccount = MockBankAccount();
-      when(() => _bankAccount.accountType).thenReturn(AccountType.checking);
+      when(() => _businessBloc.business).thenReturn(business);
+      
       _bankScreenBloc = BankScreenBloc(
         bankRepository: _bankRepository, 
-        bankAccount: _bankAccount, 
-        businessBloc: BusinessBloc(
-          businessRepository: const BusinessRepository(
-            businessProvider: BusinessProvider(), 
-            tokenRepository: TokenRepository()
-          )
-        )
-      );
-      _bankScreenBlocWithMockBusinessBloc = BankScreenBloc(
-        bankRepository: _bankRepository, 
-        bankAccount: _bankAccount, 
         businessBloc: _businessBloc
       );
-      _baseState = BankScreenState.empty(accountType: AccountType.checking);
+
+      _baseState = BankScreenState.empty(bankAccount: _bankAccount);
       registerFallbackValue(BankAccountUpdated(bankAccount: _bankAccount));
     });
 
     tearDown(() {
       _bankScreenBloc.close();
-      _bankScreenBlocWithMockBusinessBloc.close();
     });
 
     test("Initial state of BankScreenBloc is BankScreenState.empty()", () {
-      expect(_bankScreenBloc.state, BankScreenState.empty(accountType: _bankAccount.accountType));
+      expect(_bankScreenBloc.state, BankScreenState.empty(bankAccount: _bankAccount));
     });
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -64,7 +55,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const FirstNameChanged(firstName: "J")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isFirstNameValid: false)]
+      expect: () => [_baseState.update(firstName: "J", isFirstNameValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -72,7 +63,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const LastNameChanged(lastName: "J")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isLastNameValid: false)]
+      expect: () => [_baseState.update(lastName: "J", isLastNameValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -80,7 +71,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const RoutingNumberChanged(routingNumber: "124")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isRoutingNumberValid: false)]
+      expect: () => [_baseState.update(routingNumber: "124", isRoutingNumberValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -88,7 +79,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const AccountNumberChanged(accountNumber: "124")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isAccountNumberValid: false)]
+      expect: () => [_baseState.update(accountNumber: "124", isAccountNumberValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -103,7 +94,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const AddressChanged(address: "N")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isAddressValid: false)]
+      expect: () => [_baseState.update(address: "N", isAddressValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -111,7 +102,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const AddressSecondaryChanged(addressSecondary: "N")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isAddressSecondaryValid: false)]
+      expect: () => [_baseState.update(addressSecondary: "N", isAddressSecondaryValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -119,7 +110,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const CityChanged(city: "N")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isCityValid: false)]
+      expect: () => [_baseState.update(city: "N", isCityValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -127,7 +118,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const StateChanged(state: "N")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isStateValid: false)]
+      expect: () => [_baseState.update(state: "N", isStateValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -135,7 +126,7 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) => bloc.add(const ZipChanged(zip: "1")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isZipValid: false)]
+      expect: () => [_baseState.update(zip: "1", isZipValid: false)]
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
@@ -143,29 +134,18 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.store(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenAnswer((_) async => MockBankAccount());
-        bloc.add(const Submitted(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Submitted());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -175,75 +155,53 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.store(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenAnswer((_) async => MockBankAccount());
-        bloc.add(const Submitted(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => _bankRepository.store(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).called(1);
       }
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
       "Submitted event calls BusinessBloc.add", 
-      build: () => _bankScreenBlocWithMockBusinessBloc,
+      build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.store(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenAnswer((_) async => MockBankAccount());
         when(() => _businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(const Submitted(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => _businessBloc.add(any(that: isA<BusinessEvent>())));
@@ -255,29 +213,18 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.store(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenThrow(const ApiException(error: "error"));
-        bloc.add(const Submitted(
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Submitted());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
@@ -287,31 +234,19 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.update(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          identifier: _bankAccount.identifier,
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenAnswer((_) async => MockBankAccount());
-        bloc.add(const Updated(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Updated());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -321,80 +256,56 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.update(
-          identifier: 'identifier',
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          identifier: _bankAccount.identifier,
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenAnswer((_) async => MockBankAccount());
-        bloc.add(const Updated(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Updated());
       },
       verify: (_) {
         verify(() => _bankRepository.update(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          identifier: _bankAccount.identifier,
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).called(1);
       }
     );
 
     blocTest<BankScreenBloc, BankScreenState>(
       "Update event calls BusinessBloc.add", 
-      build: () => _bankScreenBlocWithMockBusinessBloc,
+      build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.update(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          identifier: _bankAccount.identifier,
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenAnswer((_) async => MockBankAccount());
         when(() => _businessBloc.add(any(that: isA<BusinessEvent>()))).thenReturn(null);
-        bloc.add(const Updated(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Updated());
       },
       verify: (_) {
         verify(() => _businessBloc.add(any(that: isA<BusinessEvent>())));
@@ -406,31 +317,19 @@ void main() {
       build: () => _bankScreenBloc,
       act: (bloc) {
         when(() => _bankRepository.update(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: BankAccount.accountTypeToString(accountType: AccountType.checking),
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
+          identifier: _bankAccount.identifier,
+          firstName: _bankAccount.firstName,
+          lastName: _bankAccount.lastName,
+          routingNumber: _bankAccount.routingNumber,
+          accountNumber: _bankAccount.accountNumber,
+          accountType: BankAccount.accountTypeToString(accountType: _bankAccount.accountType),
+          address: _bankAccount.address.address,
+          addressSecondary: _bankAccount.address.addressSecondary ?? "",
+          city: _bankAccount.address.city,
+          state: _bankAccount.address.state,
+          zip: _bankAccount.address.zip
         )).thenThrow(const ApiException(error: "error"));
-        bloc.add(const Updated(
-          identifier: "identifier",
-          firstName: "firstName",
-          lastName: "lastName",
-          routingNumber: "routingNumber",
-          accountNumber: "accountNumber",
-          accountType: AccountType.checking,
-          address: "address",
-          addressSecondary: "addressSecondary",
-          city: "city",
-          state: "state",
-          zip: "zip"
-        ));
+        bloc.add(Updated());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );

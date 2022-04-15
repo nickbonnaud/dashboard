@@ -211,6 +211,6 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
       context: context,
       message: "Photos Saved!",
       color: Theme.of(context).colorScheme.success
-    ).showToast().then((_) => Navigator.of(context).pop());
+    ).showToast().then((_) => Navigator.of(context).pop(true));
   }
 }

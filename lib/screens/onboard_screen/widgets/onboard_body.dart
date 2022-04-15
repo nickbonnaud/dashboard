@@ -223,8 +223,11 @@ class OnboardBody extends StatelessWidget {
     }
   }
 
-  void _showScreen({required BuildContext context, required String routeName}) {
-    Navigator.of(context).pushNamed(routeName)
-      .then((_) => BlocProvider.of<OnboardBloc>(context).add(OnboardEvent.next));
+  void _showScreen({required BuildContext context, required String routeName}) async {
+    bool? saved = await Navigator.of(context).pushNamed(routeName) as bool?;
+
+    if (saved != null && saved) {
+      BlocProvider.of<OnboardBloc>(context).add(OnboardEvent.next);
+    }
   }
 }

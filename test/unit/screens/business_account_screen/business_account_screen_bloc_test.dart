@@ -1,15 +1,17 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
+import 'package:dashboard/models/business/accounts.dart';
+import 'package:dashboard/models/business/business.dart';
 import 'package:dashboard/models/business/business_account.dart';
-import 'package:dashboard/providers/business_provider.dart';
+import 'package:dashboard/models/status.dart';
 import 'package:dashboard/repositories/business_account_repository.dart';
-import 'package:dashboard/repositories/business_repository.dart';
-import 'package:dashboard/repositories/token_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/business_account_screen/bloc/business_account_screen_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_animations/simple_animations.dart';
+
+import '../../../helpers/mock_data_generator.dart';
 
 class MockBusinessAccountRepository extends Mock implements BusinessAccountRepository {}
 class MockBusinessBloc extends Mock implements BusinessBloc {}
@@ -21,43 +23,50 @@ void main() {
     late BusinessAccountRepository _businessAccountRepository;
     late BusinessAccount _businessAccount;
     late BusinessAccountScreenBloc _businessAccountScreenBloc;
-    late BusinessAccountScreenBloc _businessAccountScreenBlocWithMockBusinessBloc;
     late BusinessBloc _businessBloc;
 
     late BusinessAccountScreenState _baseState;
 
     setUp(() {
-      _businessAccountRepository = MockBusinessAccountRepository();
-      _businessAccount = MockBusinessAccount();
-      when(() => _businessAccount.entityType).thenReturn(EntityType.llc);
-      _businessBloc = MockBusinessBloc();
-      _businessAccountScreenBloc = BusinessAccountScreenBloc(
-        accountRepository: _businessAccountRepository,
-        businessAccount: _businessAccount,
-        businessBloc: BusinessBloc(
-          businessRepository: const BusinessRepository(
-            businessProvider: BusinessProvider(), 
-            tokenRepository: TokenRepository()
-          )
-        )
+      MockDataGenerator mockDataGenerator = MockDataGenerator();
+      
+      Business business = Business(
+        identifier: 'identifier',
+        email: 'fake@gmail.com',
+        profile: mockDataGenerator.createProfile(),
+        photos: mockDataGenerator.createBusinessPhotos(),
+        accounts: Accounts(
+          businessAccount: mockDataGenerator.createBusinessAccount(entityType: EntityType.llc),
+          ownerAccounts: const [],
+          bankAccount: mockDataGenerator.createBankAccount(),
+          accountStatus: const Status(name: "name", code: 200)
+        ),
+        location: mockDataGenerator.createLocation(),
+        posAccount: mockDataGenerator.createPosAccount()
       );
-      _businessAccountScreenBlocWithMockBusinessBloc = BusinessAccountScreenBloc(
+      _businessAccount = business.accounts.businessAccount;
+
+      _businessAccountRepository = MockBusinessAccountRepository();
+      _businessBloc = MockBusinessBloc();
+
+      when(() => _businessBloc.business).thenReturn(business);
+
+      _businessAccountScreenBloc = BusinessAccountScreenBloc(
         accountRepository: _businessAccountRepository,
         businessBloc: _businessBloc,
         businessAccount: _businessAccount
       );
 
-      _baseState = BusinessAccountScreenState.empty(entityType: _businessAccount.entityType);
+      _baseState = BusinessAccountScreenState.empty(businessAccount: _businessAccount);
       registerFallbackValue(BusinessAccountUpdated(businessAccount: _businessAccount));
     });
 
     tearDown(() {
       _businessAccountScreenBloc.close();
-      _businessAccountScreenBlocWithMockBusinessBloc.close();
     });
 
     test("Initial state of BusinessAccountScreenBloc is BusinessAccountScreenState.empty()", () {
-      expect(_businessAccountScreenBloc.state, BusinessAccountScreenState.empty(entityType: EntityType.llc));
+      expect(_businessAccountScreenBloc.state, BusinessAccountScreenState.empty(businessAccount: _businessAccount));
     });
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -72,7 +81,7 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) => bloc.add(const NameChanged(name: "a")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isNameValid: false)]
+      expect: () => [_baseState.update(name: "a", isNameValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -80,7 +89,7 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) => bloc.add(const AddressChanged(address: "a")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isAddressValid: false)]
+      expect: () => [_baseState.update(address: "a", isAddressValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -88,7 +97,7 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) => bloc.add(const AddressSecondaryChanged(addressSecondary: "a")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isAddressSecondaryValid: false)]
+      expect: () => [_baseState.update(addressSecondary: "a", isAddressSecondaryValid: false)]
     );
     
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -96,7 +105,7 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) => bloc.add(const CityChanged(city: "f")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isCityValid: false)]
+      expect: () => [_baseState.update(city: 'f', isCityValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -104,7 +113,7 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) => bloc.add(const StateChanged(state: "y")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isStateValid: false)]
+      expect: () => [_baseState.update(state: 'y', isStateValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -112,7 +121,7 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) => bloc.add(const ZipChanged(zip: "e")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isZipValid: false)]
+      expect: () => [_baseState.update(zip: 'e', isZipValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -120,7 +129,7 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) => bloc.add(const EinChanged(ein: "m")),
       wait: const Duration(milliseconds: 300),
-      expect: () => [_baseState.update(isEinValid: false)]
+      expect: () => [_baseState.update(ein: 'm', isEinValid: false)]
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
@@ -128,25 +137,16 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.store(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(const Submitted(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Submitted());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -156,65 +156,47 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.store(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(const Submitted(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => _businessAccountRepository.store(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).called(1);
       }
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "Submitted event calls BusinessBloc.add()",
-      build: () => _businessAccountScreenBlocWithMockBusinessBloc,
+      build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.store(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenAnswer((_) async => MockBusinessAccount());
         when(() => _businessBloc.add(any(that: isA<BusinessAccountUpdated>()))).thenReturn(null);
-        bloc.add(const Submitted(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => _businessBloc.add(any(that: isA<BusinessEvent>()))).called(1);
@@ -226,25 +208,16 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.store(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenThrow(const ApiException(error: "error"));
-        bloc.add(const Submitted(
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Submitted());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
@@ -254,27 +227,17 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.update(
-          identifier: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          identifier: any(named: "identifier"),
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(const Updated(
-          id: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Updated());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
@@ -284,70 +247,50 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.update(
-          identifier: 'identifier',
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          identifier: any(named: "identifier"),
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenAnswer((_) async => MockBusinessAccount());
-        bloc.add(const Updated(
-          id: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Updated());
       },
       verify: (_) {
         verify(() => _businessAccountRepository.update(
-          identifier: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          identifier: any(named: "identifier"),
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).called(1);
       }
     );
 
     blocTest<BusinessAccountScreenBloc, BusinessAccountScreenState>(
       "Updated event calls BusinessBloc.add()",
-      build: () => _businessAccountScreenBlocWithMockBusinessBloc,
+      build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.update(
-          identifier: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          identifier: any(named: "identifier"),
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenAnswer((_) async => MockBusinessAccount());
         when(() => _businessBloc.add(any(that: isA<BusinessAccountUpdated>()))).thenReturn(null);
-        bloc.add(const Updated(
-          id: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Updated());
       },
       verify: (_) {
         verify(() => _businessBloc.add(any(that: isA<BusinessEvent>()))).called(1);
@@ -359,27 +302,17 @@ void main() {
       build: () => _businessAccountScreenBloc,
       act: (bloc) {
         when(() => _businessAccountRepository.update(
-          identifier: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: ('state').toUpperCase(),
-          zip: 'zip',
-          entityType: BusinessAccount.entityTypeToString(entityType: EntityType.corporation),
-          ein: "ein"
+          identifier: any(named: "identifier"),
+          name: any(named: 'name'), 
+          address: any(named: 'address'),
+          addressSecondary: any(named: 'addressSecondary'),
+          city: any(named: 'city'),
+          state: any(named: 'state'),
+          zip: any(named: 'zip'),
+          entityType: any(named: 'entityType'),
+          ein: any(named: 'ein')
         )).thenThrow(const ApiException(error: "error"));
-        bloc.add(const Updated(
-          id: "identifier",
-          name: 'name', 
-          address: 'address',
-          addressSecondary: 'addressSecondary',
-          city: 'city',
-          state: 'state',
-          zip: 'zip',
-          entityType: EntityType.corporation,
-          ein: "ein"
-        ));
+        bloc.add(Updated());
       },
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isFailure: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );

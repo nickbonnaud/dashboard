@@ -28,20 +28,16 @@ class GeoAccountScreen extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return _isEdit
-      ? Scaffold(
-          appBar: DefaultAppBar(context: context),
-          backgroundColor: Theme.of(context).colorScheme.background,
-          body: _geoAccountScreenBody(context: context),
-        )
-      : Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: AppBar(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: _geoAccountScreenBody(context: context),
+      appBar: _isEdit
+        ? DefaultAppBar(context: context)
+        : AppBar(
             leading: Container(),
             backgroundColor: Theme.of(context).colorScheme.secondary
-          ),
-          body: _geoAccountScreenBody(context: context),
-        );
+          )
+    );
   }
 
   Widget _geoAccountScreenBody({required BuildContext context}) {

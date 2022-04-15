@@ -22,7 +22,8 @@ class OwnerForm extends StatelessWidget {
     return BlocProvider<OwnerFormBloc>(
       create: (context) => OwnerFormBloc(
         ownerRepository: _ownerRepository,
-        ownersScreenBloc: BlocProvider.of<OwnersScreenBloc>(context)
+        ownersScreenBloc: BlocProvider.of<OwnersScreenBloc>(context),
+        ownerAccount: _ownerAccount
       ),
       child: OwnerFormBody(ownerAccount: _ownerAccount),
     );

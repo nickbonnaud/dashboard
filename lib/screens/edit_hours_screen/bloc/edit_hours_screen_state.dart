@@ -1,5 +1,6 @@
 part of 'edit_hours_screen_bloc.dart';
 
+@immutable
 class EditHoursScreenState extends Equatable {
   final List<Hour> sunday;
   final List<Hour> monday;
@@ -100,7 +101,7 @@ class EditHoursScreenState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
+  List<Object> get props => [
     sunday,
     monday,
     tuesday,

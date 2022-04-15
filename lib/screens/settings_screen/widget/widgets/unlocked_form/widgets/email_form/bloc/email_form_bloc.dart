@@ -18,7 +18,7 @@ class EmailFormBloc extends Bloc<EmailFormEvent, EmailFormState> {
   EmailFormBloc({required BusinessRepository businessRepository, required BusinessBloc businessBloc})
     : _businessRepository = businessRepository,
       _businessBloc = businessBloc,
-      super(EmailFormState.initial()) { _eventHandler(); }
+      super(EmailFormState.initial(email: businessBloc.business.email)) { _eventHandler(); }
   
   void _eventHandler() {
     on<EmailChanged>((event, emit) => _mapEmailChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: const Duration(milliseconds: 300)));
@@ -27,7 +27,7 @@ class EmailFormBloc extends Bloc<EmailFormEvent, EmailFormState> {
   }
 
   void _mapEmailChangedToState({required EmailChanged event, required Emitter<EmailFormState> emit}) {
-    emit(state.update(isEmailValid: Validators.isValidEmail(email: event.email)));
+    emit(state.update(email: event.email, isEmailValid: Validators.isValidEmail(email: event.email)));
   }
 
   Future<void> _mapSubmittedToState({required Submitted event, required Emitter<EmailFormState> emit}) async {
@@ -35,8 +35,8 @@ class EmailFormBloc extends Bloc<EmailFormEvent, EmailFormState> {
 
     try {
       final String email = await _businessRepository.updateEmail(
-        email: event.email, 
-        identifier: event.identifier
+        email: state.email, 
+        identifier: _businessBloc.business.identifier
       );
       _businessBloc.add(EmailUpdated(email: email));
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));

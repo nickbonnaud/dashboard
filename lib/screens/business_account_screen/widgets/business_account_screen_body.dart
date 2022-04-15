@@ -38,41 +38,18 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   late MaskTextInputFormatter _einFormatter;
   late MaskTextInputFormatter _stateFormatter;
 
-
-  late TextEditingController _nameController;
-  late TextEditingController _addressController;
-  late TextEditingController _addressSecondaryController;
-  late TextEditingController _cityController;
-  late TextEditingController _stateController;
-  late TextEditingController _zipController;
-  late TextEditingController _einController;
-  
   late BusinessAccountScreenBloc _accountFormBloc;
+  late BusinessAccount _businessAccount;
   
   @override
   void initState() {
     super.initState();
     _accountFormBloc = BlocProvider.of<BusinessAccountScreenBloc>(context);
+    _businessAccount = BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount;
     
-    _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.zip);
-    _einFormatter = InputFormatters.ein(initial: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.ein ?? "");
-    _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.state);
-    
-    _nameController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.businessName);
-    _addressController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.address);
-    _addressSecondaryController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.addressSecondary);
-    _cityController = TextEditingController(text: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.city);
-    _zipController = TextEditingController(text: _zipFormatter.getMaskedText());
-    _einController = TextEditingController(text: _einFormatter.getMaskedText());
-    _stateController = TextEditingController(text: _stateFormatter.getMaskedText());
-
-    _nameController.addListener(_onNameChanged);
-    _addressController.addListener(_onAddressChanged);
-    _addressSecondaryController.addListener(_onAddressSecondaryChanged);
-    _cityController.addListener(_onCityChanged);
-    _stateController.addListener(_onStateChanged);
-    _zipController.addListener(_onZipChanged);
-    _einController.addListener(_onEinChanged);
+    _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: _businessAccount.address.zip);
+    _einFormatter = InputFormatters.ein(initial: _businessAccount.ein ?? "");
+    _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: _businessAccount.address.state);
   }
   
   @override
@@ -111,25 +88,12 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
 
   @override
   void dispose() {
-    _nameController.dispose();
     _nameFocus.dispose();
-
-    _addressController.dispose();
     _addressFocus.dispose();
-
-    _addressSecondaryController.dispose();
     _addressSecondaryFocus.dispose();
-
-    _cityController.dispose();
     _cityFocus.dispose();
-    
-    _stateController.dispose();
     _stateFocus.dispose();
-
-    _zipController.dispose();
     _zipFocus.dispose();
-
-    _einController.dispose();
     _einFocus.dispose();
 
     _accountFormBloc.close();
@@ -289,12 +253,13 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _einController,
+      initialValue: _einFormatter.getMaskedText(),
+      onChanged: (_) => _onEinChanged(),
       focusNode: _einFocus,
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _einFocus.unfocus(),
-      validator: (_) => !state.isEinValid && _einController.text.isNotEmpty
+      validator: (_) => !state.isEinValid && state.ein.isNotEmpty
         ? 'Invalid EIN'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -317,12 +282,13 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _zipController,
+      initialValue: _zipFormatter.getMaskedText(),
+      onChanged: (_) => _onZipChanged(),
       focusNode: _zipFocus,
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _zipFocus.unfocus(),
-      validator: (_) => !state.isZipValid && _zipController.text.isNotEmpty
+      validator: (_) => !state.isZipValid && state.zip.isNotEmpty
         ? 'Invalid Zip'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -346,12 +312,13 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _stateController,
+      initialValue: _stateFormatter.getMaskedText(),
+      onChanged: (_) => _onStateChanged(),
       focusNode: _stateFocus,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _stateFocus.unfocus(),
-      validator: (_) => !state.isStateValid && _stateController.text.isNotEmpty
+      validator: (_) => !state.isStateValid && state.state.isNotEmpty
         ? 'Invalid State'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -375,12 +342,13 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _cityController,
+      initialValue: _businessAccount.address.city,
+      onChanged: (city) => _onCityChanged(city: city),
       focusNode: _cityFocus,
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _cityFocus.unfocus(),
-      validator: (_) => !state.isCityValid && _cityController.text.isNotEmpty
+      validator: (_) => !state.isCityValid && state.city.isNotEmpty
         ? 'Invalid City'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -403,12 +371,13 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _addressSecondaryController,
+      initialValue: _businessAccount.address.addressSecondary,
+      onChanged: (addressSecondary) => _onAddressSecondaryChanged(addressSecondary: addressSecondary),
       focusNode: _addressSecondaryFocus,
       keyboardType: TextInputType.streetAddress,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _addressSecondaryFocus.unfocus(),
-      validator: (_) => !state.isAddressSecondaryValid && _addressSecondaryController.text.isNotEmpty
+      validator: (_) => !state.isAddressSecondaryValid && state.addressSecondary.isNotEmpty
         ? 'Invalid Address'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -431,12 +400,13 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _addressController,
+      initialValue: _businessAccount.address.address,
+      onChanged: (address) => _onAddressChanged(address: address),
       focusNode: _addressFocus,
       keyboardType: TextInputType.streetAddress,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _addressFocus.unfocus(),
-      validator: (_) => !state.isAddressValid && _addressController.text.isNotEmpty
+      validator: (_) => !state.isAddressValid && state.address.isNotEmpty
         ? 'Invalid Address'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -459,12 +429,13 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _nameController,
+      initialValue: _businessAccount.businessName,
+      onChanged: (name) => _onNameChanged(name: name),
       focusNode: _nameFocus,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _nameFocus.unfocus(),
-      validator: (_) => !state.isNameValid && _nameController.text.isNotEmpty
+      validator: (_) => !state.isNameValid && state.name.isNotEmpty
         ? 'Invalid Business Name'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -507,40 +478,31 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   }
 
   bool _buttonEnabled({required BusinessAccountScreenState state}) {
-    return state.isFormValid && _isFormPopulated(state: state) && !state.isSubmitting && _fieldsChanged(state: state);
-  }
-
-  bool _isFormPopulated({required BusinessAccountScreenState state}) {
-    return _nameController.text.isNotEmpty &&
-      _addressController.text.isNotEmpty &&
-      _cityController.text.isNotEmpty &&
-      _stateController.text.isNotEmpty &&
-      _zipController.text.isNotEmpty &&
-      (_einController.text.isNotEmpty || state.entityType == EntityType.unknown);
+    return state.isFormValid && !state.isSubmitting && _fieldsChanged(state: state);
   }
   
   void _onStateChanged() {
-    _accountFormBloc.add(StateChanged(state: _stateController.text));
+    _accountFormBloc.add(StateChanged(state: _stateFormatter.getMaskedText()));
   }
   
-  void _onNameChanged() {
-    _accountFormBloc.add(NameChanged(name: _nameController.text));
+  void _onNameChanged({required String name}) {
+    _accountFormBloc.add(NameChanged(name: name));
   }
 
-  void _onAddressChanged() {
-    _accountFormBloc.add(AddressChanged(address: _addressController.text));
+  void _onAddressChanged({required String address}) {
+    _accountFormBloc.add(AddressChanged(address: address));
   }
 
-  void _onAddressSecondaryChanged() {
-    _accountFormBloc.add(AddressSecondaryChanged(addressSecondary: _addressSecondaryController.text));
+  void _onAddressSecondaryChanged({required String addressSecondary}) {
+    _accountFormBloc.add(AddressSecondaryChanged(addressSecondary: addressSecondary));
   }
 
-  void _onCityChanged() {
-    _accountFormBloc.add(CityChanged(city: _cityController.text));
+  void _onCityChanged({required String city}) {
+    _accountFormBloc.add(CityChanged(city: city));
   }
 
   void _onZipChanged() {
-    _accountFormBloc.add(ZipChanged(zip: _zipFormatter.getUnmaskedText()));
+    _accountFormBloc.add(ZipChanged(zip: _zipFormatter.getMaskedText()));
   }
 
   void _onEinChanged() {
@@ -554,27 +516,8 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   void _submitButtonPressed({required BusinessAccountScreenState state}) {
     if (_buttonEnabled(state: state)) {
       BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier.isEmpty
-        ? _accountFormBloc.add(Submitted(
-            entityType: state.entityType,
-            name: _nameController.text,
-            address: _addressController.text,
-            addressSecondary: _addressSecondaryController.text,
-            city: _cityController.text,
-            state: _stateFormatter.getMaskedText(),
-            zip: _zipFormatter.getMaskedText(),
-            ein: _einFormatter.getMaskedText()
-          ))
-        : _accountFormBloc.add(Updated(
-            entityType: state.entityType,
-            name: _nameController.text,
-            address: _addressController.text,
-            addressSecondary: _addressSecondaryController.text,
-            city: _cityController.text,
-            state: _stateFormatter.getMaskedText(),
-            zip: _zipFormatter.getMaskedText(),
-            ein: _einFormatter.getMaskedText(),
-            id: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier
-          ));
+        ? _accountFormBloc.add(Submitted())
+        : _accountFormBloc.add(Updated());
     }
   }
 
@@ -582,13 +525,20 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
     if (BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier.isEmpty) return true;
     
     return BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.entityType != state.entityType ||
-      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.businessName != _nameController.text ||
-      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.address != _addressController.text ||
-      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.addressSecondary != _addressSecondaryController.text ||
-      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.city != _cityController.text ||
-      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.state != _stateFormatter.getMaskedText() ||
-      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.address.zip != _zipFormatter.getMaskedText() ||
-      BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.ein != _einFormatter.getMaskedText();
+      _businessAccount.businessName != state.name ||
+      _businessAccount.address.address != state.address ||
+      _businessAccount.address.addressSecondary != state.addressSecondary ||
+      _businessAccount.address.city != state.city ||
+      _businessAccount.address.state != _stateFormatter.getMaskedText() ||
+      _businessAccount.address.zip != _zipFormatter.getMaskedText() ||
+      _einChanged();
+  }
+
+  bool _einChanged() {
+    if (_businessAccount.ein == null) {
+      return _einFormatter.getMaskedText() != "";
+    }
+    return _businessAccount.ein != _einFormatter.getMaskedText();
   }
 
   void _showSuccess({required BuildContext context}) {    
@@ -596,6 +546,6 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
       context: context,
       message: "Details Saved!",
       color: Theme.of(context).colorScheme.success
-    ).showToast().then((_) => Navigator.of(context).pop());
+    ).showToast().then((_) => Navigator.of(context).pop(true));
   }
 }

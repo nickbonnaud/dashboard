@@ -43,27 +43,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   late MaskTextInputFormatter _zipFormatter;
   late MaskTextInputFormatter _stateFormatter;
 
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _routingNumberController;
-  late TextEditingController _accountNumberController;
-  late TextEditingController _addressController;
-  late TextEditingController _addressSecondaryController;
-  late TextEditingController _cityController;
-  late TextEditingController _stateController;
-  late TextEditingController _zipController;
-
   late BankScreenBloc _bankScreenBloc;
-  
-  bool get _isPopulated =>
-    _firstNameController.text.isNotEmpty &&
-    _lastNameController.text.isNotEmpty &&
-    _routingNumberController.text.isNotEmpty &&
-    _accountNumberController.text.isNotEmpty &&
-    _addressController.text.isNotEmpty &&
-    _cityController.text.isNotEmpty &&
-    _stateController.text.isNotEmpty &&
-    _zipController.text.isNotEmpty;
   
   @override
   void initState() {
@@ -75,26 +55,6 @@ class _BankScreenBodyState extends State<BankScreenBody> {
     _accountNumberFormatter = InputFormatters.accountNumber(initial: _bankAccount.accountNumber);
     _zipFormatter = InputFormatters.setLengthDigits(numberDigits: 5, initial: _bankAccount.address.zip);
     _stateFormatter = InputFormatters.setLengthAlpha(numberAlpha: 2, initial: _bankAccount.address.state);
-
-    _firstNameController = TextEditingController(text: _bankAccount.firstName);
-    _lastNameController = TextEditingController(text: _bankAccount.lastName);
-    _routingNumberController = TextEditingController(text: _routingNumberFormatter.getMaskedText());
-    _accountNumberController = TextEditingController(text: _accountNumberFormatter.getMaskedText());
-    _addressController = TextEditingController(text: _bankAccount.address.address);
-    _addressSecondaryController = TextEditingController(text: _bankAccount.address.addressSecondary);
-    _cityController = TextEditingController(text: _bankAccount.address.city);
-    _stateController = TextEditingController(text: _stateFormatter.getMaskedText());
-    _zipController = TextEditingController(text: _zipFormatter.getMaskedText());
-
-    _firstNameController.addListener(_onFirstNameChanged);
-    _lastNameController.addListener(_onLastNameChanged);
-    _routingNumberController.addListener(_onRoutingNumberChanged);
-    _accountNumberController.addListener(_onAccountNumberChanged);
-    _addressController.addListener(_onAddressChanged);
-    _addressSecondaryController.addListener(_onAddressSecondaryChanged);
-    _cityController.addListener(_onCityChanged);
-    _stateController.addListener(_onStateChanged);
-    _zipController.addListener(_onZipChanged);
   }
   
   @override
@@ -132,31 +92,14 @@ class _BankScreenBodyState extends State<BankScreenBody> {
 
   @override
   void dispose() {
-    _firstNameController.dispose();
     _firstNameFocus.dispose();
-
-    _lastNameController.dispose();
     _lastNameFocus.dispose();
-
-    _routingNumberController.dispose();
     _routingNumberFocus.dispose();
-
-    _accountNumberController.dispose();
     _accountNumberFocus.dispose();
-
-    _addressController.dispose();
     _addressFocus.dispose();
-
-    _addressSecondaryController.dispose();
     _addressSecondaryFocus.dispose();
-
-    _cityController.dispose();
     _cityFocus.dispose();
-
-    _stateController.dispose();
     _stateFocus.dispose();
-
-    _zipController.dispose();
     _zipFocus.dispose();
 
     _bankScreenBloc.close();
@@ -332,12 +275,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _firstNameController,
+      initialValue: _bankAccount.firstName,
+      onChanged: (firstName) => _onFirstNameChanged(firstName: firstName),
       focusNode: _firstNameFocus,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _firstNameFocus.unfocus(),
-      validator: (_) => !state.isFirstNameValid && _firstNameController.text.isNotEmpty
+      validator: (_) => !state.isFirstNameValid && state.firstName.isNotEmpty
         ? 'Invalid First Name'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -360,12 +304,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _lastNameController,
+      initialValue: _bankAccount.lastName,
+      onChanged: (lastName) => _onLastNameChanged(lastName: lastName),
       focusNode: _lastNameFocus,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _lastNameFocus.unfocus(),
-      validator: (_) => !state.isLastNameValid && _lastNameController.text.isNotEmpty
+      validator: (_) => !state.isLastNameValid && state.lastName.isNotEmpty
         ? 'Invalid Last Name'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -387,12 +332,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _routingNumberController,
+      initialValue: _routingNumberFormatter.getMaskedText(),
+      onChanged: (_) => _onRoutingNumberChanged(),
       focusNode: _routingNumberFocus,
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _routingNumberFocus.unfocus(),
-      validator: (_) => !state.isRoutingNumberValid && _routingNumberController.text.isNotEmpty
+      validator: (_) => !state.isRoutingNumberValid && state.routingNumber.isNotEmpty
         ? 'Invalid Routing Number'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -415,12 +361,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _accountNumberController,
+      initialValue: _accountNumberFormatter.getMaskedText(),
+      onChanged: (_) => _onAccountNumberChanged(),
       focusNode: _accountNumberFocus,
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _accountNumberFocus.unfocus(),
-      validator: (_) => !state.isAccountNumberValid && _accountNumberController.text.isNotEmpty
+      validator: (_) => !state.isAccountNumberValid && state.accountNumber.isNotEmpty
         ? 'Invalid Account Number'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -444,12 +391,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _addressController,
+      initialValue: _bankAccount.address.address,
+      onChanged: (address) => _onAddressChanged(address: address),
       focusNode: _addressFocus,
       keyboardType: TextInputType.streetAddress,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _addressFocus.unfocus(),
-      validator: (_) => !state.isAddressValid && _addressController.text.isNotEmpty
+      validator: (_) => !state.isAddressValid && state.address.isNotEmpty
         ? 'Invalid Address'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -472,12 +420,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _addressSecondaryController,
+      initialValue: _bankAccount.address.addressSecondary,
+      onChanged: (addressSecondary) => _onAddressSecondaryChanged(addressSecondary: addressSecondary),
       focusNode: _addressSecondaryFocus,
       keyboardType: TextInputType.streetAddress,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _addressSecondaryFocus.unfocus(),
-      validator: (_) => !state.isAddressSecondaryValid && _addressSecondaryController.text.isNotEmpty
+      validator: (_) => !state.isAddressSecondaryValid && state.addressSecondary.isNotEmpty
         ? 'Invalid Address'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -500,12 +449,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _cityController,
+      initialValue: _bankAccount.address.city,
+      onChanged: (city) => _onCityChanged(city: city),
       focusNode: _cityFocus,
       keyboardType: TextInputType.name,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _cityFocus.unfocus(),
-      validator: (_) => !state.isCityValid && _cityController.text.isNotEmpty
+      validator: (_) => !state.isCityValid && state.city.isNotEmpty
         ? 'Invalid City'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -528,12 +478,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _stateController,
+      initialValue: _stateFormatter.getMaskedText(),
+      onChanged: (_) => _onStateChanged(),
       focusNode: _stateFocus,
       keyboardType: TextInputType.text,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _stateFocus.unfocus(),
-      validator: (_) => !state.isStateValid && _stateController.text.isNotEmpty
+      validator: (_) => !state.isStateValid && state.state.isNotEmpty
         ? 'Invalid State'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -556,12 +507,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      controller: _zipController,
+      initialValue: _zipFormatter.getMaskedText(),
+      onChanged: (_) => _onZipChanged(),
       focusNode: _zipFocus,
       keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.done,
       onFieldSubmitted: (_) => _zipFocus.unfocus(),
-      validator: (_) => !state.isZipValid && _zipController.text.isNotEmpty
+      validator: (_) => !state.isZipValid && state.zip.isNotEmpty
         ? 'Invalid Zip'
         : null,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -621,58 +573,58 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   }
 
   bool _buttonEnabled({required BankScreenState state}) {
-    return state.isFormValid && _isPopulated && !state.isSubmitting && _fieldsChanged(state: state);
+    return state.isFormValid && !state.isSubmitting && _fieldsChanged(state: state);
   }
 
   bool _fieldsChanged({required BankScreenState state}) {
     if (_bankAccount.identifier.isEmpty) return true;
     
     return _bankAccount.accountType != state.accountType ||
-      _bankAccount.firstName != _firstNameController.text ||
-      _bankAccount.lastName != _lastNameController.text ||
+      _bankAccount.firstName != state.firstName ||
+      _bankAccount.lastName != state.lastName ||
       _bankAccount.routingNumber != _routingNumberFormatter.getMaskedText() ||
       _bankAccount.accountNumber != _accountNumberFormatter.getMaskedText() ||
-      _bankAccount.address.address != _addressController.text ||
-      _bankAccount.address.addressSecondary != _addressSecondaryController.text ||
-      _bankAccount.address.city != _cityController.text ||
+      _bankAccount.address.address != state.address ||
+      _bankAccount.address.addressSecondary != state.addressSecondary ||
+      _bankAccount.address.city != state.city ||
       _bankAccount.address.state != _stateFormatter.getMaskedText() ||
       _bankAccount.address.zip != _zipFormatter.getMaskedText();
   }
 
-  void _onFirstNameChanged() {
-    _bankScreenBloc.add(FirstNameChanged(firstName: _firstNameController.text));
+  void _onFirstNameChanged({required String firstName}) {
+    _bankScreenBloc.add(FirstNameChanged(firstName: firstName));
   }
 
-  void _onLastNameChanged() {
-    _bankScreenBloc.add(LastNameChanged(lastName: _lastNameController.text));
+  void _onLastNameChanged({required String lastName}) {
+    _bankScreenBloc.add(LastNameChanged(lastName: lastName));
   }
 
   void _onRoutingNumberChanged() {
-    _bankScreenBloc.add(RoutingNumberChanged(routingNumber: _routingNumberController.text));
+    _bankScreenBloc.add(RoutingNumberChanged(routingNumber: _routingNumberFormatter.getMaskedText()));
   }
 
   void _onAccountNumberChanged() {
-    _bankScreenBloc.add(AccountNumberChanged(accountNumber: _accountNumberController.text));
+    _bankScreenBloc.add(AccountNumberChanged(accountNumber: _accountNumberFormatter.getMaskedText()));
   }
 
-  void _onAddressChanged() {
-    _bankScreenBloc.add(AddressChanged(address: _addressController.text));
+  void _onAddressChanged({required String address}) {
+    _bankScreenBloc.add(AddressChanged(address: address));
   }
 
-  void _onAddressSecondaryChanged() {
-    _bankScreenBloc.add(AddressSecondaryChanged(addressSecondary: _addressSecondaryController.text));
+  void _onAddressSecondaryChanged({required String addressSecondary}) {
+    _bankScreenBloc.add(AddressSecondaryChanged(addressSecondary: addressSecondary));
   }
 
-  void _onCityChanged() {
-    _bankScreenBloc.add(CityChanged(city: _cityController.text));
+  void _onCityChanged({required String city}) {
+    _bankScreenBloc.add(CityChanged(city: city));
   }
 
   void _onStateChanged() {
-    _bankScreenBloc.add(StateChanged(state: _stateController.text));
+    _bankScreenBloc.add(StateChanged(state: _stateFormatter.getMaskedText()));
   }
 
   void _onZipChanged() {
-    _bankScreenBloc.add(ZipChanged(zip: _zipFormatter.getUnmaskedText()));
+    _bankScreenBloc.add(ZipChanged(zip: _zipFormatter.getMaskedText()));
   }
 
   void _resetForm() {
@@ -682,31 +634,8 @@ class _BankScreenBodyState extends State<BankScreenBody> {
   void _submitButtonPressed({required BankScreenState state}) {
     if (_buttonEnabled(state: state)) {
       _bankAccount.identifier.isEmpty
-        ? _bankScreenBloc.add(Submitted(
-            firstName: _firstNameController.text,
-            lastName: _lastNameController.text,
-            routingNumber: _routingNumberController.text,
-            accountNumber: _accountNumberController.text,
-            accountType: state.accountType,
-            address: _addressController.text,
-            addressSecondary: _addressSecondaryController.text,
-            city: _cityController.text,
-            state: _stateController.text,
-            zip: _zipController.text,
-          ))
-        : _bankScreenBloc.add(Updated(
-            identifier: _bankAccount.identifier,
-            firstName: _firstNameController.text,
-            lastName: _lastNameController.text,
-            routingNumber: _routingNumberController.text,
-            accountNumber: _accountNumberController.text,
-            accountType: state.accountType,
-            address: _addressController.text,
-            addressSecondary: _addressSecondaryController.text,
-            city: _cityController.text,
-            state: _stateController.text,
-            zip: _zipController.text,
-          ));
+        ? _bankScreenBloc.add(Submitted())
+        : _bankScreenBloc.add(Updated());
     }
   }
 
@@ -715,6 +644,6 @@ class _BankScreenBodyState extends State<BankScreenBody> {
       context: context,
       message: "Banking Saved!",
       color: Theme.of(context).colorScheme.success
-    ).showToast().then((_) => Navigator.of(context).pop());
+    ).showToast().then((_) => Navigator.of(context).pop(true));
   }
 }

@@ -65,9 +65,9 @@ class CreateProfileScreenBody extends StatelessWidget {
       return const PlaceForm();
     }
     final Profile profile = Profile(
-      name: state.selectedPrediction!.name,
-      website: state.selectedPrediction!.website ?? "",
-      phone: state.selectedPrediction!.formattedPhoneNumber ?? "",
+      name: state.name,
+      website: state.website,
+      phone: state.phone,
       description: "",
       googlePlaceId: null,
       hours: Hours.empty(),
@@ -81,6 +81,6 @@ class CreateProfileScreenBody extends StatelessWidget {
       context: context,
       message: "Profile Saved!",
       color: Theme.of(context).colorScheme.success
-    ).showToast().then((_) => Navigator.of(context).pop());
+    ).showToast().then((_) => Navigator.of(context).pop(true));
   }
 }

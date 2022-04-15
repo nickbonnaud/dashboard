@@ -19,20 +19,16 @@ class OwnersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts.isEmpty
-      ? Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: AppBar(
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: _ownersScreenBody(context: context),
+      appBar: BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts.isEmpty
+        ? AppBar(
             leading: Container(),
             backgroundColor: Theme.of(context).colorScheme.secondary
-          ),
-          body: _ownersScreenBody(context: context),
-        )
-      : Scaffold(
-        appBar: DefaultAppBar(context: context),
-        backgroundColor: Theme.of(context).colorScheme.background,
-        body: _ownersScreenBody(context: context),
-      );
+          )
+        : DefaultAppBar(context: context)
+    );
   }
 
   Widget _ownersScreenBody({required BuildContext context}) {

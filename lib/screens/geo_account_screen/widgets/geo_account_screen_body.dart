@@ -193,6 +193,6 @@ class GeoAccountScreenBody extends StatelessWidget {
       context: context,
       message: "Location Saved!",
       color: Theme.of(context).colorScheme.success
-    ).showToast().then((_) => Navigator.of(context).pop());
+    ).showToast().then((_) => Navigator.of(context).pop(true));
   }
 }

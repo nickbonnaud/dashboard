@@ -295,12 +295,12 @@ class MockDataGenerator {
     );
   }
   
-  BusinessAccount createBusinessAccount() {
+  BusinessAccount createBusinessAccount({EntityType? entityType}) {
     return BusinessAccount(
       identifier: faker.guid.guid(),
       businessName: faker.company.name(),
       address: createAddress(),
-      entityType: EntityType.corporation
+      entityType: entityType ?? EntityType.corporation
     );
   }
   
