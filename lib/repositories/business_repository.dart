@@ -6,15 +6,17 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:dashboard/repositories/token_repository.dart';
 
 class BusinessRepository extends BaseRepository {
-  final BusinessProvider _businessProvider;
-  final TokenRepository _tokenRepository;
+  final BusinessProvider? _businessProvider;
+  final TokenRepository? _tokenRepository;
 
-  const BusinessRepository({required BusinessProvider businessProvider, required TokenRepository tokenRepository})
+  const BusinessRepository({BusinessProvider? businessProvider, TokenRepository? tokenRepository})
     : _businessProvider = businessProvider,
       _tokenRepository = tokenRepository;
   
   Future<Business> fetch() async {
-    Map<String, dynamic> json = await send(request: _businessProvider.fetch());
+    BusinessProvider businessProvider = _getBusinessProvider();
+    
+    Map<String, dynamic> json = await send(request: businessProvider.fetch());
     return deserialize(json: json);
   }
 
@@ -23,7 +25,8 @@ class BusinessRepository extends BaseRepository {
       'email': email
     };
     
-    Map<String, dynamic> json = await send(request: _businessProvider.update(body: body, identifier: identifier));
+    BusinessProvider businessProvider = _getBusinessProvider();
+    Map<String, dynamic> json = await send(request: businessProvider.update(body: body, identifier: identifier));
     return json['email'];
   }
 
@@ -33,13 +36,24 @@ class BusinessRepository extends BaseRepository {
       'password_confirmation': passwordConfirmation
     };
 
-    await send(request: _businessProvider.update(body: body, identifier: identifier));
+    BusinessProvider businessProvider = _getBusinessProvider();
+    await send(request: businessProvider.update(body: body, identifier: identifier));
     return true;
   }
 
+  BusinessProvider _getBusinessProvider() {
+    return _businessProvider ?? const BusinessProvider();
+  }
+
+  TokenRepository _getTokenRepository() {
+    return _tokenRepository ?? const TokenRepository();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
-    _tokenRepository.saveToken(token: Token.fromJson(json: json!['csrf_token']));
+    TokenRepository tokenRepository = _getTokenRepository();
+    
+    tokenRepository.saveToken(token: Token.fromJson(json: json!['csrf_token']));
     return Business.fromJson(json: json['business']);
   }
 }

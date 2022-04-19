@@ -1,5 +1,6 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
+import 'package:dashboard/repositories/google_places_repository.dart';
 import 'package:dashboard/repositories/profile_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/profile_screen/profile_screen.dart';
@@ -9,6 +10,7 @@ import 'package:dashboard/screens/profile_screen/widgets/widgets/create_profile_
 import 'package:dashboard/screens/profile_screen/widgets/widgets/edit_profile_screen_body.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:mocktail/mocktail.dart';
@@ -17,14 +19,14 @@ import '../../helpers/mock_data_generator.dart';
 import '../../helpers/screen_builder.dart';
 
 class MockProfileRepository extends Mock implements ProfileRepository {}
-class MockGoogleMapsPlaces extends Mock implements GoogleMapsPlaces {}
+class MockPlacesRepository extends Mock implements GooglePlacesRepository {}
 
 void main() {
   group("Profile Screen Tests", () {
     late MockDataGenerator mockDataGenerator;
     late NavigatorObserver observer;
     late ProfileRepository profileRepository;
-    late GoogleMapsPlaces places;
+    late GooglePlacesRepository places;
     late ScreenBuilder screenBuilderNew;
     late ScreenBuilder screenBuilderEdit;
 
@@ -32,20 +34,42 @@ void main() {
       mockDataGenerator = MockDataGenerator();
       observer = MockNavigatorObserver();
       profileRepository = MockProfileRepository();
-      places = MockGoogleMapsPlaces();
+      places = MockPlacesRepository();
 
       screenBuilderNew = ScreenBuilder(
-        child: ProfileScreen(profileRepository: profileRepository, places: places),
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (_) => profileRepository,
+            ),
+
+            RepositoryProvider(
+              create: (_) => places,
+            )
+          ],
+          child: const ProfileScreen(),
+        ),
         observer: observer
       );
       
       screenBuilderEdit = ScreenBuilder(
-        child: ProfileScreen(profileRepository: profileRepository, places: places),
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (_) => profileRepository,
+            ),
+
+            RepositoryProvider(
+              create: (_) => places,
+            )
+          ],
+          child: const ProfileScreen(),
+        ),
         observer: observer,
         business: mockDataGenerator.createBusiness()
       );
 
-      when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types")))
+      when(() => places.autoComplete(query: any(named: 'query')))
         .thenAnswer((_) => Future.delayed(const Duration(milliseconds: 500), () {
           return PlacesAutocompleteResponse(
             status: "OK",
@@ -53,7 +77,7 @@ void main() {
           );
         }));
 
-      when(() => places.getDetailsByPlaceId(any(that: isA<String>())))
+      when(() => places.details(placeId: any(named: 'placeId')))
         .thenAnswer((_) async => Future.delayed(const Duration(milliseconds: 500), () {
           return PlacesDetailsResponse(
             status: "OK", 
@@ -109,7 +133,7 @@ void main() {
       String businessName = "aw";
       await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
       await tester.pump(const Duration(seconds: 1));
-      verifyNever(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types")));
+      verifyNever(() => places.autoComplete(query: any(named: 'query')));
     });
 
     testWidgets("Entering valid name in placeNameField calls places.autoComplete", (tester) async {
@@ -117,7 +141,7 @@ void main() {
       String businessName = faker.company.name();
       await tester.enterText(find.byKey(const Key("placeNameFieldKey")), businessName);
       await tester.pump(const Duration(seconds: 1));
-      verify(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).called(1);
+      verify(() => places.autoComplete(query: any(named: 'query'))).called(1);
       await tester.pump(const Duration(milliseconds: 500));
     });
 
@@ -148,7 +172,7 @@ void main() {
       
       await tester.tap(find.byType(ListTile).first);
       await tester.pump();
-      verify(() => places.getDetailsByPlaceId(any(that: isA<String>()))).called(1);
+      verify(() => places.details(placeId: any(named: 'placeId'))).called(1);
       await tester.pump(const Duration(milliseconds: 500));
     });
 

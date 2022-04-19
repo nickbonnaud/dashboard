@@ -4,16 +4,22 @@ import 'package:dashboard/providers/status_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class StatusRepository extends BaseRepository {
-  final StatusProvider _statusProvider;
+  final StatusProvider? _statusProvider;
 
-  const StatusRepository({required StatusProvider statusProvider})
+  const StatusRepository({StatusProvider? statusProvider})
     : _statusProvider = statusProvider;
 
   Future<List<Status>> fetchTransactionStatuses() async {
-    final PaginateDataHolder holder = await sendPaginated(request: _statusProvider.fetchTransactionStatuses());
+    StatusProvider statusProvider = _getStatusProvider();
+
+    final PaginateDataHolder holder = await sendPaginated(request: statusProvider.fetchTransactionStatuses());
     return deserialize(holder: holder);
   }
 
+  StatusProvider _getStatusProvider() {
+    return _statusProvider ?? const StatusProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return holder!.update(

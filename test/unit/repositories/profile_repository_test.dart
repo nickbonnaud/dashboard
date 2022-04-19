@@ -16,7 +16,7 @@ void main() {
     late ProfileRepository _profileRepositoryWithMock;
 
     setUp(() {
-      _profileRepository = const ProfileRepository(profileProvider: ProfileProvider());
+      _profileRepository = const ProfileRepository();
       _mockProfileProvider = MockProfileProvider();
       _profileRepositoryWithMock = ProfileRepository(profileProvider: _mockProfileProvider);
       registerFallbackValue({});

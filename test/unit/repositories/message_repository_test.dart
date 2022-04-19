@@ -19,7 +19,7 @@ void main() {
     late MessageRepository _messageRepositoryWithMock;
 
     setUp(() {
-      _messageRepository = const MessageRepository(messageProvider: MessageProvider());
+      _messageRepository = const MessageRepository();
       _mockMessageProvider = MockMessageProvider();
       _messageRepositoryWithMock = MessageRepository(messageProvider: _mockMessageProvider);
       registerFallbackValue({});

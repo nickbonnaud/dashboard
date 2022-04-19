@@ -19,20 +19,10 @@ import 'blocs/today/total_sales_today_bloc/total_sales_today_bloc.dart';
 import 'blocs/today/total_tips_today_bloc/total_tips_today_bloc.dart';
 import 'widgets/quick_dashboard_body.dart';
 
-
-
 class QuickDashboardScreen extends StatefulWidget {
-  final TransactionRepository _transactionRepository;
-  final RefundRepository _refundRepository;
 
-  const QuickDashboardScreen({
-    required TransactionRepository transactionRepository,
-    required RefundRepository refundRepository,
-    Key? key
-  })
-    : _transactionRepository = transactionRepository,
-      _refundRepository = refundRepository,
-      super(key: key);
+  const QuickDashboardScreen({Key? key})
+    : super(key: key);
   
   @override
   State<QuickDashboardScreen> createState() => _QuickDashboardScreenState();
@@ -56,63 +46,75 @@ class _QuickDashboardScreenState extends State<QuickDashboardScreen> with Automa
         child: MultiBlocProvider(
           providers: [
             BlocProvider<NetSalesTodayBloc>(
-              create: (_) => NetSalesTodayBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchNetSalesToday()),
+              create: (_) => NetSalesTodayBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchNetSalesToday()),
             ),
 
             BlocProvider<TotalRefundsTodayBloc>(
-              create: (_) => TotalRefundsTodayBloc(refundRepository: widget._refundRepository)
-                ..add(FetchTotalRefundsToday())
+              create: (_) => TotalRefundsTodayBloc(
+                refundRepository: RepositoryProvider.of<RefundRepository>(context)
+              )..add(FetchTotalRefundsToday())
             ),
 
             BlocProvider<TotalTipsTodayBloc>(
-              create: (_) => TotalTipsTodayBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchTotalTipsToday())
+              create: (_) => TotalTipsTodayBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchTotalTipsToday())
             ),
 
             BlocProvider<TotalSalesTodayBloc>(
-              create: (_) => TotalSalesTodayBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchTotalSalesToday()),
+              create: (_) => TotalSalesTodayBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchTotalSalesToday()),
             ),
 
             BlocProvider<NetSalesMonthBloc>(
-              create: (_) => NetSalesMonthBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchNetSalesMonth()),
+              create: (_) => NetSalesMonthBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchNetSalesMonth()),
             ),
 
             BlocProvider<TotalTaxesMonthBloc>(
-              create: (_) => TotalTaxesMonthBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchTotalTaxesMonth()),
+              create: (_) => TotalTaxesMonthBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchTotalTaxesMonth()),
             ),
 
             BlocProvider<TotalTipsMonthBloc>(
-              create: (_) => TotalTipsMonthBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchTotalTipsMonth()),
+              create: (_) => TotalTipsMonthBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchTotalTipsMonth()),
             ),
 
             BlocProvider<TotalSalesMonthBloc>(
-              create: (_) => TotalSalesMonthBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchTotalSalesMonth()),
+              create: (_) => TotalSalesMonthBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchTotalSalesMonth()),
             ),
 
             BlocProvider<TotalRefundsMonthBloc>(
-              create: (_) => TotalRefundsMonthBloc(refundRepository: widget._refundRepository)
-                ..add(FetchTotalRefundsMonth()),
+              create: (_) => TotalRefundsMonthBloc(
+                refundRepository: RepositoryProvider.of<RefundRepository>(context)
+              )..add(FetchTotalRefundsMonth()),
             ),
 
             BlocProvider<TotalUniqueCustomersMonthBloc>(
-              create: (_) => TotalUniqueCustomersMonthBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchTotalUniqueCustomersMonth()),
+              create: (_) => TotalUniqueCustomersMonthBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchTotalUniqueCustomersMonth()),
             ),
 
             BlocProvider<TotalTransactionsMonthBloc>(
-              create: (_) => TotalTransactionsMonthBloc(transactionRepository: widget._transactionRepository)
-                ..add(FetchTotalTransactionsMonth()),
+              create: (_) => TotalTransactionsMonthBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(FetchTotalTransactionsMonth()),
             ),
 
             BlocProvider<RecentTransactionsBloc>(
-              create: (_) => RecentTransactionsBloc(transactionRepository: widget._transactionRepository)
-                ..add(InitRecentTransactions())
+              create: (_) => RecentTransactionsBloc(
+                transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
+              )..add(InitRecentTransactions())
             )
           ],
           child: const QuickDashboardBody()

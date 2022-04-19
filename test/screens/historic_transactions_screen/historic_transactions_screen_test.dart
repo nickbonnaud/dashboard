@@ -12,6 +12,7 @@ import 'package:dashboard/screens/historic_transactions_screen/widgets/widgets/w
 import 'package:dashboard/screens/historic_transactions_screen/widgets/widgets/widgets/search_display.dart';
 import 'package:dashboard/screens/historic_transactions_screen/widgets/widgets/widgets/transactions_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:network_image_mock/network_image_mock.dart';
@@ -33,7 +34,10 @@ void main() {
       observer = MockNavigatorObserver();
       transactionRepository = MockTransactionRepository();
       screenBuilder = ScreenBuilder(
-        child: HistoricTransactionsScreen(transactionRepository: transactionRepository),
+        child: RepositoryProvider(
+          create: (_) => transactionRepository,
+          child: const HistoricTransactionsScreen(),
+        ),
         observer: observer
       );
 

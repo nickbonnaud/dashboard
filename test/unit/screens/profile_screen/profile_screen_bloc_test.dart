@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/business.dart';
 import 'package:dashboard/models/business/profile.dart';
+import 'package:dashboard/repositories/google_places_repository.dart';
 import 'package:dashboard/repositories/profile_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/profile_screen/bloc/profile_screen_bloc.dart';
@@ -15,7 +16,7 @@ import '../../../helpers/mock_data_generator.dart';
 
 class MockProfileRepository extends Mock implements ProfileRepository {}
 class MockBusinessBloc extends Mock implements BusinessBloc {}
-class MockGoogleMapsPlaces extends Mock implements GoogleMapsPlaces {}
+class MockGooglePlacesRepository extends Mock implements GooglePlacesRepository {}
 class MockPrediction extends Mock implements Prediction {}
 class MockProfile extends Mock implements Profile {}
 class MockBusinessEvent extends Mock implements BusinessEvent {}
@@ -24,7 +25,7 @@ void main() {
   group("Profile Screen Bloc Tests", () {
     late ProfileRepository profileRepository;
     late BusinessBloc businessBloc;
-    late GoogleMapsPlaces places;
+    late GooglePlacesRepository places;
     late ProfileScreenBloc profileScreenBloc;
     late Business business;
     late Profile profile;
@@ -40,8 +41,12 @@ void main() {
       profileRepository = MockProfileRepository();
       businessBloc = MockBusinessBloc();
       when(() => businessBloc.business).thenReturn(business);
-      places = MockGoogleMapsPlaces();
-      profileScreenBloc = ProfileScreenBloc(profileRepository: profileRepository, businessBloc: businessBloc, places: places);
+      places = MockGooglePlacesRepository();
+      profileScreenBloc = ProfileScreenBloc(
+        profileRepository: profileRepository,
+        businessBloc: businessBloc,
+        places: places
+      );
       
       
       _baseState = profileScreenBloc.state;
@@ -62,7 +67,7 @@ void main() {
       build: () => profileScreenBloc,
       wait: const Duration(seconds: 1),
       act: (bloc) {
-        when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).thenAnswer((_) async {
+        when(() => places.autoComplete(query: any(named: 'query'))).thenAnswer((_) async {
           _predictions = [Prediction(), Prediction()];
           return PlacesAutocompleteResponse(
             status: "OK",
@@ -79,7 +84,7 @@ void main() {
       build: () => profileScreenBloc,
       wait: const Duration(seconds: 1),
       act: (bloc) {
-        when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).thenAnswer((_) async {
+        when(() => places.autoComplete(query: any(named: 'query'))).thenAnswer((_) async {
           _predictions = [Prediction(), Prediction()];
           return PlacesAutocompleteResponse(
             status: "OK",
@@ -89,7 +94,7 @@ void main() {
         bloc.add(const PlaceQueryChanged(query: "query"));
       },
       verify: (_) {
-        verify(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).called(1);
+        verify(() => places.autoComplete(query: any(named: 'query'))).called(1);
       }
     );
     
@@ -98,7 +103,7 @@ void main() {
       build: () => profileScreenBloc,
       wait: const Duration(seconds: 1),
       act: (bloc) {
-        when(() => places.autocomplete(any(that: isA<String>()), types: any(named: "types"))).thenAnswer((_) async {
+        when(() => places.autoComplete(query: any(named: 'query'))).thenAnswer((_) async {
           _predictions = [Prediction(), Prediction()];
           return PlacesAutocompleteResponse(
             status: "REQUEST_DENIED",
@@ -117,7 +122,7 @@ void main() {
       act: (bloc) {
         Prediction selectedPrediction = MockPrediction();
         when(() => selectedPrediction.placeId).thenReturn(faker.guid.guid());
-        when(() => places.getDetailsByPlaceId(any(that: isA<String>()))).thenAnswer((_) async {
+        when(() => places.details(placeId: any(named: 'placeId'))).thenAnswer((_) async {
           _selectedPrediction = PlaceDetails(adrAddress: "adrAddress", name: "fake name", website: 'fake.com', formattedPhoneNumber: "(111) 222-3333", placeId: "placeId", utcOffset: 1);
           return PlacesDetailsResponse(
             htmlAttributions: [],
@@ -139,7 +144,7 @@ void main() {
       act: (bloc) {
         Prediction selectedPrediction = MockPrediction();
         when(() => selectedPrediction.placeId).thenReturn(faker.guid.guid());
-        when(() => places.getDetailsByPlaceId(any(that: isA<String>()))).thenAnswer((_) async {
+        when(() => places.details(placeId: any(named: 'placeId'))).thenAnswer((_) async {
           _selectedPrediction = PlaceDetails(adrAddress: "adrAddress", name: "name", placeId: "placeId", utcOffset: 1);
           return PlacesDetailsResponse(
             htmlAttributions: [],
@@ -150,7 +155,7 @@ void main() {
         bloc.add(PredictionSelected(prediction: selectedPrediction));
       },
       verify: (_) {
-        verify(() => places.getDetailsByPlaceId(any(that: isA<String>()))).called(1);
+        verify(() => places.details(placeId: any(named: 'placeId'))).called(1);
       }
     );
 

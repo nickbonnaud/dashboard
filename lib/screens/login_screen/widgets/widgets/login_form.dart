@@ -1,15 +1,13 @@
 import 'package:dashboard/global_widgets/shaker.dart';
-import 'package:dashboard/providers/authentication_provider.dart';
 import 'package:dashboard/repositories/authentication_repository.dart';
-import 'package:dashboard/repositories/token_repository.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/routing/routes.dart';
 import 'package:dashboard/screens/request_reset_password_screen/request_reset_password_screen.dart';
+import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:dashboard/theme/global_colors.dart';
 
 import 'bloc/login_form_bloc.dart';
 
@@ -256,10 +254,12 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   void _goToResetScreen() {
+    AuthenticationRepository authenticationRepository = RepositoryProvider.of<AuthenticationRepository>(context);
     Navigator.of(context).push(MaterialPageRoute<RequestResetPasswordScreen>(
       fullscreenDialog: true,
-      builder: (_) => const RequestResetPasswordScreen(
-        authenticationRepository: AuthenticationRepository(authenticationProvider: AuthenticationProvider(), tokenRepository: TokenRepository()),
+      builder: (_) => RepositoryProvider.value(
+        value: authenticationRepository,
+        child: const RequestResetPasswordScreen(),
       )
     ));
   }

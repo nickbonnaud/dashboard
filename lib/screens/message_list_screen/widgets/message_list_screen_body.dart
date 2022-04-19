@@ -1,21 +1,18 @@
 import 'package:dashboard/global_widgets/bottom_loader.dart';
-import 'package:dashboard/repositories/message_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
-import 'package:dashboard/theme/global_colors.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
+import 'package:dashboard/theme/global_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
-import 'widgets/message_widget.dart';
 import '../bloc/message_list_screen_bloc.dart';
+import 'widgets/message_widget.dart';
 
 class MessageListScreenBody extends StatefulWidget {
-  final MessageRepository _messageRepository;
 
-  const MessageListScreenBody({required MessageRepository messageRepository, Key? key})
-    : _messageRepository = messageRepository,
-      super(key: key);
+  const MessageListScreenBody({Key? key})
+    : super(key: key);
 
   @override
   State<MessageListScreenBody> createState() => _MessageListScreenBodyState();
@@ -24,13 +21,10 @@ class MessageListScreenBody extends StatefulWidget {
 class _MessageListScreenBodyState extends State<MessageListScreenBody> {
   final ScrollController _scrollController = ScrollController();
   final double _scrollThreshold = 200;
-
-  late MessageListScreenBloc _messageScreenBloc;
   
   @override
   void initState() {
     super.initState();
-    _messageScreenBloc = BlocProvider.of<MessageListScreenBloc>(context);
     _scrollController.addListener(_onScroll);
   }
   
@@ -48,7 +42,6 @@ class _MessageListScreenBodyState extends State<MessageListScreenBody> {
   @override
   void dispose() {
     _scrollController.dispose();
-    _messageScreenBloc.close();
     super.dispose();
   }
 
@@ -84,8 +77,7 @@ class _MessageListScreenBodyState extends State<MessageListScreenBody> {
             ? const BottomLoader()
             : MessageWidget(
                 index: index,
-                message: state.messages[index],
-                messageRepository: widget._messageRepository,
+                message: state.messages[index]
               ),
           childCount: state.hasReachedEnd
             ? state.messages.length
@@ -127,8 +119,8 @@ class _MessageListScreenBodyState extends State<MessageListScreenBody> {
     final double maxScroll = _scrollController.position.maxScrollExtent;
     final double currentScroll = _scrollController.position.pixels;
 
-    if (!_messageScreenBloc.state.paginating && maxScroll - currentScroll <= _scrollThreshold) {
-      _messageScreenBloc.add(FetchMore());
+    if (!BlocProvider.of<MessageListScreenBloc>(context).state.paginating && maxScroll - currentScroll <= _scrollThreshold) {
+      BlocProvider.of<MessageListScreenBloc>(context).add(FetchMore());
     }
   }
 }

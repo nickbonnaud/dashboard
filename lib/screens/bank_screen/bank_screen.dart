@@ -8,14 +8,9 @@ import 'bloc/bank_screen_bloc.dart';
 import 'widgets/bank_screen_body.dart';
 
 class BankScreen extends StatelessWidget {
-  final BankRepository _bankRepository;
 
-  const BankScreen({
-    required BankRepository bankRepository,
-    Key? key
-  })
-    : _bankRepository = bankRepository,
-      super(key: key);
+  const BankScreen({ Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -34,7 +29,7 @@ class BankScreen extends StatelessWidget {
   Widget _bankScreenBody() {
     return BlocProvider<BankScreenBloc>(
       create: (context) => BankScreenBloc(
-        bankRepository: _bankRepository,
+        bankRepository: RepositoryProvider.of<BankRepository>(context),
         businessBloc: BlocProvider.of<BusinessBloc>(context),
       ),
       child: const BankScreenBody(),

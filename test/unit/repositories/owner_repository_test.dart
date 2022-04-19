@@ -16,7 +16,7 @@ void main() {
     late OwnerRepository _ownerRepositoryWithMock;
 
     setUp(() {
-      _ownerRepository = const OwnerRepository(ownerProvider: OwnerProvider());
+      _ownerRepository = const OwnerRepository();
       _mockOwnerProvider = MockOwnerProvider();
       _ownerRepositoryWithMock = OwnerRepository(ownerProvider: _mockOwnerProvider);
       registerFallbackValue({});

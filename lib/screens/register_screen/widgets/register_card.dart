@@ -8,14 +8,9 @@ import 'widgets/bloc/register_form_bloc.dart';
 import 'widgets/register_form.dart';
 
 class RegisterCard extends StatelessWidget {
-  final AuthenticationRepository _authenticationRepository;
 
-  const RegisterCard({
-    required AuthenticationRepository authenticationRepository,
-    Key? key
-  })
-    : _authenticationRepository = authenticationRepository,
-      super(key: key);
+  const RegisterCard({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +26,7 @@ class RegisterCard extends StatelessWidget {
           : MediaQuery.of(context).size.height / 1.45,
         child: BlocProvider<RegisterFormBloc>(
           create: (BuildContext context) => RegisterFormBloc(
-            authenticationRepository: _authenticationRepository, 
+            authenticationRepository: RepositoryProvider.of<AuthenticationRepository>(context), 
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context)
           ),
           child: const RegisterForm(),

@@ -21,17 +21,8 @@ import 'widgets/total_tips/total_tips.dart';
 class TipsScreenBody extends StatelessWidget {
   final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
 
-  final TipsRepository _tipsRepository;
-  final TransactionRepository _transactionRepository;
-
-  const TipsScreenBody({
-    required TipsRepository tipsRepository,
-    required TransactionRepository transactionRepository,
-    Key? key
-  })
-    : _tipsRepository = tipsRepository,
-      _transactionRepository = transactionRepository,
-      super(key: key);
+  const TipsScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -61,21 +52,21 @@ class TipsScreenBody extends StatelessWidget {
                     BlocProvider<EmployeeTipsListBloc>(
                       create: (context) => EmployeeTipsListBloc(
                         dateRangeCubit: context.read<DateRangeCubit>(),
-                        tipsRepository: _tipsRepository
+                        tipsRepository: RepositoryProvider.of<TipsRepository>(context)
                       )..add(InitTipList())
                     ),
                     
                     BlocProvider<TotalTipsBloc>(
                       create: (context) => TotalTipsBloc(
                         dateRangeCubit: context.read<DateRangeCubit>(),
-                        transactionRepository: _transactionRepository
+                        transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
                       )..add(InitTotal())
                     ),
 
                     BlocProvider<EmployeeTipFinderBloc>(
                       create: (context) => EmployeeTipFinderBloc(
                         dateRangeCubit: context.read<DateRangeCubit>(),
-                        tipsRepository: _tipsRepository
+                        tipsRepository: RepositoryProvider.of<TipsRepository>(context)
                       )
                     )
                   ], 

@@ -1,7 +1,5 @@
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/repositories/photo_picker_repository.dart';
-import 'package:dashboard/repositories/photos_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,17 +9,9 @@ import 'widgets/widgets/widgets/banner_form/bloc/banner_form_bloc.dart';
 import 'widgets/widgets/widgets/logo_form/bloc/logo_form_bloc.dart';
 
 class PhotosScreen extends StatelessWidget {
-  final PhotoPickerRepository _photoPickerRepository;
-  final PhotosRepository _photosRepository;
 
-  const PhotosScreen({
-    required PhotoPickerRepository photoPickerRepository,
-    required PhotosRepository photosRepository,
-    Key? key
-  })
-    : _photoPickerRepository = photoPickerRepository,
-      _photosRepository = photosRepository,
-      super(key: key);
+  const PhotosScreen({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -54,12 +44,9 @@ class PhotosScreen extends StatelessWidget {
           create: (_) => BannerFormBloc(banner: BlocProvider.of<BusinessBloc>(context).business.photos.banner)
         )
       ],
-      child: SingleChildScrollView(
-        key: const Key("mainScrollKey"),
-        child: PhotosForm(
-          photoPickerRepository: _photoPickerRepository,
-          photosRepository: _photosRepository,
-        )
+      child: const SingleChildScrollView(
+        key: Key("mainScrollKey"),
+        child: PhotosForm()
       )
     );
   }

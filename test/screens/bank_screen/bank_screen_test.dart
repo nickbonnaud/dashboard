@@ -10,6 +10,7 @@ import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/bank_screen/bank_screen.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -35,12 +36,18 @@ void main() {
       MockDataGenerator mockDataGenerator = MockDataGenerator();
       
       screenBuilderNew = ScreenBuilder(
-        child: BankScreen(bankRepository: bankRepository),
+        child: RepositoryProvider(
+          create: (_) => bankRepository,
+          child: const BankScreen(),
+        ),
         observer: observer
       );
 
       screenBuilderNewFilled = ScreenBuilder(
-        child: BankScreen(bankRepository: bankRepository),
+        child: RepositoryProvider(
+          create: (_) => bankRepository,
+          child: const BankScreen(),
+        ),
         business: Business(
           identifier: 'identifier',
           email: 'email',
@@ -73,7 +80,10 @@ void main() {
       );
 
       screenBuilderEdit = ScreenBuilder(
-        child: BankScreen(bankRepository: bankRepository),
+        child: RepositoryProvider(
+          create: (_) => bankRepository,
+          child: const BankScreen(),
+        ),
         observer: observer,
         business: mockDataGenerator.createBusiness()
       );

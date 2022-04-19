@@ -8,11 +8,9 @@ import 'bloc/refunds_list_bloc.dart';
 import 'widgets/historic_refunds_slivers.dart';
 
 class HistoricRefundsScreenBody extends StatelessWidget {
-  final RefundRepository _refundRepository;
 
-  const HistoricRefundsScreenBody({required RefundRepository refundRepository, Key? key})
-    : _refundRepository = refundRepository,
-      super(key: key);
+  const HistoricRefundsScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class HistoricRefundsScreenBody extends StatelessWidget {
       create: (context) => RefundsListBloc(
         filterButtonCubit: BlocProvider.of<FilterButtonCubit>(context),
         dateRangeCubit: BlocProvider.of<DateRangeCubit>(context),
-        refundRepository: _refundRepository
+        refundRepository: RepositoryProvider.of<RefundRepository>(context)
       )..add(Init()),
       child: const HistoricRefundsSlivers(),
     );

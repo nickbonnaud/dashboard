@@ -7,23 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GeoAccountScreen extends StatelessWidget {
-  final GeoAccountRepository _geoAccountRepository;
   final bool _isEdit;
 
-  const GeoAccountScreen.new({
-    required GeoAccountRepository geoAccountRepository,
-    Key? key
-  })
-    : _geoAccountRepository = geoAccountRepository,
-      _isEdit = false,
+  const GeoAccountScreen.new({Key? key})
+    : _isEdit = false,
       super(key: key);
 
-  const GeoAccountScreen.edit({
-    required GeoAccountRepository geoAccountRepository,
-    Key? key
-  })
-    : _geoAccountRepository = geoAccountRepository,
-      _isEdit = true,
+  const GeoAccountScreen.edit({Key? key})
+    : _isEdit = true,
       super(key: key); 
   
   @override
@@ -43,7 +34,7 @@ class GeoAccountScreen extends StatelessWidget {
   Widget _geoAccountScreenBody({required BuildContext context}) {
     return BlocProvider<GeoAccountScreenBloc>(
       create: (context) => GeoAccountScreenBloc(
-        accountRepository: _geoAccountRepository,
+        accountRepository: RepositoryProvider.of<GeoAccountRepository>(context),
         businessBloc: BlocProvider.of<BusinessBloc>(context),
         location: BlocProvider.of<BusinessBloc>(context).business.location
       ),

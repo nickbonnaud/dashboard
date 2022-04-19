@@ -9,6 +9,7 @@ import 'package:dashboard/screens/sales_screen/widgets/widgets/total_taxes/total
 import 'package:dashboard/screens/sales_screen/widgets/widgets/total_tips/total_tips.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -26,7 +27,10 @@ void main() {
       transactionRepository = MockTransactionRepository();
       observer = MockNavigatorObserver();
       screenBuilder = ScreenBuilder(
-        child: SalesScreen(transactionRepository: transactionRepository),
+        child: RepositoryProvider(
+          create: (_) => transactionRepository,
+          child: const SalesScreen(),
+        ),
         observer: observer
       );
 

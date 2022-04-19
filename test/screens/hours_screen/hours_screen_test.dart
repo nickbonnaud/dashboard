@@ -5,6 +5,7 @@ import 'package:dashboard/screens/hours_screen/widgets/hours_selection_form/hour
 import 'package:dashboard/screens/hours_screen/widgets/hours_selection_form/widgets/hours_confirmation_form.dart';
 import 'package:dashboard/screens/hours_screen/widgets/max_hours_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:network_image_mock/network_image_mock.dart';
@@ -27,7 +28,10 @@ void main() {
       hoursRepository = MockHoursRepository();
 
       screenBuilder = ScreenBuilder(
-        child: HoursScreen(hoursRepository: hoursRepository), 
+        child: RepositoryProvider(
+          create: (_) => hoursRepository,
+          child: const HoursScreen(),
+        ), 
         observer: observer
       );
 

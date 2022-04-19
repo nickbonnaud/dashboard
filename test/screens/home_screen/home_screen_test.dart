@@ -12,6 +12,7 @@ import 'package:dashboard/screens/home_screen/widgets/home_screen_body.dart';
 import 'package:dashboard/screens/quick_dashboard_screen/quick_dashboard_screen.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:network_image_mock/network_image_mock.dart';
@@ -46,12 +47,29 @@ void main() {
       customerRepository = MockCustomerRepository();
 
       screenBuilder = ScreenBuilder(
-        child: HomeScreen(
-          transactionRepository: transactionRepository,
-          refundRepository: refundRepository,
-          tipsRepository: tipsRepository,
-          unassignedTransactionRepository: unassignedTransactionRepository,
-          customerRepository: customerRepository
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (_) => transactionRepository
+            ),
+
+            RepositoryProvider(
+              create: (_) => refundRepository,
+            ),
+
+            RepositoryProvider(
+              create: (_) => tipsRepository,
+            ),
+
+            RepositoryProvider(
+              create: (_) => unassignedTransactionRepository,
+            ),
+
+            RepositoryProvider(
+              create: (_) => customerRepository,
+            ),
+          ],
+          child: const HomeScreen()
         ), 
         observer: observer
       );

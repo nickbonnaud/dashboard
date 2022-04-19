@@ -4,9 +4,9 @@ import 'package:dashboard/providers/bank_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class BankRepository extends BaseRepository {
-  final BankProvider _bankProvider;
+  final BankProvider? _bankProvider;
 
-  const BankRepository({required BankProvider bankProvider})
+  const BankRepository({BankProvider? bankProvider})
     : _bankProvider = bankProvider;
 
   Future<BankAccount> store({
@@ -34,7 +34,8 @@ class BankRepository extends BaseRepository {
       'zip': zip
     };
     
-    Map<String, dynamic> json = await send(request: _bankProvider.store(body: body));
+    BankProvider bankProvider = _getBankProvider();
+    Map<String, dynamic> json = await send(request: bankProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -64,10 +65,15 @@ class BankRepository extends BaseRepository {
       'zip': zip
     };
 
-    Map<String, dynamic> json = await send(request: _bankProvider.update(body: body, identifier: identifier));
+    BankProvider bankProvider = _getBankProvider();
+    Map<String, dynamic> json = await send(request: bankProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 
+  BankProvider _getBankProvider() {
+    return _bankProvider ?? const BankProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return BankAccount.fromJson(json: json!);

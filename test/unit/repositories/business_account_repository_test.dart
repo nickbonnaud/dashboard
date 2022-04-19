@@ -16,7 +16,7 @@ void main() {
     late BusinessAccountRepository _accountRepositoryWithMock;
 
     setUp(() {
-      _accountRepository = const BusinessAccountRepository(accountProvider: BusinessAccountProvider());
+      _accountRepository = const BusinessAccountRepository();
       _mockAccountProvider = MockBankAccountProvider();
       _accountRepositoryWithMock = BusinessAccountRepository(accountProvider: _mockAccountProvider);
       registerFallbackValue({});

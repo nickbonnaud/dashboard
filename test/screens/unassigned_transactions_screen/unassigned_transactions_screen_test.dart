@@ -9,6 +9,7 @@ import 'package:dashboard/screens/unassigned_transactions_screen/widgets/widgets
 import 'package:dashboard/screens/unassigned_transactions_screen/widgets/widgets/unassigned_transactions_list/unassigned_transactions_list.dart';
 import 'package:dashboard/screens/unassigned_transactions_screen/widgets/widgets/unassigned_transactions_list/widgets/unassigned_transaction_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -34,7 +35,10 @@ void main() {
       observer = MockNavigatorObserver();
 
       screenBuilder = ScreenBuilder(
-        child: UnassignedTransactionsScreen(unassignedTransactionRepository: unassignedTransactionRepository),
+        child: RepositoryProvider(
+          create: (_) => unassignedTransactionRepository,
+          child: const UnassignedTransactionsScreen(),
+        ),
         observer: observer
       );
 

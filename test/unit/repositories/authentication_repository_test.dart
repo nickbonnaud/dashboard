@@ -19,8 +19,8 @@ void main() {
 
     setUp(() {
       _mockAuthenticationProvider = MockAuthenticationProvider();
-      _authRepository = const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider());
-      _authRepositoryWithMock = AuthenticationRepository(tokenRepository: const TokenRepository(), authenticationProvider: _mockAuthenticationProvider);
+      _authRepository = const AuthenticationRepository();
+      _authRepositoryWithMock = AuthenticationRepository(authenticationProvider: _mockAuthenticationProvider);
       _tokenRepository = const TokenRepository();
     });
     

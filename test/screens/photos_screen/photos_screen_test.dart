@@ -12,6 +12,7 @@ import 'package:dashboard/screens/photos_screen/widgets/widgets/photos_form_body
 import 'package:dashboard/screens/photos_screen/widgets/widgets/widgets/banner_form/banner_form.dart';
 import 'package:dashboard/screens/photos_screen/widgets/widgets/widgets/logo_form/logo_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mocktail/mocktail.dart';
@@ -43,17 +44,33 @@ void main() {
       photos = mockDataGenerator.createBusinessPhotos();
       
       screenBuilderNew = ScreenBuilder(
-        child: PhotosScreen(
-          photoPickerRepository: photoPickerRepository,
-          photosRepository: photosRepository,
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (_) => photoPickerRepository
+            ),
+
+            RepositoryProvider(
+              create: (_) => photosRepository
+            )
+          ],
+          child: const PhotosScreen()
         ),
         observer: observer
       );
 
       screenBuilderEdit = ScreenBuilder(
-        child: PhotosScreen(
-          photoPickerRepository: photoPickerRepository,
-          photosRepository: photosRepository,
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (_) => photoPickerRepository
+            ),
+
+            RepositoryProvider(
+              create: (_) => photosRepository
+            )
+          ],
+          child: const PhotosScreen()
         ),
         business: Business(
           identifier: 'identifier',

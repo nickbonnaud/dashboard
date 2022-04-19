@@ -13,6 +13,7 @@ import 'package:dashboard/screens/tips_screen/widgets/widgets/employee_tips_head
 import 'package:dashboard/screens/tips_screen/widgets/widgets/employee_tips_list/employee_tips_list.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -37,7 +38,18 @@ void main() {
       observer = MockNavigatorObserver();
 
       screenBuilder = ScreenBuilder(
-        child: TipsScreen(tipsRepository: tipsRepository, transactionRepository: transactionRepository),
+        child: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider(
+              create: (_) => tipsRepository
+            ),
+
+            RepositoryProvider(
+              create: (_) => transactionRepository
+            )
+          ],
+          child: const TipsScreen()
+        ),
         observer: observer
       );
 

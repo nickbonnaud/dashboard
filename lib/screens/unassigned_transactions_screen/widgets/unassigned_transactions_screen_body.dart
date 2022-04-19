@@ -11,14 +11,9 @@ import 'widgets/unassigned_transactions_list/bloc/unassigned_transactions_list_b
 import 'widgets/unassigned_transactions_list/unassigned_transactions_list.dart';
 
 class UnassignedTransactionsScreenBody extends StatelessWidget {
-  final UnassignedTransactionRepository _unassignedTransactionRepository;
 
-  const UnassignedTransactionsScreenBody({
-    required UnassignedTransactionRepository unassignedTransactionRepository,
-    Key? key
-  })
-    : _unassignedTransactionRepository = unassignedTransactionRepository,
-      super(key: key);
+  const UnassignedTransactionsScreenBody({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +44,7 @@ class UnassignedTransactionsScreenBody extends StatelessWidget {
             child: BlocProvider<UnassignedTransactionsListBloc>(
               create: (context) => UnassignedTransactionsListBloc(
                 dateRangeCubit: BlocProvider.of<DateRangeCubit>(context),
-                unassignedTransactionRepository: _unassignedTransactionRepository
+                unassignedTransactionRepository: RepositoryProvider.of<UnassignedTransactionRepository>(context)
               )..add(Init()),
               child: const UnassignedTransactionsList(),
             )

@@ -9,19 +9,17 @@ import 'widgets/owner_form_body.dart';
 
 
 class OwnerForm extends StatelessWidget {
-  final OwnerRepository _ownerRepository;
   final OwnerAccount? _ownerAccount;
 
-  const OwnerForm({required OwnerRepository ownerRepository, OwnerAccount? ownerAccount, Key? key})
-    : _ownerRepository = ownerRepository,
-      _ownerAccount = ownerAccount,
+  const OwnerForm({OwnerAccount? ownerAccount, Key? key})
+    : _ownerAccount = ownerAccount,
       super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OwnerFormBloc>(
       create: (context) => OwnerFormBloc(
-        ownerRepository: _ownerRepository,
+        ownerRepository: RepositoryProvider.of<OwnerRepository>(context),
         ownersScreenBloc: BlocProvider.of<OwnersScreenBloc>(context),
         ownerAccount: _ownerAccount
       ),

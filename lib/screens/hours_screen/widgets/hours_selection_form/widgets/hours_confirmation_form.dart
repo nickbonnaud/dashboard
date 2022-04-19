@@ -10,14 +10,9 @@ import 'bloc/hours_confirmation_form_bloc.dart';
 import 'widgets/hours_confirmation_form_body.dart';
 
 class HoursConfirmationForm extends StatelessWidget {
-  final HoursRepository _hoursRepository;
 
-  const HoursConfirmationForm({
-    required HoursRepository hoursRepository,
-    Key? key
-  })
-    : _hoursRepository = hoursRepository,
-      super(key: key);
+  const HoursConfirmationForm({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -25,7 +20,7 @@ class HoursConfirmationForm extends StatelessWidget {
     final HoursGrid hoursGrid = BlocProvider.of<HoursSelectionFormBloc>(context).state.operatingHoursGrid;
     return BlocProvider<HoursConfirmationFormBloc>(
       create: (context) => HoursConfirmationFormBloc(
-        hoursRepository: _hoursRepository,
+        hoursRepository: RepositoryProvider.of<HoursRepository>(context),
         businessBloc: BlocProvider.of<BusinessBloc>(context),
         hoursGrid: hoursGrid,
         hoursList: hoursGrid.hoursList(earliestStart: BlocProvider.of<HoursScreenBloc>(context).state.earliestStart!)

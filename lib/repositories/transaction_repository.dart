@@ -5,28 +5,33 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:flutter/material.dart';
 
 class TransactionRepository extends BaseRepository {
-  final TransactionProvider _transactionProvider;
+  final TransactionProvider? _transactionProvider;
 
-  const TransactionRepository({required TransactionProvider transactionProvider})
+  const TransactionRepository({TransactionProvider? transactionProvider})
     : _transactionProvider = transactionProvider;
 
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {
     String query = formatDateQuery(dateRange: dateRange);
     query = query.isNotEmpty ? query.replaceFirst("&", "?") : "";
     
-    final PaginateDataHolder holder = await sendPaginated(request: _transactionProvider.fetchPaginated(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final PaginateDataHolder holder = await sendPaginated(request: transactionProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> fetchByCode({required int code, DateTimeRange? dateRange}) async {
     final String query = formatQuery(baseQuery: "status=$code", dateRange: dateRange);
-    final PaginateDataHolder holder = await sendPaginated(request: _transactionProvider.fetchPaginated(query: query));
+    
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final PaginateDataHolder holder = await sendPaginated(request: transactionProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> fetchByCustomerId({required String customerId, DateTimeRange? dateRange}) async {
     final String query = formatQuery(baseQuery: "customer=$customerId", dateRange: dateRange);
-    final PaginateDataHolder holder = await sendPaginated(request: _transactionProvider.fetchPaginated(query: query));
+    
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final PaginateDataHolder holder = await sendPaginated(request: transactionProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
@@ -36,7 +41,9 @@ class TransactionRepository extends BaseRepository {
     final String fullNameQuery = firstNameQuery.isEmpty ? lastNameQuery.substring(1) : "$firstNameQuery$lastNameQuery";
     
     final String query = formatQuery(baseQuery: fullNameQuery, dateRange: dateRange);
-    final PaginateDataHolder holder = await sendPaginated(request: _transactionProvider.fetchPaginated(query: query));
+    
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final PaginateDataHolder holder = await sendPaginated(request: transactionProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
@@ -46,18 +53,24 @@ class TransactionRepository extends BaseRepository {
     final String fullNameQuery = firstNameQuery.isEmpty ? lastNameQuery.substring(1) : "$firstNameQuery$lastNameQuery";
     
     final String query = formatQuery(baseQuery: fullNameQuery, dateRange: dateRange);
-    final PaginateDataHolder holder = await sendPaginated(request: _transactionProvider.fetchPaginated(query: query));
+    
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final PaginateDataHolder holder = await sendPaginated(request: transactionProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> fetchByTransactionId({required String transactionId}) async {
     final String query = "?id=$transactionId";
-    final PaginateDataHolder holder = await sendPaginated(request: _transactionProvider.fetchPaginated(query: query));
+    
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final PaginateDataHolder holder = await sendPaginated(request: transactionProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> paginate({required String url}) async {
-    final PaginateDataHolder holder = await sendPaginated(request: _transactionProvider.fetchPaginated(paginateUrl: url));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+
+    final PaginateDataHolder holder = await sendPaginated(request: transactionProvider.fetchPaginated(paginateUrl: url));
     return deserialize(holder: holder);
   }
   
@@ -69,7 +82,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=net_sales", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -81,7 +95,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=tip", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -93,7 +108,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=total", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -105,7 +121,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=tax", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -117,7 +134,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=net_sales", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -129,7 +147,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=tax", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -141,35 +160,40 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=tip", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
   Future<int> fetchNetSalesDateRange({@required DateTimeRange? dateRange}) async {
     final String query = formatQuery(baseQuery: "sum=net_sales", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
   Future<int> fetchTotalSalesDateRange({@required DateTimeRange? dateRange}) async {
     final String query = formatQuery(baseQuery: "sum=total", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
   
   Future<int> fetchTotalTipsDateRange({@required DateTimeRange? dateRange}) async {
     final String query = formatQuery(baseQuery: "sum=tip", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
   Future<int> fetchTotalTaxesDateRange({@required DateTimeRange? dateRange}) async {
     final String query = formatQuery(baseQuery: "sum=tax", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -181,7 +205,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "sum=total", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -193,7 +218,8 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "unique=customer_id&count=customer_id", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
   }
 
@@ -205,8 +231,13 @@ class TransactionRepository extends BaseRepository {
     );
     final String query = formatQuery(baseQuery: "count=''", dateRange: dateRange);
 
-    final Map<String, dynamic> response = await send(request: _transactionProvider.fetch(query: query));
+    TransactionProvider transactionProvider = _getTransactionProvider();
+    final Map<String, dynamic> response = await send(request: transactionProvider.fetch(query: query));
     return response['sales_data'];
+  }
+
+  TransactionProvider _getTransactionProvider() {
+    return _transactionProvider ?? const TransactionProvider();
   }
 
   @override

@@ -3,6 +3,7 @@ import 'package:dashboard/repositories/geo_account_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/geo_account_screen/geo_account_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mocktail/mocktail.dart';
@@ -26,15 +27,17 @@ void main() {
       geoAccountRepository = MockGeoAccountRepository();
 
       screenBuilderNew = ScreenBuilder(
-        child: GeoAccountScreen.new(
-          geoAccountRepository: geoAccountRepository,
+        child: RepositoryProvider(
+          create: (_) => geoAccountRepository,
+          child: const GeoAccountScreen.new(),
         ), 
         observer: observer
       );
 
       screenBuilderEdit = ScreenBuilder(
-        child: GeoAccountScreen.edit(
-          geoAccountRepository: geoAccountRepository,
+        child: RepositoryProvider(
+          create: (_) => geoAccountRepository,
+          child: const GeoAccountScreen.edit(),
         ), 
         observer: observer
       );

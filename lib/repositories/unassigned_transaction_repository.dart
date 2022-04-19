@@ -5,23 +5,30 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:flutter/material.dart';
 
 class UnassignedTransactionRepository extends BaseRepository {
-  final UnassignedTransactionProvider _unassignedTransactionProvider;
+  final UnassignedTransactionProvider? _unassignedTransactionProvider;
 
-  const UnassignedTransactionRepository({required UnassignedTransactionProvider unassignedTransactionProvider})
+  const UnassignedTransactionRepository({UnassignedTransactionProvider? unassignedTransactionProvider})
     : _unassignedTransactionProvider = unassignedTransactionProvider;
   
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {
     final String query = formatDateQuery(dateRange: dateRange);
 
-    final PaginateDataHolder holder = await sendPaginated(request: _unassignedTransactionProvider.fetch(query: query));
+    UnassignedTransactionProvider unassignedTransactionProvider = _getUnassignedTransactionProvider();
+    final PaginateDataHolder holder = await sendPaginated(request: unassignedTransactionProvider.fetch(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> paginate({required String url}) async {
-    final PaginateDataHolder holder = await sendPaginated(request: _unassignedTransactionProvider.fetch(paginateUrl: url));
+    UnassignedTransactionProvider unassignedTransactionProvider = _getUnassignedTransactionProvider();
+
+    final PaginateDataHolder holder = await sendPaginated(request: unassignedTransactionProvider.fetch(paginateUrl: url));
     return deserialize(holder: holder);
   }
 
+  UnassignedTransactionProvider _getUnassignedTransactionProvider() {
+    return _unassignedTransactionProvider ?? const UnassignedTransactionProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return holder!.update(

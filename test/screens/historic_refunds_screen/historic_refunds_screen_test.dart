@@ -12,6 +12,7 @@ import 'package:dashboard/screens/historic_refunds_screen/widgets/widgets/widget
 import 'package:dashboard/screens/historic_refunds_screen/widgets/widgets/widgets/search_bar/widgets/search_field/search_field.dart';
 import 'package:dashboard/screens/historic_refunds_screen/widgets/widgets/widgets/search_display.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:network_image_mock/network_image_mock.dart';
@@ -33,7 +34,10 @@ void main() {
       observer = MockNavigatorObserver();
       refundRepository = MockRefundRepository();
       screenBuilder = ScreenBuilder(
-        child: HistoricRefundsScreen(refundRepository: refundRepository),
+        child: RepositoryProvider(
+          create: (_) => refundRepository,
+          child: const HistoricRefundsScreen(),
+        ),
         observer: observer
       );
 

@@ -17,7 +17,7 @@ void main() {
     late UnassignedTransactionRepository _unassignedTransactionProviderWithMock;
 
     setUp(() {
-      _unassignedRepository = const UnassignedTransactionRepository(unassignedTransactionProvider: UnassignedTransactionProvider());
+      _unassignedRepository = const UnassignedTransactionRepository();
       _mockUnassignedTransactionProvider = MockUnassignedTransactionProvider();
       _unassignedTransactionProviderWithMock = UnassignedTransactionRepository(unassignedTransactionProvider: _mockUnassignedTransactionProvider);
     });

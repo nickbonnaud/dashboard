@@ -8,14 +8,9 @@ import 'bloc/edit_hours_screen_bloc.dart';
 import 'widgets/edit_hours_screen_body.dart';
 
 class EditHoursScreen extends StatelessWidget {
-  final HoursRepository _hoursRepository;
 
-  const EditHoursScreen({
-    required HoursRepository hoursRepository,
-    Key? key
-  })
-    : _hoursRepository = hoursRepository,
-      super(key: key);
+  const EditHoursScreen({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -29,7 +24,7 @@ class EditHoursScreen extends StatelessWidget {
   Widget _body({required BuildContext context}) {
     return BlocProvider<EditHoursScreenBloc>(
       create: (context) => EditHoursScreenBloc(
-        hoursRepository: _hoursRepository,
+        hoursRepository: RepositoryProvider.of<HoursRepository>(context),
         businessBloc: BlocProvider.of<BusinessBloc>(context),
         hours: BlocProvider.of<BusinessBloc>(context).business.profile.hours
       ),

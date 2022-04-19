@@ -3,6 +3,7 @@ import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/request_reset_password_screen/request_reset_password_screen.dart';
 import 'package:dashboard/screens/request_reset_password_screen/widgets/request_reset_password_screen_body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -20,8 +21,9 @@ void main() {
       authenticationRepository = MockAuthenticationRepository();
       observer = MockNavigatorObserver();
       screenBuilder = ScreenBuilder(
-        child: RequestResetPasswordScreen(
-          authenticationRepository: authenticationRepository
+        child: RepositoryProvider(
+          create: (_) => authenticationRepository,
+          child: const RequestResetPasswordScreen(),
         ),
         observer: observer
       );

@@ -5,15 +5,16 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:flutter/material.dart';
 
 class TipsRepository extends BaseRepository {
-  final TipsProvider _tipsProvider;
+  final TipsProvider? _tipsProvider;
 
-  const TipsRepository({required TipsProvider tipsProvider})
+  const TipsRepository({TipsProvider? tipsProvider})
     : _tipsProvider = tipsProvider;
 
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {
     String query = formatQuery(baseQuery: "employees=all", dateRange: dateRange);
     
-    PaginateDataHolder holder = await sendPaginated(request: _tipsProvider.fetchPaginated(query: query));
+    TipsProvider tipsProvider = _getTipsProvider();
+    PaginateDataHolder holder = await sendPaginated(request: tipsProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
@@ -23,7 +24,9 @@ class TipsRepository extends BaseRepository {
     String fullNameQuery = firstNameQuery.isEmpty ? lastNameQuery.substring(1) : "$firstNameQuery$lastNameQuery";
     
     String query = formatQuery(baseQuery: "employees=single&$fullNameQuery", dateRange: dateRange);
-    PaginateDataHolder holder = await sendPaginated(request: _tipsProvider.fetchPaginated(query: query));
+    
+    TipsProvider tipsProvider = _getTipsProvider();
+    PaginateDataHolder holder = await sendPaginated(request: tipsProvider.fetchPaginated(query: query));
 
     return holder.update(
       data: holder.data.map((tip) => EmployeeTip.fromJson(json: tip)).toList()
@@ -31,10 +34,16 @@ class TipsRepository extends BaseRepository {
   }
 
   Future<PaginateDataHolder> paginate({required String url}) async {
-    PaginateDataHolder holder = await sendPaginated(request: _tipsProvider.fetchPaginated(paginateUrl: url));
+    TipsProvider tipsProvider = _getTipsProvider();
+
+    PaginateDataHolder holder = await sendPaginated(request: tipsProvider.fetchPaginated(paginateUrl: url));
     return deserialize(holder: holder);
   }
 
+  TipsProvider _getTipsProvider() {
+    return _tipsProvider ?? const TipsProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return holder!.update(

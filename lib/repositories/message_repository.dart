@@ -5,23 +5,29 @@ import 'package:dashboard/providers/message_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class MessageRepository extends BaseRepository {
-  final MessageProvider _messageProvider;
+  final MessageProvider? _messageProvider;
 
-  const MessageRepository({required MessageProvider messageProvider})
+  const MessageRepository({MessageProvider? messageProvider})
     : _messageProvider = messageProvider;
   
   Future<bool> checkUnreadMessages() async {
-    return send(request: _messageProvider.fetch())
+    MessageProvider messageProvider = _getMessageProvider();
+
+    return send(request: messageProvider.fetch())
       .then((json) => json['unread']);
   }
 
   Future<PaginateDataHolder> fetchAll() async {
-    PaginateDataHolder holder = await sendPaginated(request: _messageProvider.fetchPaginated());
+    MessageProvider messageProvider = _getMessageProvider();
+
+    PaginateDataHolder holder = await sendPaginated(request: messageProvider.fetchPaginated());
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> paginate({required String url}) async {
-    PaginateDataHolder holder = await sendPaginated(request: _messageProvider.fetchPaginated(paginateUrl: url));
+    MessageProvider messageProvider = _getMessageProvider();
+    
+    PaginateDataHolder holder = await sendPaginated(request: messageProvider.fetchPaginated(paginateUrl: url));
     return deserialize(holder: holder);
   }
 
@@ -31,7 +37,8 @@ class MessageRepository extends BaseRepository {
       'body': messageBody,
     };
 
-    Map<String, dynamic> json = await send(request: _messageProvider.storeMessage(body: body));
+    MessageProvider messageProvider = _getMessageProvider();
+    Map<String, dynamic> json = await send(request: messageProvider.storeMessage(body: body));
     return deserialize(json: json);
   }
   
@@ -41,17 +48,23 @@ class MessageRepository extends BaseRepository {
       'body': replyBody,
     };
 
-    Map<String, dynamic> json = await send(request: _messageProvider.storeReply(body: body));
+    MessageProvider messageProvider = _getMessageProvider();
+    Map<String, dynamic> json = await send(request: messageProvider.storeReply(body: body));
     return Reply.fromJson(json: json);
   }
 
   Future<bool> updateMessage({required String messageIdentifier}) async {
     Map<String, dynamic> body = { 'read': true };
 
-    await send(request: _messageProvider.updateMessage(body: body, messageIdentifier: messageIdentifier));
+    MessageProvider messageProvider = _getMessageProvider();
+    await send(request: messageProvider.updateMessage(body: body, messageIdentifier: messageIdentifier));
     return true;
   }
 
+  MessageProvider _getMessageProvider() {
+    return _messageProvider ?? const MessageProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     if (holder != null) {

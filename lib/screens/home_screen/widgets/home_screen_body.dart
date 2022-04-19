@@ -1,9 +1,4 @@
 import 'package:dashboard/global_widgets/app_bars/default_app_bar.dart';
-import 'package:dashboard/repositories/customer_repository.dart';
-import 'package:dashboard/repositories/refund_repository.dart';
-import 'package:dashboard/repositories/tips_repository.dart';
-import 'package:dashboard/repositories/transaction_repository.dart';
-import 'package:dashboard/repositories/unassigned_transaction_repository.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
@@ -24,26 +19,9 @@ import '../cubit/home_screen_cubit.dart';
 import 'models/app_tab.dart';
 
 class HomeScreenBody extends StatefulWidget {
-  final TransactionRepository _transactionRepository;
-  final RefundRepository _refundRepository;
-  final TipsRepository _tipsRepository;
-  final UnassignedTransactionRepository _unassignedTransactionRepository;
-  final CustomerRepository _customerRepository;
 
-  const HomeScreenBody({
-    required TransactionRepository transactionRepository,
-    required RefundRepository refundRepository,
-    required TipsRepository tipsRepository,
-    required UnassignedTransactionRepository unassignedTransactionRepository,
-    required CustomerRepository customerRepository,
-    Key? key
-  })
-    : _transactionRepository = transactionRepository,
-      _refundRepository = refundRepository,
-      _tipsRepository = tipsRepository,
-      _unassignedTransactionRepository = unassignedTransactionRepository,
-      _customerRepository = customerRepository,
-      super(key: key);
+  const HomeScreenBody({Key? key})
+    : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _HomeScreenBodyState();
@@ -59,53 +37,37 @@ class _HomeScreenBodyState extends State<HomeScreenBody> with SingleTickerProvid
     super.initState();
     _tabs = [
       AppTab(
-        child: QuickDashboardScreen(
-          transactionRepository: widget._transactionRepository,
-          refundRepository: widget._refundRepository,
-        ), 
+        child: const QuickDashboardScreen(), 
         title: "Home", 
         icon: Icons.home
       ),
       AppTab(
-        child: HistoricTransactionsScreen(
-          transactionRepository: widget._transactionRepository
-        ),
+        child: const HistoricTransactionsScreen(),
         title: "Transactions", 
         icon: Icons.receipt
       ),
       AppTab(
-        child: HistoricRefundsScreen(
-          refundRepository: widget._refundRepository
-        ),
+        child: const HistoricRefundsScreen(),
         title: "Refunds",
         icon: Icons.receipt_long
       ),
       AppTab(
-        child: TipsScreen(
-          tipsRepository: widget._tipsRepository,
-          transactionRepository: widget._transactionRepository,
-        ), 
+        child: const TipsScreen(), 
         title: "Tips Center",
         icon: Icons.volunteer_activism
       ),
       AppTab(
-        child: SalesScreen(
-          transactionRepository: widget._transactionRepository,
-        ), 
+        child: const SalesScreen(), 
         title: "Sales Center",
         icon: Icons.payments
       ),
       AppTab(
-        child: UnassignedTransactionsScreen(
-          unassignedTransactionRepository: widget._unassignedTransactionRepository,
-        ),
+        child: const UnassignedTransactionsScreen(),
         title: "Unmatched Bills",
         icon: Icons.person_search
       ),
       AppTab(
-        child: CustomersScreen(
-          customerRepository: widget._customerRepository
-        ),
+        child: const CustomersScreen(),
         title: "Customers",
         icon: Icons.person_pin
       ),

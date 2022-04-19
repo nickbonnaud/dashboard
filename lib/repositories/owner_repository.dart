@@ -4,9 +4,9 @@ import 'package:dashboard/providers/owner_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class OwnerRepository extends BaseRepository {
-  final OwnerProvider _ownerProvider;
+  final OwnerProvider? _ownerProvider;
 
-  const OwnerRepository({required OwnerProvider ownerProvider})
+  const OwnerRepository({OwnerProvider? ownerProvider})
     : _ownerProvider = ownerProvider;
   
   Future<OwnerAccount> store({
@@ -42,7 +42,8 @@ class OwnerRepository extends BaseRepository {
       'zip': zip
     };
     
-    Map<String, dynamic> json = await send(request: _ownerProvider.store(body: body));
+    OwnerProvider ownerProvider = _getOwnerProvider();
+    Map<String, dynamic> json = await send(request: ownerProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -80,15 +81,21 @@ class OwnerRepository extends BaseRepository {
       'zip': zip
     };
     
-    Map<String, dynamic> json = await send(request: _ownerProvider.update(identifier: identifier, body: body));
+    OwnerProvider ownerProvider = _getOwnerProvider();
+    Map<String, dynamic> json = await send(request: ownerProvider.update(identifier: identifier, body: body));
     return deserialize(json: json);
   }
 
   Future<bool> remove({required String identifier}) async {
-    await send(request: _ownerProvider.remove(identifier: identifier));
+    OwnerProvider ownerProvider = _getOwnerProvider();
+    await send(request: ownerProvider.remove(identifier: identifier));
     return true;
   }
 
+  OwnerProvider _getOwnerProvider() {
+    return _ownerProvider ?? const OwnerProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return OwnerAccount.fromJson(json: json!);

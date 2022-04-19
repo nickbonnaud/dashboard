@@ -1,9 +1,3 @@
-import 'package:dashboard/providers/authentication_provider.dart';
-import 'package:dashboard/providers/customer_provider.dart';
-import 'package:dashboard/providers/refund_provider.dart';
-import 'package:dashboard/providers/tips_provider.dart';
-import 'package:dashboard/providers/transaction_provider.dart';
-import 'package:dashboard/providers/unassigned_transaction_provider.dart';
 import 'package:dashboard/repositories/customer_repository.dart';
 import 'package:dashboard/repositories/refund_repository.dart';
 import 'package:dashboard/repositories/tips_repository.dart';
@@ -19,7 +13,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'blocs/authentication/authentication_bloc.dart';
 import 'blocs/business/business_bloc.dart';
 import 'repositories/authentication_repository.dart';
-import 'repositories/token_repository.dart';
 
 class App extends StatelessWidget {
 
@@ -51,7 +44,7 @@ class App extends StatelessWidget {
       return _buildAuthenticatedScreen();
     } else {
       return RepositoryProvider(
-        create: (context) => const AuthenticationRepository(tokenRepository: TokenRepository(), authenticationProvider: AuthenticationProvider()),
+        create: (context) => const AuthenticationRepository(),
         child: const LoginScreen(),
       );
     }
@@ -66,16 +59,37 @@ class App extends StatelessWidget {
         if (state is BusinessLoaded) {
           return state.business.accounts.accountStatus.code < 120
             ? const OnboardScreen()
-            : const HomeScreen(
-              transactionRepository: TransactionRepository(transactionProvider: TransactionProvider()),
-              refundRepository: RefundRepository(refundProvider: RefundProvider()),
-              tipsRepository: TipsRepository(tipsProvider: TipsProvider()),
-              unassignedTransactionRepository: UnassignedTransactionRepository(unassignedTransactionProvider: UnassignedTransactionProvider()),
-              customerRepository: CustomerRepository(customerProvider: CustomerProvider()),
-            );
+            : _homeScreen();
         }
         return Container();
       }
+    );
+  }
+
+  Widget _homeScreen() {
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider(
+          create: (_) => const TransactionRepository()
+        ),
+
+        RepositoryProvider(
+          create: (_) => const RefundRepository(),
+        ),
+
+        RepositoryProvider(
+          create: (_) => const TipsRepository(),
+        ),
+
+        RepositoryProvider(
+          create: (_) => const UnassignedTransactionRepository(),
+        ),
+
+        RepositoryProvider(
+          create: (_) => const CustomerRepository(),
+        ),
+      ],
+      child: const HomeScreen()
     );
   }
 }

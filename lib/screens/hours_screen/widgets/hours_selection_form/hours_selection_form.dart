@@ -1,4 +1,3 @@
-import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:dashboard/resources/helpers/font_size_adapter.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
@@ -11,14 +10,9 @@ import 'bloc/hours_selection_form_bloc.dart';
 import 'widgets/hours_confirmation_form.dart';
 
 class HoursSelectionForm extends StatelessWidget {
-  final HoursRepository _hoursRepository;
 
-  HoursSelectionForm({
-    required HoursRepository hoursRepository,
-    Key? key
-  })
-    : _hoursRepository = hoursRepository,
-      super(key: key);
+  HoursSelectionForm({Key? key})
+    : super(key: key);
   
   final GlobalKey _gridKey = GlobalKey();
   
@@ -33,7 +27,7 @@ class HoursSelectionForm extends StatelessWidget {
 
   Widget _body({required BuildContext context, required HoursSelectionFormState state}) {
     if (state.isFinished) {
-      return HoursConfirmationForm(hoursRepository: _hoursRepository);
+      return const HoursConfirmationForm();
     }
     return Column(
       key: const Key("hoursSelectionFormKey"),

@@ -5,6 +5,7 @@ import 'package:dashboard/repositories/hours_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/edit_hours_screen/edit_hours_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -33,8 +34,9 @@ void main() {
       hours = business.profile.hours;
 
       screenBuilder = ScreenBuilder(
-        child: EditHoursScreen(
-          hoursRepository: hoursRepository,
+        child: RepositoryProvider(
+          create: (_) => hoursRepository,
+          child: const EditHoursScreen()
         ),
         business: business,
         observer: observer

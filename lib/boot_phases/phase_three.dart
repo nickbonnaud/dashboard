@@ -1,8 +1,6 @@
 import 'package:dashboard/blocs/authentication/authentication_bloc.dart';
 import 'package:dashboard/blocs/credentials/credentials_bloc.dart';
 import 'package:dashboard/blocs/messages/messages_bloc.dart';
-import 'package:dashboard/providers/credentials_provider.dart';
-import 'package:dashboard/providers/message_provider.dart';
 import 'package:dashboard/repositories/credentials_repository.dart';
 import 'package:dashboard/repositories/message_repository.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +10,6 @@ import '../boot.dart';
 
 class PhaseThree extends StatelessWidget {
   final MaterialApp? _testApp;
-  final CredentialsRepository _credentialsRepository = const CredentialsRepository(credentialsProvider: CredentialsProvider());
-  final MessageRepository _messageRepository = const MessageRepository(messageProvider: MessageProvider());
   
   const PhaseThree({MaterialApp? testApp, Key? key})
     : _testApp = testApp,
@@ -25,14 +21,14 @@ class PhaseThree extends StatelessWidget {
       providers: [
         BlocProvider<CredentialsBloc>(
           create: (BuildContext context) => CredentialsBloc(
-            credentialsRepository: _credentialsRepository,
+            credentialsRepository: const CredentialsRepository(),
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context)
           ),
         ),
 
         BlocProvider<MessagesBloc>(
           create: (context) => MessagesBloc(
-            messageRepository: _messageRepository,
+            messageRepository: const MessageRepository(),
             authenticationBloc: BlocProvider.of<AuthenticationBloc>(context)
           )
         )

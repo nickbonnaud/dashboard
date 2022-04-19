@@ -12,11 +12,9 @@ import 'widgets/message_input/message_input.dart';
 
 
 class MessageScreenBody extends StatelessWidget {
-  final MessageRepository _messageRepository;
 
-  const MessageScreenBody({required MessageRepository messageRepository, Key? key})
-    : _messageRepository = messageRepository,
-      super(key: key);
+  const MessageScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class MessageScreenBody extends StatelessWidget {
                 ),
                 BlocProvider<MessageInputBloc>(
                   create: (context) => MessageInputBloc(
-                    messageRepository: _messageRepository,
+                    messageRepository: RepositoryProvider.of<MessageRepository>(context),
                     messageHistoryBloc: BlocProvider.of<MessageHistoryBloc>(context)
                   ),
                   child: const MessageInput(),

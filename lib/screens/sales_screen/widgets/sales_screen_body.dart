@@ -19,11 +19,9 @@ import 'widgets/total_tips/total_tips.dart';
 
 class SalesScreenBody extends StatelessWidget {
   final ResponsiveLayoutHelper _layoutHelper = const ResponsiveLayoutHelper();
-  final TransactionRepository _transactionRepository;
 
-  const SalesScreenBody({required TransactionRepository transactionRepository, Key? key})
-    : _transactionRepository = transactionRepository,
-      super(key: key);
+  const SalesScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -32,28 +30,28 @@ class SalesScreenBody extends StatelessWidget {
         BlocProvider<NetSalesBloc>(
           create: (context) => NetSalesBloc(
             dateRangeCubit: context.read<DateRangeCubit>(),
-            transactionRepository: _transactionRepository
+            transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
           )..add(InitNetSales())
         ),
 
         BlocProvider<TotalSalesBloc>(
           create: (context) => TotalSalesBloc(
             dateRangeCubit: context.read<DateRangeCubit>(),
-            transactionRepository: _transactionRepository
+            transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
           )..add(InitTotalSales())
         ),
 
         BlocProvider<TotalTipsBloc>(
           create: (context) => TotalTipsBloc(
             dateRangeCubit: context.read<DateRangeCubit>(),
-            transactionRepository: _transactionRepository
+            transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
           )..add(InitTotalTips())
         ),
 
         BlocProvider<TotalTaxesBloc>(
           create: (context) => TotalTaxesBloc(
             dateRangeCubit: context.read<DateRangeCubit>(),
-            transactionRepository: _transactionRepository
+            transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
           )..add(InitTotalTaxes())
         )
       ],

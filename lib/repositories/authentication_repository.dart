@@ -8,10 +8,10 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:dashboard/repositories/token_repository.dart';
 
 class AuthenticationRepository extends BaseRepository {
-  final TokenRepository _tokenRepository;
-  final AuthenticationProvider _authenticationProvider;
+  final TokenRepository? _tokenRepository;
+  final AuthenticationProvider? _authenticationProvider;
 
-  const AuthenticationRepository({required AuthenticationProvider authenticationProvider, required TokenRepository tokenRepository})
+  const AuthenticationRepository({AuthenticationProvider? authenticationProvider, TokenRepository? tokenRepository})
     : _tokenRepository = tokenRepository,
       _authenticationProvider = authenticationProvider;
 
@@ -21,7 +21,9 @@ class AuthenticationRepository extends BaseRepository {
       'password': password,
       'password_confirmation': passwordConfirmation
     };
-    Map<String, dynamic> json = await send(request: _authenticationProvider.register(body: body));
+
+    AuthenticationProvider authenticationProvider = _getAuthenticationProvider();
+    Map<String, dynamic> json = await send(request: authenticationProvider.register(body: body));
     return deserialize(json: json);
   }
   
@@ -31,14 +33,18 @@ class AuthenticationRepository extends BaseRepository {
       "password": password
     };
     
-    Map<String, dynamic> json = await send(request: _authenticationProvider.login(body: body));
+    AuthenticationProvider authenticationProvider = _getAuthenticationProvider();
+    Map<String, dynamic> json = await send(request: authenticationProvider.login(body: body));
     return deserialize(json: json);
   }
   
   Future<bool> logout() async {
-    return send(request: _authenticationProvider.logout())
+    AuthenticationProvider authenticationProvider = _getAuthenticationProvider();
+    TokenRepository tokenRepository = _getTokenRepository();
+
+    return send(request: authenticationProvider.logout())
       .then((json) {
-        _tokenRepository.deleteToken();
+        tokenRepository.deleteToken();
         return json['success'];
       });
   }
@@ -48,7 +54,8 @@ class AuthenticationRepository extends BaseRepository {
       'password': password
     };
 
-    Map<String, dynamic> json = await send(request: _authenticationProvider.verifyPassword(body: body));
+    AuthenticationProvider authenticationProvider = _getAuthenticationProvider();
+    Map<String, dynamic> json = await send(request: authenticationProvider.verifyPassword(body: body));
     return json['password_verified'];
   }
 
@@ -57,7 +64,8 @@ class AuthenticationRepository extends BaseRepository {
       'email': email
     };
 
-    Map<String, dynamic> json = await send(request: _authenticationProvider.requestPasswordReset(body: body));
+    AuthenticationProvider authenticationProvider = _getAuthenticationProvider();
+    Map<String, dynamic> json = await send(request: authenticationProvider.requestPasswordReset(body: body));
     return json['email_sent'];
   }
 
@@ -68,17 +76,29 @@ class AuthenticationRepository extends BaseRepository {
       'token': token
     };
 
-    Map<String, dynamic> json = await send(request: _authenticationProvider.resetPassword(body: body));
+    AuthenticationProvider authenticationProvider = _getAuthenticationProvider();
+    Map<String, dynamic> json = await send(request: authenticationProvider.resetPassword(body: body));
     return json['reset'];
   }
 
   bool isSignedIn() {
-    return _tokenRepository.tokenValid();
+    TokenRepository tokenRepository = _getTokenRepository();
+    return tokenRepository.tokenValid();
+  }
+
+  AuthenticationProvider _getAuthenticationProvider() {
+    return _authenticationProvider ?? const AuthenticationProvider();
+  }
+
+  TokenRepository _getTokenRepository() {
+    return _tokenRepository ?? const TokenRepository();
   }
 
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
-    _tokenRepository.saveToken(token: Token.fromJson(json: json!['csrf_token']));
+    TokenRepository tokenRepository = _getTokenRepository();
+    
+    tokenRepository.saveToken(token: Token.fromJson(json: json!['csrf_token']));
     return Business.fromJson(json: json['business']);
   }
 }

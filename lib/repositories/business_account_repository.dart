@@ -4,9 +4,9 @@ import 'package:dashboard/providers/business_account_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class BusinessAccountRepository extends BaseRepository {
-  final BusinessAccountProvider _accountProvider;
+  final BusinessAccountProvider? _accountProvider;
 
-  const BusinessAccountRepository({required BusinessAccountProvider accountProvider})
+  const BusinessAccountRepository({BusinessAccountProvider? accountProvider})
     : _accountProvider = accountProvider;
 
   Future<BusinessAccount> store({
@@ -31,7 +31,8 @@ class BusinessAccountRepository extends BaseRepository {
     
     if (ein != null && ein != "") body.addAll({'ein': ein});
 
-    Map<String, dynamic> json = await send(request: _accountProvider.store(body: body));
+    BusinessAccountProvider accountProvider = _getAccountProvider();
+    Map<String, dynamic> json = await send(request: accountProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -58,10 +59,15 @@ class BusinessAccountRepository extends BaseRepository {
 
     if (ein != null && ein != "") body.addAll({'ein': ein});
 
-    Map<String, dynamic> json = await send(request: _accountProvider.update(body: body, identifier: identifier));
+    BusinessAccountProvider accountProvider = _getAccountProvider();
+    Map<String, dynamic> json = await send(request: accountProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 
+  BusinessAccountProvider _getAccountProvider() {
+    return _accountProvider ?? const BusinessAccountProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return BusinessAccount.fromJson(json: json!);

@@ -5,16 +5,17 @@ import 'package:dashboard/repositories/base_repository.dart';
 import 'package:flutter/material.dart';
 
 class RefundRepository extends BaseRepository {
-  final RefundProvider _refundProvider;
+  final RefundProvider? _refundProvider;
 
-  const RefundRepository({required RefundProvider refundProvider})
+  const RefundRepository({RefundProvider? refundProvider})
     : _refundProvider = refundProvider;
 
   Future<PaginateDataHolder> fetchAll({DateTimeRange? dateRange}) async {
     String query = formatDateQuery(dateRange: dateRange);
     query = query.isNotEmpty ? query.replaceFirst("&", "?") : "";
     
-    PaginateDataHolder holder = await sendPaginated(request: _refundProvider.fetchPaginated(query: query));
+    RefundProvider refundProvider = _getRefundProvider();
+    PaginateDataHolder holder = await sendPaginated(request: refundProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
@@ -24,33 +25,43 @@ class RefundRepository extends BaseRepository {
     String fullNameQuery = firstNameQuery.isEmpty ? lastNameQuery.substring(1) : "$firstNameQuery$lastNameQuery";
     
     String query = formatQuery(baseQuery: fullNameQuery, dateRange: dateRange);
-    PaginateDataHolder holder = await sendPaginated(request: _refundProvider.fetchPaginated(query: query));
+    
+    RefundProvider refundProvider = _getRefundProvider();
+    PaginateDataHolder holder = await sendPaginated(request: refundProvider.fetchPaginated(query: query));
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> fetchByRefundId({required String refundId}) async {
     String query = "?id=$refundId";
-    PaginateDataHolder holder = await sendPaginated(request: _refundProvider.fetchPaginated(query: query));
+    
+    RefundProvider refundProvider = _getRefundProvider();
+    PaginateDataHolder holder = await sendPaginated(request: refundProvider.fetchPaginated(query: query));
 
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> fetchByTransactionId({required String transactionId}) async {
     String query = "?transactionId=$transactionId";
-    PaginateDataHolder holder = await sendPaginated(request: _refundProvider.fetchPaginated(query: query));
+    
+    RefundProvider refundProvider = _getRefundProvider();
+    PaginateDataHolder holder = await sendPaginated(request: refundProvider.fetchPaginated(query: query));
 
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> fetchByCustomerId({required String customerId, DateTimeRange? dateRange}) async {
     String query = formatQuery(baseQuery: "customer=$customerId", dateRange: dateRange);
-    PaginateDataHolder holder = await sendPaginated(request: _refundProvider.fetchPaginated(query: query));
+    
+    RefundProvider refundProvider = _getRefundProvider();
+    PaginateDataHolder holder = await sendPaginated(request: refundProvider.fetchPaginated(query: query));
 
     return deserialize(holder: holder);
   }
 
   Future<PaginateDataHolder> paginate({required String url}) async {
-    PaginateDataHolder holder = await sendPaginated(request: _refundProvider.fetchPaginated(paginateUrl: url));
+    RefundProvider refundProvider = _getRefundProvider();
+
+    PaginateDataHolder holder = await sendPaginated(request: refundProvider.fetchPaginated(paginateUrl: url));
     return deserialize(holder: holder);
   }
   
@@ -62,7 +73,8 @@ class RefundRepository extends BaseRepository {
     );
     String query = formatQuery(baseQuery: "sum=total", dateRange: dateRange);
 
-    Map<String, dynamic> json = await send(request: _refundProvider.fetch(query: query));
+    RefundProvider refundProvider = _getRefundProvider();
+    Map<String, dynamic> json = await send(request: refundProvider.fetch(query: query));
     return json['refund_data'];
   }
 
@@ -76,8 +88,13 @@ class RefundRepository extends BaseRepository {
 
     String query = formatQuery(baseQuery: 'sum=total', dateRange: dateRange);
 
-    Map<String, dynamic> json = await send(request: _refundProvider.fetch(query: query));
+    RefundProvider refundProvider = _getRefundProvider();
+    Map<String, dynamic> json = await send(request: refundProvider.fetch(query: query));
     return json['refund_data'];
+  }
+  
+  RefundProvider _getRefundProvider() {
+    return _refundProvider ?? const RefundProvider();
   }
   
   @override

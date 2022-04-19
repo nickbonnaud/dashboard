@@ -5,6 +5,7 @@ import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/customers_screen/customers_screen.dart';
 import 'package:dashboard/screens/customers_screen/widgets/widgets/widgets/widgets/customer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:network_image_mock/network_image_mock.dart';
@@ -27,7 +28,10 @@ void main() {
       observer = MockNavigatorObserver();
       customerRepository = MockCustomerRepository();
       screenBuilder = ScreenBuilder(
-        child: CustomersScreen(customerRepository: customerRepository), 
+        child: RepositoryProvider(
+          create: (_) => customerRepository,
+          child: const CustomersScreen(),
+        ), 
         observer: observer
       );
 

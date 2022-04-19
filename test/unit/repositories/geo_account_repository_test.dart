@@ -16,7 +16,7 @@ void main() {
     late GeoAccountRepository _geoAccountRepositoryWithMock;
 
     setUp(() {
-      _geoAccountRepository = const GeoAccountRepository(geoAccountProvider: GeoAccountProvider());
+      _geoAccountRepository = const GeoAccountRepository();
       _mockGeoAccountProvider = MockGeoAccountProvider();
       _geoAccountRepositoryWithMock = GeoAccountRepository(geoAccountProvider: _mockGeoAccountProvider);
       registerFallbackValue({});

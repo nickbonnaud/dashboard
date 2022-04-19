@@ -4,6 +4,7 @@ import 'package:dashboard/models/business/bank_account.dart';
 import 'package:dashboard/models/business/business_account.dart';
 import 'package:dashboard/models/business/location.dart' as business;
 import 'package:dashboard/models/business/profile.dart';
+import 'package:dashboard/repositories/google_places_repository.dart';
 import 'package:dashboard/repositories/profile_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/resources/helpers/debouncer.dart';
@@ -19,14 +20,14 @@ part 'profile_screen_state.dart';
 class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
   final ProfileRepository _profileRepository;
   final BusinessBloc _businessBloc;
-  final GoogleMapsPlaces _places;
+  final GooglePlacesRepository _places;
 
   final Duration _debounceTime = const Duration(milliseconds: 300);
 
   ProfileScreenBloc({
     required ProfileRepository profileRepository, 
     required BusinessBloc businessBloc,
-    required GoogleMapsPlaces places
+    required GooglePlacesRepository places
   })
     : _profileRepository = profileRepository,
       _businessBloc = businessBloc,
@@ -49,10 +50,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     if (event.query.length >= 3) {
       emit(state.update(isSubmitting: true, errorMessage: ""));
       
-      final PlacesAutocompleteResponse response = await _places.autocomplete(
-        event.query,
-        types: ['establishment'],
-      );
+      final PlacesAutocompleteResponse response = await _places.autoComplete(query: event.query);
 
       if (response.isOkay) {
         emit(state.update(isSubmitting: false, predictions: response.predictions));
@@ -65,7 +63,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
   Future<void> _mapPredictionSelectedToState({required PredictionSelected event, required Emitter<ProfileScreenState> emit}) async {
     if (event.prediction.placeId != null) {
       emit(state.update(isSubmitting: true, predictions: []));
-      final PlacesDetailsResponse response = await _places.getDetailsByPlaceId(event.prediction.placeId!);
+      final PlacesDetailsResponse response = await _places.details(placeId: event.prediction.placeId!);
       emit(state.update(
         isSubmitting: false,
         selectedPrediction: response.result,

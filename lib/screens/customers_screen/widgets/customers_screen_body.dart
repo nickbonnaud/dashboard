@@ -11,11 +11,9 @@ import 'bloc/customers_list_bloc.dart';
 import 'widgets/customers_screen_slivers.dart';
 
 class CustomersScreenBody extends StatelessWidget {
-  final CustomerRepository _customerRepository;
 
-  const CustomersScreenBody({required CustomerRepository customerRepository, Key? key})
-    : _customerRepository = customerRepository,
-      super(key: key);
+  const CustomersScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -30,7 +28,7 @@ class CustomersScreenBody extends StatelessWidget {
   Widget _body({required BuildContext context}) {
     return BlocProvider<CustomersListBloc>(
       create: (context) => CustomersListBloc(
-        customerRepository: _customerRepository,
+        customerRepository: RepositoryProvider.of<CustomerRepository>(context),
         dateRangeCubit: BlocProvider.of<DateRangeCubit>(context),
         filterButtonBloc: BlocProvider.of<FilterButtonBloc>(context)
       )..add(Init()),

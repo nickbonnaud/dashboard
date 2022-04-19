@@ -9,11 +9,9 @@ import 'bloc/message_list_screen_bloc.dart';
 import 'widgets/message_list_screen_body.dart';
 
 class MessageListScreen extends StatelessWidget {
-  final MessageRepository _messageRepository;
   
-  const MessageListScreen({required MessageRepository messageRepository, Key? key})
-    : _messageRepository = messageRepository,
-      super(key: key);
+  const MessageListScreen({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -25,11 +23,9 @@ class MessageListScreen extends StatelessWidget {
       backgroundColor: Theme.of(context).colorScheme.scrollBackground,
       body: BlocProvider<MessageListScreenBloc>(
         create: (_) => MessageListScreenBloc(
-          messageRepository: _messageRepository
+          messageRepository: RepositoryProvider.of<MessageRepository>(context)
         )..add(Init()),
-        child: MessageListScreenBody(
-          messageRepository: _messageRepository,
-        ),
+        child: const MessageListScreenBody(),
       ),
     );
   }

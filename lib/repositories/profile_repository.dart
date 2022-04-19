@@ -4,9 +4,9 @@ import 'package:dashboard/providers/profile_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class ProfileRepository extends BaseRepository {
-  final ProfileProvider _profileProvider;
+  final ProfileProvider? _profileProvider;
 
-  const ProfileRepository({required ProfileProvider profileProvider})
+  const ProfileRepository({ProfileProvider? profileProvider})
     : _profileProvider = profileProvider;
 
   Future<Profile> store({
@@ -22,7 +22,8 @@ class ProfileRepository extends BaseRepository {
       'phone': phone,
     };
     
-    Map<String, dynamic> json = await send(request: _profileProvider.store(body: body));
+    ProfileProvider profileProvider = _getProfileProvider();
+    Map<String, dynamic> json = await send(request: profileProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -40,10 +41,15 @@ class ProfileRepository extends BaseRepository {
       'phone': phone,
     };
 
-    Map<String, dynamic> json = await send(request: _profileProvider.update(body: body, identifier: identifier));
+    ProfileProvider profileProvider = _getProfileProvider();
+    Map<String, dynamic> json = await send(request: profileProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 
+  ProfileProvider _getProfileProvider() {
+    return _profileProvider ?? const ProfileProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return Profile.fromJson(json: json!);

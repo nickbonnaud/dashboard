@@ -10,11 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'bloc/banner_form_bloc.dart';
 
 class BannerForm extends StatelessWidget {
-  final PhotoPickerRepository _photoPickerRepository;
 
-  const BannerForm({required PhotoPickerRepository photoPickerRepository, Key? key})
-    : _photoPickerRepository = photoPickerRepository,
-      super(key: key);
+  const BannerForm({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +100,7 @@ class BannerForm extends StatelessWidget {
   }
 
   void _buttonPressed({required BuildContext context}) async {
-    final XFile? bannerFile = await _photoPickerRepository.choosePhoto();
+    final XFile? bannerFile = await RepositoryProvider.of<PhotoPickerRepository>(context).choosePhoto();
     if (bannerFile != null) {
       BlocProvider.of<BannerFormBloc>(context).add(BannerPicked(bannerFile: bannerFile));
     }

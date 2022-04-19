@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/global_widgets/shaker.dart';
-import 'package:dashboard/repositories/photo_picker_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/resources/helpers/toast_message.dart';
@@ -16,23 +15,14 @@ import 'widgets/banner_form/banner_form.dart';
 import 'widgets/logo_form/logo_form.dart';
 
 class PhotosFormBody extends StatefulWidget {
-  final PhotoPickerRepository _photoPickerRepository;
   final bool _isEdit;
 
-  const PhotosFormBody.edit({
-    required PhotoPickerRepository photoPickerRepository, 
-    Key? key
-  })
-    : _photoPickerRepository = photoPickerRepository,
-      _isEdit = true,
+  const PhotosFormBody.edit({Key? key})
+    : _isEdit = true,
       super(key: key);
 
-  const PhotosFormBody.new({
-    required PhotoPickerRepository photoPickerRepository, 
-    Key? key
-  })
-    : _photoPickerRepository = photoPickerRepository,
-      _isEdit = false,
+  const PhotosFormBody.new({Key? key})
+    : _isEdit = false,
       super(key: key);
 
   @override
@@ -123,9 +113,9 @@ class _PhotosFormBodyState extends State<PhotosFormBody> {
       child: PageView(
         key: const Key("pageViewKey"),
         controller: _controller,
-        children: [
-          LogoForm(photoPickerRepository: widget._photoPickerRepository),
-          BannerForm(photoPickerRepository: widget._photoPickerRepository)
+        children: const [
+          LogoForm(),
+          BannerForm()
         ],
       ),
     );

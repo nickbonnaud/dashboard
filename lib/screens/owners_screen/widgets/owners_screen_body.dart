@@ -1,5 +1,4 @@
 import 'package:dashboard/models/business/owner_account.dart';
-import 'package:dashboard/repositories/owner_repository.dart';
 import 'package:dashboard/resources/helpers/size_config.dart';
 import 'package:dashboard/resources/helpers/text_styles.dart';
 import 'package:dashboard/resources/helpers/toast_message.dart';
@@ -11,16 +10,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 class OwnersScreenBody extends StatelessWidget {
-  final OwnerRepository _ownerRepository;
   final List<OwnerAccount> _initialOwners;
 
   const OwnersScreenBody({
-    required OwnerRepository ownerRepository,
     required List<OwnerAccount> initialOwners,
     Key? key
   })
-    : _ownerRepository = ownerRepository,
-      _initialOwners = initialOwners,
+    : _initialOwners = initialOwners,
       super(key: key);
 
   @override
@@ -34,7 +30,7 @@ class OwnersScreenBody extends StatelessWidget {
         child: BlocBuilder<OwnersScreenBloc, OwnersScreenState>(
           builder: (context, state) {
             if (state.formVisible) {
-              return OwnerForm(ownerRepository: _ownerRepository, ownerAccount: state.editingAccount);
+              return OwnerForm(ownerAccount: state.editingAccount);
             }
             return Column(
               children: [

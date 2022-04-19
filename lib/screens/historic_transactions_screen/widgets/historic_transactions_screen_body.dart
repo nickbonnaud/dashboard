@@ -8,11 +8,9 @@ import 'bloc/transactions_list_bloc.dart';
 import 'widgets/historic_transaction_slivers.dart';
 
 class HistoricTransactionsScreenBody extends StatelessWidget {
-  final TransactionRepository _transactionRepository;
 
-  const HistoricTransactionsScreenBody({required TransactionRepository transactionRepository, Key? key})
-    : _transactionRepository = transactionRepository,
-      super(key: key);
+  const HistoricTransactionsScreenBody({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class HistoricTransactionsScreenBody extends StatelessWidget {
       create: (context) => TransactionsListBloc(
         filterButtonCubit: BlocProvider.of<FilterButtonCubit>(context),
         dateRangeCubit: BlocProvider.of<DateRangeCubit>(context),
-        transactionRepository: _transactionRepository
+        transactionRepository: RepositoryProvider.of<TransactionRepository>(context)
       )..add(Init()),
       child: const HistoricTransactionsSlivers(),
     );

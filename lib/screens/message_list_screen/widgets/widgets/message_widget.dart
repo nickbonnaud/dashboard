@@ -12,17 +12,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class MessageWidget extends StatelessWidget {
   final int _index;
   final Message _message;
-  final MessageRepository _messageRepository;
 
   const MessageWidget({
     required int index,
     required Message message,
-    required MessageRepository messageRepository,
     Key? key
   })
     : _index = index,
       _message = message,
-      _messageRepository = messageRepository,
       super(key: key);
 
   @override
@@ -59,14 +56,15 @@ class MessageWidget extends StatelessWidget {
 
   void _showMessageScreen({required BuildContext context}) {
     final MessageListScreenBloc messageListScreenBloc = BlocProvider.of<MessageListScreenBloc>(context);
+    final MessageRepository messageRepository = RepositoryProvider.of<MessageRepository>(context);
     Navigator.of(context).push(MaterialPageRoute<MessageScreen>(
       fullscreenDialog: true,
       builder: (context) => BlocProvider.value(
         value: messageListScreenBloc,
-        child: MessageScreen(
-          message: _message,
-          messageRepository: _messageRepository,
-        ),
+        child: RepositoryProvider.value(
+          value: messageRepository,
+          child: MessageScreen(message: _message),
+        )
       )
     ));
   }

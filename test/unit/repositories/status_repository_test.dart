@@ -15,7 +15,7 @@ void main() {
     late StatusRepository _statusRepositoryWithMock;
 
     setUp(() {
-      _statusRepository = const StatusRepository(statusProvider: StatusProvider());
+      _statusRepository = const StatusRepository();
       _mockStatusProvider = MockStatusProvider();
       _statusRepositoryWithMock = StatusRepository(statusProvider: _mockStatusProvider);
     });

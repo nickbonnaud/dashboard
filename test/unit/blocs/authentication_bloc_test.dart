@@ -2,10 +2,8 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dashboard/blocs/authentication/authentication_bloc.dart';
 import 'package:dashboard/blocs/business/business_bloc.dart';
 import 'package:dashboard/models/business/business.dart';
-import 'package:dashboard/providers/business_provider.dart';
 import 'package:dashboard/repositories/authentication_repository.dart';
 import 'package:dashboard/repositories/business_repository.dart';
-import 'package:dashboard/repositories/token_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -22,8 +20,7 @@ void main() {
       authenticationBloc = AuthenticationBloc(
         authenticationRepository: authenticationRepository,
         businessBloc: BusinessBloc(
-          businessRepository: const BusinessRepository(businessProvider: BusinessProvider(),
-          tokenRepository: TokenRepository())
+          businessRepository: const BusinessRepository()
         ));
     });
 

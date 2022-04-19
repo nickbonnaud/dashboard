@@ -8,14 +8,9 @@ import 'bloc/owners_screen_bloc.dart';
 import 'widgets/owners_screen_body.dart';
 
 class OwnersScreen extends StatelessWidget {
-  final OwnerRepository _ownerRepository;
 
-  const OwnersScreen({
-    required OwnerRepository ownerRepository,
-    Key? key
-  })
-    : _ownerRepository = ownerRepository,
-      super(key: key);
+  const OwnersScreen({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +30,10 @@ class OwnersScreen extends StatelessWidget {
     return BlocProvider<OwnersScreenBloc>(
       create: (context) => OwnersScreenBloc(
         businessBloc: BlocProvider.of<BusinessBloc>(context),
-        ownerRepository: _ownerRepository,
+        ownerRepository: RepositoryProvider.of<OwnerRepository>(context),
         ownerAccounts: BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts
       ),
       child: OwnersScreenBody(
-        ownerRepository: _ownerRepository,
         initialOwners: BlocProvider.of<BusinessBloc>(context).business.accounts.ownerAccounts
       ),
     );

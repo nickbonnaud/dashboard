@@ -9,7 +9,9 @@ import 'package:dashboard/screens/owners_screen/owners_screen.dart';
 import 'package:dashboard/screens/owners_screen/widgets/owner_form/owner_form.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../helpers/mock_data_generator.dart';
@@ -34,12 +36,18 @@ void main() {
       ownerAccounts = List.generate(3, (index) => mockDataGenerator.createOwner(index: index));
 
       screenBuilderNew = ScreenBuilder(
-        child: OwnersScreen(ownerRepository: ownerRepository),
+        child: RepositoryProvider(
+          create: (_) => ownerRepository,
+          child: const OwnersScreen(),
+        ),
         observer: observer
       );
 
       screenBuilderEdit = ScreenBuilder(
-        child: OwnersScreen(ownerRepository: ownerRepository),
+        child: RepositoryProvider(
+          create: (_) => ownerRepository,
+          child: const OwnersScreen(),
+        ),
         observer: observer,
         business: Business(
           identifier: 'identifier',
@@ -167,14 +175,6 @@ void main() {
       expect(find.text('Invalid Email'), findsOneWidget);
     });
 
-    testWidgets("DobField can receive text input", (tester) async {
-      await screenBuilderNew.createScreen(tester: tester);
-      String dob = "10/12/1987";
-      await tester.enterText(find.byKey(const Key("dobFieldKey")), dob);
-      await tester.pump();
-      expect(find.text(dob), findsOneWidget);
-    });
-
     testWidgets("Tapping dobField displays datePicker", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       expect(find.byKey(const Key("datePickerKey")), findsNothing);
@@ -209,10 +209,19 @@ void main() {
 
     testWidgets("DobField displays error on invalid input", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
-      String dob = "?2019";
-      await tester.enterText(find.byKey(const Key("dobFieldKey")), dob);
-      await tester.pump(const Duration(milliseconds: 300));
-      expect(find.text('Invalid Date of Birth'), findsOneWidget);
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -300));
+      await tester.pump();
+      await tester.tap(find.byKey(const Key("dobFieldKey")));
+      await tester.pump();
+
+      await tester.tap(find.byIcon(Icons.edit));
+      await tester.pumpAndSettle();
+
+      String dateNow = DateFormat('MM/dd/yyyy').format(DateTime.now());
+      await tester.enterText(find.text(dateNow), "?dj54");
+      await tester.tap(find.text('Set'));
+      await tester.pump();
+      expect(find.text("Incorrect Date Format"), findsOneWidget);
     });
 
     testWidgets("PercentOwnershipField can receive text input", (tester) async {

@@ -10,11 +10,9 @@ import 'package:image_picker/image_picker.dart';
 import 'bloc/logo_form_bloc.dart';
 
 class LogoForm extends StatelessWidget {
-  final PhotoPickerRepository _photoPickerRepository;
 
-  const LogoForm({required PhotoPickerRepository photoPickerRepository, Key? key})
-    : _photoPickerRepository = photoPickerRepository,
-      super(key: key);
+  const LogoForm({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +102,7 @@ class LogoForm extends StatelessWidget {
   }
 
   void _buttonPressed({required BuildContext context}) async {
-    final XFile? logoFile = await _photoPickerRepository.choosePhoto();
+    final XFile? logoFile = await RepositoryProvider.of<PhotoPickerRepository>(context).choosePhoto();
     if (logoFile != null) {
       BlocProvider.of<LogoFormBloc>(context).add(LogoPicked(logoFile: logoFile));
     }

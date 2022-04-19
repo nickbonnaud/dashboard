@@ -6,6 +6,7 @@ import 'package:dashboard/screens/register_screen/register_screen.dart';
 import 'package:dashboard/screens/register_screen/widgets/register_card.dart';
 import 'package:dashboard/screens/register_screen/widgets/widgets/register_form.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -24,7 +25,10 @@ void main() {
       authenticationRepository = MockAuthenticationRepository();
       observer = MockNavigatorObserver();
       screenBuilder = ScreenBuilder(
-        child: RegisterScreen(authenticationRepository: authenticationRepository),
+        child: RepositoryProvider(
+          create: (_) => authenticationRepository,
+          child: const RegisterScreen(),
+        ),
         observer: observer
       );
 

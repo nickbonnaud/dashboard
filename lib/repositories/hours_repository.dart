@@ -4,9 +4,9 @@ import 'package:dashboard/providers/hours_provider.dart';
 import 'package:dashboard/repositories/base_repository.dart';
 
 class HoursRepository extends BaseRepository {
-  final HoursProvider _hoursProvider;
+  final HoursProvider? _hoursProvider;
 
-  const HoursRepository({required HoursProvider hoursProvider})
+  const HoursRepository({HoursProvider? hoursProvider})
     : _hoursProvider = hoursProvider;
   
   Future<Hours> store({
@@ -28,7 +28,8 @@ class HoursRepository extends BaseRepository {
       'saturday': saturday
     };
 
-    Map<String, dynamic> json = await send(request: _hoursProvider.store(body: body));
+    HoursProvider hoursProvider = _getHoursProvider();
+    Map<String, dynamic> json = await send(request: hoursProvider.store(body: body));
     return deserialize(json: json);
   }
 
@@ -52,10 +53,15 @@ class HoursRepository extends BaseRepository {
       'saturday': saturday
     };
 
-    Map<String, dynamic> json = await send(request: _hoursProvider.update(body: body, identifier: identifier));
+    HoursProvider hoursProvider = _getHoursProvider();
+    Map<String, dynamic> json = await send(request: hoursProvider.update(body: body, identifier: identifier));
     return deserialize(json: json);
   }
 
+  HoursProvider _getHoursProvider() {
+    return _hoursProvider ?? const HoursProvider();
+  }
+  
   @override
   deserialize({PaginateDataHolder? holder, Map<String, dynamic>? json}) {
     return Hours.fromJson(json: json!);

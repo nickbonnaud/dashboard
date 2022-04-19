@@ -4,6 +4,7 @@ import 'package:dashboard/screens/reset_password_screen/reset_password_screen.da
 import 'package:dashboard/screens/reset_password_screen/widget/reset_password_screen_body.dart';
 import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -23,9 +24,9 @@ void main() {
       token = faker.guid.guid();
       observer = MockNavigatorObserver();
       screenBuilder = ScreenBuilder(
-        child: ResetPasswordScreen(
-          authenticationRepository: authenticationRepository,
-          token: token,
+        child: RepositoryProvider(
+          create: (_) => authenticationRepository,
+          child: ResetPasswordScreen(token: token),
         ),
         observer: observer
       );
@@ -43,9 +44,9 @@ void main() {
 
     testWidgets("ResetPasswordScreenBody displays noTokenPresent if token is null", (tester) async {
       screenBuilder = ScreenBuilder(
-        child: ResetPasswordScreen(
-          authenticationRepository: authenticationRepository,
-          token: null,
+        child: RepositoryProvider(
+          create: (_) => authenticationRepository,
+          child: const ResetPasswordScreen(token: null),
         ),
         observer: observer
       );

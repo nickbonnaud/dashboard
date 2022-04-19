@@ -9,6 +9,7 @@ import 'package:dashboard/repositories/business_account_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/business_account_screen/business_account_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -61,24 +62,27 @@ void main() {
       accountRepository = MockBusinessAccountRepository();
 
       screenBuilderNew = ScreenBuilder(
-        child: BusinessAccountScreen(
-          accountRepository: accountRepository, 
+        child: RepositoryProvider(
+          create: (_) => accountRepository,
+          child: const BusinessAccountScreen(),
         ), 
         observer: observer
       );
 
       screenBuilderNewFilled = ScreenBuilder(
-        child: BusinessAccountScreen(
-          accountRepository: accountRepository, 
-        ),
+        child: RepositoryProvider(
+          create: (_) => accountRepository,
+          child: const BusinessAccountScreen(),
+        ), 
         business: _createAccount(isNew: true),
         observer: observer
       );
 
       screenBuilderEdit = ScreenBuilder(
-        child: BusinessAccountScreen(
-          accountRepository: accountRepository, 
-        ),
+        child: RepositoryProvider(
+          create: (_) => accountRepository,
+          child: const BusinessAccountScreen(),
+        ), 
         business: _createAccount(),
         observer: observer
       );

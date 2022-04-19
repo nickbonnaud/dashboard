@@ -8,14 +8,9 @@ import 'bloc/business_account_screen_bloc.dart';
 import 'widgets/business_account_screen_body.dart';
 
 class BusinessAccountScreen extends StatelessWidget {
-  final BusinessAccountRepository _accountRepository;
   
-  const BusinessAccountScreen({
-    required BusinessAccountRepository accountRepository,
-    Key? key
-  })
-    : _accountRepository = accountRepository,
-      super(key: key);
+  const BusinessAccountScreen({Key? key})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +29,7 @@ class BusinessAccountScreen extends StatelessWidget {
   Widget _businessAccountScreenBody() {
     return BlocProvider<BusinessAccountScreenBloc>(
       create: (context) => BusinessAccountScreenBloc(
-        accountRepository: _accountRepository,
+        accountRepository: RepositoryProvider.of<BusinessAccountRepository>(context),
         businessBloc: BlocProvider.of<BusinessBloc>(context),
         businessAccount: BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount
       ),

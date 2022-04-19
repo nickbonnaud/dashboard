@@ -1,6 +1,5 @@
-import 'package:dashboard/repositories/customer_repository.dart';
-import 'package:flutter/material.dart';
 import 'package:dashboard/theme/global_colors.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/filter_button_bloc.dart';
@@ -8,11 +7,9 @@ import 'cubit/date_range_cubit.dart';
 import 'widgets/customers_screen_body.dart';
 
 class CustomersScreen extends StatefulWidget {
-  final CustomerRepository _customerRepository;
 
-  const CustomersScreen({required CustomerRepository customerRepository, Key? key})
-    : _customerRepository = customerRepository,
-      super(key: key);
+  const CustomersScreen({Key? key})
+    : super(key: key);
 
   @override
   State<CustomersScreen> createState() => _CustomersScreenState();
@@ -37,7 +34,7 @@ class _CustomersScreenState extends State<CustomersScreen> with AutomaticKeepAli
             create: (_) => DateRangeCubit()
           )
         ],
-        child: CustomersScreenBody(customerRepository: widget._customerRepository),
+        child: const CustomersScreenBody(),
       ),
     );
   }

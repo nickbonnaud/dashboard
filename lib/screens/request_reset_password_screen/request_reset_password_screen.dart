@@ -9,11 +9,9 @@ import 'bloc/request_reset_password_screen_bloc.dart';
 import 'widgets/request_reset_password_screen_body.dart';
 
 class RequestResetPasswordScreen extends StatelessWidget {
-  final AuthenticationRepository _authenticationRepository;
 
-  const RequestResetPasswordScreen({required AuthenticationRepository authenticationRepository, Key? key})
-    : _authenticationRepository = authenticationRepository,
-      super(key: key);
+  const RequestResetPasswordScreen({Key? key})
+    : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,7 @@ class RequestResetPasswordScreen extends StatelessWidget {
               : MediaQuery.of(context).size.height / 1.5,
             child: BlocProvider<RequestResetPasswordScreenBloc>(
               create: (_) => RequestResetPasswordScreenBloc(
-                authenticationRepository: _authenticationRepository
+                authenticationRepository: RepositoryProvider.of<AuthenticationRepository>(context)
               ),
               child: const RequestResetPasswordScreenBody(),
             ),
