@@ -7,6 +7,7 @@ import 'package:dashboard/resources/http/test_api_interceptors.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
+@immutable
 class BaseProvider {
   final String _baseUrl = ApiEndpoints.base;
   final Dio? _dio;

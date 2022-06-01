@@ -2,18 +2,26 @@ part of 'login_form_bloc.dart';
 
 @immutable
 class LoginFormState extends Equatable {
+  final String email;
+  final String password;
+
   final bool isEmailValid;
   final bool isPasswordValid;
+
   final bool isSubmitting;
   final bool isSuccess;
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  bool get isFormValid => isEmailValid && isPasswordValid;
+  bool get isFormValid => isEmailValid && email.isNotEmpty && isPasswordValid && password.isNotEmpty;
 
   const LoginFormState({
+    required this.email,
+    required this.password,
+
     required this.isEmailValid,
     required this.isPasswordValid,
+    
     required this.isSubmitting,
     required this.isSuccess,
     required this.errorMessage,
@@ -22,60 +30,39 @@ class LoginFormState extends Equatable {
 
   factory LoginFormState.empty() {
     return const LoginFormState(
+      email: "",
+      password: "",
+
       isEmailValid: true,
       isPasswordValid: true,
+
       isSubmitting: false,
       isSuccess: false,
-      errorMessage: "",
-      errorButtonControl: CustomAnimationControl.stop
-    );
-  }
-
-  factory LoginFormState.loading() {
-    return const LoginFormState(
-      isEmailValid: true,
-      isPasswordValid: true,
-      isSubmitting: true,
-      isSuccess: false,
-      errorMessage: "",
-      errorButtonControl: CustomAnimationControl.stop
-    );
-  }
-
-  factory LoginFormState.failure({required String errorMessage}) {
-    return LoginFormState(
-      isEmailValid: true,
-      isPasswordValid: true,
-      isSubmitting: false,
-      isSuccess: false,
-      errorMessage: errorMessage,
-      errorButtonControl: CustomAnimationControl.playFromStart
-    );
-  }
-
-  factory LoginFormState.success() {
-    return const LoginFormState(
-      isEmailValid: true,
-      isPasswordValid: true,
-      isSubmitting: false,
-      isSuccess: true,
       errorMessage: "",
       errorButtonControl: CustomAnimationControl.stop
     );
   }
 
   LoginFormState update({
+    String? email,
+    String? password,
+
     bool? isEmailValid, 
     bool? isPasswordValid,
+
     bool? isSubmitting,
     bool? isSuccess,
     String? errorMessage,
     CustomAnimationControl? errorButtonControl
   }) {
     return LoginFormState(
+      email: email ?? this.email,
+      password: password ?? this.password,
+
       isEmailValid: isEmailValid ?? this.isEmailValid,
-      isPasswordValid: isPasswordValid ?? this.isPasswordValid, 
-      isSubmitting: isSubmitting ?? this.isSubmitting, 
+      isPasswordValid: isPasswordValid ?? this.isPasswordValid,
+
+      isSubmitting: isSubmitting ?? this.isSubmitting,
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: errorMessage ?? this.errorMessage,
       errorButtonControl: errorButtonControl ?? this.errorButtonControl
@@ -84,8 +71,12 @@ class LoginFormState extends Equatable {
 
   @override
   List<Object?> get props => [
+    email,
+    password,
+
     isEmailValid,
     isPasswordValid,
+
     isSubmitting,
     isSuccess,
     errorMessage,
@@ -95,8 +86,12 @@ class LoginFormState extends Equatable {
   @override
   String toString() {
     return '''LoginFormState {
+      email: $email,
+      password: $password,
+
       isEmailValid: $isEmailValid,
       isPasswordValid: $isPasswordValid,
+
       isSubmitting: $isSubmitting,
       isSuccess: $isSuccess,
       errorMessage: $errorMessage,

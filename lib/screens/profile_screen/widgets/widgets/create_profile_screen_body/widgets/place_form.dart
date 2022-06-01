@@ -7,24 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:dashboard/theme/global_colors.dart';
 
-class PlaceForm extends StatefulWidget {
+class PlaceForm extends StatelessWidget {
 
   const PlaceForm({Key? key})
     : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() => _PlaceFormState();
-}
-
-class _PlaceFormState extends State<PlaceForm> {
-  final TextEditingController _placeQueryController = TextEditingController();
-  final FocusNode _placeQueryFocus = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _placeQueryController.addListener(_onPlaceQueryChanged);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +30,7 @@ class _PlaceFormState extends State<PlaceForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _placeQueryController,
-          focusNode: _placeQueryFocus,
+          onChanged: (placeQuery) => _onPlaceQueryChanged(context: context, placeQuery: placeQuery),
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
           autocorrect: false,
@@ -55,8 +40,8 @@ class _PlaceFormState extends State<PlaceForm> {
           child: BlocBuilder<ProfileScreenBloc, ProfileScreenState>(
             builder: (context, state) {
               return state.isSubmitting 
-                ? _loadingIndicator() 
-                : _predictions(state: state);
+                ? _loadingIndicator(context: context) 
+                : _predictions(context: context, state: state);
             }
           ) 
         )
@@ -64,14 +49,7 @@ class _PlaceFormState extends State<PlaceForm> {
     );
   }
 
-  @override
-  void dispose() {
-    _placeQueryController.dispose();
-    _placeQueryFocus.dispose();
-    super.dispose();
-  }
-
-  Widget _loadingIndicator() {
+  Widget _loadingIndicator({required BuildContext context}) {
     return Column(
       children: [
         SizedBox(height: SizeConfig.getHeight(5)),
@@ -80,7 +58,7 @@ class _PlaceFormState extends State<PlaceForm> {
     );
   }
   
-  Widget _predictions({required ProfileScreenState state}) {
+  Widget _predictions({required BuildContext context, required ProfileScreenState state}) {
     if (state.predictions.isNotEmpty) {
       return Column(
         key: const Key("predictionsListKey"),
@@ -93,7 +71,7 @@ class _PlaceFormState extends State<PlaceForm> {
               ? ListTile(
                   leading: const Icon(Icons.location_on),
                   title: Text(prediction.description!),
-                  onTap: () => _onPredictionSelected(prediction: prediction),
+                  onTap: () => _onPredictionSelected(context: context, prediction: prediction),
                   hoverColor: Theme.of(context).colorScheme.callToActionDisabled,
                 )
               : Container()
@@ -106,11 +84,11 @@ class _PlaceFormState extends State<PlaceForm> {
     return Container();
   }
 
-  void _onPredictionSelected({required Prediction prediction}) {
+  void _onPredictionSelected({required BuildContext context, required Prediction prediction}) {
     BlocProvider.of<ProfileScreenBloc>(context).add(PredictionSelected(prediction: prediction));
   }
 
-  void _onPlaceQueryChanged() {
-    BlocProvider.of<ProfileScreenBloc>(context).add(PlaceQueryChanged(query: _placeQueryController.text));
+  void _onPlaceQueryChanged({required BuildContext context, required String placeQuery}) {
+    BlocProvider.of<ProfileScreenBloc>(context).add(PlaceQueryChanged(query: placeQuery));
   }
 }

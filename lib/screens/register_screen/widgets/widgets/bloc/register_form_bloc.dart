@@ -27,34 +27,34 @@ class RegisterFormBloc extends Bloc<RegisterFormEvent, RegisterFormState> {
     on<EmailChanged>((event, emit) => _mapEmailChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<PasswordChanged>((event, emit) => _mapPasswordChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<PasswordConfirmationChanged>((event, emit) => _mapPasswordConfirmationChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
-    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
   void _mapEmailChangedToState({required EmailChanged event, required Emitter<RegisterFormState> emit}) {
-    emit(state.update(isEmailValid: Validators.isValidEmail(email: event.email)));
+    emit(state.update(email: event.email, isEmailValid: Validators.isValidEmail(email: event.email)));
   }
 
   void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<RegisterFormState> emit}) {
-    final bool isPasswordConfirmationValid = event.passwordConfirmation.isNotEmpty
-      ? Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)
+    final bool isPasswordConfirmationValid = state.passwordConfirmation.isNotEmpty
+      ? Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: state.passwordConfirmation)
       : true;
-    emit(state.update(isPasswordValid: Validators.isValidPassword(password: event.password), isPasswordConfirmationValid: isPasswordConfirmationValid));
+    emit(state.update(password: event.password, isPasswordValid: Validators.isValidPassword(password: event.password), isPasswordConfirmationValid: isPasswordConfirmationValid));
   }
 
   void _mapPasswordConfirmationChangedToState({required PasswordConfirmationChanged event, required Emitter<RegisterFormState> emit}) {
-    emit(state.update(isPasswordConfirmationValid: Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)));
+    emit(state.update(passwordConfirmation: event.passwordConfirmation, isPasswordConfirmationValid: Validators.isPasswordConfirmationValid(password: state.password, passwordConfirmation: event.passwordConfirmation)));
   }
 
-  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<RegisterFormState> emit}) async {
-    emit(RegisterFormState.loading());
+  Future<void> _mapSubmittedToState({required Emitter<RegisterFormState> emit}) async {
+    emit(state.update(isSubmitting: true));
 
     try {
-      final Business business = await _authenticationRepository.register(email: event.email, password: event.password, passwordConfirmation: event.passwordConfirmation);
+      final Business business = await _authenticationRepository.register(email: state.email, password: state.password, passwordConfirmation: state.passwordConfirmation);
       _authenticationBloc.add(LoggedIn(business: business));
-      emit(RegisterFormState.success());
+      emit(state.update(isSubmitting: false, isSuccess: true));
     } on ApiException catch (exception) {
-      emit(RegisterFormState.failure(errorMessage: exception.error));
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 

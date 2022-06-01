@@ -67,6 +67,7 @@ void main() {
       build: () => profileScreenBloc,
       wait: const Duration(seconds: 1),
       act: (bloc) {
+
         when(() => places.autoComplete(query: any(named: 'query'))).thenAnswer((_) async {
           _predictions = [Prediction(), Prediction()];
           return PlacesAutocompleteResponse(
@@ -76,7 +77,7 @@ void main() {
         });
         bloc.add(const PlaceQueryChanged(query: "query"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, predictions: _predictions)]
+      expect: () => [_baseState.update(placeQuery: "query", isSubmitting: true), _baseState.update(placeQuery: "query", isSubmitting: false, predictions: _predictions)]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
@@ -113,7 +114,7 @@ void main() {
         });
         bloc.add(const PlaceQueryChanged(query: "query"));
       },
-      expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error")]
+      expect: () => [_baseState.update(placeQuery: "query", isSubmitting: true), _baseState.update(placeQuery: "query", isSubmitting: false, errorMessage: "error")]
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(

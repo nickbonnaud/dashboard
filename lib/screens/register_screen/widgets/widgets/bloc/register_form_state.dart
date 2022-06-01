@@ -2,20 +2,33 @@ part of 'register_form_bloc.dart';
 
 @immutable
 class RegisterFormState extends Equatable {
+  final String email;
+  final String password;
+  final String passwordConfirmation;
+
   final bool isEmailValid;
   final bool isPasswordValid;
   final bool isPasswordConfirmationValid;
+
   final bool isSubmitting;
   final bool isSuccess;
   final String errorMessage;
   final CustomAnimationControl errorButtonControl;
 
-  bool get isFormValid => isEmailValid && isPasswordValid && isPasswordConfirmationValid;
+  bool get isFormValid => 
+    isEmailValid && email.isNotEmpty &&
+    isPasswordValid && password.isNotEmpty &&
+    isPasswordConfirmationValid && passwordConfirmation.isNotEmpty;
 
   const RegisterFormState({
+    required this.email,
+    required this.password,
+    required this.passwordConfirmation,
+
     required this.isEmailValid,
     required this.isPasswordValid,
     required this.isPasswordConfirmationValid,
+
     required this.isSubmitting,
     required this.isSuccess,
     required this.errorMessage,
@@ -24,62 +37,40 @@ class RegisterFormState extends Equatable {
 
   factory RegisterFormState.empty() {
     return const RegisterFormState(
+      email: "",
+      password: "",
+      passwordConfirmation: "",
+
       isEmailValid: true,
       isPasswordValid: true,
       isPasswordConfirmationValid: true,
+
       isSubmitting: false,
       isSuccess: false,
-      errorMessage: "",
-      errorButtonControl: CustomAnimationControl.stop
-    );
-  }
-
-  factory RegisterFormState.loading() {
-    return const RegisterFormState(
-      isEmailValid: true,
-      isPasswordValid: true,
-      isPasswordConfirmationValid: true,
-      isSubmitting: true,
-      isSuccess: false,
-      errorMessage: "",
-      errorButtonControl: CustomAnimationControl.stop
-    );
-  }
-
-  factory RegisterFormState.failure({required String errorMessage}) {
-    return RegisterFormState(
-      isEmailValid: true,
-      isPasswordValid: true,
-      isPasswordConfirmationValid: true,
-      isSubmitting: false,
-      isSuccess: false,
-      errorMessage: errorMessage,
-      errorButtonControl: CustomAnimationControl.playFromStart
-    );
-  }
-
-  factory RegisterFormState.success() {
-    return const RegisterFormState(
-      isEmailValid: true,
-      isPasswordValid: true,
-      isPasswordConfirmationValid: true,
-      isSubmitting: false,
-      isSuccess: true,
       errorMessage: "",
       errorButtonControl: CustomAnimationControl.stop
     );
   }
 
   RegisterFormState update({
+    String? email,
+    String? password,
+    String? passwordConfirmation,
+    
     bool? isEmailValid,
     bool? isPasswordValid,
     bool? isPasswordConfirmationValid,
+
     bool? isSubmitting,
     bool? isSuccess,
     String? errorMessage,
     CustomAnimationControl? errorButtonControl
   }) {
     return RegisterFormState(
+      email: email ?? this.email,
+      password: password ?? this.password,
+      passwordConfirmation: passwordConfirmation ?? this.passwordConfirmation,
+
       isEmailValid: isEmailValid ?? this.isEmailValid,
       isPasswordValid: isPasswordValid ?? this.isPasswordValid,
       isPasswordConfirmationValid: isPasswordConfirmationValid ?? this.isPasswordConfirmationValid,
@@ -92,9 +83,14 @@ class RegisterFormState extends Equatable {
 
   @override
   List<Object?> get props => [
+    email,
+    password,
+    passwordConfirmation,
+
     isEmailValid,
     isPasswordValid,
     isPasswordConfirmationValid,
+
     isSubmitting,
     isSuccess,
     errorMessage,
@@ -104,9 +100,14 @@ class RegisterFormState extends Equatable {
   @override
   String toString() {
     return '''RegisterFormState {
+      email: $email,
+      password: $password,
+      passwordConfirmation: $passwordConfirmation,
+
       isEmailValid: $isEmailValid,
       isPasswordValid: $isPasswordValid,
       isPasswordConfirmationValid: $isPasswordConfirmationValid,
+
       isSubmitting: $isSubmitting,
       isSuccess: $isSuccess,
       errorMessage: $errorMessage,

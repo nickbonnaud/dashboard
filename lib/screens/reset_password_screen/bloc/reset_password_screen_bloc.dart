@@ -24,27 +24,27 @@ class ResetPasswordScreenBloc extends Bloc<ResetPasswordScreenEvent, ResetPasswo
   void _eventHandler() {
     on<PasswordChanged>((event, emit) => _mapPasswordChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<PasswordConfirmationChanged>((event, emit) => _mapPasswordConfirmationChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
-    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
   
   void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<ResetPasswordScreenState> emit}) {
-    final bool isPasswordConfirmationValid = event.passwordConfirmation.isNotEmpty
-      ? Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)
+    final bool isPasswordConfirmationValid = state.passwordConfirmation.isNotEmpty
+      ? Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: state.passwordConfirmation)
       : true;
-    emit(state.update(isPasswordValid: Validators.isValidPassword(password: event.password), isPasswordConfirmationValid: isPasswordConfirmationValid));
+    emit(state.update(password: event.password, isPasswordValid: Validators.isValidPassword(password: event.password), isPasswordConfirmationValid: isPasswordConfirmationValid));
   }
 
   void _mapPasswordConfirmationChangedToState({required PasswordConfirmationChanged event, required Emitter<ResetPasswordScreenState> emit}) {
-    emit(state.update(isPasswordConfirmationValid: Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)));
+    emit(state.update(passwordConfirmation: event.passwordConfirmation, isPasswordConfirmationValid: Validators.isPasswordConfirmationValid(password: state.password, passwordConfirmation: event.passwordConfirmation)));
   }
 
-  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<ResetPasswordScreenState> emit}) async {
+  Future<void> _mapSubmittedToState({required Emitter<ResetPasswordScreenState> emit}) async {
     if (_token != null) {
       emit(state.update(isSubmitting: true, errorMessage: ""));
 
       try {
-        await _authenticationRepository.resetPassword(password: event.password, passwordConfirmation: event.passwordConfirmation, token: _token!);
+        await _authenticationRepository.resetPassword(password: state.password, passwordConfirmation: state.passwordConfirmation, token: _token!);
         emit(state.update(
           isSubmitting: false,
           isSuccess: true,

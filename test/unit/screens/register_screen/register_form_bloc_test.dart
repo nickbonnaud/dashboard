@@ -21,6 +21,10 @@ void main() {
 
     late RegisterFormState _baseState;
 
+    late String email;
+    late String password;
+    late String passwordConfirmation;
+
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
       authenticationBloc = MockAuthenticationBloc();
@@ -43,32 +47,54 @@ void main() {
       "EmailChanged event changes state: [isEmailValid: false]",
       wait: const Duration(milliseconds: 300),
       build: () => registerFormBloc,
-      act: (bloc) => bloc.add(const EmailChanged(email: 'notAnEmail')),
-      expect: () => [_baseState.update(isEmailValid: false)]
+      act: (bloc) {
+        email = 'notAnEmail';
+        bloc.add(EmailChanged(email: email));
+      },
+      expect: () => [_baseState.update(email: email, isEmailValid: false)]
     );
 
     blocTest<RegisterFormBloc, RegisterFormState>(
       "PasswordChanged event changes state with empty passwordConfirmation: [isPasswordValid: false]",
       wait: const Duration(milliseconds: 300),
       build: () => registerFormBloc,
-      act: (bloc) => bloc.add(const PasswordChanged(password: "no", passwordConfirmation: "")),
-      expect: () => [_baseState.update(isPasswordValid: false)]
+      act: (bloc) {
+        password = "no";
+        bloc.add(PasswordChanged(password: password));
+      },
+      expect: () => [_baseState.update(password: password, isPasswordValid: false)]
     );
 
     blocTest<RegisterFormBloc, RegisterFormState>(
       "PasswordChanged event changes state with non empty passwordConfirmation: [isPasswordValid: false, isPasswordConfirmationValid: false]",
       wait: const Duration(milliseconds: 300),
       build: () => registerFormBloc,
-      act: (bloc) => bloc.add(const PasswordChanged(password: "no", passwordConfirmation: "notSame")),
-      expect: () => [_baseState.update(isPasswordValid: false, isPasswordConfirmationValid: false)]
+      seed: () {
+        passwordConfirmation = "notSame";
+        _baseState = _baseState.update(passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) {
+        password = "no";
+        bloc.add(PasswordChanged(password: password));
+      },
+      expect: () => [_baseState.update(password: password, isPasswordValid: false, isPasswordConfirmationValid: false)]
     );
 
     blocTest<RegisterFormBloc, RegisterFormState>(
       "PasswordConfirmationChanged event changes state: [isPasswordConfirmationValid: false]",
       wait: const Duration(milliseconds: 300),
       build: () => registerFormBloc,
-      act: (bloc) => bloc.add(const PasswordConfirmationChanged(password: "Password", passwordConfirmation: "12")),
-      expect: () => [_baseState.update(isPasswordConfirmationValid: false)]
+      seed: () {
+        password = "Password";
+        _baseState = _baseState.update(password: password);
+        return _baseState;
+      },
+      act: (bloc) {
+        passwordConfirmation = "12";
+        bloc.add(PasswordConfirmationChanged(passwordConfirmation: passwordConfirmation));
+      },
+      expect: () => [_baseState.update(passwordConfirmation: passwordConfirmation, isPasswordConfirmationValid: false)]
     );
 
     blocTest<RegisterFormBloc, RegisterFormState>(
@@ -80,7 +106,14 @@ void main() {
           .thenReturn(null);
         return registerFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: faker.internet.password(), password: "password", passwordConfirmation: "password")),
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(email: email, password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -93,7 +126,14 @@ void main() {
           .thenReturn(null);
         return registerFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: faker.internet.password(), password: "password", passwordConfirmation: "password")),
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(email: email, password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       verify: (_) {
         verify(() => authenticationRepository.register(email: any(named: "email"), password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"))).called(1);
       }
@@ -108,7 +148,14 @@ void main() {
           .thenReturn(null);
         return registerFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: faker.internet.password(), password: "password", passwordConfirmation: "password")),
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(email: email, password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       verify: (_) {
         verify(() => authenticationBloc.add(any(that: isA<AuthenticationEvent>()))).called(1);
       }
@@ -123,7 +170,14 @@ void main() {
           .thenReturn(null);
         return registerFormBloc;
       },
-      act: (bloc) => bloc.add(Submitted(email: faker.internet.password(), password: "password", passwordConfirmation: "password")),
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(email: email, password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 

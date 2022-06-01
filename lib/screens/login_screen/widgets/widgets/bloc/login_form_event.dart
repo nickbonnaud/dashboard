@@ -31,17 +31,6 @@ class PasswordChanged extends LoginFormEvent {
   String toString() => 'PasswordChanged { password: $password }';
 }
 
-class Submitted extends LoginFormEvent {
-  final String email;
-  final String password;
-
-  const Submitted({required this.email, required this.password});
-
-  @override
-  List<Object> get props => [email, password];
-
-  @override
-  String toString() => 'Submitted { email: $email, password: $password }';
-}
+class Submitted extends LoginFormEvent {}
 
 class Reset extends LoginFormEvent {}

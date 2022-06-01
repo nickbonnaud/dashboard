@@ -22,22 +22,15 @@ class ResetPasswordScreenBody extends StatefulWidget {
 }
 
 class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmationController = TextEditingController();
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _passwordConfirmationFocus = FocusNode();
 
   late ResetPasswordScreenBloc _resetPasswordScreenBloc;
-
-  bool get isPopulated => _passwordController.text.isNotEmpty && _passwordConfirmationController.text.isNotEmpty;
   
   @override
   void initState() {
     super.initState();
     _resetPasswordScreenBloc = BlocProvider.of<ResetPasswordScreenBloc>(context);
-
-    _passwordController.addListener(_onPasswordChanged);
-    _passwordConfirmationController.addListener(_onPasswordConfirmationChanged);
   }
   
   @override
@@ -56,10 +49,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
 
   @override
   void dispose() {
-    _passwordController.dispose();
     _passwordFocus.dispose();
-
-    _passwordConfirmationController.dispose();
     _passwordConfirmationFocus.dispose();
 
     _resetPasswordScreenBloc.close();
@@ -122,7 +112,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _passwordController,
+          onChanged: (password) => _onPasswordChanged(password: password),
           focusNode: _passwordFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
@@ -130,7 +120,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
           onFieldSubmitted: (_) {
             _passwordFocus.unfocus();
           },
-          validator: (_) => !state.isPasswordValid && _passwordController.text.isNotEmpty 
+          validator: (_) => !state.isPasswordValid && state.password.isNotEmpty 
             ? 'min: 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character' 
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -157,7 +147,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _passwordConfirmationController,
+          onChanged: (passwordConfirmation) => _onPasswordConfirmationChanged(passwordConfirmation: passwordConfirmation),
           focusNode: _passwordConfirmationFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
@@ -165,7 +155,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
           onFieldSubmitted: (_) {
             _passwordConfirmationFocus.unfocus();
           },
-          validator: (_) => !state.isPasswordConfirmationValid  && _passwordConfirmationController.text.isNotEmpty 
+          validator: (_) => !state.isPasswordConfirmationValid  && state.passwordConfirmation.isNotEmpty 
             ? "Passwords are not matching" 
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -218,7 +208,7 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
   }
   
   bool _buttonEnabled({required ResetPasswordScreenState state}) {
-    return state.isFormValid && isPopulated && !state.isSubmitting;
+    return state.isFormValid && !state.isSubmitting;
   }
   
   void _resetForm() {
@@ -227,25 +217,16 @@ class _ResetPasswordScreenBodyState extends State<ResetPasswordScreenBody> {
 
   void _submitButtonPressed({required ResetPasswordScreenState state}) {
     if (_buttonEnabled(state: state)) {
-      _resetPasswordScreenBloc.add(Submitted(
-        password: _passwordController.text, 
-        passwordConfirmation: _passwordConfirmationController.text
-      ));
+      _resetPasswordScreenBloc.add(Submitted());
     }
   }
 
-  void _onPasswordChanged() {
-    _resetPasswordScreenBloc.add(PasswordChanged(
-      password: _passwordController.text,
-      passwordConfirmation: _passwordConfirmationController.text
-    ));
+  void _onPasswordChanged({required String password}) {
+    _resetPasswordScreenBloc.add(PasswordChanged(password: password));
   }
 
-  void _onPasswordConfirmationChanged() {
-    _resetPasswordScreenBloc.add(PasswordConfirmationChanged(
-      password: _passwordController.text,
-      passwordConfirmation: _passwordConfirmationController.text
-    ));
+  void _onPasswordConfirmationChanged({required String passwordConfirmation}) {
+    _resetPasswordScreenBloc.add(PasswordConfirmationChanged(passwordConfirmation: passwordConfirmation));
   }
 
   void _showSuccess() {

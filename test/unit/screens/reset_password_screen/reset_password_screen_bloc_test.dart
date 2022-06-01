@@ -2,6 +2,7 @@ import 'package:bloc_test/bloc_test.dart';
 import 'package:dashboard/repositories/authentication_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/reset_password_screen/bloc/reset_password_screen_bloc.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -14,6 +15,9 @@ void main() {
     late ResetPasswordScreenBloc resetPasswordScreenBloc;
 
     late ResetPasswordScreenState _baseState;
+
+    late String password;
+    late String passwordConfirmation;
 
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
@@ -34,24 +38,38 @@ void main() {
       "PasswordChanged event changes state when confirmation is empty: [isPasswordValid: false]",
       build: () => resetPasswordScreenBloc,
       wait: const Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(const PasswordChanged(password: "pass", passwordConfirmation: "")),
-      expect: () => [_baseState.update(isPasswordValid: false)]
+      act: (bloc) {
+        password = "pass";
+        bloc.add(PasswordChanged(password: password));
+      },
+      expect: () => [_baseState.update(password: password, isPasswordValid: false)]
     );
 
     blocTest<ResetPasswordScreenBloc, ResetPasswordScreenState>(
       "PasswordChanged event changes state when confirmation is not empty: [isPasswordValid: false, isPasswordConfirmationValid: false]",
       build: () => resetPasswordScreenBloc,
       wait: const Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(const PasswordChanged(password: "pass", passwordConfirmation: "p")),
-      expect: () => [_baseState.update(isPasswordValid: false, isPasswordConfirmationValid: false)]
+      seed: () {
+        passwordConfirmation = "p";
+        _baseState = _baseState.update(passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) {
+        password = "pass";
+        bloc.add(PasswordChanged(password: password));
+      },
+      expect: () => [_baseState.update(password: password, isPasswordValid: false, isPasswordConfirmationValid: false)]
     );
 
     blocTest<ResetPasswordScreenBloc, ResetPasswordScreenState>(
       "PasswordConfirmationChanged event changes state: [isPasswordConfirmationValid: false]",
       build: () => resetPasswordScreenBloc,
       wait: const Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(const PasswordConfirmationChanged(password: "pass", passwordConfirmation: "p")),
-      expect: () => [_baseState.update(isPasswordConfirmationValid: false)]
+      act: (bloc) {
+        passwordConfirmation = "p";
+        bloc.add(PasswordConfirmationChanged(passwordConfirmation: passwordConfirmation));
+      },
+      expect: () => [_baseState.update(passwordConfirmation: passwordConfirmation, isPasswordConfirmationValid: false)]
     );
 
     blocTest<ResetPasswordScreenBloc, ResetPasswordScreenState>(
@@ -61,7 +79,13 @@ void main() {
           .thenAnswer((_) async => true);
         return resetPasswordScreenBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(password: "password", passwordConfirmation: "password")),
+      seed: () {
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -72,7 +96,13 @@ void main() {
           .thenAnswer((_) async => true);
         return resetPasswordScreenBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(password: "password", passwordConfirmation: "password")),
+      seed: () {
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       verify: (_) {
         verify(() => authenticationRepository.resetPassword(password: any(named: "password"), passwordConfirmation: any(named: "passwordConfirmation"), token: any(named: "token"))).called(1);
       }
@@ -85,7 +115,13 @@ void main() {
           .thenThrow(const ApiException(error: "error"));
         return resetPasswordScreenBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(password: "password", passwordConfirmation: "password")),
+      seed: () {
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true, errorMessage: ""), _baseState.update(isSubmitting: false, isSuccess: false, errorMessage: 'error', errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
@@ -93,6 +129,12 @@ void main() {
       "Reset event changes state: [isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => resetPasswordScreenBloc,
       act: (bloc) => bloc.add(Reset()),
+      seed: () {
+        password = faker.internet.password();
+        passwordConfirmation = password;
+        _baseState = _baseState.update(isSubmitting: true, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart, password: password, passwordConfirmation: passwordConfirmation);
+        return _baseState;
+      },
       expect: () => [_baseState.update(isSubmitting: false, isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );
   });

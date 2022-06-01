@@ -18,26 +18,17 @@ class RegisterForm extends StatefulWidget {
   State<RegisterForm> createState() => _RegisterFormState();
 }
 
-
 class _RegisterFormState extends State<RegisterForm> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmationController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _passwordConfirmationFocus = FocusNode();
   
   late RegisterFormBloc _registerFormBloc;
-
-  bool get isPopulated => _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty && _passwordConfirmationController.text.isNotEmpty;
   
   @override
   void initState() {
     super.initState();
     _registerFormBloc = BlocProvider.of<RegisterFormBloc>(context);
-    _emailController.addListener(_onEmailChanged);
-    _passwordController.addListener(_onPasswordChanged);
-    _passwordConfirmationController.addListener(_onPasswordConfirmationChanged);
   }
   
   @override
@@ -85,13 +76,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
   @override
   void dispose() {
-    _emailController.dispose();
     _emailFocus.dispose();
-
-    _passwordController.dispose();
     _passwordFocus.dispose();
-
-    _passwordConfirmationController.dispose();
     _passwordConfirmationFocus.dispose();
 
     _registerFormBloc.close();
@@ -115,7 +101,7 @@ class _RegisterFormState extends State<RegisterForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _emailController,
+          onChanged: (email) => _onEmailChanged(email: email),
           focusNode: _emailFocus,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -124,7 +110,7 @@ class _RegisterFormState extends State<RegisterForm> {
             current: _emailFocus, 
             next: _passwordFocus
           ),
-          validator: (_) => !state.isEmailValid && _emailController.text.isNotEmpty 
+          validator: (_) => !state.isEmailValid && state.email.isNotEmpty 
             ? 'Invalid email' 
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -150,7 +136,7 @@ class _RegisterFormState extends State<RegisterForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _passwordController,
+          onChanged: (password) => _onPasswordChanged(password: password),
           focusNode: _passwordFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.next,
@@ -158,7 +144,7 @@ class _RegisterFormState extends State<RegisterForm> {
           onFieldSubmitted: (_) {
             _changeFocus(context: context, current: _passwordFocus, next: _passwordConfirmationFocus);
           },
-          validator: (_) => !state.isPasswordValid && _passwordController.text.isNotEmpty 
+          validator: (_) => !state.isPasswordValid && state.password.isNotEmpty 
             ? 'min: 8 characters, 1 uppercase, 1 lowercase, 1 digit, 1 special character' 
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -185,7 +171,7 @@ class _RegisterFormState extends State<RegisterForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _passwordConfirmationController,
+          onChanged: (passwordConfirmation) => _onPasswordConfirmationChanged(passwordConfirmation: passwordConfirmation),
           focusNode: _passwordConfirmationFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
@@ -193,7 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
           onFieldSubmitted: (_) {
             _passwordConfirmationFocus.unfocus();
           },
-          validator: (_) => !state.isPasswordConfirmationValid  && _passwordConfirmationController.text.isNotEmpty 
+          validator: (_) => !state.isPasswordConfirmationValid  && state.passwordConfirmation.isNotEmpty 
             ? "Passwords are not matching" 
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -269,7 +255,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   bool _buttonEnabled({required RegisterFormState state}) {
-    return state.isFormValid && isPopulated && !state.isSubmitting;
+    return state.isFormValid && !state.isSubmitting;
   }
 
   void _resetForm() {
@@ -280,11 +266,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   void _submitButtonPressed({required RegisterFormState state}) {
     if (_buttonEnabled(state: state)) {
-      _registerFormBloc.add(Submitted(
-        email: _emailController.text, 
-        password: _passwordController.text, 
-        passwordConfirmation: _passwordConfirmationController.text
-      ));
+      _registerFormBloc.add(Submitted());
     }
   }
   
@@ -293,21 +275,15 @@ class _RegisterFormState extends State<RegisterForm> {
     FocusScope.of(context).requestFocus(next);
   }
   
-  void _onEmailChanged() {
-    _registerFormBloc.add(EmailChanged(email: _emailController.text));
+  void _onEmailChanged({required String email}) {
+    _registerFormBloc.add(EmailChanged(email: email));
   }
 
-  void _onPasswordChanged() {
-    _registerFormBloc.add(PasswordChanged(
-      password: _passwordController.text, 
-      passwordConfirmation: _passwordConfirmationController.text
-    ));
+  void _onPasswordChanged({required String password}) {
+    _registerFormBloc.add(PasswordChanged(password: password));
   }
 
-  void _onPasswordConfirmationChanged() {
-    _registerFormBloc.add(PasswordConfirmationChanged(
-      passwordConfirmation: _passwordConfirmationController.text, 
-      password: _passwordController.text
-    ));
+  void _onPasswordConfirmationChanged({required String passwordConfirmation}) {
+    _registerFormBloc.add(PasswordConfirmationChanged(passwordConfirmation: passwordConfirmation));
   }
 }

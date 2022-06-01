@@ -48,7 +48,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
 
   Future<void> _mapPlaceQueryChangedToState({required PlaceQueryChanged event, required Emitter<ProfileScreenState> emit}) async {
     if (event.query.length >= 3) {
-      emit(state.update(isSubmitting: true, errorMessage: ""));
+      emit(state.update(placeQuery: event.query, isSubmitting: true, errorMessage: ""));
       
       final PlacesAutocompleteResponse response = await _places.autoComplete(query: event.query);
 
@@ -57,6 +57,8 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
       } else {
         emit(state.update(isSubmitting: false, errorMessage: response.errorMessage));
       }
+    } else {
+      emit(state.update(placeQuery: event.query));
     }
   }
 

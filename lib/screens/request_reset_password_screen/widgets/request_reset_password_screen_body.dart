@@ -19,7 +19,6 @@ class RequestResetPasswordScreenBody extends StatefulWidget {
 }
 
 class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScreenBody> {
-  final TextEditingController _emailController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
 
   late RequestResetPasswordScreenBloc _resetPasswordScreenBloc;
@@ -28,7 +27,6 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
   void initState() {
     super.initState();
     _resetPasswordScreenBloc = BlocProvider.of<RequestResetPasswordScreenBloc>(context);
-    _emailController.addListener(_onEmailChanged);
   }
   
   @override
@@ -69,7 +67,6 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
 
   @override
   void dispose() {
-    _emailController.dispose();
     _emailFocus.dispose();
     _resetPasswordScreenBloc.close();
     super.dispose();
@@ -91,7 +88,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _emailController,
+          onChanged: (email) => _onEmailChanged(email: email),
           focusNode: _emailFocus,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.done,
@@ -99,7 +96,7 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
             _emailFocus.unfocus();
             _submitButtonPressed(state: state);
           },
-          validator: (_) => !state.isEmailValid && _emailController.text.isNotEmpty
+          validator: (_) => !state.isEmailValid && state.email.isNotEmpty
             ? 'Invalid Email'
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -176,17 +173,17 @@ class _RequestResetPasswordScreenBodyState extends State<RequestResetPasswordScr
   }
   
   bool _buttonEnabled({required RequestResetPasswordScreenState state}) {
-    return state.isEmailValid && !state.isSubmitting && _emailController.text.isNotEmpty;
+    return state.isFormValid && !state.isSubmitting;
   }
 
   void _submitButtonPressed({required RequestResetPasswordScreenState state}) {
     if (_buttonEnabled(state: state)) {
-      _resetPasswordScreenBloc.add(Submitted(email: _emailController.text));
+      _resetPasswordScreenBloc.add(Submitted());
     }
   }
   
-  void _onEmailChanged() {
-    _resetPasswordScreenBloc.add(EmailChanged(email: _emailController.text));
+  void _onEmailChanged({required String email}) {
+    _resetPasswordScreenBloc.add(EmailChanged(email: email));
   }
 
   void _resetForm() {

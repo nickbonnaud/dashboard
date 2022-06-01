@@ -2,6 +2,8 @@ part of 'profile_screen_bloc.dart';
 
 @immutable
 class ProfileScreenState extends Equatable {
+  final String placeQuery;
+
   final PlaceDetails? selectedPrediction;
   final List<Prediction> predictions;
 
@@ -26,6 +28,8 @@ class ProfileScreenState extends Equatable {
     isPhoneValid && phone.isNotEmpty;
 
   const ProfileScreenState({
+    required this.placeQuery,
+
     this.selectedPrediction,
     required this.predictions,
 
@@ -46,6 +50,8 @@ class ProfileScreenState extends Equatable {
 
   factory ProfileScreenState.empty({required Profile profile}) {
     return ProfileScreenState(
+      placeQuery: "",
+
       selectedPrediction: null,
       predictions: const [],
 
@@ -66,6 +72,8 @@ class ProfileScreenState extends Equatable {
   }
 
   ProfileScreenState update({
+    String? placeQuery,
+
     PlaceDetails? selectedPrediction,
     List<Prediction>? predictions,
 
@@ -84,6 +92,8 @@ class ProfileScreenState extends Equatable {
     CustomAnimationControl? errorButtonControl,
   }) {
     return ProfileScreenState(
+      placeQuery: placeQuery ?? this.placeQuery,
+
       selectedPrediction: selectedPrediction ?? this.selectedPrediction,
       predictions: predictions ?? this.predictions,
 
@@ -105,6 +115,8 @@ class ProfileScreenState extends Equatable {
 
   @override
   List<Object?> get props => [
+    placeQuery,
+
     selectedPrediction,
     predictions,
 
@@ -126,6 +138,8 @@ class ProfileScreenState extends Equatable {
   @override
   String toString() {
     return '''ProfileScreenState {
+      placeQuery: $placeQuery,
+      
       selectedPrediction: $selectedPrediction,
       predictions: $predictions,
 

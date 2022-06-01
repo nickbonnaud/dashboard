@@ -81,10 +81,10 @@ void main() {
     testWidgets("Password TextField can receive input", (tester) async {
       await screenBuilder.createScreen(tester: tester);
       String password = "nfodjPc5!@bnc5M";
-      expect(tester.widget<TextFormField>(find.byKey(const Key("passwordTextFieldKey"))).controller!.text.isEmpty, true);
+      expect(find.text("nfodjPc5!@bnc5M"), findsNothing);
       await tester.enterText(find.byKey(const Key("passwordTextFieldKey")), password);
       await tester.pump();
-      expect(tester.widget<TextFormField>(find.byKey(const Key("passwordTextFieldKey"))).controller!.text.isEmpty, false);
+      expect(find.text("nfodjPc5!@bnc5M"), findsOneWidget);
     });
 
     testWidgets("Password TextField shows error on invalid input", (tester) async {

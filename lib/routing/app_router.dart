@@ -40,7 +40,10 @@ class AppRouter {
 
     switch (_routeData.route) {
       case Routes.app:
-        route = _createRoute(screen: const App(), name: _routeData.route);
+        route = _createRoute(
+          screen: const App(), 
+        
+        name: _routeData.route);
         break;
       case Routes.login:
         route = _createRoute(

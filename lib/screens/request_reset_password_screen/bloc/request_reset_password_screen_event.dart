@@ -19,16 +19,6 @@ class EmailChanged extends RequestResetPasswordScreenEvent {
   String toString() => 'EmailChanged { email: $email }';
 }
 
-class Submitted extends RequestResetPasswordScreenEvent {
-  final String email;
-  
-  const Submitted({required this.email});
-
-  @override
-  List<Object> get props => [email];
-
-  @override
-  String toString() => 'Submitted { email: $email }';
-}
+class Submitted extends RequestResetPasswordScreenEvent {}
 
 class Reset extends RequestResetPasswordScreenEvent {}

@@ -26,26 +26,26 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   void _eventHandler() {
     on<EmailChanged>((event, emit) => _mapEmailChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
     on<PasswordChanged>((event, emit) => _mapPasswordChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: _debounceTime));
-    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
   
   void _mapEmailChangedToState({required EmailChanged event, required Emitter<LoginFormState> emit}) {
-    emit(state.update(isEmailValid: Validators.isValidEmail(email: event.email)));
+    emit(state.update(email: event.email, isEmailValid: Validators.isValidEmail(email: event.email)));
   }
 
   void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<LoginFormState> emit}) {
-    emit(state.update(isPasswordValid: Validators.isValidPassword(password: event.password)));
+    emit(state.update(password: event.password, isPasswordValid: Validators.isValidPassword(password: event.password)));
   }
 
-  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<LoginFormState> emit}) async {
-    emit(LoginFormState.loading());
+  Future<void> _mapSubmittedToState({required Emitter<LoginFormState> emit}) async {
+    emit(state.update(isSubmitting: true));
     try {
-      final Business business = await _authenticationRepository.login(email: event.email, password: event.password);
+      final Business business = await _authenticationRepository.login(email: state.email, password: state.password);
       _authenticationBloc.add(LoggedIn(business: business));
-      emit(LoginFormState.success());
+      emit(state.update(isSubmitting: false, isSuccess: true));
     } on ApiException catch (exception) {
-      emit(LoginFormState.failure(errorMessage: exception.error));
+      emit(state.update(isSubmitting: false, errorMessage: exception.error, errorButtonControl: CustomAnimationControl.playFromStart));
     }
   }
 

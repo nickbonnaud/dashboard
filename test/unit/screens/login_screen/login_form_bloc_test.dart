@@ -21,6 +21,9 @@ void main() {
 
     late LoginFormState baseState;
 
+    late String email;
+    late String password;
+
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
       authenticationBloc = MockAuthenticationBloc();
@@ -43,40 +46,61 @@ void main() {
       "EmailChanged event changes state: [isEmailValid: false]",
       build: () => loginFormBloc,
       wait: const Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(const EmailChanged(email: "not@email!s")),
-      expect: () => [baseState.update(isEmailValid: false)]
+      act: (bloc) {
+        email = "not@email!s";
+        bloc.add(EmailChanged(email: email));
+      },
+      expect: () => [baseState.update(email: email, isEmailValid: false)]
     );
 
     blocTest<LoginFormBloc, LoginFormState>(
       "PasswordChanged event changes state: [isPasswordValid: false]",
       build: () => loginFormBloc,
       wait: const Duration(milliseconds: 300),
-      act: (bloc) => bloc.add(const PasswordChanged(password: "badpass")),
-      expect: () => [baseState.update(isPasswordValid: false)]
+      act: (bloc) {
+        password = "badpass";
+        bloc.add(PasswordChanged(password: password));
+      },
+      expect: () => [baseState.update(password: password, isPasswordValid: false)]
     );
 
     blocTest<LoginFormBloc, LoginFormState>(
       "Submitted event changes state: [LoginFormState.loading()], [LoginFormState.success()]",
       build: () => loginFormBloc,
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        baseState = baseState.update(email: email, password: password);
+
+        return baseState;
+      },
       act: (bloc) {
         when(() => authenticationRepository.login(email: any(named: "email"), password: any(named: "password")))
           .thenAnswer((_) async => MockBusiness());
         when(() => authenticationBloc.add(any(that: isA<AuthenticationEvent>())))
           .thenReturn(null);
-        bloc.add(Submitted(email: faker.internet.email(), password: faker.internet.password()));
+
+        bloc.add(Submitted());
       },
-      expect: () => [LoginFormState.loading(), LoginFormState.success()]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, isSuccess: true)]
     );
 
     blocTest<LoginFormBloc, LoginFormState>(
       "Submitted event calls authenticationRepository.login()",
       build: () => loginFormBloc,
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        baseState = baseState.update(email: email, password: password);
+
+        return baseState;
+      },
       act: (bloc) {
         when(() => authenticationRepository.login(email: any(named: "email"), password: any(named: "password")))
           .thenAnswer((_) async => MockBusiness());
         when(() => authenticationBloc.add(any(that: isA<AuthenticationEvent>())))
           .thenReturn(null);
-        bloc.add(Submitted(email: faker.internet.email(), password: faker.internet.password()));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => authenticationRepository.login(email: any(named: "email"), password: any(named: "password"))).called(1);
@@ -86,12 +110,19 @@ void main() {
     blocTest<LoginFormBloc, LoginFormState>(
       "Submitted event calls authenticationBloc.add()",
       build: () => loginFormBloc,
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        baseState = baseState.update(email: email, password: password);
+
+        return baseState;
+      },
       act: (bloc) {
         when(() => authenticationRepository.login(email: any(named: "email"), password: any(named: "password")))
           .thenAnswer((_) async => MockBusiness());
         when(() => authenticationBloc.add(any(that: isA<AuthenticationEvent>())))
           .thenReturn(null);
-        bloc.add(Submitted(email: faker.internet.email(), password: faker.internet.password()));
+        bloc.add(Submitted());
       },
       verify: (_) {
         verify(() => authenticationBloc.add(any(that: isA<AuthenticationEvent>()))).called(1);
@@ -101,17 +132,31 @@ void main() {
     blocTest<LoginFormBloc, LoginFormState>(
       "Submitted event on error changes state: [LoginFormState.loading()], [LoginFormState.failure()]",
       build: () => loginFormBloc,
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        baseState = baseState.update(email: email, password: password);
+
+        return baseState;
+      },
       act: (bloc) {
         when(() => authenticationRepository.login(email: any(named: "email"), password: any(named: "password")))
           .thenThrow(const ApiException(error: "error"));
-        bloc.add(Submitted(email: faker.internet.email(), password: faker.internet.password()));
+        bloc.add(Submitted());
       },
-      expect: () => [LoginFormState.loading(), LoginFormState.failure(errorMessage: "error")]
+      expect: () => [baseState.update(isSubmitting: true), baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<LoginFormBloc, LoginFormState>(
       "Reset event changes state: [isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.STOP]",
       build: () => loginFormBloc,
+      seed: () {
+        email = faker.internet.email();
+        password = faker.internet.password();
+        baseState = baseState.update(email: email, password: password, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart);
+
+        return baseState;
+      },
       act: (bloc) => bloc.add(Reset()),
       expect: () => [baseState.update(isSuccess: false, errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );

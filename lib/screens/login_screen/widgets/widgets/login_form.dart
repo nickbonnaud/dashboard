@@ -21,21 +21,15 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocus = FocusNode();
   final FocusNode _passwordFocus = FocusNode();
 
   late LoginFormBloc _loginFormBloc;
-
-  bool get isPopulated => _emailController.text.isNotEmpty && _passwordController.text.isNotEmpty;
   
   @override
   void initState() {
     super.initState();
     _loginFormBloc = BlocProvider.of<LoginFormBloc>(context);
-    _emailController.addListener(_onEmailChanged);
-    _passwordController.addListener(_onPasswordChanged);
   }
   
   @override
@@ -84,10 +78,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   void dispose() {
-    _emailController.dispose();
     _emailFocus.dispose();
-
-    _passwordController.dispose();
     _passwordFocus.dispose();
 
     _loginFormBloc.close();
@@ -110,7 +101,7 @@ class _LoginFormState extends State<LoginForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _emailController,
+          onChanged: (email) => _onEmailChanged(email: email),
           focusNode: _emailFocus,
           keyboardType: TextInputType.emailAddress,
           textInputAction: TextInputAction.next,
@@ -119,7 +110,9 @@ class _LoginFormState extends State<LoginForm> {
             current: _emailFocus, 
             next: _passwordFocus
           ),
-          validator: (_) => !state.isEmailValid && _emailController.text.isNotEmpty ? 'Invalid email' : null,
+          validator: (_) => !state.isEmailValid && state.email.isNotEmpty
+            ? 'Invalid email' 
+            : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           autocorrect: false,
         );
@@ -143,14 +136,16 @@ class _LoginFormState extends State<LoginForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _passwordController,
+          onChanged: (password) => _onPasswordChanged(password: password),
           focusNode: _passwordFocus,
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) {
             _passwordFocus.unfocus();
           },
-          validator: (_) => !state.isPasswordValid && _passwordController.text.isNotEmpty ? 'Invalid Password' : null,
+          validator: (_) => !state.isPasswordValid && state.password.isNotEmpty
+            ? 'Invalid Password'
+            : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           autocorrect: false,
           obscureText: true,
@@ -250,7 +245,7 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   bool _buttonEnabled({required LoginFormState state}) {
-    return state.isFormValid && isPopulated && !state.isSubmitting;
+    return state.isFormValid && !state.isSubmitting;
   }
 
   void _goToResetScreen() {
@@ -268,17 +263,17 @@ class _LoginFormState extends State<LoginForm> {
     Future.delayed(const Duration(seconds: 1), () => _loginFormBloc.add(Reset()));
   }
 
-  void _onEmailChanged() {
-    _loginFormBloc.add(EmailChanged(email: _emailController.text));
+  void _onEmailChanged({required String email}) {
+    _loginFormBloc.add(EmailChanged(email: email));
   }
 
-  void _onPasswordChanged() {
-    _loginFormBloc.add(PasswordChanged(password: _passwordController.text));
+  void _onPasswordChanged({required String password}) {
+    _loginFormBloc.add(PasswordChanged(password: password));
   }
   
   void _submitButtonPressed({required LoginFormState state}) {
     if (_buttonEnabled(state: state)) {
-      _loginFormBloc.add(Submitted(email: _emailController.text, password: _passwordController.text));
+      _loginFormBloc.add(Submitted());
     }
   }
 
