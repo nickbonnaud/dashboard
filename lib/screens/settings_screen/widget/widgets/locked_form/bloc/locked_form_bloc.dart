@@ -22,19 +22,19 @@ class LockedFormBloc extends Bloc<LockedFormEvent, LockedFormState> {
 
   void _eventHandler() {
     on<PasswordChanged>((event, emit) => _mapPasswordChangedToState(event: event, emit: emit), transformer: Debouncer.bounce(duration: const Duration(milliseconds: 300)));
-    on<Submitted>((event, emit) async => await _mapSubmittedToState(event: event, emit: emit));
+    on<Submitted>((event, emit) async => await _mapSubmittedToState(emit: emit));
     on<Reset>((event, emit) => _mapResetToState(emit: emit));
   }
 
   void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<LockedFormState> emit}) {
-    emit(state.update(isPasswordValid: Validators.isValidPassword(password: event.password)));
+    emit(state.update(password: event.password, isPasswordValid: Validators.isValidPassword(password: event.password)));
   }
 
-  Future<void> _mapSubmittedToState({required Submitted event, required Emitter<LockedFormState> emit}) async {
+  Future<void> _mapSubmittedToState({required Emitter<LockedFormState> emit}) async {
     emit(state.update(isSubmitting: true));
 
     try {
-      await _authenticationRepository.verifyPassword(password: event.password);
+      await _authenticationRepository.verifyPassword(password: state.password);
       emit(state.update(isSubmitting: false, errorButtonControl: CustomAnimationControl.stop));
       _settingsScreenCubit.unlock();
     } on ApiException catch (exception) {

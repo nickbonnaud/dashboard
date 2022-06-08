@@ -19,7 +19,6 @@ class LockedForm extends StatefulWidget {
 
 class _LockedFormState extends State<LockedForm> {
   final FocusNode _focusNode = FocusNode();
-  final TextEditingController _controller = TextEditingController();
   
   late LockedFormBloc _lockedFormBloc;
   
@@ -27,7 +26,6 @@ class _LockedFormState extends State<LockedForm> {
   void initState() {
     super.initState();
     _lockedFormBloc = BlocProvider.of<LockedFormBloc>(context);
-    _controller.addListener(_onPasswordChanged);
   }
   
   @override
@@ -50,7 +48,6 @@ class _LockedFormState extends State<LockedForm> {
 
   @override
   void dispose() {
-    _controller.dispose();
     _focusNode.dispose();
     _lockedFormBloc.close();
     super.dispose();
@@ -75,7 +72,7 @@ class _LockedFormState extends State<LockedForm> {
               fontWeight: FontWeight.w700,
               fontSize: FontSizeAdapter.setSize(size: 3, context: context)
             ),
-            controller: _controller,
+            onChanged: (password) => _onPasswordChanged(password: password),
             focusNode: _focusNode,
             keyboardType: TextInputType.visiblePassword,
             textInputAction: TextInputAction.done,
@@ -84,7 +81,7 @@ class _LockedFormState extends State<LockedForm> {
               _focusNode.unfocus();
               _submitPassword(state: state);
             },
-            validator: (_) => !state.isPasswordValid && _controller.text.isNotEmpty
+            validator: (_) => !state.isPasswordValid && state.password.isNotEmpty
               ? "Invalid Password"
               : null,
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -145,16 +142,16 @@ class _LockedFormState extends State<LockedForm> {
   }
 
   bool _passwordValid({required LockedFormState state}) {
-    return state.isPasswordValid && _controller.text.isNotEmpty && !state.isSubmitting;
+    return state.isFormValid && !state.isSubmitting;
   }
   
-  void _onPasswordChanged() {
-    _lockedFormBloc.add(PasswordChanged(password: _controller.text));
+  void _onPasswordChanged({required String password}) {
+    _lockedFormBloc.add(PasswordChanged(password: password));
   }
 
   void _submitPassword({required LockedFormState state}) {
     if (_passwordValid(state: state)) {
-      _lockedFormBloc.add(Submitted(password: _controller.text));
+      _lockedFormBloc.add(Submitted());
     }
   }
 

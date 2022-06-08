@@ -86,7 +86,7 @@ class BusinessAccountScreenBloc extends Bloc<BusinessAccountScreenEvent, Busines
         state: state.state.toUpperCase(),
         zip: state.zip,
         entityType: BusinessAccount.entityTypeToString(entityType: state.entityType),
-        ein: state.ein
+        ein: state.entityType != EntityType.soleProprietorship ? state.ein : ""
       );
       _updateBusinessBloc(account: account);
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));

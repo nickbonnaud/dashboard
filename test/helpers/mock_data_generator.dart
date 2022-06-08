@@ -247,7 +247,7 @@ class MockDataGenerator {
       addressSecondary: faker.address.buildingNumber(),
       city: faker.address.city(),
       state: 'NC',
-      zip: faker.address.zipCode()
+      zip: faker.randomGenerator.fromPattern(['#####'])
     );
   }
 

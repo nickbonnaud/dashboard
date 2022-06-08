@@ -199,6 +199,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid First Name"), findsNothing);
       await tester.enterText(find.byKey(const Key("firstNameKey")), "a");
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid First Name"), findsOneWidget);
@@ -219,6 +220,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid Last Name"), findsNothing);
       await tester.enterText(find.byKey(const Key("lastNameKey")), "a");
       await tester.pump(const Duration(milliseconds: 300));
       expect(find.text("Invalid Last Name"), findsOneWidget);
@@ -239,6 +241,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid Routing Number"), findsNothing);
       String routing = "1234";
       await tester.enterText(find.byKey(const Key("routingKey")), routing);
       await tester.pump(const Duration(milliseconds: 300));
@@ -260,6 +263,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid Account Number"), findsNothing);
       String account = "123";
       await tester.enterText(find.byKey(const Key("accountKey")), account);
       await tester.pump(const Duration(milliseconds: 300));
@@ -281,6 +285,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid Address"), findsNothing);
       String address = "D";
       await tester.enterText(find.byKey(const Key("addressKey")), address);
       await tester.pump(const Duration(milliseconds: 300));
@@ -302,6 +307,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid Address"), findsNothing);
       String addressSecondary = "1";
       await tester.enterText(find.byKey(const Key("addressSecondaryKey")), addressSecondary);
       await tester.pump(const Duration(milliseconds: 300));
@@ -323,6 +329,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid City"), findsNothing);
       String city = "n";
       await tester.enterText(find.byKey(const Key("cityKey")), city);
       await tester.pump(const Duration(milliseconds: 300));
@@ -344,6 +351,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid State"), findsNothing);
       String state = "N";
       await tester.enterText(find.byKey(const Key("stateKey")), state);
       await tester.pump(const Duration(milliseconds: 300));
@@ -365,6 +373,7 @@ void main() {
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
+      expect(find.text("Invalid Zip"), findsNothing);
       String zip = "77";
       await tester.enterText(find.byKey(const Key("zipKey")), zip);
       await tester.pump(const Duration(milliseconds: 300));
@@ -379,21 +388,21 @@ void main() {
       expect(find.byKey(const Key("changeAccountTypeKey")), findsOneWidget);
     });
 
-    testWidgets("Tapping Change Account Type Button changes form to Select account Type", (tester) async {
+    testWidgets("Tapping Change Account Type Button changes Account Type", (tester) async {
       await screenBuilderNew.createScreen(tester: tester);
       await tester.tap(find.byKey(Key(AccountType.saving.toString())));
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key("accountTypeKey")), findsNothing);
-      expect(find.byKey(const Key("AccountDataKey")), findsOneWidget);
+      expect(find.text("Change To Savings"), findsNothing);
+      expect(find.text("Change To Checking"), findsOneWidget);
 
       await tester.drag(find.byKey(const Key("scrollKey")), const Offset(0.0, -500));
       await tester.pump();
       await tester.tap(find.byKey(const Key("changeAccountTypeKey")));
       await tester.pump();
 
-      expect(find.byKey(const Key("accountTypeKey")), findsOneWidget);
-      expect(find.byKey(const Key("AccountDataKey")), findsNothing);
+      expect(find.text("Change To Savings"), findsOneWidget);
+      expect(find.text("Change To Checking"), findsNothing);
     });
 
     testWidgets("Bank Account Data form creates Submit Button", (tester) async {
@@ -422,6 +431,23 @@ void main() {
       await tester.pump(const Duration(milliseconds: 300));
 
       expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
+    });
+
+    testWidgets("Bank Account Data Submit Button is disabled if data not changed", (tester) async {
+      await screenBuilderEdit.createScreen(tester: tester);
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+      
+      String firstName = faker.person.firstName();
+      await tester.enterText(find.byKey(const Key("firstNameKey")), firstName);
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
+
+      await tester.enterText(find.byKey(const Key("firstNameKey")), screenBuilderEdit.business!.accounts.bankAccount.firstName);
+      await tester.pump(const Duration(milliseconds: 300));
+
+       expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
     testWidgets("Submit Button tap shows CircularProgressIndicator", (tester) async {

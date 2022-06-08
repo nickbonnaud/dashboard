@@ -134,7 +134,11 @@ class BankScreenBloc extends Bloc<BankScreenEvent, BankScreenState> {
   }
 
   void _mapChangeAccountTypeSelectedToState({required Emitter<BankScreenState> emit}) {
-    emit(state.update(accountType: AccountType.unknown));
+    emit(state.update(
+      accountType: state.accountType == AccountType.checking 
+        ? AccountType.saving
+        : AccountType.checking
+    ));
   }
 
   void _updateBusinessBloc({required BankAccount bankAccount}) {

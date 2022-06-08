@@ -19,16 +19,6 @@ class PasswordChanged extends LockedFormEvent {
   String toString() => 'PasswordChanged { password: $password }';
 }
 
-class Submitted extends LockedFormEvent {
-  final String password;
-
-  const Submitted({required this.password});
-
-  @override
-  List<Object> get props => [password];
-
-  @override
-  String toString() => 'Submitted { password: $password }';
-}
+class Submitted extends LockedFormEvent {}
 
 class Reset extends LockedFormEvent {}

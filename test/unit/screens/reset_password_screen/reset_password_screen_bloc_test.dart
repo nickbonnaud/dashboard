@@ -42,7 +42,7 @@ void main() {
         password = "pass";
         bloc.add(PasswordChanged(password: password));
       },
-      expect: () => [_baseState.update(password: password, isPasswordValid: false)]
+      expect: () => [_baseState.update(password: password, isPasswordValid: false, isPasswordConfirmationValid: true)]
     );
 
     blocTest<ResetPasswordScreenBloc, ResetPasswordScreenState>(

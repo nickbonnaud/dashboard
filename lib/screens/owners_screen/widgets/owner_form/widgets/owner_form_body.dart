@@ -797,7 +797,7 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
   bool _fieldsChanged({required OwnerFormState state}) {
     if (widget._ownerAccount == null) return true;
     OwnerAccount ownerAccount = widget._ownerAccount!;
-
+    
     return ownerAccount.primary != state.isPrimary ||
       ownerAccount.firstName != state.firstName ||
       ownerAccount.lastName != state.lastName ||
@@ -808,9 +808,9 @@ class _OwnerFormBodyState extends State<OwnerFormBody> {
       ownerAccount.dob != state.dob ||
       ownerAccount.ssn != state.ssn ||
       ownerAccount.address.address != state.address ||
-      ownerAccount.address.addressSecondary != state.addressSecondary ||
+      (ownerAccount.address.addressSecondary ?? "") != state.addressSecondary ||
       ownerAccount.address.city != state.city ||
-      ownerAccount.address.state != state.state ||
+      ownerAccount.address.state.toUpperCase() != state.state.toUpperCase() ||
       ownerAccount.address.zip != state.zip;
   }
 

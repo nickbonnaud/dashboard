@@ -113,9 +113,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         children: [
           SizedBox(height: SizeConfig.getHeight(3)),
           BoldText3(text: 'Banking Details', context: context),
-          state.accountType == AccountType.unknown
-            ? Text5(text: 'Please select your Bank Account type.', context: context)
-            : Text5(text: "Great! Now just a few details about your Account.", context: context)
+          Text5(text: _titleText(state: state), context: context)
         ],
       ),
     );
@@ -251,7 +249,7 @@ class _BankScreenBodyState extends State<BankScreenBody> {
         SizedBox(height: SizeConfig.getHeight(4)),
         Row(
           children: [
-            Expanded(child: _changeAccountTypeButton()),
+            Expanded(child: _changeAccountTypeButton(state: state)),
             SizedBox(width: SizeConfig.getWidth(5)),
             Expanded(child: _submitButton(state: state)),
           ],
@@ -554,22 +552,35 @@ class _BankScreenBodyState extends State<BankScreenBody> {
     ); 
   }
 
-  Widget _changeAccountTypeButton() {
+  Widget _changeAccountTypeButton({required BankScreenState state}) {
     return ElevatedButton(
       key: const Key("changeAccountTypeKey"),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).colorScheme.warning)
       ),
       onPressed: () => _bankScreenBloc.add(ChangeAccountTypeSelected()), 
-      child: _changeAccountButtonChild()
+      child: _changeAccountButtonChild(state: state)
     );
   }
 
-  Widget _changeAccountButtonChild() {
+  Widget _changeAccountButtonChild({required BankScreenState state}) {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5), 
-      child: Text4(text: 'Change Account Type', context: context, color: Theme.of(context).colorScheme.onSecondary)
+      child: Text5(
+        text: state.accountType == AccountType.checking
+          ? "Change To Savings"
+          : "Change To Checking",
+        context: context, color: Theme.of(context).colorScheme.onSecondary
+      )
     ); 
+  }
+
+  String _titleText({required BankScreenState state}) {
+    return state.accountType == AccountType.unknown
+      ? 'Please select your Bank Account type.'
+      : _bankAccount.identifier.isEmpty
+        ? "Great! Now just a few details about your Account."
+        : "Update your Bank.";
   }
 
   bool _buttonEnabled({required BankScreenState state}) {
@@ -582,13 +593,13 @@ class _BankScreenBodyState extends State<BankScreenBody> {
     return _bankAccount.accountType != state.accountType ||
       _bankAccount.firstName != state.firstName ||
       _bankAccount.lastName != state.lastName ||
-      _bankAccount.routingNumber != _routingNumberFormatter.getMaskedText() ||
-      _bankAccount.accountNumber != _accountNumberFormatter.getMaskedText() ||
+      _bankAccount.routingNumber != state.routingNumber ||
+      _bankAccount.accountNumber != state.accountNumber ||
       _bankAccount.address.address != state.address ||
-      _bankAccount.address.addressSecondary != state.addressSecondary ||
+      (_bankAccount.address.addressSecondary ?? "") != state.addressSecondary ||
       _bankAccount.address.city != state.city ||
-      _bankAccount.address.state != _stateFormatter.getMaskedText() ||
-      _bankAccount.address.zip != _zipFormatter.getMaskedText();
+      _bankAccount.address.state.toUpperCase() != state.state.toUpperCase() ||
+      _bankAccount.address.zip != state.zip;
   }
 
   void _onFirstNameChanged({required String firstName}) {

@@ -3,6 +3,7 @@ import 'package:dashboard/repositories/authentication_repository.dart';
 import 'package:dashboard/resources/helpers/api_exception.dart';
 import 'package:dashboard/screens/settings_screen/cubit/settings_screen_cubit.dart';
 import 'package:dashboard/screens/settings_screen/widget/widgets/locked_form/bloc/locked_form_bloc.dart';
+import 'package:faker/faker.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:simple_animations/simple_animations.dart';
@@ -17,6 +18,8 @@ void main() {
     late LockedFormBloc lockedFormBloc;
 
     late LockedFormState _baseState;
+
+    late String password;
 
     setUp(() {
       authenticationRepository = MockAuthenticationRepository();
@@ -38,7 +41,7 @@ void main() {
       build: () => lockedFormBloc,
       wait: const Duration(milliseconds: 300),
       act: (bloc) => bloc.add(const PasswordChanged(password: "p")),
-      expect: () => [_baseState.update(isPasswordValid: false)]
+      expect: () => [_baseState.update(password: "p", isPasswordValid: false)]
     );
 
     blocTest<LockedFormBloc, LockedFormState>(
@@ -48,7 +51,12 @@ void main() {
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(password: "password")),
+      seed: () {
+        password = faker.internet.password();
+        _baseState = _baseState.update(password: password);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorButtonControl: CustomAnimationControl.stop)]
     );
 
@@ -59,7 +67,12 @@ void main() {
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(password: "password")),
+      seed: () {
+        password = faker.internet.password();
+        _baseState = _baseState.update(password: password);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       verify: (_) {
         verify(() => authenticationRepository.verifyPassword(password: any(named: "password"))).called(1);
       }
@@ -72,7 +85,12 @@ void main() {
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(password: "password")),
+      seed: () {
+        password = faker.internet.password();
+        _baseState = _baseState.update(password: password);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       verify: (_) {
         verify(() => settingsScreenCubit.unlock()).called(1);
       }
@@ -85,14 +103,23 @@ void main() {
         when(() => settingsScreenCubit.unlock()).thenReturn(null);
         return lockedFormBloc;
       },
-      act: (bloc) => bloc.add(const Submitted(password: "password")),
+      seed: () {
+        password = faker.internet.password();
+        _baseState = _baseState.update(password: password);
+        return _baseState;
+      },
+      act: (bloc) => bloc.add(Submitted()),
       expect: () => [_baseState.update(isSubmitting: true), _baseState.update(isSubmitting: false, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart)]
     );
 
     blocTest<LockedFormBloc, LockedFormState>(
       "Reset event changes state: [isPasswordValid: false]",
       build: () => lockedFormBloc,
-      seed: () => _baseState.update(errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart),
+      seed: () {
+        password = faker.internet.password();
+        _baseState = _baseState.update(password: password, errorMessage: "error", errorButtonControl: CustomAnimationControl.playFromStart);
+        return _baseState;
+      },
       act: (bloc) => bloc.add(Reset()),
       expect: () => [_baseState.update(errorMessage: "", errorButtonControl: CustomAnimationControl.stop)]
     );

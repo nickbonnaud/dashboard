@@ -344,8 +344,9 @@ void main() {
     blocTest<BankScreenBloc, BankScreenState>(
       "ChangeAccountTypeSelected event changes state: accountType", 
       build: () => _bankScreenBloc,
+      seed: () =>  _baseState.update(accountType: AccountType.checking),
       act: (bloc) => bloc.add(ChangeAccountTypeSelected()),
-      expect: () => [_baseState.update(accountType: AccountType.unknown)]
+      expect: () => [_baseState.update(accountType: AccountType.saving)]
     );
   });
 }

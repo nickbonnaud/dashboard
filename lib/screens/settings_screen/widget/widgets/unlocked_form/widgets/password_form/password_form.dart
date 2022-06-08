@@ -22,8 +22,6 @@ class PasswordForm extends StatefulWidget {
 class _PasswordFormState extends State<PasswordForm> {
   final FocusNode _passwordFocus = FocusNode();
   final FocusNode _passwordConfirmationFocus = FocusNode();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _passwordConfirmationController = TextEditingController();
 
   late PasswordFormBloc _passwordFormBloc;
 
@@ -31,9 +29,6 @@ class _PasswordFormState extends State<PasswordForm> {
   void initState() {
     super.initState();
     _passwordFormBloc = BlocProvider.of<PasswordFormBloc>(context);
-
-    _passwordController.addListener(_onPasswordChanged);
-    _passwordConfirmationController.addListener(_onPasswordConfirmationChanged);
   }
   
   @override
@@ -62,10 +57,7 @@ class _PasswordFormState extends State<PasswordForm> {
 
   @override
   void dispose() {
-    _passwordController.dispose();
     _passwordFocus.dispose();
-
-    _passwordConfirmationController.dispose();
     _passwordConfirmationFocus.dispose();
 
     _passwordFormBloc.close();
@@ -90,7 +82,7 @@ class _PasswordFormState extends State<PasswordForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _passwordController,
+          onChanged: (password) => _onPasswordChanged(password: password),
           focusNode: _passwordFocus,
           keyboardType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.done,
@@ -99,7 +91,7 @@ class _PasswordFormState extends State<PasswordForm> {
             _passwordFocus.unfocus();
             _submitPassword(state: state);
           },
-          validator: (_) => !state.isPasswordValid && _passwordController.text.isNotEmpty
+          validator: (_) => !state.isPasswordValid && state.password.isNotEmpty
             ? "Invalid Password"
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -127,7 +119,7 @@ class _PasswordFormState extends State<PasswordForm> {
             fontWeight: FontWeight.w700,
             fontSize: FontSizeAdapter.setSize(size: 3, context: context)
           ),
-          controller: _passwordConfirmationController,
+          onChanged: (passwordConfirmation) => _onPasswordConfirmationChanged(passwordConfirmation: passwordConfirmation),
           focusNode: _passwordConfirmationFocus,
           keyboardType: TextInputType.visiblePassword,
           textInputAction: TextInputAction.done,
@@ -136,7 +128,7 @@ class _PasswordFormState extends State<PasswordForm> {
             _passwordConfirmationFocus.unfocus();
             _submitPassword(state: state);
           },
-          validator: (_) => !state.isPasswordConfirmationValid && _passwordConfirmationController.text.isNotEmpty
+          validator: (_) => !state.isPasswordConfirmationValid && state.passwordConfirmation.isNotEmpty
             ? "Confirmation does not match"
             : null,
           autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -196,32 +188,20 @@ class _PasswordFormState extends State<PasswordForm> {
   }
 
   bool _formValid({required PasswordFormState state}) {
-    final bool passwordValid = state.isPasswordValid && _passwordController.text.isNotEmpty;
-    final bool passwordConfirmationValid = state.isPasswordConfirmationValid && _passwordConfirmationController.text.isNotEmpty;
-    return passwordValid && passwordConfirmationValid && !state.isSubmitting;
+    return state.isFormValid && !state.isSubmitting;
   }
   
-  void _onPasswordChanged() {
-    _passwordFormBloc.add(PasswordChanged(
-      password: _passwordController.text,
-      passwordConfirmation: _passwordConfirmationController.text
-    ));
+  void _onPasswordChanged({required String password}) {
+    _passwordFormBloc.add(PasswordChanged(password: password));
   }
 
-  void _onPasswordConfirmationChanged() {
-    _passwordFormBloc.add(PasswordConfirmationChanged(
-      password: _passwordController.text,
-      passwordConfirmation: _passwordConfirmationController.text
-    ));
+  void _onPasswordConfirmationChanged({required String passwordConfirmation}) {
+    _passwordFormBloc.add(PasswordConfirmationChanged(passwordConfirmation: passwordConfirmation));
   }
 
   void _submitPassword({required PasswordFormState state}) {
     if (_formValid(state: state)) {
-      _passwordFormBloc.add(Submitted(
-        password: _passwordController.text,
-        passwordConfirmation: _passwordConfirmationController.text,
-        identifier: BlocProvider.of<BusinessBloc>(context).business.identifier
-      ));
+      _passwordFormBloc.add(Submitted(identifier: BlocProvider.of<BusinessBloc>(context).business.identifier));
     }
   }
 

@@ -27,14 +27,14 @@ class PasswordFormBloc extends Bloc<PasswordFormEvent, PasswordFormState> {
   }
   
   void _mapPasswordChangedToState({required PasswordChanged event, required Emitter<PasswordFormState> emit}) {
-    final bool isPasswordConfirmationValid = event.passwordConfirmation.isNotEmpty
-      ? Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)
+    final bool isPasswordConfirmationValid = state.passwordConfirmation.isNotEmpty
+      ? Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: state.passwordConfirmation)
       : true;
-    emit(state.update(isPasswordValid: Validators.isValidPassword(password: event.password), isPasswordConfirmationValid: isPasswordConfirmationValid));
+    emit(state.update(password: event.password, isPasswordValid: Validators.isValidPassword(password: event.password), isPasswordConfirmationValid: isPasswordConfirmationValid));
   }
 
   void _mapPasswordConfirmationChangedToState({required PasswordConfirmationChanged event, required Emitter<PasswordFormState> emit}) {
-    emit(state.update(isPasswordConfirmationValid: Validators.isPasswordConfirmationValid(password: event.password, passwordConfirmation: event.passwordConfirmation)));
+    emit(state.update(passwordConfirmation: event.passwordConfirmation, isPasswordConfirmationValid: Validators.isPasswordConfirmationValid(password: state.password, passwordConfirmation: event.passwordConfirmation)));
   }
 
   Future<void> _mapSubmittedToState({required Submitted event, required Emitter<PasswordFormState> emit}) async {
@@ -42,8 +42,8 @@ class PasswordFormBloc extends Bloc<PasswordFormEvent, PasswordFormState> {
 
     try {
       await _businessRepository.updatePassword(
-        password: event.password, 
-        passwordConfirmation: event.passwordConfirmation, 
+        password: state.password, 
+        passwordConfirmation: state.passwordConfirmation, 
         identifier: event.identifier
       );
       emit(state.update(isSubmitting: false, isSuccess: true, errorButtonControl: CustomAnimationControl.stop));

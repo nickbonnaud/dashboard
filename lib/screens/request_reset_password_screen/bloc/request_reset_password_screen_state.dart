@@ -24,7 +24,7 @@ class RequestResetPasswordScreenState extends Equatable {
   factory RequestResetPasswordScreenState.initial() {
     return const RequestResetPasswordScreenState(
       email: "",
-      isEmailValid: true,
+      isEmailValid: false,
 
       isSubmitting: false,
       isSuccess: false,

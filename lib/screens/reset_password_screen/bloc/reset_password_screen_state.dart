@@ -35,8 +35,8 @@ class ResetPasswordScreenState extends Equatable {
       password: "",
       passwordConfirmation: "",
 
-      isPasswordValid: true,
-      isPasswordConfirmationValid: true,
+      isPasswordValid: false,
+      isPasswordConfirmationValid: false,
 
       isSubmitting: false,
       isSuccess: false,

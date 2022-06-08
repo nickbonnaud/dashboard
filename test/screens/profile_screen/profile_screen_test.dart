@@ -341,6 +341,23 @@ void main() {
       expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
+    testWidgets("SubmitButton is disabled on edit if no data is changed", (tester) async {
+      await screenBuilderEdit.createScreen(tester: tester);
+      
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+      
+      String description = faker.lorem.sentences(4).join();
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
+
+      await tester.enterText(find.byKey(const Key("descriptionTextKey")), screenBuilderEdit.business!.profile.description);
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+    });
+
     testWidgets("Tapping submit button when form valid shows CircularProgressIndicator", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       
@@ -381,6 +398,11 @@ void main() {
       String description = faker.lorem.sentences(4).join();
 
       await tester.enterText(find.byKey(const Key("descriptionTextKey")), description);
+      await tester.pump(const Duration(milliseconds: 500));
+
+      String phone = "123-456-7890";
+
+      await tester.enterText(find.byKey(const Key('phoneTextFieldKey')), phone);
       await tester.pump(const Duration(milliseconds: 500));
 
       await tester.tap(find.byKey(const Key("submitButtonKey")));

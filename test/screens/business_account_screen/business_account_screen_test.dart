@@ -365,6 +365,23 @@ void main() {
       expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
     });
 
+    testWidgets("Submit Button is disabled if form data unchanged", (tester) async {
+      await screenBuilderEdit.createScreen(tester: tester);
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+      
+      String name = "fake name";
+      await tester.enterText(find.byKey(const Key("nameKey")), name);
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
+
+      await tester.enterText(find.byKey(const Key("nameKey")), screenBuilderEdit.business!.accounts.businessAccount.businessName);
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+    });
+
     testWidgets("Tapping Submit Button shows CircularProgressIndicator", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
 

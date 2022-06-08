@@ -6,7 +6,6 @@ class GooglePlacesProvider {
 
   const GooglePlacesProvider();
 
-  
   Future<PlacesAutocompleteResponse> autoComplete({required String query}) async {
     GoogleMapsPlaces places = _initPlaces();
 

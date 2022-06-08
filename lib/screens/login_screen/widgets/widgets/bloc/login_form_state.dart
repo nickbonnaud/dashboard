@@ -33,8 +33,8 @@ class LoginFormState extends Equatable {
       email: "",
       password: "",
 
-      isEmailValid: true,
-      isPasswordValid: true,
+      isEmailValid: false,
+      isPasswordValid: false,
 
       isSubmitting: false,
       isSuccess: false,

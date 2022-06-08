@@ -367,6 +367,24 @@ void main() {
       expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
     });
 
+    testWidgets("Submit button is disabled if owner data is not changed", (tester) async {
+      await screenBuilderEdit.createScreen(tester: tester);
+      await tester.tap(find.byKey(const Key("editOwnerButton-0")));
+      await tester.pump();
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+
+      await tester.enterText(find.byKey(const Key("zipFieldKey")), "00000");
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, true);
+
+      await tester.enterText(find.byKey(const Key("zipFieldKey")), screenBuilderEdit.business!.accounts.ownerAccounts.first.address.zip);
+      await tester.pump(const Duration(milliseconds: 300));
+
+      expect(tester.widget<ElevatedButton>(find.byKey(const Key("submitButtonKey"))).enabled, false);
+    });
+
     testWidgets("Tapping submitButton on valid form shows CircularProgressIndicator", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       await tester.tap(find.byKey(const Key("editOwnerButton-0")));
@@ -494,7 +512,7 @@ void main() {
       expect(find.byType(OwnerForm), findsOneWidget);
     });
 
-    testWidgets("SaveButton is disabled by default", (tester) async {
+    testWidgets("SaveButton is disabled by default on edit", (tester) async {
       await screenBuilderEdit.createScreen(tester: tester);
       expect(tester.widget<ElevatedButton>(find.byKey(const Key("saveButtonKey"))).enabled, false);
     });

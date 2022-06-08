@@ -9,42 +9,38 @@ abstract class PasswordFormEvent extends Equatable {
 
 class PasswordChanged extends PasswordFormEvent {
   final String password;
-  final String passwordConfirmation;
 
-  const PasswordChanged({required this.password, required this.passwordConfirmation});
-
-  @override
-  List<Object> get props => [password, passwordConfirmation];
+  const PasswordChanged({required this.password});
 
   @override
-  String toString() => 'PasswordChanged { password: $password, passwordConfirmation: $passwordConfirmation }';
+  List<Object> get props => [password];
+
+  @override
+  String toString() => 'PasswordChanged { password: $password }';
 }
 
 class PasswordConfirmationChanged extends PasswordFormEvent {
-  final String password;
   final String passwordConfirmation;
 
-  const PasswordConfirmationChanged({required this.password, required this.passwordConfirmation});
+  const PasswordConfirmationChanged({required this.passwordConfirmation});
 
   @override
-  List<Object> get props => [password, passwordConfirmation];
+  List<Object> get props => [passwordConfirmation];
 
   @override
-  String toString() => 'PasswordConfirmationChanged { password: $password, passwordConfirmation: $passwordConfirmation }';
+  String toString() => 'PasswordConfirmationChanged { passwordConfirmation: $passwordConfirmation }';
 }
 
 class Submitted extends PasswordFormEvent {
-  final String password;
-  final String passwordConfirmation;
   final String identifier;
 
-  const Submitted({required this.password, required this.passwordConfirmation, required this.identifier});
+  const Submitted({required this.identifier});
 
   @override
-  List<Object> get props => [password, passwordConfirmation, identifier];
+  List<Object> get props => [identifier];
   
   @override
-  String toString() => 'Submitted { password: $password, passwordConfirmation: $passwordConfirmation, identifier: $identifier }';
+  String toString() => 'Submitted { identifier: $identifier }';
 }
 
 class Reset extends PasswordFormEvent {}

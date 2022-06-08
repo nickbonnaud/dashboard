@@ -95,7 +95,7 @@ class _NameFieldState extends State<NameField> {
       builder: (context, state) {
         return CupertinoTextField(
           key: const Key("firstNameTextFieldKey"),
-          decoration: CupertinoBoxDecoration.validator(isValid: (state.isFirstNameValid || _firstNameController.text.isEmpty)),
+          decoration: CupertinoBoxDecoration.validator(isValid: (state.isFirstNameValid || state.firstName.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,
           placeholder: "First",
@@ -119,7 +119,7 @@ class _NameFieldState extends State<NameField> {
       builder: (context, state) {
         return CupertinoTextField(
           key: const Key("lastNameTextFieldKey"),
-          decoration: CupertinoBoxDecoration.validator(isValid: (state.isLastNameValid || _lastNameController.text.isEmpty)),
+          decoration: CupertinoBoxDecoration.validator(isValid: (state.isLastNameValid || state.lastName.isEmpty)),
           cursorColor: Colors.black,
           textCapitalization: TextCapitalization.words,
           placeholder: "Last",

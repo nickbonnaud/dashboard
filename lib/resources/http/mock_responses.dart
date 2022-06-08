@@ -1128,7 +1128,7 @@ class MockResponses {
       'identifier': _createIdentifier(),
       'address': {
         'address': faker.address.streetAddress(),
-        'address_secondary': faker.address.buildingNumber(),
+        'address_secondary': faker.randomGenerator.boolean() ? faker.address.buildingNumber() : null,
         'city': faker.address.city(),
         'state': 'NC',
         'zip': faker.address.zipCode()

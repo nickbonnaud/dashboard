@@ -342,7 +342,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      initialValue: _businessAccount.address.city,
+      initialValue: state.city,
       onChanged: (city) => _onCityChanged(city: city),
       focusNode: _cityFocus,
       keyboardType: TextInputType.name,
@@ -371,7 +371,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      initialValue: _businessAccount.address.addressSecondary,
+      initialValue: state.addressSecondary,
       onChanged: (addressSecondary) => _onAddressSecondaryChanged(addressSecondary: addressSecondary),
       focusNode: _addressSecondaryFocus,
       keyboardType: TextInputType.streetAddress,
@@ -400,7 +400,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      initialValue: _businessAccount.address.address,
+      initialValue: state.address,
       onChanged: (address) => _onAddressChanged(address: address),
       focusNode: _addressFocus,
       keyboardType: TextInputType.streetAddress,
@@ -429,7 +429,7 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
         fontWeight: FontWeight.w700,
         fontSize: FontSizeAdapter.setSize(size: 3, context: context)
       ),
-      initialValue: _businessAccount.businessName,
+      initialValue: state.name,
       onChanged: (name) => _onNameChanged(name: name),
       focusNode: _nameFocus,
       keyboardType: TextInputType.text,
@@ -522,15 +522,15 @@ class _BusinessAccountScreenBodyState extends State<BusinessAccountScreenBody> {
   }
 
   bool _fieldsChanged({required BusinessAccountScreenState state}) {
-    if (BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.identifier.isEmpty) return true;
+    if (_businessAccount.identifier.isEmpty) return true;
     
-    return BlocProvider.of<BusinessBloc>(context).business.accounts.businessAccount.entityType != state.entityType ||
+    return _businessAccount.entityType != state.entityType ||
       _businessAccount.businessName != state.name ||
       _businessAccount.address.address != state.address ||
-      _businessAccount.address.addressSecondary != state.addressSecondary ||
+      (_businessAccount.address.addressSecondary ?? "") != state.addressSecondary ||
       _businessAccount.address.city != state.city ||
-      _businessAccount.address.state != _stateFormatter.getMaskedText() ||
-      _businessAccount.address.zip != _zipFormatter.getMaskedText() ||
+      _businessAccount.address.state.toUpperCase() != state.state.toUpperCase() ||
+      _businessAccount.address.zip != state.zip ||
       _einChanged();
   }
 

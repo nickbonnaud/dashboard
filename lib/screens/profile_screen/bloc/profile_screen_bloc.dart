@@ -50,12 +50,17 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     if (event.query.length >= 3) {
       emit(state.update(placeQuery: event.query, isSubmitting: true, errorMessage: ""));
       
-      final PlacesAutocompleteResponse response = await _places.autoComplete(query: event.query);
-
-      if (response.isOkay) {
+      PlacesAutocompleteResponse response;
+      try {
+        response = await _places.autoComplete(query: event.query);
+      } catch (e) {
+        response = PlacesAutocompleteResponse(errorMessage: "error", status: "error", predictions: []);
+      }
+      
+      if (response.errorMessage == null) {
         emit(state.update(isSubmitting: false, predictions: response.predictions));
       } else {
-        emit(state.update(isSubmitting: false, errorMessage: response.errorMessage));
+        _changeToManualInput(emit: emit);
       }
     } else {
       emit(state.update(placeQuery: event.query));
@@ -65,14 +70,31 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
   Future<void> _mapPredictionSelectedToState({required PredictionSelected event, required Emitter<ProfileScreenState> emit}) async {
     if (event.prediction.placeId != null) {
       emit(state.update(isSubmitting: true, predictions: []));
-      final PlacesDetailsResponse response = await _places.details(placeId: event.prediction.placeId!);
-      emit(state.update(
-        isSubmitting: false,
-        selectedPrediction: response.result,
-        name: response.result.name,
-        website: response.result.website ?? "",
-        phone: response.result.formattedPhoneNumber ?? ""
-      )); 
+      
+      PlacesDetailsResponse response;
+      try {
+        response = await _places.details(placeId: event.prediction.placeId!);
+      } catch (e) {
+        response = PlacesDetailsResponse(errorMessage: "error", status: "error", result: PlaceDetails(name: "", placeId: ""), htmlAttributions: []);
+      }
+      
+      if (response.errorMessage == null) {
+        emit(state.update(
+          isSubmitting: false,
+          selectedPrediction: response.result,
+
+          name: response.result.name,
+          isNameValid: Validators.isValidBusinessName(name: response.result.name),
+
+          website: response.result.website ?? "",
+          isWebsiteValid: Validators.isValidUrl(url: response.result.website ?? ""),
+          
+          phone: response.result.formattedPhoneNumber ?? "",
+          isPhoneValid: Validators.isValidPhone(phone: response.result.formattedPhoneNumber ?? "")
+        )); 
+      } else {
+        _changeToManualInput(emit: emit);
+      }
     }
   }
   
@@ -149,5 +171,15 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     } else {
       _businessBloc.add(ProfileUpdated(profile: profile));
     }
+  }
+
+  void _changeToManualInput({required Emitter<ProfileScreenState> emit}) {
+    emit(state.update(
+      isSubmitting: false, 
+      selectedPrediction: PlaceDetails(
+        name: "", 
+        placeId: "",
+      ),
+    ));
   }
 }

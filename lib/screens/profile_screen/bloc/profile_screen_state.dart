@@ -60,10 +60,11 @@ class ProfileScreenState extends Equatable {
       description: profile.description,
       phone: profile.phone,
 
-      isNameValid: true,
-      isWebsiteValid: true,
-      isDescriptionValid: true,
-      isPhoneValid: true,
+      isNameValid: profile.name.isNotEmpty,
+      isWebsiteValid: profile.website.isNotEmpty,
+      isDescriptionValid: profile.description.isNotEmpty,
+      isPhoneValid: profile.phone.isNotEmpty,
+      
       isSubmitting: false,
       isSuccess: false,
       errorMessage: '',

@@ -100,12 +100,11 @@ void main() {
     );
     
     blocTest<ProfileScreenBloc, ProfileScreenState>(
-      "PlaceQueryChanged event on error changes state: [isSubmitting: true], [isSubmitting: false, errorMessage: response.errorMessage]",
+      "PlaceQueryChanged event on error changes state: [isSubmitting: true], [isSubmitting: false, selectedPrediction is empty]",
       build: () => profileScreenBloc,
       wait: const Duration(seconds: 1),
       act: (bloc) {
         when(() => places.autoComplete(query: any(named: 'query'))).thenAnswer((_) async {
-          _predictions = [Prediction(), Prediction()];
           return PlacesAutocompleteResponse(
             status: "REQUEST_DENIED",
             predictions: [],
@@ -114,7 +113,10 @@ void main() {
         });
         bloc.add(const PlaceQueryChanged(query: "query"));
       },
-      expect: () => [_baseState.update(placeQuery: "query", isSubmitting: true), _baseState.update(placeQuery: "query", isSubmitting: false, errorMessage: "error")]
+      expect: () => [isA<ProfileScreenState>(), isA<ProfileScreenState>()],
+      verify: (_) {
+        profileScreenBloc.state.selectedPrediction != null && profileScreenBloc.state.selectedPrediction!.name.isEmpty && profileScreenBloc.state.selectedPrediction!.placeId.isEmpty;
+      }
     );
 
     blocTest<ProfileScreenBloc, ProfileScreenState>(
@@ -124,7 +126,7 @@ void main() {
         Prediction selectedPrediction = MockPrediction();
         when(() => selectedPrediction.placeId).thenReturn(faker.guid.guid());
         when(() => places.details(placeId: any(named: 'placeId'))).thenAnswer((_) async {
-          _selectedPrediction = PlaceDetails(adrAddress: "adrAddress", name: "fake name", website: 'fake.com', formattedPhoneNumber: "(111) 222-3333", placeId: "placeId", utcOffset: 1);
+          _selectedPrediction = PlaceDetails(adrAddress: "adrAddress", name: "fake name", website: 'fake.com', formattedPhoneNumber: "111-222-3333", placeId: "placeId", utcOffset: 1);
           return PlacesDetailsResponse(
             htmlAttributions: [],
             result: _selectedPrediction,

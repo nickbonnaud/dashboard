@@ -2,10 +2,6 @@ import 'package:validators/validators.dart';
 
 class Validators {
 
-  static final RegExp _phoneRegExp = RegExp(
-    r'^-?[0-9]+$'
-  );
-
   static final RegExp _einRegExp = RegExp(
     r'^\d{2}\-\d{7}$'
   );
@@ -36,7 +32,10 @@ class Validators {
 
   static bool isValidLastName({required String name}) => name.trim().length >= 2;
 
-  static bool isValidPhone({required String phone}) => phone.trim().length == 10 && _phoneRegExp.hasMatch(phone);
+  static bool isValidPhone({required String phone}) {
+    String cleanedPhone = phone.replaceAll(RegExp(r"\D"), "");
+    return cleanedPhone.trim().length == 10 && isNumeric(cleanedPhone);
+  }
 
   static bool isValidBusinessDescription({required String description}) => description.trim().length >= 50;
 

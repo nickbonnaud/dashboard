@@ -33,7 +33,7 @@ class BusinessAccountScreenState extends Equatable {
     isCityValid && city.isNotEmpty &&
     isStateValid && state.isNotEmpty &&
     isZipValid && zip.isNotEmpty &&
-    isEinValid;
+    (entityType == EntityType.soleProprietorship ? true : isEinValid && ein.isNotEmpty);
 
   const BusinessAccountScreenState({
     required this.entityType,
@@ -71,12 +71,12 @@ class BusinessAccountScreenState extends Equatable {
       zip: businessAccount.address.zip,
       ein: businessAccount.ein ?? "",
 
-      isNameValid: true,
-      isAddressValid: true,
+      isNameValid: businessAccount.businessName.isNotEmpty,
+      isAddressValid: businessAccount.address.address.isNotEmpty,
       isAddressSecondaryValid: true,
-      isCityValid: true,
-      isStateValid: true,
-      isZipValid: true,
+      isCityValid: businessAccount.address.city.isNotEmpty,
+      isStateValid: businessAccount.address.state.isNotEmpty,
+      isZipValid: businessAccount.address.zip.isNotEmpty,
       isEinValid: true,
 
       isSubmitting: false,

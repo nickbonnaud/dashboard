@@ -41,9 +41,9 @@ class RegisterFormState extends Equatable {
       password: "",
       passwordConfirmation: "",
 
-      isEmailValid: true,
-      isPasswordValid: true,
-      isPasswordConfirmationValid: true,
+      isEmailValid: false,
+      isPasswordValid: false,
+      isPasswordConfirmationValid: false,
 
       isSubmitting: false,
       isSuccess: false,
